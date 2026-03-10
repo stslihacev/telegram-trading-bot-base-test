@@ -30,12 +30,6 @@ class Diagnostics:
         self.bos_block_adx = 0
         self.bos_block_ema = 0
         self.bos_block_di = 0
-
-# ===== КОМИССИИ =====
-FEE_RATE = 0.0008        # комиссия вход+выход
-AVERAGE_SL_PCT = 0.01    # средний стоп 1%
-FEE_IN_R = FEE_RATE / AVERAGE_SL_PCT
-
 # Глобальные счётчики для диагностики
 bos_above_ema = 0
 bos_below_ema = 0
@@ -55,7 +49,7 @@ MAX_OPEN_TRADES = 3  # максимум одновременных позици�
 os.makedirs(os.path.dirname(PROGRESS_FILE), exist_ok=True)
 
 # ===== РЕЖИМ РАБОТЫ =====
-# MODE = "TEST"
+#MODE = "TEST"
 MODE = "FULL"
 # ========================
 
@@ -178,7 +172,7 @@ def calculate_rr(entry, tp, sl, direction):
         risk = sl - entry
         reward = entry - tp
     if risk <= 0:
-        return None
+        return 0
     return reward / risk
 
 def get_htf_bias_fast(i, close_arr, ema200_arr):
@@ -207,7 +201,7 @@ def get_market_regime(df, i):
 
 def detect_bos_fast(i, close_arr, high_arr, low_arr,
                     swing_high_indices, swing_low_indices,
-                    diagnostics=None):
+                    diagnostics):
 
     # ===== BULLISH BOS =====
     prev_highs = swing_high_indices[swing_high_indices < i]
@@ -217,8 +211,7 @@ def detect_bos_fast(i, close_arr, high_arr, low_arr,
 
         # подтверждённый пробой закрытием
         if close_arr[i] > last_high:
-            if diagnostics:
-                diagnostics.bos_detected += 1
+            diagnostics.bos_detected += 1
             return "BULLISH_BOS"
 
     # ===== BEARISH BOS =====
@@ -228,8 +221,7 @@ def detect_bos_fast(i, close_arr, high_arr, low_arr,
         last_low = low_arr[last_low_idx]
 
         if close_arr[i] < last_low:
-            if diagnostics:
-                diagnostics.bos_detected += 1
+            diagnostics.bos_detected += 1
             return "BEARISH_BOS"
 
     return None
@@ -352,12 +344,11 @@ class Strategy:
     def check_exit(self, trade, row, current_idx, df, swing_low_indices, swing_high_indices):
 
         direction = trade['direction']
+        tp = trade.get('tp')
         sl = trade['sl']
         signal_type = trade.get('signal_type')
 
         trade["bars_alive"] += 1
-
-        current_r = 0
 
         # --- R calculation ---
         if trade["initial_risk"] > 0:
@@ -368,12 +359,6 @@ class Strategy:
 
             if current_r > trade["max_r"]:
                 trade["max_r"] = current_r
-
-        # --- Break-even при 1R ---
-        if not trade.get("moved_to_be") and current_r >= 1:
-            trade["sl"] = trade["entry"]
-            sl = trade["sl"]
-            trade["moved_to_be"] = True
 
         # --- BOS Trailing ---
         if signal_type == "BOS" and trade.get("regime") == "TREND":
@@ -396,28 +381,15 @@ class Strategy:
                         sl = last_swing_high
                         trade["sl"] = sl
 
-        # --- Выход по противоположному BOS ---
-        if signal_type == "BOS":
-            opposite_bos = detect_bos_fast(
-                current_idx,
-                df['close'].values,
-                df['high'].values,
-                df['low'].values,
-                swing_high_indices,
-                swing_low_indices,
-                None
-            )
-            
-            if direction == "LONG" and opposite_bos == "BEARISH_BOS":
-                return "structure_exit", row['close'], current_idx
-            if direction == "SHORT" and opposite_bos == "BULLISH_BOS":
-                return "structure_exit", row['close'], current_idx
-
         # --- Exit conditions ---
         if direction == "LONG":
+            if tp is not None and row['high'] >= tp:
+                return "take_profit", tp, current_idx
             if row['low'] <= sl:
                 return "stop_loss", sl, current_idx
         else:
+            if tp is not None and row['low'] <= tp:
+                return "take_profit", tp, current_idx
             if row['high'] >= sl:
                 return "stop_loss", sl, current_idx
 
@@ -467,6 +439,9 @@ def load_all_data(processed):
 
         swing_low_mask = df["swing_low"].values
         swing_high_mask = df["swing_high"].values
+
+        swing_low_indices = np.where(swing_low_mask)[0]
+        swing_high_indices = np.where(swing_high_mask)[0]
 
         df['timestamp'] = pd.to_datetime(df['timestamp'])
         df = df.set_index('timestamp').sort_index()
@@ -615,74 +590,82 @@ class BosStrategy(Strategy):
         diagnostics
     ):
 
-        # ===== Защита от индексов =====
+        # Защита от некорректных индексов
         if i < 50 or i >= len(df):
             return None
 
-        # ===== Arrays =====
+        # ===== РАСПАКОВЫВАЕМ arrays =====
         close_arr = arrays["close"]
         high_arr = arrays["high"]
         low_arr = arrays["low"]
         ema200_arr = arrays["ema200"]
-
+        
+        # ===== РАСПАКОВЫВАЕМ swing_indices =====
         swing_high_indices = swing_indices["high"]
         swing_low_indices = swing_indices["low"]
-
+    
         entry = df['close'].iloc[i]
-        adx = df['adx'].iloc[i]
         plus_di = df['plus_di'].iloc[i]
         minus_di = df['minus_di'].iloc[i]
-
-        # ===== Структура =====
+    
+        # ===== СТРУКТУРНЫЙ ФИЛЬТР =====
         sweep_data = liquidity_sweep(df, i)
-        sweep_type = sweep_data[0] if sweep_data else None
-
+        if sweep_data is not None:
+            sweep_type, sweep_level = sweep_data
+        else:
+            sweep_type, sweep_level = None, None
         bos = detect_bos_fast(
             i,
-            close_arr,
-            high_arr,
-            low_arr,
-            swing_high_indices,
-            swing_low_indices,
+            close_arr, high_arr, low_arr,
+            swing_high_indices, swing_low_indices,
             diagnostics
         )
 
-        bias = get_htf_bias_fast(i, close_arr, ema200_arr)
+        bias = get_htf_bias_fast(
+            i,
+            close_arr, ema200_arr
+        )
         regime = get_market_regime(df, i)
+
+        # ADX для логирования и статистики
+        adx = df['adx'].iloc[i]
+
+        # ===== ФИЛЬТР РЕЖИМА (ДИАГНОСТИКА) =====
+        if MODE_FILTER == "TREND" and regime != "TREND":
+            return None
+
+        if MODE_FILTER == "RANGE" and regime != "RANGE":
+            return None
 
         direction = None
         signal_type = None
 
-        # =====================================================
-        # TREND MODE → BOS
-        # =====================================================
+        # ===== TREND MODE =====
         if regime == "TREND":
-
+            # LONG в тренде: BOS + bias + цена выше EMA200
             if (
-                bos == "BULLISH_BOS"
+                bos == "BULLISH_BOS" 
                 and bias == "BULLISH"
-                and entry > df['ema200'].iloc[i]
+                and df['close'].iloc[i] > df['ema200'].iloc[i]
             ):
                 direction = "LONG"
                 signal_type = "BOS"
-
+        
+            # SHORT в тренде: BOS + bias + цена ниже EMA200
             elif (
-                bos == "BEARISH_BOS"
+                bos == "BEARISH_BOS" 
                 and bias == "BEARISH"
-                and entry < df['ema200'].iloc[i]
+                and df['close'].iloc[i] < df['ema200'].iloc[i]  # Цена ниже EMA200
             ):
                 direction = "SHORT"
                 signal_type = "BOS"
 
-        # =====================================================
-        # RANGE MODE → SWEEP
-        # =====================================================
+        # ===== RANGE MODE =====
         elif regime == "RANGE":
-
             if sweep_type == "SWEEP_LOW" and bias == "BULLISH":
                 direction = "LONG"
                 signal_type = "SWEEP"
-
+                
             elif sweep_type == "SWEEP_HIGH" and bias == "BEARISH":
                 direction = "SHORT"
                 signal_type = "SWEEP"
@@ -690,16 +673,55 @@ class BosStrategy(Strategy):
         if direction is None:
             return None
 
-        # =====================================================
-        # BOS FILTERS
-        # =====================================================
+        # ===== ADX ФИЛЬТР ТОЛЬКО ДЛЯ BOS =====
         if signal_type == "BOS":
-
-            diagnostics.bos_attempts += 1
-
-            if adx < 22 or adx > 45:
+            adx_value = df['adx'].iloc[i]
+            if adx_value < 25:
                 diagnostics.bos_block_adx += 1
                 return None
+
+        # ===== ОПРЕДЕЛЯЕМ FVG =====
+        has_fvg = detect_fvg(df, i, direction)
+
+        # ===== ФИЛЬТР FVG (ТОЛЬКО СДЕЛКИ С FVG) =====
+        if signal_type == "BOS":
+            if not has_fvg:
+                return None
+
+        # новый блок
+
+        if signal_type == "BOS" and regime == "TREND":
+            diagnostics.bos_attempts += 1
+
+        # Проверка EMA для BOS
+        if signal_type == "BOS" and regime == "TREND":
+            close = df['close'].iloc[i]
+            ema200 = df['ema200'].iloc[i]
+            
+            if direction == "LONG" and close <= ema200:
+                diagnostics.bos_block_ema += 1
+                return None
+                
+            if direction == "SHORT" and close >= ema200:
+                diagnostics.bos_block_ema += 1
+                return None
+
+        # ===== ФИЛЬТР ЭКСТРЕМАЛЬНОГО ADX =====
+        if signal_type == "BOS":
+            adx_value = df['adx'].iloc[i]
+            if 24 < adx_value < 30:
+                return None
+
+        # ===== ПОДТВЕРЖДАЮЩАЯ СВЕЧА =====
+        candle_body = abs(df['close'].iloc[i] - df['open'].iloc[i])
+        candle_range = df['high'].iloc[i] - df['low'].iloc[i]
+
+        # Минимум 50% тела от диапазона
+        if candle_range == 0 or candle_body / candle_range < 0.5:
+            return None
+
+        # ===== DI ФИЛЬТР ДЛЯ BOS =====
+        if signal_type == "BOS":
 
             if pd.isna(plus_di) or pd.isna(minus_di):
                 return None
@@ -714,43 +736,109 @@ class BosStrategy(Strategy):
                 diagnostics.bos_block_di += 1
                 return None
 
-        # =====================================================
-        # STOP FROM STRUCTURE
-        # =====================================================
-        if direction == "LONG":
-
-            valid_swings = swing_low_indices[swing_low_indices < i]
-            if len(valid_swings) == 0:
+        elif regime == "RANGE":
+            if adx > 25:
+                if signal_type == "BOS" and regime == "TREND":
+                    diagnostics.bos_block_adx += 1
                 return None
 
-            last_i = valid_swings[-1]
-            sl = df["low"].iloc[last_i]
+        # =========================
+        # BOS → структурная модель (FAST VERSION)
+        # =========================
 
+        if signal_type == "BOS" and regime == "TREND":
+
+            if direction == "LONG":
+
+                # берём только свинги до текущего бара
+                valid_swings = swing_low_indices[swing_low_indices < i]
+
+                if len(valid_swings) == 0:
+                    return None
+
+                # берём последний свинг
+                last_i = valid_swings[-1]
+                sl = df["low"].iloc[last_i]
+
+                if sl >= entry:
+                    return None
+
+                tp = None
+
+            elif direction == "SHORT":
+
+                valid_swings = swing_high_indices[swing_high_indices < i]
+
+                if len(valid_swings) == 0:
+                    return None
+
+                last_i = valid_swings[-1]
+                sl = df["high"].iloc[last_i]
+
+                if sl <= entry:
+                    return None
+
+                tp = None
+
+        # =========================
+        # SWEEP → старая логика
+        # =========================
+        elif signal_type == "SWEEP":
+            current_df = df.iloc[:i+1]
+            tp, sl = get_nearest_levels(current_df, direction, lookback=LOOKBACK_LEVELS)
+            if tp is None or sl is None:
+                return None
+        
+        # Проверка, что уровни имеют смысл
+        if direction == "LONG":
             if sl >= entry:
                 return None
-
-        else:
-
-            valid_swings = swing_high_indices[swing_high_indices < i]
-            if len(valid_swings) == 0:
+            if tp is not None and tp <= entry:
                 return None
-
-            last_i = valid_swings[-1]
-            sl = df["high"].iloc[last_i]
-
+        else:
             if sl <= entry:
                 return None
+            if tp is not None and tp >= entry:
+                return None
 
-        # =====================================================
-        # FVG FILTER
-        # =====================================================
-        has_fvg = detect_fvg(df, i, direction)
-        if not has_fvg:
+        # ===== РАСЧЁТ RR =====
+
+        # 1️⃣ Проверка стопа
+        if direction == 'LONG':
+            stop_distance = entry - sl
+        else:
+            stop_distance = sl - entry
+
+        if stop_distance <= 0 or np.isnan(stop_distance):
             return None
 
-        # =====================================================
-        # CONFIDENCE
-        # =====================================================
+        atr = df['atr'].iloc[i]
+        min_stop = atr * 0.3
+
+        rr_filter_required = True  # по умолчанию фильтруем RR
+
+        # 2️⃣ Коррекция слишком маленького стопа (как раньше)
+        if stop_distance < min_stop:
+            stop_distance = min_stop
+
+            if direction == 'LONG':
+                sl = entry - stop_distance
+            else:
+                sl = entry + stop_distance
+
+            rr_filter_required = False  # ← ВАЖНО! Как в старой версии
+
+        # 3️⃣ Расчёт RR
+        if signal_type == "BOS" and regime == "TREND":
+            rr = None
+        else:
+            rr = calculate_rr(entry, tp, sl, direction)
+
+            if rr is not None and rr_filter_required:
+                if rr < MIN_RR or rr > MAX_RR:
+                    return None
+
+        # ===== CONFIDENCE ФИЛЬТР =====
         confidence = calculate_confidence_score(
             df,
             i,
@@ -759,27 +847,68 @@ class BosStrategy(Strategy):
             bos,
             bias
         )
-
+        
         if confidence < CONFIDENCE_THRESHOLD:
             return None
 
-        # =====================================================
-        # FINAL SIGNAL (без TP, без RR)
-        # =====================================================
-        return {
-            "symbol": symbol,
-            "direction": direction,
-            "entry": round(entry, 4),
-            "sl": round(sl, 4),
-            "regime": regime,
-            "signal_type": signal_type,
-            "confidence": confidence,
-            "adx": round(adx, 4),
-            "plus_di": round(plus_di, 4),
-            "minus_di": round(minus_di, 4),
-            "has_fvg": has_fvg,
-            "timestamp": df.index[i]
+        # Фильтр качества BOS
+        if signal_type == "BOS":
+            if confidence < 3:
+                return None
+
+        # Убираем перегретый тренд
+        if signal_type == "BOS":
+            adx_value = df['adx'].iloc[i]
+            if adx_value < 25 or adx_value > 40:
+                return None
+
+        plus_di = df['plus_di'].iloc[i]
+        minus_di = df['minus_di'].iloc[i]
+
+        if pd.isna(plus_di) or pd.isna(minus_di):
+            return None
+
+        # Фильтр волатильности
+        atr = df['atr'].iloc[i]
+        atr_mean = df['atr'].iloc[i-50:i].mean()
+
+        if atr < atr_mean * 0.7:  
+            return None
+        if atr > atr_mean * 3:
+            return None
+
+        # ===== ОПРЕДЕЛЯЕМ FVG =====
+        has_fvg = detect_fvg(df, i, direction)
+
+        # ===== СНАЧАЛА СОЗДАЁМ entry_data =====
+        entry_data = {
+            'direction': direction,
+            'entry': round(entry, 4),
+            'tp': round(tp, 4) if tp is not None else None,
+            'sl': round(sl, 4) if sl is not None else None,
+            'rr': round(rr, 2) if rr is not None else None,
+            'regime': regime,
+            'adx': round(adx, 4),
+            'atr': round(atr, 4),
+            'plus_di': round(plus_di, 4),
+            'minus_di': round(minus_di, 4),
+            'confidence': confidence,
+            'signal_type': signal_type,
+            'has_fvg': has_fvg,
+            'timestamp': df.index[i] if hasattr(df.index, '__getitem__') else i
         }
+
+        # ===== EMA50 позиция для BOS =====
+        if signal_type == "BOS":
+            ema_value = df['ema50'].iloc[i]
+            price = df['close'].iloc[i]
+
+            if price > ema_value:
+                entry_data["ema_position"] = "ABOVE"
+            else:
+                entry_data["ema_position"] = "BELOW"
+
+        return entry_data
 
 def run_backtest():
     print("🚀 Запуск бэктеста...")
@@ -1038,18 +1167,9 @@ def run_backtest():
             
             if exit_reason is not None:
                 if exit_reason == 'take_profit':
-                    if pos['direction'] == 'LONG':
-                        pnl = pos['position_size'] * (pos['tp'] - pos['entry'])
-                    else:
-                        pnl = pos['position_size'] * (pos['entry'] - pos['tp'])
+                    pnl = pos['position_size'] * (exit_price - pos['entry']) if pos['direction'] == 'LONG' else pos['position_size'] * (pos['entry'] - exit_price)
                 else:  # stop_loss
-                    if pos['direction'] == 'LONG':
-                        pnl = -pos['position_size'] * (pos['entry'] - pos['sl'])
-                    else:
-                        pnl = -pos['position_size'] * (pos['sl'] - pos['entry'])
-
-                # === КОМИССИЯ ===
-                pnl -= FEE_IN_R
+                    pnl = -pos['position_size'] * (pos['entry'] - exit_price) if pos['direction'] == 'LONG' else -pos['position_size'] * (exit_price - pos['entry'])
                 
                 # 🚨 защита от битых значений
                 if np.isnan(pnl) or np.isinf(pnl):
@@ -1368,13 +1488,7 @@ def run_backtest():
 
             risk_amount = capital * adjusted_risk * risk_multiplier
 
-            stop_distance = abs(entry_data["entry"] - entry_data["sl"])
-
-            if stop_distance <= 0:
-                tqdm.write(f"   ⚠️ {symbol}: stop_distance <= 0, пропускаем")
-                continue
-
-            position_size = risk_amount / stop_distance
+            position_size = risk_amount / initial_risk
 
             # защита от чрезмерного плеча
             max_position = capital * 50
@@ -1495,7 +1609,7 @@ if __name__ == "__main__":
     print("\n" + "="*60)
     print("📊 EDGE BREAKDOWN")
     print("="*60)
-    
+
     breakdown = analytics.regime_signal_breakdown()
     print(breakdown)
 
