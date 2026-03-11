@@ -47,6 +47,8 @@ COMMISSION = 0.0005
 STEP = 60 * 60
 PROGRESS_FILE = "backtest/progress.txt"
 MAX_OPEN_TRADES = 3  # максимум одновременных позиций
+SAFE_FLOAT_LIMIT = 1e12
+MAX_PNL_CLIP = 1e6
 
 os.makedirs(os.path.dirname(PROGRESS_FILE), exist_ok=True)
 
@@ -87,7 +89,7 @@ def print_signal_stats(name, trades):
     wins = sum(1 for t in trades if t["pnl"] > 0)
     total = len(trades)
     winrate = wins / total * 100
-    total_pnl = sum(t["pnl"] for t in trades)
+    total_pnl = float(np.clip(np.nan_to_num(sum(t.get("pnl", 0) for t in trades), nan=0.0, posinf=MAX_PNL_CLIP, neginf=-MAX_PNL_CLIP), -MAX_PNL_CLIP, MAX_PNL_CLIP))
 
     print(f"\n{name}")
     print(f"  Сделок: {total}")
@@ -102,7 +104,7 @@ def print_stats(trades_list, name):
 
     total = len(trades_list)
     wins = sum(1 for t in trades_list if t["pnl"] > 0)
-    pnl = sum(t["pnl"] for t in trades_list)
+    pnl = float(np.clip(np.nan_to_num(sum(t.get("pnl", 0) for t in trades_list), nan=0.0, posinf=MAX_PNL_CLIP, neginf=-MAX_PNL_CLIP), -MAX_PNL_CLIP, MAX_PNL_CLIP))
     winrate = wins / total * 100
 
     print(f"\n{name}")
@@ -167,15 +169,80 @@ def add_indicators(df):
     return df
 
 def calculate_rr(entry, tp, sl, direction):
-    if direction == 'LONG':
-        risk = entry - sl
-        reward = tp - entry
-    else:
-        risk = sl - entry
-        reward = entry - tp
-    if risk <= 0:
+    if tp is None or sl is None or entry is None:
         return 0
-    return reward / risk
+    risk = abs(entry - sl)
+    reward = abs(tp - entry)
+
+    if risk == 0 or sl == entry or sl == tp:
+        return 0
+
+    rr = reward / risk
+    if np.isnan(rr) or np.isinf(rr):
+        return 0
+    return rr
+
+
+def calculate_position_size(entry_data, capital, risk_factor=0.01):
+    """
+    Адаптивный размер позиции:
+    - финализирует SL после ATR/минимальной дистанции
+    - масштабирует риск по confidence (до x2)
+    - пишет результат в entry_data['position_size']
+    """
+    entry = float(entry_data.get("entry", 0.0) or 0.0)
+    atr = float(entry_data.get("atr", 0.0) or 0.0)
+    direction = entry_data.get("direction")
+    signal_type = entry_data.get("signal_type")
+
+    if entry <= 0 or direction not in {"LONG", "SHORT"}:
+        entry_data["position_size"] = 0.0
+        return 0.0
+
+    atr_floor = max(atr * 0.3, 1e-9)
+    distance = abs(entry - float(entry_data.get("sl", entry) or entry))
+    min_sl_distance = max(distance, atr_floor)
+
+    # Базовая дистанция стопа по модели входа
+    if signal_type == "BOS":
+        if direction == "LONG":
+            raw_distance = max(entry - float(entry_data.get("last_swing_low", entry) or entry), atr_floor)
+        else:
+            raw_distance = max(float(entry_data.get("last_swing_high", entry) or entry) - entry, atr_floor)
+    elif signal_type == "SWEEP":
+        nearest_level = float(entry_data.get("nearest_level", entry_data.get("sl", entry)) or entry)
+        if direction == "LONG":
+            raw_distance = max(entry - nearest_level, atr_floor)
+        else:
+            raw_distance = max(nearest_level - entry, atr_floor)
+    else:
+        raw_distance = max(distance, atr_floor)
+
+    sl_distance = max(raw_distance, min_sl_distance, 1e-9)
+
+    # Финальный SL сохраняем только после всех корректировок
+    if direction == "LONG":
+        corrected_sl = entry - sl_distance
+    else:
+        corrected_sl = entry + sl_distance
+    entry_data["sl"] = float(np.clip(corrected_sl, -SAFE_FLOAT_LIMIT, SAFE_FLOAT_LIMIT))
+
+    # Риск с масштабированием по confidence (до x2)
+    confidence = float(entry_data.get("confidence", 0) or 0)
+    confidence_multiplier = np.clip(1.0 + confidence / 5.0, 1.0, 2.0)
+    adjusted_risk = float(np.clip(risk_factor * confidence_multiplier, 0.0001, risk_factor * 2.0))
+
+    safe_capital = float(np.clip(capital, 0.0, SAFE_FLOAT_LIMIT))
+    position_size = (safe_capital * adjusted_risk) / sl_distance
+    position_size = float(np.clip(position_size, 0.0, SAFE_FLOAT_LIMIT))
+
+    # Абсолютный лимит размера позиции: не более 5% капитала
+    max_risk_per_trade = 0.05
+    position_size = min(position_size, safe_capital * max_risk_per_trade)
+
+    entry_data["position_size"] = position_size
+    entry_data["risk_amount"] = float(np.clip(safe_capital * adjusted_risk, 0.0, SAFE_FLOAT_LIMIT))
+    return position_size
 
 def get_htf_bias_fast(i, close_arr, ema200_arr):
 
@@ -371,6 +438,12 @@ class BacktestEngine:
         except (TypeError, ValueError):
             return float(default)
 
+    def _sanitize_pnl_series(self, series):
+        ser = pd.to_numeric(series, errors='coerce')
+        ser = ser.replace([np.inf, -np.inf], np.nan)
+        ser = pd.Series(np.nan_to_num(ser.values, nan=0.0, posinf=MAX_PNL_CLIP, neginf=-MAX_PNL_CLIP), index=ser.index)
+        return ser.clip(-MAX_PNL_CLIP, MAX_PNL_CLIP)
+
     def update_coin_stats(self):
         stats = {}
         for trade in self.trades_data:
@@ -378,7 +451,7 @@ class BacktestEngine:
             if coin is None:
                 continue
             rec = stats.setdefault(coin, {"profit": 0.0, "loss": 0.0})
-            pnl = trade.get("pnl", 0)
+            pnl = float(np.clip(np.nan_to_num(trade.get("pnl", 0), nan=0.0, posinf=MAX_PNL_CLIP, neginf=-MAX_PNL_CLIP), -MAX_PNL_CLIP, MAX_PNL_CLIP))
             if pnl > 0:
                 rec["profit"] += pnl
             elif pnl < 0:
@@ -608,7 +681,9 @@ def print_final_report(
     sweep_trend,
     sweep_range,
     bos_stats,
-    diagnostics
+    diagnostics,
+    bos_trend,
+    bos_range
 ):
     print("\n" + "="*50)
     print("📊 ИТОГОВАЯ СТАТИСТИКА")
@@ -636,24 +711,47 @@ def print_final_report(
     print_stats(sweep_trend, "SWEEP (TREND)")
     print_stats(sweep_range, "SWEEP (RANGE)")
 
+    print("\n" + "="*50)
+    print("📊 BOS ПО РЕЖИМАМ")
+    print("="*50)
+
+    print_stats(bos_trend, "BOS (TREND)")
+    print_stats(bos_range, "BOS (RANGE)")
+
     if len(trades_df) == 0:
         print("❌ Нет сделок")
         return
+
+    # Защита от отсутствующих колонок/NaN
+    if 'pnl' not in trades_df.columns:
+        trades_df['pnl'] = 0.0
+    if 'rr' not in trades_df.columns:
+        trades_df['rr'] = 0.0
+    trades_df['pnl'] = pd.to_numeric(trades_df['pnl'], errors='coerce').replace([np.inf, -np.inf], np.nan)
+    trades_df['pnl'] = np.nan_to_num(trades_df['pnl'].values, nan=0.0, posinf=MAX_PNL_CLIP, neginf=-MAX_PNL_CLIP)
+    trades_df['pnl'] = pd.Series(trades_df['pnl']).clip(-MAX_PNL_CLIP, MAX_PNL_CLIP)
+    trades_df['rr'] = pd.to_numeric(trades_df['rr'], errors='coerce').replace([np.inf, -np.inf], np.nan)
+    trades_df['rr'] = np.nan_to_num(trades_df['rr'].values, nan=0.0, posinf=0.0, neginf=0.0)
 
     total_trades = len(trades_df)
     winning_trades = len(trades_df[trades_df['pnl'] > 0])
     losing_trades = len(trades_df[trades_df['pnl'] < 0])
     winrate = winning_trades / total_trades * 100
 
-    total_pnl = trades_df['pnl'].sum()
-    avg_rr = trades_df['rr'].mean()
+    total_pnl = float(np.clip(np.nan_to_num(trades_df['pnl'].sum(), nan=0.0, posinf=MAX_PNL_CLIP, neginf=-MAX_PNL_CLIP), -MAX_PNL_CLIP, MAX_PNL_CLIP))
+    avg_rr = float(np.clip(trades_df['rr'].mean(), -SAFE_FLOAT_LIMIT, SAFE_FLOAT_LIMIT))
 
-    equity_df['peak'] = equity_df['capital'].cummax()
-    equity_df['drawdown'] = (equity_df['peak'] - equity_df['capital']) / equity_df['peak'] * 100
-    max_dd = equity_df['drawdown'].max()
+    if len(equity_df) == 0 or 'capital' not in equity_df.columns:
+        max_dd = 0.0
+    else:
+        equity_df['capital'] = pd.to_numeric(equity_df['capital'], errors='coerce').fillna(INITIAL_CAPITAL).clip(-SAFE_FLOAT_LIMIT, SAFE_FLOAT_LIMIT)
+        equity_df['peak'] = equity_df['capital'].cummax()
+        denom = equity_df['peak'].replace(0, np.nan)
+        equity_df['drawdown'] = ((equity_df['peak'] - equity_df['capital']) / denom * 100).fillna(0.0).clip(0, 100)
+        max_dd = float(equity_df['drawdown'].max())
 
-    gross_profit = trades_df[trades_df['pnl'] > 0]['pnl'].sum()
-    gross_loss = abs(trades_df[trades_df['pnl'] < 0]['pnl'].sum())
+    gross_profit = float(np.nan_to_num(trades_df[trades_df['pnl'] > 0]['pnl'].sum(), nan=0.0, posinf=MAX_PNL_CLIP, neginf=0.0))
+    gross_loss = abs(float(np.nan_to_num(trades_df[trades_df['pnl'] < 0]['pnl'].sum(), nan=0.0, posinf=0.0, neginf=-MAX_PNL_CLIP)))
     profit_factor = gross_profit / gross_loss if gross_loss > 0 else float('inf')
 
     print("\n📊 СТАТИСТИКА СДЕЛОК")
@@ -914,34 +1012,30 @@ class BosStrategy(Strategy):
             if tp is not None and tp >= entry:
                 return None
 
-        # ===== РАСЧЁТ RR =====
+        # ===== РАСЧЁТ RR + финальная коррекция SL =====
 
-        # 1️⃣ Проверка стопа
-        if direction == 'LONG':
-            stop_distance = entry - sl
-        else:
-            stop_distance = sl - entry
+        atr = atr_arr[i]
+        if pd.isna(atr):
+            return None
+
+        # 1️⃣ Базовая дистанция стопа
+        stop_distance = (entry - sl) if direction == 'LONG' else (sl - entry)
 
         if stop_distance <= 0 or np.isnan(stop_distance):
             return None
 
-        atr = atr_arr[i]
-        min_stop = atr * 0.3
+        # 2️⃣ Минимальная дистанция с ATR-ограничением
+        min_stop = max(stop_distance, atr * 0.3)
+        rr_filter_required = True
 
-        rr_filter_required = True  # по умолчанию фильтруем RR
-
-        # 2️⃣ Коррекция слишком маленького стопа (как раньше)
         if stop_distance < min_stop:
             stop_distance = min_stop
+            rr_filter_required = False  # оставляем совместимость со старой логикой RR-фильтра
 
-            if direction == 'LONG':
-                sl = entry - stop_distance
-            else:
-                sl = entry + stop_distance
+        # 3️⃣ Финальный SL сохраняем только после всех корректировок
+        sl = entry - stop_distance if direction == 'LONG' else entry + stop_distance
 
-            rr_filter_required = False  # ← ВАЖНО! Как в старой версии
-
-        # 3️⃣ Расчёт RR
+        # 4️⃣ Расчёт RR уже на скорректированном SL
         if signal_type == "BOS" and regime == "TREND":
             rr = None
         else:
@@ -999,8 +1093,8 @@ class BosStrategy(Strategy):
         entry_data = {
             'direction': direction,
             'entry': round(entry, 4),
-            'tp': round(tp, 4) if tp is not None else None,
-            'sl': round(sl, 4) if sl is not None else None,
+            'tp': float(np.nan_to_num(round(tp, 4), nan=0.0, posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT)) if tp is not None else None,
+            'sl': float(np.nan_to_num(round(sl, 4), nan=entry, posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT)) if sl is not None else float(entry),
             'rr': round(rr, 2) if rr is not None else None,
             'regime': regime,
             'adx': round(adx, 4),
@@ -1017,6 +1111,9 @@ class BosStrategy(Strategy):
             'fvg_size': locals().get("fvg_size"),
             'signal_type': signal_type,
             'has_fvg': has_fvg,
+            'nearest_level': round(sl, 4) if signal_type == 'SWEEP' else None,
+            'last_swing_low': round(low_arr[last_i], 4) if signal_type == 'BOS' and direction == 'LONG' else None,
+            'last_swing_high': round(high_arr[last_i], 4) if signal_type == 'BOS' and direction == 'SHORT' else None,
             'timestamp': df.index[i] if hasattr(df.index, '__getitem__') else i
         }
 
@@ -1235,6 +1332,8 @@ def run_backtest():
     bos_trades = []    # для сделок по BOS
     sweep_trend = []   # SWEEP сделки в TREND режиме
     sweep_range = []   # SWEEP сделки в RANGE режиме
+    bos_trend = []     # BOS сделки в TREND режиме
+    bos_range = []     # BOS сделки в RANGE режиме
     bos_stats = []
 
     # общий временной диапазон
@@ -1296,16 +1395,19 @@ def run_backtest():
             )
             
             if exit_reason is not None:
-                if exit_reason == 'take_profit':
-                    pnl = pos['position_size'] * (exit_price - pos['entry']) if pos['direction'] == 'LONG' else pos['position_size'] * (pos['entry'] - exit_price)
-                else:  # stop_loss
-                    pnl = -pos['position_size'] * (pos['entry'] - exit_price) if pos['direction'] == 'LONG' else -pos['position_size'] * (exit_price - pos['entry'])
-                
+                # Безопасный расчёт PnL с ограничением экстремальных значений
+                pos_size = float(np.clip(pos.get('position_size', 0.0), 0.0, SAFE_FLOAT_LIMIT))
+                entry_px = float(np.clip(pos.get('entry', 0.0), -SAFE_FLOAT_LIMIT, SAFE_FLOAT_LIMIT))
+                exit_px = float(np.clip(exit_price, -SAFE_FLOAT_LIMIT, SAFE_FLOAT_LIMIT))
+
+                move = (exit_px - entry_px) if pos['direction'] == 'LONG' else (entry_px - exit_px)
+                pnl = float(np.clip(np.nan_to_num(pos_size * move, nan=0.0, posinf=MAX_PNL_CLIP, neginf=-MAX_PNL_CLIP), -MAX_PNL_CLIP, MAX_PNL_CLIP))
+
                 # 🚨 защита от битых значений
                 if np.isnan(pnl) or np.isinf(pnl):
                     continue
 
-                capital += pnl
+                capital = float(np.clip(capital + pnl, -SAFE_FLOAT_LIMIT, SAFE_FLOAT_LIMIT))
                 pos['exit_time'] = current_time
                 pos['exit_price'] = exit_price
                 pos['pnl'] = pnl
@@ -1508,6 +1610,12 @@ def run_backtest():
                         sweep_trend.append(pos)
                     elif pos.get("regime") == "RANGE":
                         sweep_range.append(pos)
+
+                if pos.get("signal_type") == "BOS":
+                    if pos.get("regime") == "TREND":
+                        bos_trend.append(pos)
+                    elif pos.get("regime") == "RANGE":
+                        bos_range.append(pos)
                 continue
 
             still_open.append(pos)
@@ -1641,92 +1749,33 @@ def run_backtest():
             confidence_threshold = engine.compute_dynamic_threshold(adx=features["adx"], coin=coin)
 
             if features["volume"] is not None and avg_vol is not None:
-                if features["volume"] < avg_vol or p_profit < confidence_threshold:
+                zero_volume = features["volume"] == 0
+                ml_ok = p_profit >= confidence_threshold
+                # Базовый ML/Volume фильтр
+                should_filter = (not ml_ok) or ((not zero_volume) and features["volume"] < avg_vol)
+                # Для SWEEP добавляем минимальный volume-порог
+                if entry_data.get("signal_type") == "SWEEP":
+                    min_sweep_volume = max(0.0, 0.001 * float(np.nan_to_num(avg_vol, nan=0.0)))
+                    if features["volume"] < min_sweep_volume:
+                        should_filter = True
+                # volume == 0 не блокируем только при позитивном ML
+                if zero_volume and ml_ok:
+                    should_filter = False
+                if should_filter:
                     print(f"Trade filtered by ML/Volume: p_profit={p_profit:.2f}, volume={features['volume']:.2f}, avg_vol={avg_vol:.2f}")
                     continue
-
-            initial_risk = abs(entry_data['entry'] - entry_data['sl'])
-
-            # Защита от нулевого или отрицательного риска
-            if initial_risk <= 0:
-                tqdm.write(f"   ⚠️ {symbol}: initial_risk <= 0, пропускаем")
+            # ===== АДАПТИВНЫЙ РАСЧЁТ РАЗМЕРА ПОЗИЦИИ =====
+            position_size = calculate_position_size(entry_data, capital, risk_factor=0.01)
+            # Защита от нулевого или битого размера
+            if position_size <= 0 or np.isnan(position_size) or np.isinf(position_size):
+                tqdm.write(f"   ⚠️ {symbol}: некорректный position_size, пропускаем")
                 continue
-
-            # ===== РАСЧЁТ РАЗМЕРА ПОЗИЦИИ =====
-            RISK_PER_TRADE = 0.005  # 0.5%
-
-            # Базовая корректировка по режиму
-            if entry_data["regime"] == "TREND":
-                adjusted_risk = RISK_PER_TRADE * 1.0
-            else:
-                adjusted_risk = RISK_PER_TRADE * 0.7
-
-            risk_multiplier = 1.0
-
-            # Адаптивный риск для BOS
-            if entry_data['signal_type'] == 'BOS':
-                adx_value = entry_data['adx']
-
-                if 30 <= adx_value < 36:
-                    risk_multiplier = 1.3
-                elif 20 <= adx_value < 30:
-                    risk_multiplier = 1.1
-                elif adx_value < 15:
-                    risk_multiplier = 0.8
-                else:
-                    risk_multiplier = 0.9
-
-            # FVG-инверсия (усиливаем non-FVG)
-            if entry_data['signal_type'] == 'BOS':
-                if entry_data['has_fvg']:
-                    risk_multiplier *= 0.85   # уменьшаем риск
-                else:
-                    risk_multiplier *= 1.10   # усиливаем риск
-
-            # ===== ADX POSITION BOOST =====
-            if entry_data['signal_type'] == "BOS":
-                adx = entry_data['adx']
-
-                if 31 <= adx <= 34:
-                    risk_multiplier *= 1.3
-                elif 25 <= adx < 31:
-                    risk_multiplier *= 0.9
-                elif 34 < adx <= 40:
-                    risk_multiplier *= 1.0
-
-            # Confidence-модификатор
-            conf = entry_data.get('confidence', 0)
-
-            if 3 <= conf < 4:
-                risk_multiplier *= 1.10
-            elif conf >= 4:
-                risk_multiplier *= 0.90
-
-            risk_amount = capital * adjusted_risk * risk_multiplier
-
-             # Multi-coin capital allocation (fallback to legacy risk sizing)
-            coin_score = engine._safe_num(features.get("bos_strength"), 1.0) * engine._safe_num(features.get("fvg_size"), 1.0) * engine._safe_num(features.get("winrate_factor"), 1.0)
-            engine.coin_scores[coin] = max(float(coin_score), 0.0001)
-            total_scores = sum([score for score in engine.coin_scores.values()])
-
-            if total_scores > 0 and engine.total_capital > 0:
-                # Аллокация задаётся в USDT, для PnL нужен размер в монетах
-                allocated_notional = engine.total_capital * (engine.coin_scores[coin] / total_scores)
-                position_size = allocated_notional / max(entry_data['entry'], 1e-9)
-            else:
-                position_size = risk_amount / initial_risk
-
-            # защита от чрезмерного плеча
-            # Ограничиваем не объёмом монет, а максимальным нотионалом
+            # Ограничиваем максимальный notional для защиты от экстремумов
             max_position = (capital * 50) / max(entry_data['entry'], 1e-9)
-            if position_size > max_position:
-                position_size = max_position
+            position_size = float(np.clip(position_size, 0.0, max_position))
+            entry_data["position_size"] = position_size
 
             print(f"Dynamic threshold={confidence_threshold:.2f}, p_profit={p_profit:.2f}, volume={(features['volume'] if features['volume'] is not None else 0):.2f}, pos_size={position_size:.2f}")
-            
-            # Добавляем рассчитанные поля в entry_data
-            entry_data["position_size"] = position_size
-            entry_data["risk_amount"] = risk_amount
 
             pos = entry_data.copy()
 
@@ -1753,8 +1802,20 @@ def run_backtest():
 
     pbar.close()
 
-        # ===== ФОРМИРУЕМ ОТЧЁТ =====
+         # ===== ФОРМИРУЕМ ОТЧЁТ =====
     trades_df = pd.DataFrame(all_trades)
+    if len(trades_df) == 0:
+        trades_df = pd.DataFrame(columns=['pnl', 'rr', 'signal_type', 'regime'])
+    if 'pnl' not in trades_df.columns:
+        trades_df['pnl'] = 0.0
+    if 'rr' not in trades_df.columns:
+        trades_df['rr'] = 0.0
+    trades_df['pnl'] = pd.to_numeric(trades_df['pnl'], errors='coerce').replace([np.inf, -np.inf], np.nan)
+    trades_df['pnl'] = np.nan_to_num(trades_df['pnl'].values, nan=0.0, posinf=MAX_PNL_CLIP, neginf=-MAX_PNL_CLIP)
+    trades_df['pnl'] = pd.Series(trades_df['pnl']).clip(-MAX_PNL_CLIP, MAX_PNL_CLIP)
+    trades_df['rr'] = pd.to_numeric(trades_df['rr'], errors='coerce').replace([np.inf, -np.inf], np.nan)
+    trades_df['rr'] = np.nan_to_num(trades_df['rr'].values, nan=0.0, posinf=0.0, neginf=0.0)
+
     equity_df = pd.DataFrame(equity_curve)
 
     print_final_report(
@@ -1768,7 +1829,9 @@ def run_backtest():
         sweep_trend,
         sweep_range,
         bos_stats,
-        diagnostics
+        diagnostics,
+        bos_trend,
+        bos_range
     )
 
     return trades_df, equity_df
@@ -1796,7 +1859,7 @@ class BosAnalytics:
         print("\n📊 R DISTRIBUTION")
         print("-" * 30)
 
-        r_values = self.df["rr"]
+        r_values = pd.to_numeric(self.df["rr"], errors="coerce").replace([np.inf, -np.inf], np.nan).fillna(0.0)
 
         print(f"Средний RR: {r_values.mean():.2f}")
         print(f"Медиана RR: {r_values.median():.2f}")
@@ -1819,7 +1882,11 @@ class BosAnalytics:
         print("\n📊 ADX PROFILE")
         print("-" * 30)
 
-        print(self.df.groupby(pd.cut(self.df["adx"], 5))["pnl"].mean())
+        pnl = pd.to_numeric(self.df["pnl"], errors="coerce").replace([np.inf, -np.inf], np.nan).fillna(0.0)
+        pnl = pd.Series(np.nan_to_num(pnl.values, nan=0.0, posinf=MAX_PNL_CLIP, neginf=-MAX_PNL_CLIP), index=self.df.index).clip(-MAX_PNL_CLIP, MAX_PNL_CLIP)
+        tmp = self.df.copy()
+        tmp["pnl"] = pnl
+        print(tmp.groupby(pd.cut(tmp["adx"], 5))["pnl"].mean())
 
     def _profit_dependency(self):
         print("\n📊 PROFIT DEPENDENCY")
