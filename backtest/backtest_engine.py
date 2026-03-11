@@ -69,6 +69,10 @@ MODE = "FULL"
 
 REJECTION_LOGGING_ENABLED = os.getenv("BACKTEST_REJECTION_LOGS", "1") == "1"
 REJECTION_LOG_LIMIT_PER_REASON = max(0, int(os.getenv("BACKTEST_REJECTION_LOG_LIMIT", "10")))
+ENTRY_ZONE_TOLERANCE_PCT = float(os.getenv("ENTRY_ZONE_TOLERANCE_PCT", "0.0015"))
+ENTRY_ZONE_ATR_MULTIPLIER = float(os.getenv("ENTRY_ZONE_ATR_MULTIPLIER", "0.25"))
+MOMENTUM_ENTRY_CANDLES = int(os.getenv("MOMENTUM_ENTRY_CANDLES", "7"))
+MOMENTUM_ENTRY_MAX_EXTENSION = int(os.getenv("MOMENTUM_ENTRY_MAX_EXTENSION", "20"))
 
 if MODE == "TEST":
     START_DATE = "2024-01-01"
@@ -903,6 +907,7 @@ class BosStrategy(Strategy):
         self.last_rejection_reason = None
         self.last_rejection_message = ""
         self._rejection_log_counts = defaultdict(int)
+        self._last_bos_context = {}
 
     def _reject(self, reason, symbol, i, message):
         self.last_rejection_reason = reason
@@ -963,6 +968,10 @@ class BosStrategy(Strategy):
             swing_high_indices, swing_low_indices,
             diagnostics
         )
+        if bos == "BULLISH_BOS":
+            self._last_bos_context[symbol] = {"index": i, "direction": "LONG"}
+        elif bos == "BEARISH_BOS":
+            self._last_bos_context[symbol] = {"index": i, "direction": "SHORT"}
 
         bias = get_htf_bias_fast(
             i,
@@ -982,6 +991,8 @@ class BosStrategy(Strategy):
 
         direction = None
         signal_type = None
+        entry_mode = "zone"
+        candles_since_bos = None
 
         # ===== TREND MODE =====
         if regime == "TREND":
@@ -1025,6 +1036,22 @@ class BosStrategy(Strategy):
                 signal_type = "BOS"
 
         if direction is None:
+            bos_ctx = self._last_bos_context.get(symbol)
+            if bos_ctx:
+                candles_since_bos = i - bos_ctx["index"]
+                direction_matches_bias = (
+                    (bos_ctx["direction"] == "LONG" and bias == "BULLISH" and close_arr[i] > ema200_arr[i]) or
+                    (bos_ctx["direction"] == "SHORT" and bias == "BEARISH" and close_arr[i] < ema200_arr[i])
+                )
+                if (
+                    direction_matches_bias
+                    and MOMENTUM_ENTRY_CANDLES < candles_since_bos <= (MOMENTUM_ENTRY_CANDLES + MOMENTUM_ENTRY_MAX_EXTENSION)
+                ):
+                    direction = bos_ctx["direction"]
+                    signal_type = "BOS"
+                    entry_mode = "momentum"
+
+        if direction is None:
             return self._reject("rejected_entry_zone", symbol, i, "entry zone not reached (no BOS/SWEEP setup)")
 
         # ===== ADX ФИЛЬТР ТОЛЬКО ДЛЯ BOS =====
@@ -1036,13 +1063,6 @@ class BosStrategy(Strategy):
 
         # ===== ОПРЕДЕЛЯЕМ FVG =====
         has_fvg = detect_fvg(df, i, direction)
-
-        # ===== ФИЛЬТР FVG (ТОЛЬКО СДЕЛКИ С FVG) =====
-        if signal_type == "BOS":
-            if not has_fvg:
-                return self._reject("rejected_fvg", symbol, i, "FVG requirement failed for BOS")
-
-        # новый блок
 
         if signal_type == "BOS":
             diagnostics.bos_attempts += 1
@@ -1102,6 +1122,7 @@ class BosStrategy(Strategy):
         # =========================
 
         if signal_type == "BOS":
+            zone_touch_confirmed = entry_mode == "momentum"
 
             if direction == "LONG":
 
@@ -1118,6 +1139,17 @@ class BosStrategy(Strategy):
                 if sl >= entry:
                     return self._reject("rejected_price_condition", symbol, i, f"invalid BOS LONG stop: sl {sl:.4f} >= entry {entry:.4f}")
 
+                pos_high = np.searchsorted(swing_high_indices, i, side="left") - 1
+                if pos_high >= 0:
+                    zone_level = high_arr[swing_high_indices[pos_high]]
+                    zone_width = max(
+                        atr_arr[i] * ENTRY_ZONE_ATR_MULTIPLIER,
+                        entry * ENTRY_ZONE_TOLERANCE_PCT
+                    )
+                    zone_low = zone_level - zone_width
+                    zone_high = zone_level + zone_width
+                    zone_touch_confirmed = zone_touch_confirmed or (low_arr[i] <= zone_high and high_arr[i] >= zone_low)
+
                 tp = None
 
             elif direction == "SHORT":
@@ -1133,7 +1165,21 @@ class BosStrategy(Strategy):
                 if sl <= entry:
                     return self._reject("rejected_price_condition", symbol, i, f"invalid BOS SHORT stop: sl {sl:.4f} <= entry {entry:.4f}")
 
+                pos_low = np.searchsorted(swing_low_indices, i, side="left") - 1
+                if pos_low >= 0:
+                    zone_level = low_arr[swing_low_indices[pos_low]]
+                    zone_width = max(
+                        atr_arr[i] * ENTRY_ZONE_ATR_MULTIPLIER,
+                        entry * ENTRY_ZONE_TOLERANCE_PCT
+                    )
+                    zone_low = zone_level - zone_width
+                    zone_high = zone_level + zone_width
+                    zone_touch_confirmed = zone_touch_confirmed or (low_arr[i] <= zone_high and high_arr[i] >= zone_low)
+
                 tp = None
+
+            if not zone_touch_confirmed and entry_mode != "momentum":
+                return self._reject("rejected_entry_zone", symbol, i, "entry zone not reached within tolerance band")
 
         # =========================
         # SWEEP → старая логика
@@ -1194,6 +1240,8 @@ class BosStrategy(Strategy):
             bos,
             bias
         )
+        if signal_type == "BOS":
+            confidence += 1.0 if has_fvg else -0.5
         
         confidence_threshold = SOFTER_CONFIDENCE_THRESHOLD if SOFTER_CONFIDENCE_FILTER else CONFIDENCE_THRESHOLD
         if confidence < confidence_threshold:
@@ -1259,6 +1307,9 @@ class BosStrategy(Strategy):
             'timestamp': df.index[i] if hasattr(df.index, '__getitem__') else i,
             'confidence_threshold_used': confidence_threshold
         }
+        if signal_type == "BOS":
+            entry_data["entry_mode"] = entry_mode
+            entry_data["candles_since_bos"] = candles_since_bos
 
         # ===== EMA50 позиция для BOS =====
         if signal_type == "BOS":
@@ -1298,6 +1349,8 @@ def run_backtest():
         "rejected_confidence",
         "rejected_other"
     ]
+    filter_stats["zone_entries"] = 0
+    filter_stats["momentum_entries"] = 0
 
     bos_above_ema = 0
     bos_below_ema = 0
@@ -1941,6 +1994,10 @@ def run_backtest():
                 pos["rr"] = 0.0
 
             open_positions.append(pos)
+            if entry_data.get("entry_mode") == "momentum":
+                filter_stats["momentum_entries"] += 1
+            else:
+                filter_stats["zone_entries"] += 1
 
             rr_text = f"{entry_data['rr']:.2f}" if entry_data['rr'] is not None else "STRUCT"
 
