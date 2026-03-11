@@ -358,10 +358,6 @@ class BacktestEngine:
         self.coin_stats = {}
         self.coin_scores = {}
         self.total_capital = INITIAL_CAPITAL
-        self.current_time = None
-        self.data_by_tf = {}
-        self.time_to_pos_by_tf = {}
-        self.pending_direction = None
 
     def _encode_liquidity(self, value):
         mapping = {None: 0, "SWEEP_LOW": 1, "SWEEP_HIGH": 2}
@@ -425,73 +421,6 @@ class BacktestEngine:
         model.fit(X, y)
         self.signal_model = model
         return model
-
-    def check_mtf_entry(self, symbol, tf_main='1h', tf_mtf='15m'):
-        def _log_mtf_debug():
-            print(f"[MTF DEBUG] symbol={symbol}")
-            print(f"[MTF DEBUG] main_tf={tf_main}, mtf={tf_mtf}")
-            print(f"[MTF DEBUG] current_time={self.current_time}")
-
-        if self.current_time is None:
-            return False
-
-        signal_direction = self.pending_direction
-        if signal_direction not in {"LONG", "SHORT"}:
-            return False
-
-        df_main = self.data_by_tf.get(tf_main, {}).get(symbol)
-        main_pos = self.time_to_pos_by_tf.get(tf_main, {}).get(symbol, {}).get(self.current_time)
-        if df_main is None or main_pos is None:
-            return False
-
-        main_row = df_main.iloc[main_pos]
-        main_direction = "LONG" if main_row['close'] >= main_row['open'] else "SHORT"
-        if main_direction != signal_direction:
-            return False
-
-        df_mtf = self.data_by_tf.get(tf_mtf, {}).get(symbol)
-        if df_mtf is None or len(df_mtf) < 50:
-            return False
-
-        hour_start = self.current_time
-        hour_end = self.current_time + pd.Timedelta(hours=1)
-        candles_mtf = df_mtf[(df_mtf.index >= hour_start) & (df_mtf.index < hour_end)]
-        if candles_mtf.empty:
-            return False
-
-        last_mtf = candles_mtf.iloc[-1]
-        mtf_direction = "LONG" if last_mtf['close'] >= last_mtf['open'] else "SHORT"
-
-        if mtf_direction != signal_direction:
-            _log_mtf_debug()
-            print(f"[MTF BLOCK] direction mismatch")
-            return False
-
-        if "volume" not in df_mtf.columns:
-            return False
-
-        if "timestamp" in df_mtf.columns:
-            eligible_mtf = df_mtf[df_mtf["timestamp"] <= self.current_time]
-        else:
-            eligible_mtf = df_mtf[df_mtf.index <= self.current_time]
-
-        if eligible_mtf.empty:
-            return True
-
-        mtf_row = eligible_mtf.iloc[-1]
-        current_volume = float(mtf_row["volume"])
-        avg_vol = eligible_mtf.tail(50)["volume"].mean()
-
-        if pd.isna(avg_vol):
-            return False
-
-        if current_volume < 0.8 * avg_vol:
-            print(f"[VOLUME BLOCK] {symbol} volume={current_volume}, avg={avg_vol}")
-            return False
-
-        print(f"[VOLUME OK] {symbol} volume={current_volume}, avg={avg_vol}")
-        print(f"[MTF PASS] trade allowed")
-        return True
 
 class Strategy:
     def __init__(self):
@@ -1294,20 +1223,6 @@ def run_backtest():
     }
     print(f"✅ Создано {len(time_to_pos)} маппингов")
 
-    time_to_pos_15m = {
-        symbol: {ts: idx for idx, ts in enumerate(df.index)}
-        for symbol, df in all_data_15m.items()
-    }
-
-    engine.data_by_tf = {
-        "1h": all_data,
-        "15m": all_data_15m
-    }
-    engine.time_to_pos_by_tf = {
-        "1h": time_to_pos,
-        "15m": time_to_pos_15m
-    }
-
     # ===== ПОРТФЕЛЬНЫЙ ДВИЖОК =====
     open_positions = []
     all_trades = []
@@ -1335,7 +1250,6 @@ def run_backtest():
     pbar = tqdm(total=total_steps, desc="⏳ Портфельный анализ")
 
     for idx in range(200, len(global_index)):
-        current_time = global_index[idx]
         current_time = global_index[idx]
 
         symbols_at_time = time_symbol_map.get(current_time, [])
@@ -1612,7 +1526,6 @@ def run_backtest():
         open_symbols = {p['symbol'] for p in open_positions}
 
         for symbol in symbols_at_time:
-            engine.current_time = current_time
             if symbol in open_symbols:
                 continue
 
@@ -1651,7 +1564,6 @@ def run_backtest():
                 continue
 
             entry_data = signal
-            engine.pending_direction = entry_data.get("direction")
 
             # ===== MTF ENTRY ALIGNMENT (1H signal -> 15M execution) =====
             df_15m = all_data_15m.get(symbol)
@@ -1729,8 +1641,9 @@ def run_backtest():
             confidence_threshold = engine.compute_dynamic_threshold(adx=features["adx"], coin=coin)
 
             if features["volume"] is not None and avg_vol is not None:
-                if p_profit < confidence_threshold or features["volume"] < avg_vol * 0.8:
-                    print(f"[FILTER DEBUG] ML/Volume condition met but NOT blocking trade: volume={features['volume']}, avg_vol={avg_vol}")
+                if features["volume"] < avg_vol or p_profit < confidence_threshold:
+                    print(f"Trade filtered by ML/Volume: p_profit={p_profit:.2f}, volume={features['volume']:.2f}, avg_vol={avg_vol:.2f}")
+                    continue
 
             initial_risk = abs(entry_data['entry'] - entry_data['sl'])
 
@@ -1791,44 +1704,26 @@ def run_backtest():
 
             risk_amount = capital * adjusted_risk * risk_multiplier
 
-            if not engine.check_mtf_entry(symbol, tf_main='1h', tf_mtf='15m'):
-                print(f"MTF entry blocked for {symbol} at {engine.current_time}")
-                continue
-
-            # === START PATCH: Fixed position sizing with max cap ===
-            # Multi-coin capital allocation (fallback to legacy risk sizing)
+             # Multi-coin capital allocation (fallback to legacy risk sizing)
             coin_score = engine._safe_num(features.get("bos_strength"), 1.0) * engine._safe_num(features.get("fvg_size"), 1.0) * engine._safe_num(features.get("winrate_factor"), 1.0)
-
-            # Защита от отрицательных весов
-            coin_score = max(coin_score, 0)
-
             engine.coin_scores[coin] = max(float(coin_score), 0.0001)
             total_scores = sum([score for score in engine.coin_scores.values()])
 
-            # Проверка total_scores, чтобы не делить на ноль
-            if total_scores <= 0:
-                position_size = 0
+            if total_scores > 0 and engine.total_capital > 0:
+                # Аллокация задаётся в USDT, для PnL нужен размер в монетах
+                allocated_notional = engine.total_capital * (engine.coin_scores[coin] / total_scores)
+                position_size = allocated_notional / max(entry_data['entry'], 1e-9)
             else:
-                # Ограничение максимальной доли капитала на одну монету
-                max_position_pct = 0.05  # максимум 5% от капитала
-                position_size = min(engine.total_capital * (coin_score / total_scores), engine.total_capital * max_position_pct)
+                position_size = risk_amount / initial_risk
 
-            # защита от чрезмерного плеча (оставляем как дополнительный safety net)
-            max_position = capital * 50
+            # защита от чрезмерного плеча
+            # Ограничиваем не объёмом монет, а максимальным нотионалом
+            max_position = (capital * 50) / max(entry_data['entry'], 1e-9)
             if position_size > max_position:
                 position_size = max_position
 
-            # Логирование для отладки
-            try:
-                entry_time_str = entry_time.strftime("%Y-%m-%d %H:%M") if 'entry_time' in locals() else "no_mtf"
-                entry_price_val = entry_price if 'entry_price' in locals() else entry_data['entry']
-                print(f"MTF entry aligned for {symbol} at {entry_time_str} price {entry_price_val:.2f}, position_size={position_size:.2f}")
-            except:
-                print(f"Position for {symbol}: size={position_size:.2f}")
-            # === END PATCH ===
-
             print(f"Dynamic threshold={confidence_threshold:.2f}, p_profit={p_profit:.2f}, volume={(features['volume'] if features['volume'] is not None else 0):.2f}, pos_size={position_size:.2f}")
-
+            
             # Добавляем рассчитанные поля в entry_data
             entry_data["position_size"] = position_size
             entry_data["risk_amount"] = risk_amount

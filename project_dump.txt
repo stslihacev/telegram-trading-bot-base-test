@@ -1181,17 +1181,33 @@ def load_all_data(processed):
                 f.write(symbol + "\n")
             continue
 
-        df = pd.read_parquet(file)
-        df = df[(df['timestamp'] >= START_DATE) & (df['timestamp'] <= END_DATE)]
-        
-        if len(df) < 200:
+        df_1h = pd.read_parquet(file)
+        df_1h["timestamp"] = pd.to_datetime(df_1h["timestamp"])
+        df_1h = df_1h.sort_values("timestamp")
+        df_1h = df_1h.set_index("timestamp")
+        df_1h = df_1h[(df_1h.index >= START_DATE) & (df_1h.index <= END_DATE)]
+
+        if len(df_1h) < 200:
             tqdm.write(f"   ⚠️ {symbol}: недостаточно данных, пропускаем")
             processed.add(symbol)
             with open(PROGRESS_FILE, "a") as f:
                 f.write(symbol + "\n")
             continue
 
-        df = add_indicators(df)
+        df_15m = None
+        file_15m = f"{DATA_DIR}/{symbol}_15m.parquet"
+        if os.path.exists(file_15m):
+            df_15m = pd.read_parquet(file_15m)
+            df_15m["timestamp"] = pd.to_datetime(df_15m["timestamp"])
+            df_15m = df_15m.sort_values("timestamp")
+            df_15m = df_15m.set_index("timestamp")
+            df_15m = df_15m[(df_15m.index >= START_DATE) & (df_15m.index <= END_DATE)]
+            all_data_15m[symbol] = df_15m
+
+        print(f"{symbol} 1H rows:", len(df_1h))
+        print(f"{symbol} 15M rows:", len(df_15m) if df_15m is not None else "no 15m data")
+
+        df = add_indicators(df_1h)
 
         # ==============================
         # ⚡ PRECOMPUTE NUMPY ARRAYS
