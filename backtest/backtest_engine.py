@@ -615,6 +615,7 @@ class Strategy:
         signal_type = trade.get('signal_type')
 
         trade["bars_alive"] += 1
+        favorable_r = 0.0
 
         # --- R calculation + excursion tracking ---
         if trade["initial_risk"] > 0:
@@ -636,9 +637,24 @@ class Strategy:
             adverse_r = max(0.0, float(np.nan_to_num(adverse_move / trade["initial_risk"], nan=0.0)))
             trade["mfe_r"] = max(float(trade.get("mfe_r", 0.0)), favorable_r)
             trade["mae_r"] = max(float(trade.get("mae_r", 0.0)), adverse_r)
+            trade["max_r_reached"] = max(float(trade.get("max_r_reached", 0.0)), favorable_r)
 
             if current_r > trade["max_r"]:
                 trade["max_r"] = current_r
+
+            # --- R-multiple trailing stop ---
+            # 1R -> BE, 2R -> +1R, 3R -> +2R, ...
+            reached_r_steps = int(np.floor(favorable_r))
+            if reached_r_steps >= 1:
+                trail_offset_steps = reached_r_steps - 1
+                risk_unit = float(trade["initial_risk"])
+                if direction == "LONG":
+                    candidate_sl = trade["entry"] + (trail_offset_steps * risk_unit)
+                    sl = max(float(sl), float(candidate_sl))
+                else:
+                    candidate_sl = trade["entry"] - (trail_offset_steps * risk_unit)
+                    sl = min(float(sl), float(candidate_sl))
+                trade["sl"] = sl
 
         # --- BOS Trailing ---
         if signal_type == "BOS" and trade.get("regime") == "TREND":
@@ -2055,6 +2071,7 @@ def run_backtest():
             pos["initial_risk"] = float(np.clip(np.nan_to_num(abs(pos["entry"] - pos["sl"]), nan=0.0, posinf=0.0, neginf=0.0), 0.0, SAFE_FLOAT_LIMIT))
             pos["mfe_r"] = 0.0
             pos["mae_r"] = 0.0
+            pos["max_r_reached"] = 0.0
             pos["max_price_since_entry"] = float(pos["entry"])
             pos["min_price_since_entry"] = float(pos["entry"])
             if pos["initial_risk"] <= 0:
