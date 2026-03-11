@@ -243,8 +243,8 @@ def compute_atr_distances(entry, direction, atr, base_sl_distance, signal_type):
 
     tp_distance = None
     if signal_type == "SWEEP":
-        atr_tp = max(safe_atr * ATR_TP_MULTIPLIER, 1e-9)
-        tp_distance = max(atr_tp, sl_distance * 0.8)
+        # Для SWEEP используем фиксированный take-profit = 1.5R.
+        tp_distance = max(sl_distance * 1.5, 1e-9)
 
     if direction == "LONG":
         sl = safe_entry - sl_distance
@@ -616,6 +616,7 @@ class Strategy:
 
         trade["bars_alive"] += 1
         favorable_r = 0.0
+        current_r = 0.0
 
         # --- R calculation + excursion tracking ---
         if trade["initial_risk"] > 0:
@@ -642,19 +643,20 @@ class Strategy:
             if current_r > trade["max_r"]:
                 trade["max_r"] = current_r
 
-            # --- R-multiple trailing stop ---
+            # --- R-multiple trailing stop (только BOS) ---
             # 2R -> BE, 3R -> +1R, 4R -> +2R, ...
-            reached_r_steps = int(np.floor(favorable_r))
-            if reached_r_steps >= 2:
-                trail_offset_steps = reached_r_steps - 2
-                risk_unit = float(trade["initial_risk"])
-                if direction == "LONG":
-                    candidate_sl = trade["entry"] + (trail_offset_steps * risk_unit)
-                    sl = max(float(sl), float(candidate_sl))
-                else:
-                    candidate_sl = trade["entry"] - (trail_offset_steps * risk_unit)
-                    sl = min(float(sl), float(candidate_sl))
-                trade["sl"] = sl
+            if signal_type == "BOS":
+                reached_r_steps = int(np.floor(favorable_r))
+                if reached_r_steps >= 2:
+                    trail_offset_steps = reached_r_steps - 2
+                    risk_unit = float(trade["initial_risk"])
+                    if direction == "LONG":
+                        candidate_sl = trade["entry"] + (trail_offset_steps * risk_unit)
+                        sl = max(float(sl), float(candidate_sl))
+                    else:
+                        candidate_sl = trade["entry"] - (trail_offset_steps * risk_unit)
+                        sl = min(float(sl), float(candidate_sl))
+                    trade["sl"] = sl
 
         # --- BOS Trailing ---
         if signal_type == "BOS" and trade.get("regime") == "TREND":
@@ -1698,6 +1700,16 @@ def run_backtest():
                 pos['pnl'] = sanitize_pnl(pnl)
                 pos['rr'] = sanitize_r(r_result)
                 pos['exit_reason'] = exit_reason
+                if exit_reason == "take_profit":
+                    pos['exit_type'] = "TP"
+                elif exit_reason == "stop_loss":
+                    is_trailed_stop = (
+                        pos.get("signal_type") == "BOS"
+                        and abs(float(pos.get("sl", 0.0)) - float(pos.get("original_sl", 0.0))) > 1e-12
+                    )
+                    pos['exit_type'] = "trailing_stop" if is_trailed_stop else "SL"
+                else:
+                    pos['exit_type'] = exit_reason
 
                 if pos["signal_type"] == "BOS":
                     bos_stats.append({
@@ -2077,6 +2089,7 @@ def run_backtest():
             pos["max_r_reached"] = 0.0
             pos["max_price_since_entry"] = float(pos["entry"])
             pos["min_price_since_entry"] = float(pos["entry"])
+            pos["original_sl"] = float(pos["sl"])
             if pos["initial_risk"] <= 0:
                 pos["rr"] = 0.0
 
