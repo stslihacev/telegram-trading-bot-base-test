@@ -12,6 +12,7 @@ from datetime import datetime
 import glob
 from tqdm import tqdm
 from collections import defaultdict
+import lightgbm as lgb
 from features.htf_trend import calculate_htf_trend
 
 # Импорты из наших модулей
@@ -350,6 +351,38 @@ def detect_fvg(df, i, direction):
 
     return False
 
+class BacktestEngine:
+    def __init__(self):
+        self.trades_data = []
+        self.signal_model = None
+
+    def _encode_liquidity(self, value):
+        mapping = {None: 0, "SWEEP_LOW": 1, "SWEEP_HIGH": 2}
+        return mapping.get(value, 0)
+
+    def train_signal_model(self):
+        df = pd.DataFrame(self.trades_data)
+        if len(df) < 50:
+            return None
+
+        feature_cols = ["adx", "bos_strength", "fvg_size", "range", "volume", "liquidity_sweep"]
+        for col in feature_cols + ["pnl"]:
+            if col not in df.columns:
+                return None
+
+        model_df = df[feature_cols + ["pnl"]].copy()
+        model_df["liquidity_sweep"] = model_df["liquidity_sweep"].apply(self._encode_liquidity)
+        model_df = model_df.replace([np.inf, -np.inf], np.nan).dropna()
+        if len(model_df) < 50:
+            return None
+
+        X = model_df[feature_cols]
+        y = (model_df["pnl"] > 0).astype(int)
+        model = lgb.LGBMClassifier(n_estimators=100, max_depth=4)
+        model.fit(X, y)
+        self.signal_model = model
+        return model
+
 class Strategy:
     def __init__(self):
         pass
@@ -430,10 +463,13 @@ def load_all_data(processed):
                 f.write(symbol + "\n")
             continue
 
-        df = pd.read_parquet(file)
-        df = df[(df['timestamp'] >= START_DATE) & (df['timestamp'] <= END_DATE)]
-        
-        if len(df) < 200:
+        df_1h = pd.read_parquet(file)
+        df_1h["timestamp"] = pd.to_datetime(df_1h["timestamp"])
+        df_1h = df_1h.sort_values("timestamp")
+        df_1h = df_1h.set_index("timestamp")
+        df_1h = df_1h[(df_1h.index >= START_DATE) & (df_1h.index <= END_DATE)]
+
+        if len(df_1h) < 200:
             tqdm.write(f"   ⚠️ {symbol}: недостаточно данных, пропускаем")
             processed.add(symbol)
             with open(PROGRESS_FILE, "a") as f:
@@ -453,7 +489,20 @@ def load_all_data(processed):
             df_15m.index = pd.DatetimeIndex(df_15m.index)
             all_data_15m[symbol] = df_15m    
 
-        df = add_indicators(df)
+        df_15m = None
+        file_15m = f"{DATA_DIR}/{symbol}_15m.parquet"
+        if os.path.exists(file_15m):
+            df_15m = pd.read_parquet(file_15m)
+            df_15m["timestamp"] = pd.to_datetime(df_15m["timestamp"])
+            df_15m = df_15m.sort_values("timestamp")
+            df_15m = df_15m.set_index("timestamp")
+            df_15m = df_15m[(df_15m.index >= START_DATE) & (df_15m.index <= END_DATE)]
+            all_data_15m[symbol] = df_15m
+
+        print(f"{symbol} 1H rows:", len(df_1h))
+        print(f"{symbol} 15M rows:", len(df_15m) if df_15m is not None else "no 15m data")
+
+        df = add_indicators(df_1h)
 
         # ==============================
         # ⚡ PRECOMPUTE NUMPY ARRAYS
@@ -464,8 +513,7 @@ def load_all_data(processed):
         low_arr = df["low"].values
         ema200_arr = df["ema200"].values
 
-        df['timestamp'] = pd.to_datetime(df['timestamp'])
-        df = df.set_index('timestamp').sort_index()
+        df = df.sort_index()
         df.index = pd.DatetimeIndex(df.index)
         df["atr_mean_50"] = df["atr"].rolling(50).mean()
 
@@ -964,6 +1012,7 @@ def run_backtest():
 
     diagnostics = Diagnostics()
     strategy = BosStrategy()
+    engine = BacktestEngine()
 
     global bos_above_ema, bos_below_ema
     global bos_above_ema_pnl, bos_below_ema_pnl
@@ -1078,7 +1127,7 @@ def run_backtest():
             processed = set(line.strip() for line in f)
 
     all_data, all_data_15m, all_arrays, swing_indices = load_all_data(processed)
-    
+
     # ===== WALK-FORWARD SPLIT ТЕСТ =====
     split_ratio = 0.7
     mode = "test"   # ← меняешь на "test" или "train" когда нужно
@@ -1416,6 +1465,9 @@ def run_backtest():
                             bos_below_ema_loss += abs(pnl)
 
                 all_trades.append(pos)
+                engine.trades_data.append(pos.copy())
+                if len(engine.trades_data) % 10 == 0:
+                    engine.train_signal_model()
                 
                 # Статистика по типам сигналов
                 if pos.get("signal_type") == "SWEEP":
@@ -1484,6 +1536,76 @@ def run_backtest():
                 continue
 
             entry_data = signal
+
+            # ===== MTF ENTRY ALIGNMENT (1H signal -> 15M execution) =====
+            df_15m = all_data_15m.get(symbol)
+            if df_15m is not None and len(df_15m) > 0:
+                hour_start = current_time
+                hour_end = current_time + pd.Timedelta(hours=1)
+                candles_15m = df_15m[(df_15m.index >= hour_start) & (df_15m.index < hour_end)]
+
+                if not candles_15m.empty and {'high', 'low', 'close'}.issubset(candles_15m.columns):
+                    chosen_candle = None
+
+                    if entry_data['direction'] == 'LONG':
+                        in_range = candles_15m[
+                            (candles_15m['low'] >= row['low']) &
+                            (candles_15m['low'] <= row['high'])
+                        ]
+                        preferred = in_range[in_range['close'] < row['close']] if not in_range.empty else in_range
+                        if not preferred.empty:
+                            chosen_candle = preferred.iloc[-1]
+                        elif not in_range.empty:
+                            chosen_candle = in_range.iloc[-1]
+
+                    elif entry_data['direction'] == 'SHORT':
+                        in_range = candles_15m[
+                            (candles_15m['high'] >= row['low']) &
+                            (candles_15m['high'] <= row['high'])
+                        ]
+                        preferred = in_range[in_range['close'] > row['close']] if not in_range.empty else in_range
+                        if not preferred.empty:
+                            chosen_candle = preferred.iloc[-1]
+                        elif not in_range.empty:
+                            chosen_candle = in_range.iloc[-1]
+
+                    if chosen_candle is not None:
+                        entry_time = chosen_candle.name
+                        entry_price = float(chosen_candle['close'])
+                        entry_data['entry'] = round(entry_price, 4)
+                        entry_data['timestamp'] = entry_time
+                        print(f"MTF entry aligned for {symbol} at {entry_time} price {entry_price}")
+
+            # ===== ML + VOLUME FILTER =====
+            features = {
+                "adx": entry_data.get("adx"),
+                "bos_strength": entry_data.get("bos_strength"),
+                "fvg_size": entry_data.get("fvg_size"),
+                "range": entry_data.get("range", row['high'] - row['low']),
+                "volume": entry_data.get("volume", row.get('volume') if hasattr(row, 'get') else None),
+                "liquidity_sweep": entry_data.get("liquidity_sweep")
+            }
+
+            features_for_model = features.copy()
+            features_for_model["liquidity_sweep"] = engine._encode_liquidity(features_for_model["liquidity_sweep"])
+            feature_values = [features_for_model["adx"], features_for_model["bos_strength"], features_for_model["fvg_size"], features_for_model["range"], features_for_model["volume"], features_for_model["liquidity_sweep"]]
+            if any(v is None or pd.isna(v) for v in feature_values):
+                p_profit = 1.0
+            else:
+                p_profit = engine.signal_model.predict_proba([feature_values])[0, 1] if engine.signal_model else 1.0
+
+            df_15m = all_data_15m.get(symbol)
+            if df_15m is not None and len(df_15m) > 0 and "volume" in df_15m.columns:
+                vol_window = df_15m[df_15m.index <= current_time]["volume"].tail(12)
+                avg_vol = vol_window.mean() if len(vol_window) > 0 else features["volume"]
+            else:
+                avg_vol = features["volume"]
+
+            if features["volume"] is not None and avg_vol is not None:
+                if features["volume"] < avg_vol or p_profit < 0.5:
+                    print(f"Trade filtered by ML/Volume: p_profit={p_profit:.2f}, volume={features['volume']:.2f}, avg_vol={avg_vol:.2f}")
+                    continue
+
             initial_risk = abs(entry_data['entry'] - entry_data['sl'])
 
             # Защита от нулевого или отрицательного риска
