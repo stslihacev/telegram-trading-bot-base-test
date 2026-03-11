@@ -7,7 +7,7 @@ from datetime import datetime
 
 # ===== НАСТРОЙКИ =====
 TOP_N = 50                # сколько топ-монет скачивать
-INTERVAL = "60"           # 1 час (в минутах)
+INTERVAL = "15"           # 1 час (в минутах)
 START_DATE = "2022-01-01"
 END_DATE = "2026-02-25"   # можно продлить до сегодня
 LIMIT = 200               # максимум свечей за запрос
@@ -85,7 +85,7 @@ def fetch_klines(symbol):
     if not all_data:
         return None
     df = pd.DataFrame(all_data, columns=['timestamp', 'open', 'high', 'low', 'close', 'volume', 'turnover'])
-    df['timestamp'] = pd.to_datetime(df['timestamp'].astype(int), unit='ms')
+    df['timestamp'] = pd.to_datetime(df['timestamp'].astype('int64'), unit='ms')
     df[['open', 'high', 'low', 'close', 'volume']] = df[['open', 'high', 'low', 'close', 'volume']].astype(float)
     return df
 
@@ -95,13 +95,14 @@ if __name__ == "__main__":
     print(f"✅ Будем загружать {len(symbols)} монет: {symbols}")
     
     for i, symbol in enumerate(symbols, 1):
-        filename = f"{OUTPUT_DIR}/{symbol}_1h.parquet"
+        filename = f"{OUTPUT_DIR}/{symbol}_{INTERVAL}m.parquet"
         # Проверяем, не скачан ли уже файл
         if os.path.exists(filename):
             print(f"⏩ {i}/{len(symbols)} {symbol} уже есть, пропускаем")
             continue
         
         print(f"⬇️ {i}/{len(symbols)} Загружаем {symbol}...")
+        print(f"   Начало загрузки {symbol}...")
         df = fetch_klines(symbol)
         if df is not None and not df.empty:
             df.to_parquet(filename, index=False)

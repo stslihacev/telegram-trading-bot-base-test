@@ -411,6 +411,7 @@ class Strategy:
 def load_all_data(processed):    
     # ===== ЗАГРУЗКА ВСЕХ ДАННЫХ =====
     all_data = {}
+    all_data_15m = {}
     all_arrays = {}
     symbols_loaded = []
     swing_stats = []    # для сбора статистики по swing точкам
@@ -438,6 +439,19 @@ def load_all_data(processed):
             with open(PROGRESS_FILE, "a") as f:
                 f.write(symbol + "\n")
             continue
+
+        file_15m = f"{DATA_DIR}/{symbol}_15m.parquet"
+        if os.path.exists(file_15m):
+            df_15m = pd.read_parquet(file_15m)
+            if 'timestamp' in df_15m.columns:
+                df_15m['timestamp'] = pd.to_datetime(df_15m['timestamp'])
+                df_15m = df_15m[(df_15m['timestamp'] >= START_DATE) & (df_15m['timestamp'] <= END_DATE)]
+                df_15m = df_15m.set_index('timestamp').sort_index()
+            else:
+                df_15m.index = pd.to_datetime(df_15m.index)
+                df_15m = df_15m.sort_index()
+            df_15m.index = pd.DatetimeIndex(df_15m.index)
+            all_data_15m[symbol] = df_15m    
 
         df = add_indicators(df)
 
@@ -495,6 +509,8 @@ def load_all_data(processed):
         symbols_loaded.append(symbol)
 
     tqdm.write(f"✅ Загружено {len(all_data)} монет")
+    print(f"Loaded 1H data: {len(all_data)} symbols")
+    print(f"Loaded 15M data: {len(all_data_15m)} symbols")
 
     # ВЫВОДИМ ВСЮ SWING СТАТИСТИКУ ОДНИМ БЛОКОМ
     print("\n📊 СТАТИСТИКА SWING ТОЧЕК")
@@ -505,7 +521,7 @@ def load_all_data(processed):
 
     if not all_data:
         print("❌ Нет данных для анализа")
-    return all_data, all_arrays, swing_indices
+    return all_data, all_data_15m, all_arrays, swing_indices
 
 def print_final_report(
     trades_df,
@@ -1061,8 +1077,8 @@ def run_backtest():
         with open(PROGRESS_FILE, "r") as f:
             processed = set(line.strip() for line in f)
 
-    all_data, all_arrays, swing_indices = load_all_data(processed)
-
+    all_data, all_data_15m, all_arrays, swing_indices = load_all_data(processed)
+    
     # ===== WALK-FORWARD SPLIT ТЕСТ =====
     split_ratio = 0.7
     mode = "test"   # ← меняешь на "test" или "train" когда нужно
