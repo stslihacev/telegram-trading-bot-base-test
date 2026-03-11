@@ -1612,6 +1612,7 @@ def run_backtest():
         open_symbols = {p['symbol'] for p in open_positions}
 
         for symbol in symbols_at_time:
+            engine.current_time = current_time
             if symbol in open_symbols:
                 continue
 
