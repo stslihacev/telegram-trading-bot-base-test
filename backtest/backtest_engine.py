@@ -23,7 +23,15 @@ from core.config import (
     MAX_RR,
     VOLATILITY_THRESHOLD,
     LOOKBACK_LEVELS,
-    MODE_FILTER
+    MODE_FILTER,
+    ENABLE_BOS_IN_RANGE,
+    ENABLE_SWEEP_IN_TREND,
+    SOFTER_CONFIDENCE_FILTER,
+    SOFTER_CONFIDENCE_THRESHOLD,
+    MTF_EXECUTION_TIMEFRAMES,
+    USE_DYNAMIC_ATR_SLTP,
+    ATR_SL_MULTIPLIER,
+    ATR_TP_MULTIPLIER
 )
 class Diagnostics:
     def __init__(self):
@@ -214,6 +222,41 @@ def sanitize_pnl(value):
 
 def sanitize_r(value):
     return float(np.clip(np.nan_to_num(value, nan=0.0, posinf=MAX_R_CLIP, neginf=MIN_R_CLIP), MIN_R_CLIP, MAX_R_CLIP))
+
+def compute_atr_distances(entry, direction, atr, base_sl_distance, signal_type):
+    safe_entry = float(np.nan_to_num(entry, nan=0.0))
+    safe_atr = float(np.nan_to_num(atr, nan=0.0))
+    safe_base = max(float(np.nan_to_num(base_sl_distance, nan=0.0)), 1e-9)
+
+    if not USE_DYNAMIC_ATR_SLTP or safe_atr <= 0:
+        sl_distance = safe_base
+    else:
+        atr_sl_floor = max(safe_atr * ATR_SL_MULTIPLIER, safe_atr * 0.3, 1e-9)
+        sl_distance = max(safe_base, atr_sl_floor)
+
+    tp_distance = None
+    if signal_type == "SWEEP":
+        atr_tp = max(safe_atr * ATR_TP_MULTIPLIER, 1e-9)
+        tp_distance = max(atr_tp, sl_distance * 0.8)
+
+    if direction == "LONG":
+        sl = safe_entry - sl_distance
+        tp = None if tp_distance is None else safe_entry + tp_distance
+    else:
+        sl = safe_entry + sl_distance
+        tp = None if tp_distance is None else safe_entry - tp_distance
+
+    return sl, tp, sl_distance
+
+
+def choose_mtf_dataset(symbol, all_data_15m, all_data_30m):
+    for tf in MTF_EXECUTION_TIMEFRAMES:
+        tf_lower = str(tf).lower()
+        if tf_lower == "15m" and symbol in all_data_15m:
+            return "15m", all_data_15m[symbol]
+        if tf_lower == "30m" and symbol in all_data_30m:
+            return "30m", all_data_30m[symbol]
+    return None, None
 
 def select_mtf_entry_candle(candles_15m, row, direction):
     """Подбирает 15m свечу внутри текущего часа для более надёжного входа."""
@@ -616,6 +659,7 @@ def load_all_data(processed):
     # ===== ЗАГРУЗКА ВСЕХ ДАННЫХ =====
     all_data = {}
     all_data_15m = {}
+    all_data_30m = {}
     all_arrays = {}
     symbols_loaded = []
     swing_stats = []    # для сбора статистики по swing точкам
@@ -657,8 +701,19 @@ def load_all_data(processed):
             df_15m = df_15m[(df_15m.index >= START_DATE) & (df_15m.index <= END_DATE)]
             all_data_15m[symbol] = df_15m
 
+        df_30m = None
+        file_30m = f"{DATA_DIR}/{symbol}_30m.parquet"
+        if os.path.exists(file_30m):
+            df_30m = pd.read_parquet(file_30m)
+            df_30m["timestamp"] = pd.to_datetime(df_30m["timestamp"])
+            df_30m = df_30m.sort_values("timestamp")
+            df_30m = df_30m.set_index("timestamp")
+            df_30m = df_30m[(df_30m.index >= START_DATE) & (df_30m.index <= END_DATE)]
+            all_data_30m[symbol] = df_30m
+
         print(f"{symbol} 1H rows:", len(df_1h))
         print(f"{symbol} 15M rows:", len(df_15m) if df_15m is not None else "no 15m data")
+        print(f"{symbol} 30M rows:", len(df_30m) if df_30m is not None else "no 30m data")
 
         df = add_indicators(df_1h)
 
@@ -717,6 +772,7 @@ def load_all_data(processed):
     tqdm.write(f"✅ Загружено {len(all_data)} монет")
     print(f"Loaded 1H data: {len(all_data)} symbols")
     print(f"Loaded 15M data: {len(all_data_15m)} symbols")
+    print(f"Loaded 30M data: {len(all_data_30m)} symbols")
 
     # ВЫВОДИМ ВСЮ SWING СТАТИСТИКУ ОДНИМ БЛОКОМ
     print("\n📊 СТАТИСТИКА SWING ТОЧЕК")
@@ -727,7 +783,7 @@ def load_all_data(processed):
 
     if not all_data:
         print("❌ Нет данных для анализа")
-    return all_data, all_data_15m, all_arrays, swing_indices
+    return all_data, all_data_15m, all_data_30m, all_arrays, swing_indices
 
 def print_final_report(
     trades_df,
@@ -912,23 +968,28 @@ class BosStrategy(Strategy):
 
         # ===== TREND MODE =====
         if regime == "TREND":
-            # LONG в тренде: BOS + bias + цена выше EMA200
+            # BOS в TREND (базовая логика)
             if (
-                bos == "BULLISH_BOS" 
+                bos == "BULLISH_BOS"
                 and bias == "BULLISH"
                 and close_arr[i] > ema200_arr[i]
             ):
                 direction = "LONG"
                 signal_type = "BOS"
-        
-            # SHORT в тренде: BOS + bias + цена ниже EMA200
             elif (
-                bos == "BEARISH_BOS" 
+                bos == "BEARISH_BOS"
                 and bias == "BEARISH"
                 and close_arr[i] < ema200_arr[i]  # Цена ниже EMA200
             ):
                 direction = "SHORT"
                 signal_type = "BOS"
+            # Опционально: SWEEP в TREND
+            elif ENABLE_SWEEP_IN_TREND and sweep_type == "SWEEP_LOW" and bias == "BULLISH":
+                direction = "LONG"
+                signal_type = "SWEEP"
+            elif ENABLE_SWEEP_IN_TREND and sweep_type == "SWEEP_HIGH" and bias == "BEARISH":
+                direction = "SHORT"
+                signal_type = "SWEEP"
 
         # ===== RANGE MODE =====
         elif regime == "RANGE":
@@ -939,6 +1000,12 @@ class BosStrategy(Strategy):
             elif sweep_type == "SWEEP_HIGH" and bias == "BEARISH":
                 direction = "SHORT"
                 signal_type = "SWEEP"
+            elif ENABLE_BOS_IN_RANGE and bos == "BULLISH_BOS" and bias == "BULLISH" and close_arr[i] > ema200_arr[i]:
+                direction = "LONG"
+                signal_type = "BOS"
+            elif ENABLE_BOS_IN_RANGE and bos == "BEARISH_BOS" and bias == "BEARISH" and close_arr[i] < ema200_arr[i]:
+                direction = "SHORT"
+                signal_type = "BOS"
 
         if direction is None:
             return None
@@ -960,11 +1027,11 @@ class BosStrategy(Strategy):
 
         # новый блок
 
-        if signal_type == "BOS" and regime == "TREND":
+        if signal_type == "BOS":
             diagnostics.bos_attempts += 1
 
         # Проверка EMA для BOS
-        if signal_type == "BOS" and regime == "TREND":
+        if signal_type == "BOS":
             close = close_arr[i]
             ema200 = ema200_arr[i]
             
@@ -1008,7 +1075,7 @@ class BosStrategy(Strategy):
 
         elif regime == "RANGE":
             if adx > 25:
-                if signal_type == "BOS" and regime == "TREND":
+                if signal_type == "BOS":
                     diagnostics.bos_block_adx += 1
                 return None
 
@@ -1016,7 +1083,7 @@ class BosStrategy(Strategy):
         # BOS → структурная модель (FAST VERSION)
         # =========================
 
-        if signal_type == "BOS" and regime == "TREND":
+        if signal_type == "BOS":
 
             if direction == "LONG":
 
@@ -1083,19 +1150,15 @@ class BosStrategy(Strategy):
         if stop_distance <= 0 or np.isnan(stop_distance):
             return None
 
-        # 2️⃣ Минимальная дистанция с ATR-ограничением
-        min_stop = max(stop_distance, atr * 0.3)
+        # 2️⃣ Динамическая ATR-калибровка SL/TP
+        sl, atr_based_tp, stop_distance = compute_atr_distances(entry, direction, atr, stop_distance, signal_type)
         rr_filter_required = True
 
-        if stop_distance < min_stop:
-            stop_distance = min_stop
-            rr_filter_required = False  # оставляем совместимость со старой логикой RR-фильтра
+        if signal_type == "SWEEP" and atr_based_tp is not None:
+            tp = atr_based_tp
 
-        # 3️⃣ Финальный SL сохраняем только после всех корректировок
-        sl = entry - stop_distance if direction == 'LONG' else entry + stop_distance
-
-        # 4️⃣ Расчёт RR уже на скорректированном SL
-        if signal_type == "BOS" and regime == "TREND":
+        # 3️⃣ Расчёт RR уже на скорректированных уровнях
+        if signal_type == "BOS":
             rr = None
         else:
             rr = calculate_rr(entry, tp, sl, direction)
@@ -1114,12 +1177,14 @@ class BosStrategy(Strategy):
             bias
         )
         
-        if confidence < CONFIDENCE_THRESHOLD:
+        confidence_threshold = SOFTER_CONFIDENCE_THRESHOLD if SOFTER_CONFIDENCE_FILTER else CONFIDENCE_THRESHOLD
+        if confidence < confidence_threshold:
             return None
 
         # Фильтр качества BOS
         if signal_type == "BOS":
-            if confidence < 3:
+            bos_conf_threshold = 3
+            if confidence < bos_conf_threshold:
                 return None
 
         # Убираем перегретый тренд
@@ -1173,7 +1238,8 @@ class BosStrategy(Strategy):
             'nearest_level': round(sl, 4) if signal_type == 'SWEEP' else None,
             'last_swing_low': round(low_arr[last_i], 4) if signal_type == 'BOS' and direction == 'LONG' else None,
             'last_swing_high': round(high_arr[last_i], 4) if signal_type == 'BOS' and direction == 'SHORT' else None,
-            'timestamp': df.index[i] if hasattr(df.index, '__getitem__') else i
+            'timestamp': df.index[i] if hasattr(df.index, '__getitem__') else i,
+            'confidence_threshold_used': confidence_threshold
         }
 
         # ===== EMA50 позиция для BOS =====
@@ -1203,6 +1269,8 @@ def run_backtest():
     bos_block_adx = 0
     bos_block_ema = 0
     bos_block_di = 0
+
+    filter_stats = defaultdict(int)
 
     bos_above_ema = 0
     bos_below_ema = 0
@@ -1308,7 +1376,7 @@ def run_backtest():
         with open(PROGRESS_FILE, "r") as f:
             processed = set(line.strip() for line in f)
 
-    all_data, all_data_15m, all_arrays, swing_indices = load_all_data(processed)
+    all_data, all_data_15m, all_data_30m, all_arrays, swing_indices = load_all_data(processed)
 
     # ===== WALK-FORWARD SPLIT ТЕСТ =====
     split_ratio = 0.7
@@ -1704,6 +1772,7 @@ def run_backtest():
                 )
 
                 if signal is None:
+                    filter_stats["rejected_before_entry"] += 1
                     continue
 
             except KeyError:
@@ -1715,12 +1784,12 @@ def run_backtest():
             entry_data = signal
 
             # ===== MTF ENTRY ALIGNMENT (1H signal -> 15M execution) =====
-            df_15m = all_data_15m.get(symbol)
-            if df_15m is not None and len(df_15m) > 0 and {'high', 'low', 'close'}.issubset(df_15m.columns):
+            mtf_tf, df_mtf = choose_mtf_dataset(symbol, all_data_15m, all_data_30m)
+            if df_mtf is not None and len(df_mtf) > 0 and {'high', 'low', 'close'}.issubset(df_mtf.columns):
                 hour_start = current_time.floor('h')
                 hour_end = hour_start + pd.Timedelta(hours=1)
-                candles_15m = df_15m[(df_15m.index >= hour_start) & (df_15m.index < hour_end)]
-                chosen_candle = select_mtf_entry_candle(candles_15m, row, entry_data.get('direction'))
+                candles_mtf = df_mtf[(df_mtf.index >= hour_start) & (df_mtf.index < hour_end)]
+                chosen_candle = select_mtf_entry_candle(candles_mtf, row, entry_data.get('direction'))
 
                 if chosen_candle is not None:
                     entry_time = chosen_candle.name
@@ -1729,26 +1798,25 @@ def run_backtest():
                     entry_data['timestamp'] = entry_time
 
                     direction = entry_data.get('direction')
-                    sl_val = float(np.nan_to_num(entry_data.get('sl', entry_price), nan=entry_price))
-                    tp_val_raw = entry_data.get('tp')
-                    tp_val = None if tp_val_raw is None else float(np.nan_to_num(tp_val_raw, nan=entry_price))
+                    atr_for_recalc = float(np.nan_to_num(entry_data.get('atr', row.get('atr', 0.0) if hasattr(row, 'get') else 0.0), nan=0.0))
+                    raw_stop_distance = abs(entry_price - float(np.nan_to_num(entry_data.get('sl', entry_price), nan=entry_price)))
+                    sl_val, tp_val, _ = compute_atr_distances(
+                        entry_price,
+                        direction,
+                        atr_for_recalc,
+                        max(raw_stop_distance, 1e-9),
+                        entry_data.get('signal_type')
+                    )
 
-                    if direction == 'LONG':
-                        if sl_val >= entry_price:
-                            sl_val = entry_price - max(abs(entry_price) * 1e-6, 1e-9)
-                        if tp_val is not None and tp_val <= entry_price:
-                            tp_val = entry_price + abs(tp_val - entry_price)
-                    elif direction == 'SHORT':
-                        if sl_val <= entry_price:
-                            sl_val = entry_price + max(abs(entry_price) * 1e-6, 1e-9)
-                        if tp_val is not None and tp_val >= entry_price:
-                            tp_val = entry_price - abs(tp_val - entry_price)
+                    if entry_data.get('signal_type') == 'BOS':
+                        tp_val = None
 
                     entry_data['sl'] = float(np.clip(sl_val, -SAFE_FLOAT_LIMIT, SAFE_FLOAT_LIMIT))
                     entry_data['tp'] = None if tp_val is None else float(np.clip(tp_val, -SAFE_FLOAT_LIMIT, SAFE_FLOAT_LIMIT))
                     entry_data['initial_risk'] = abs(entry_data['entry'] - entry_data['sl'])
                     entry_data['rr'] = sanitize_r(calculate_rr(entry_data['entry'], entry_data['tp'], entry_data['sl'], direction))
-                    print(f"MTF entry aligned for {symbol} at {entry_time} price {entry_price}")
+                    entry_data['mtf_tf'] = mtf_tf
+                    print(f"MTF entry aligned ({mtf_tf}) for {symbol} at {entry_time} price {entry_price}")
 
             # ===== ML + VOLUME FILTER + DYNAMIC CONFIDENCE =====
             coin = symbol
@@ -1878,6 +1946,11 @@ def run_backtest():
         bos_trend,
         bos_range
     )
+
+    print("\n📈 FILTER CONFIG STATS")
+    for key, value in sorted(filter_stats.items()):
+        print(f"{key}: {value}")
+
 
     return trades_df, equity_df
 
