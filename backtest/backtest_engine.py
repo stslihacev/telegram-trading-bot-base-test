@@ -616,13 +616,26 @@ class Strategy:
 
         trade["bars_alive"] += 1
 
-        # --- R calculation ---
+        # --- R calculation + excursion tracking ---
         if trade["initial_risk"] > 0:
             if direction == "LONG":
                 current_r = (row['close'] - trade["entry"]) / trade["initial_risk"]
+                favorable_move = row['high'] - trade["entry"]
+                adverse_move = trade["entry"] - row['low']
+                trade["max_price_since_entry"] = max(float(trade.get("max_price_since_entry", trade["entry"])), float(row['high']))
+                trade["min_price_since_entry"] = min(float(trade.get("min_price_since_entry", trade["entry"])), float(row['low']))
             else:
                 current_r = (trade["entry"] - row['close']) / trade["initial_risk"]
+                favorable_move = trade["entry"] - row['low']
+                adverse_move = row['high'] - trade["entry"]
+                trade["max_price_since_entry"] = max(float(trade.get("max_price_since_entry", trade["entry"])), float(row['high']))
+                trade["min_price_since_entry"] = min(float(trade.get("min_price_since_entry", trade["entry"])), float(row['low']))
+
             current_r = sanitize_r(current_r)
+            favorable_r = max(0.0, float(np.nan_to_num(favorable_move / trade["initial_risk"], nan=0.0)))
+            adverse_r = max(0.0, float(np.nan_to_num(adverse_move / trade["initial_risk"], nan=0.0)))
+            trade["mfe_r"] = max(float(trade.get("mfe_r", 0.0)), favorable_r)
+            trade["mae_r"] = max(float(trade.get("mae_r", 0.0)), adverse_r)
 
             if current_r > trade["max_r"]:
                 trade["max_r"] = current_r
@@ -792,6 +805,48 @@ def load_all_data(processed):
         print("❌ Нет данных для анализа")
     return all_data, all_data_15m, all_data_30m, all_arrays, swing_indices
 
+def _print_excursion_analysis(trades_df):
+    if len(trades_df) == 0:
+        print("\n===== EXCURSION ANALYSIS =====")
+        print("Нет сделок для анализа excursion")
+        return
+
+    mfe_series = pd.to_numeric(trades_df.get("mfe_r", pd.Series(dtype=float)), errors="coerce").replace([np.inf, -np.inf], np.nan).dropna()
+    mae_series = pd.to_numeric(trades_df.get("mae_r", pd.Series(dtype=float)), errors="coerce").replace([np.inf, -np.inf], np.nan).dropna()
+
+    mfe_bins = {
+        "0-0.5R": ((mfe_series >= 0.0) & (mfe_series < 0.5)).sum(),
+        "0.5-1R": ((mfe_series >= 0.5) & (mfe_series < 1.0)).sum(),
+        "1-2R": ((mfe_series >= 1.0) & (mfe_series < 2.0)).sum(),
+        "2-3R": ((mfe_series >= 2.0) & (mfe_series < 3.0)).sum(),
+        "3R+": (mfe_series >= 3.0).sum(),
+    }
+
+    mae_bins = {
+        "0-0.5R": ((mae_series >= 0.0) & (mae_series < 0.5)).sum(),
+        "0.5-1R": ((mae_series >= 0.5) & (mae_series < 1.0)).sum(),
+        "1R+": (mae_series >= 1.0).sum(),
+    }
+
+    print("\n===== EXCURSION ANALYSIS =====")
+    print("\nMFE distribution (R):")
+    for bucket, cnt in mfe_bins.items():
+        print(f"{bucket}: {int(cnt)}")
+
+    print("\nMAE distribution (R):")
+    for bucket, cnt in mae_bins.items():
+        print(f"{bucket}: {int(cnt)}")
+
+    avg_mfe = float(np.nan_to_num(mfe_series.mean(), nan=0.0)) if len(mfe_series) else 0.0
+    med_mfe = float(np.nan_to_num(mfe_series.median(), nan=0.0)) if len(mfe_series) else 0.0
+    avg_mae = float(np.nan_to_num(mae_series.mean(), nan=0.0)) if len(mae_series) else 0.0
+    med_mae = float(np.nan_to_num(mae_series.median(), nan=0.0)) if len(mae_series) else 0.0
+
+    print(f"\naverage MFE: {avg_mfe:.2f}R")
+    print(f"median MFE: {med_mfe:.2f}R")
+    print(f"average MAE: {avg_mae:.2f}R")
+    print(f"median MAE: {med_mae:.2f}R")
+
 def print_final_report(
     trades_df,
     equity_df,
@@ -854,6 +909,12 @@ def print_final_report(
     trades_df['pnl'] = pd.Series(trades_df['pnl']).clip(-MAX_PNL_CLIP, MAX_PNL_CLIP)
     trades_df['rr'] = pd.to_numeric(trades_df['rr'], errors='coerce').replace([np.inf, -np.inf], np.nan)
     trades_df['rr'] = np.clip(np.nan_to_num(trades_df['rr'].values, nan=0.0, posinf=MAX_R_CLIP, neginf=MIN_R_CLIP), MIN_R_CLIP, MAX_R_CLIP)
+    if 'mfe_r' not in trades_df.columns:
+        trades_df['mfe_r'] = 0.0
+    if 'mae_r' not in trades_df.columns:
+        trades_df['mae_r'] = 0.0
+    trades_df['mfe_r'] = pd.to_numeric(trades_df['mfe_r'], errors='coerce').replace([np.inf, -np.inf], np.nan).fillna(0.0)
+    trades_df['mae_r'] = pd.to_numeric(trades_df['mae_r'], errors='coerce').replace([np.inf, -np.inf], np.nan).fillna(0.0)
 
     total_trades = len(trades_df)
     winning_trades = len(trades_df[trades_df['pnl'] > 0])
@@ -893,6 +954,8 @@ def print_final_report(
     print("Blocked by ADX:", diagnostics.bos_block_adx)
     print("Blocked by EMA:", diagnostics.bos_block_ema)
     print("Blocked by DI:", diagnostics.bos_block_di)
+
+    _print_excursion_analysis(trades_df)
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     os.makedirs("backtest/results", exist_ok=True)
@@ -1990,6 +2053,10 @@ def run_backtest():
             pos["bars_alive"] = 0
             pos["max_r"] = sanitize_r(0)
             pos["initial_risk"] = float(np.clip(np.nan_to_num(abs(pos["entry"] - pos["sl"]), nan=0.0, posinf=0.0, neginf=0.0), 0.0, SAFE_FLOAT_LIMIT))
+            pos["mfe_r"] = 0.0
+            pos["mae_r"] = 0.0
+            pos["max_price_since_entry"] = float(pos["entry"])
+            pos["min_price_since_entry"] = float(pos["entry"])
             if pos["initial_risk"] <= 0:
                 pos["rr"] = 0.0
 
