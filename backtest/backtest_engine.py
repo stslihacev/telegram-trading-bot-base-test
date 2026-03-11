@@ -427,6 +427,11 @@ class BacktestEngine:
         return model
 
     def check_mtf_entry(self, symbol, tf_main='1h', tf_mtf='15m'):
+        def _log_mtf_debug():
+            print(f"[MTF DEBUG] symbol={symbol}")
+            print(f"[MTF DEBUG] main_tf={tf_main}, mtf={tf_mtf}")
+            print(f"[MTF DEBUG] current_time={self.current_time}")
+
         if self.current_time is None:
             return False
 
@@ -458,26 +463,34 @@ class BacktestEngine:
         mtf_direction = "LONG" if last_mtf['close'] >= last_mtf['open'] else "SHORT"
 
         if mtf_direction != signal_direction:
+            _log_mtf_debug()
+            print(f"[MTF BLOCK] direction mismatch")
             return False
 
-        if "volume" not in df_mtf.columns or pd.isna(last_mtf.get("volume")):
+        if "volume" not in df_mtf.columns:
             return False
 
-        current_mtf_pos = self.time_to_pos_by_tf.get(tf_mtf, {}).get(symbol, {}).get(last_mtf.name)
-        if current_mtf_pos is None or current_mtf_pos < 49:
-            return False
+        if "timestamp" in df_mtf.columns:
+            eligible_mtf = df_mtf[df_mtf["timestamp"] <= self.current_time]
+        else:
+            eligible_mtf = df_mtf[df_mtf.index <= self.current_time]
 
-        vol_window = df_mtf["volume"].iloc[current_mtf_pos - 49: current_mtf_pos + 1]
-        avg_vol = vol_window.mean()
-        current_volume = float(last_mtf["volume"])
+        if eligible_mtf.empty:
+            return True
+
+        mtf_row = eligible_mtf.iloc[-1]
+        current_volume = float(mtf_row["volume"])
+        avg_vol = eligible_mtf.tail(50)["volume"].mean()
 
         if pd.isna(avg_vol):
             return False
 
         if current_volume < 0.8 * avg_vol:
-            print(f"Trade filtered by volume: volume={current_volume}, avg_vol={avg_vol}")
+            print(f"[VOLUME BLOCK] {symbol} volume={current_volume}, avg={avg_vol}")
             return False
 
+        print(f"[VOLUME OK] {symbol} volume={current_volume}, avg={avg_vol}")
+        print(f"[MTF PASS] trade allowed")
         return True
 
 class Strategy:
@@ -1715,9 +1728,8 @@ def run_backtest():
             confidence_threshold = engine.compute_dynamic_threshold(adx=features["adx"], coin=coin)
 
             if features["volume"] is not None and avg_vol is not None:
-                if features["volume"] < avg_vol or p_profit < confidence_threshold:
-                    print(f"Trade filtered by ML/Volume: p_profit={p_profit:.2f}, volume={features['volume']:.2f}, avg_vol={avg_vol:.2f}")
-                    continue
+                if p_profit < confidence_threshold or features["volume"] < avg_vol * 0.8:
+                    print(f"[FILTER DEBUG] ML/Volume condition met but NOT blocking trade: volume={features['volume']}, avg_vol={avg_vol}")
 
             initial_risk = abs(entry_data['entry'] - entry_data['sl'])
 
