@@ -1630,6 +1630,14 @@ if __name__ == "__main__":
     trades_df, equity_df = run_backtest()
 
     from backtest.analytics import AdvancedAnalytics
+    from analysis.advanced_analyzer import AdvancedStrategyAnalyzer
+    import pandas as pd
+
+    print("\n" + "="*60)
+    print("📊 РАСШИРЕННЫЙ АНАЛИЗ СТРАТЕГИИ")
+    print("="*60)
+    analyzer = AdvancedStrategyAnalyzer(trades_df)
+    analyzer.full_report()
 
     analytics = AdvancedAnalytics(trades_df)
 
