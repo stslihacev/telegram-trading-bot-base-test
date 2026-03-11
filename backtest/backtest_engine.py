@@ -920,7 +920,11 @@ class BosStrategy(Strategy):
             'confidence': confidence,
             'bos': locals().get("bos"),
             'fvg': locals().get("fvg"),
-            'liquidity_sweep': locals().get("liquidity_sweep"),
+            'liquidity_sweep': locals().get("liquidity_sweep", locals().get("sweep_type")),
+            'bos_strength': locals().get("bos_strength"),
+            'range': locals().get("candle_range"),
+            'volume': locals().get("volume"),
+            'fvg_size': locals().get("fvg_size"),
             'signal_type': signal_type,
             'has_fvg': has_fvg,
             'timestamp': df.index[i] if hasattr(df.index, '__getitem__') else i
