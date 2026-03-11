@@ -49,6 +49,8 @@ PROGRESS_FILE = "backtest/progress.txt"
 MAX_OPEN_TRADES = 3  # максимум одновременных позиций
 SAFE_FLOAT_LIMIT = 1e12
 MAX_PNL_CLIP = 1e6
+MAX_R_CLIP = 100
+MIN_R_CLIP = -100
 
 os.makedirs(os.path.dirname(PROGRESS_FILE), exist_ok=True)
 
@@ -202,9 +204,16 @@ def calculate_trade_pnl_r(position_size, entry_price, exit_price, direction, ini
         r_result = move / safe_risk
         if np.isnan(r_result) or np.isinf(r_result):
             r_result = 0.0
+    r_result = float(np.clip(r_result, MIN_R_CLIP, MAX_R_CLIP))
 
     return pnl, float(r_result)
 
+def sanitize_pnl(value):
+    return float(np.clip(np.nan_to_num(value, nan=0.0, posinf=MAX_PNL_CLIP, neginf=-MAX_PNL_CLIP), -MAX_PNL_CLIP, MAX_PNL_CLIP))
+
+
+def sanitize_r(value):
+    return float(np.clip(np.nan_to_num(value, nan=0.0, posinf=MAX_R_CLIP, neginf=MIN_R_CLIP), MIN_R_CLIP, MAX_R_CLIP))
 
 def select_mtf_entry_candle(candles_15m, row, direction):
     """Подбирает 15m свечу внутри текущего часа для более надёжного входа."""
@@ -282,6 +291,12 @@ def calculate_position_size(entry_data, capital, risk_factor=0.01):
     # Абсолютный лимит размера позиции: не более 5% капитала
     max_risk_per_trade = 0.05
     position_size = min(position_size, safe_capital * max_risk_per_trade)
+
+    max_position = float(np.clip((safe_capital * 50.0) / max(entry, 1e-9), 0.0, SAFE_FLOAT_LIMIT))
+    position_size = float(np.clip(np.nan_to_num(position_size, nan=0.0, posinf=0.0, neginf=0.0), 0.0, max_position))
+
+    if position_size <= 0 or np.isnan(position_size) or np.isinf(position_size):
+        position_size = 0.0
 
     entry_data["position_size"] = position_size
     entry_data["risk_amount"] = float(np.clip(safe_capital * adjusted_risk, 0.0, SAFE_FLOAT_LIMIT))
@@ -557,6 +572,7 @@ class Strategy:
                 current_r = (row['close'] - trade["entry"]) / trade["initial_risk"]
             else:
                 current_r = (trade["entry"] - row['close']) / trade["initial_risk"]
+            current_r = sanitize_r(current_r)
 
             if current_r > trade["max_r"]:
                 trade["max_r"] = current_r
@@ -774,7 +790,7 @@ def print_final_report(
     trades_df['pnl'] = np.nan_to_num(trades_df['pnl'].values, nan=0.0, posinf=MAX_PNL_CLIP, neginf=-MAX_PNL_CLIP)
     trades_df['pnl'] = pd.Series(trades_df['pnl']).clip(-MAX_PNL_CLIP, MAX_PNL_CLIP)
     trades_df['rr'] = pd.to_numeric(trades_df['rr'], errors='coerce').replace([np.inf, -np.inf], np.nan)
-    trades_df['rr'] = np.nan_to_num(trades_df['rr'].values, nan=0.0, posinf=0.0, neginf=0.0)
+    trades_df['rr'] = np.clip(np.nan_to_num(trades_df['rr'].values, nan=0.0, posinf=MAX_R_CLIP, neginf=MIN_R_CLIP), MIN_R_CLIP, MAX_R_CLIP)
 
     total_trades = len(trades_df)
     winning_trades = len(trades_df[trades_df['pnl'] > 0])
@@ -1449,8 +1465,8 @@ def run_backtest():
                 capital = float(np.clip(capital + pnl, -SAFE_FLOAT_LIMIT, SAFE_FLOAT_LIMIT))
                 pos['exit_time'] = current_time
                 pos['exit_price'] = float(np.clip(np.nan_to_num(exit_price, nan=0.0, posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT), -SAFE_FLOAT_LIMIT, SAFE_FLOAT_LIMIT))
-                pos['pnl'] = pnl
-                pos['rr'] = float(r_result)
+                pos['pnl'] = sanitize_pnl(pnl)
+                pos['rr'] = sanitize_r(r_result)
                 pos['exit_reason'] = exit_reason
 
                 if pos["signal_type"] == "BOS":
@@ -1711,6 +1727,27 @@ def run_backtest():
                     entry_price = float(np.nan_to_num(chosen_candle['close'], nan=entry_data.get('entry', 0.0)))
                     entry_data['entry'] = round(entry_price, 4)
                     entry_data['timestamp'] = entry_time
+
+                    direction = entry_data.get('direction')
+                    sl_val = float(np.nan_to_num(entry_data.get('sl', entry_price), nan=entry_price))
+                    tp_val_raw = entry_data.get('tp')
+                    tp_val = None if tp_val_raw is None else float(np.nan_to_num(tp_val_raw, nan=entry_price))
+
+                    if direction == 'LONG':
+                        if sl_val >= entry_price:
+                            sl_val = entry_price - max(abs(entry_price) * 1e-6, 1e-9)
+                        if tp_val is not None and tp_val <= entry_price:
+                            tp_val = entry_price + abs(tp_val - entry_price)
+                    elif direction == 'SHORT':
+                        if sl_val <= entry_price:
+                            sl_val = entry_price + max(abs(entry_price) * 1e-6, 1e-9)
+                        if tp_val is not None and tp_val >= entry_price:
+                            tp_val = entry_price - abs(tp_val - entry_price)
+
+                    entry_data['sl'] = float(np.clip(sl_val, -SAFE_FLOAT_LIMIT, SAFE_FLOAT_LIMIT))
+                    entry_data['tp'] = None if tp_val is None else float(np.clip(tp_val, -SAFE_FLOAT_LIMIT, SAFE_FLOAT_LIMIT))
+                    entry_data['initial_risk'] = abs(entry_data['entry'] - entry_data['sl'])
+                    entry_data['rr'] = sanitize_r(calculate_rr(entry_data['entry'], entry_data['tp'], entry_data['sl'], direction))
                     print(f"MTF entry aligned for {symbol} at {entry_time} price {entry_price}")
 
             # ===== ML + VOLUME FILTER + DYNAMIC CONFIDENCE =====
@@ -1788,8 +1825,10 @@ def run_backtest():
             # служебные поля
             pos["symbol"] = symbol
             pos["bars_alive"] = 0
-            pos["max_r"] = 0
-            pos["initial_risk"] = abs(pos["entry"] - pos["sl"])
+            pos["max_r"] = sanitize_r(0)
+            pos["initial_risk"] = float(np.clip(np.nan_to_num(abs(pos["entry"] - pos["sl"]), nan=0.0, posinf=0.0, neginf=0.0), 0.0, SAFE_FLOAT_LIMIT))
+            if pos["initial_risk"] <= 0:
+                pos["rr"] = 0.0
 
             open_positions.append(pos)
 
@@ -1820,7 +1859,7 @@ def run_backtest():
     trades_df['pnl'] = np.nan_to_num(trades_df['pnl'].values, nan=0.0, posinf=MAX_PNL_CLIP, neginf=-MAX_PNL_CLIP)
     trades_df['pnl'] = pd.Series(trades_df['pnl']).clip(-MAX_PNL_CLIP, MAX_PNL_CLIP)
     trades_df['rr'] = pd.to_numeric(trades_df['rr'], errors='coerce').replace([np.inf, -np.inf], np.nan)
-    trades_df['rr'] = np.nan_to_num(trades_df['rr'].values, nan=0.0, posinf=0.0, neginf=0.0)
+    trades_df['rr'] = np.clip(np.nan_to_num(trades_df['rr'].values, nan=0.0, posinf=MAX_R_CLIP, neginf=MIN_R_CLIP), MIN_R_CLIP, MAX_R_CLIP)
 
     equity_df = pd.DataFrame(equity_curve)
 
@@ -1865,7 +1904,7 @@ class BosAnalytics:
         print("\n📊 R DISTRIBUTION")
         print("-" * 30)
 
-        r_values = pd.to_numeric(self.df["rr"], errors="coerce").replace([np.inf, -np.inf], np.nan).fillna(0.0)
+        r_values = pd.to_numeric(self.df["rr"], errors="coerce").replace([np.inf, -np.inf], np.nan).fillna(0.0).clip(MIN_R_CLIP, MAX_R_CLIP)
 
         print(f"Средний RR: {r_values.mean():.2f}")
         print(f"Медиана RR: {r_values.median():.2f}")
@@ -1888,7 +1927,7 @@ class BosAnalytics:
         print("\n📊 ADX PROFILE")
         print("-" * 30)
 
-        pnl = pd.to_numeric(self.df["pnl"], errors="coerce").replace([np.inf, -np.inf], np.nan).fillna(0.0)
+        pnl = pd.to_numeric(self.df["pnl"], errors="coerce").replace([np.inf, -np.inf], np.nan).fillna(0.0).clip(-MAX_PNL_CLIP, MAX_PNL_CLIP)
         pnl = pd.Series(np.nan_to_num(pnl.values, nan=0.0, posinf=MAX_PNL_CLIP, neginf=-MAX_PNL_CLIP), index=self.df.index).clip(-MAX_PNL_CLIP, MAX_PNL_CLIP)
         tmp = self.df.copy()
         tmp["pnl"] = pnl
