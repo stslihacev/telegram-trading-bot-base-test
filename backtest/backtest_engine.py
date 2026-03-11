@@ -1704,20 +1704,37 @@ def run_backtest():
 
             risk_amount = capital * adjusted_risk * risk_multiplier
 
+            # === START PATCH: Fixed position sizing with max cap ===
             # Multi-coin capital allocation (fallback to legacy risk sizing)
             coin_score = engine._safe_num(features.get("bos_strength"), 1.0) * engine._safe_num(features.get("fvg_size"), 1.0) * engine._safe_num(features.get("winrate_factor"), 1.0)
+
+            # Защита от отрицательных весов
+            coin_score = max(coin_score, 0)
+
             engine.coin_scores[coin] = max(float(coin_score), 0.0001)
             total_scores = sum([score for score in engine.coin_scores.values()])
 
-            if total_scores > 0 and engine.total_capital > 0:
-                position_size = engine.total_capital * (engine.coin_scores[coin] / total_scores)
+            # Проверка total_scores, чтобы не делить на ноль
+            if total_scores <= 0:
+                position_size = 0
             else:
-                position_size = risk_amount / initial_risk
+                # Ограничение максимальной доли капитала на одну монету
+                max_position_pct = 0.05  # максимум 5% от капитала
+                position_size = min(engine.total_capital * (coin_score / total_scores), engine.total_capital * max_position_pct)
 
-            # защита от чрезмерного плеча
+            # защита от чрезмерного плеча (оставляем как дополнительный safety net)
             max_position = capital * 50
             if position_size > max_position:
                 position_size = max_position
+
+            # Логирование для отладки
+            try:
+                entry_time_str = entry_time.strftime("%Y-%m-%d %H:%M") if 'entry_time' in locals() else "no_mtf"
+                entry_price_val = entry_price if 'entry_price' in locals() else entry_data['entry']
+                print(f"MTF entry aligned for {symbol} at {entry_time_str} price {entry_price_val:.2f}, position_size={position_size:.2f}")
+            except:
+                print(f"Position for {symbol}: size={position_size:.2f}")
+            # === END PATCH ===
 
             print(f"Dynamic threshold={confidence_threshold:.2f}, p_profit={p_profit:.2f}, volume={(features['volume'] if features['volume'] is not None else 0):.2f}, pos_size={position_size:.2f}")
 
