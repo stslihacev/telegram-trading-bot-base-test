@@ -355,10 +355,49 @@ class BacktestEngine:
     def __init__(self):
         self.trades_data = []
         self.signal_model = None
+        self.coin_stats = {}
+        self.coin_scores = {}
+        self.total_capital = INITIAL_CAPITAL
 
     def _encode_liquidity(self, value):
         mapping = {None: 0, "SWEEP_LOW": 1, "SWEEP_HIGH": 2}
         return mapping.get(value, 0)
+
+    def _safe_num(self, value, default=1.0):
+        if value is None or pd.isna(value):
+            return float(default)
+        try:
+            return float(value)
+        except (TypeError, ValueError):
+            return float(default)
+
+    def update_coin_stats(self):
+        stats = {}
+        for trade in self.trades_data:
+            coin = trade.get("symbol")
+            if coin is None:
+                continue
+            rec = stats.setdefault(coin, {"profit": 0.0, "loss": 0.0})
+            pnl = trade.get("pnl", 0)
+            if pnl > 0:
+                rec["profit"] += pnl
+            elif pnl < 0:
+                rec["loss"] += abs(pnl)
+
+        self.coin_stats = {}
+        for coin, rec in stats.items():
+            pf = rec["profit"] / rec["loss"] if rec["loss"] > 0 else (rec["profit"] if rec["profit"] > 0 else 1.0)
+            self.coin_stats[coin] = {"pf": float(pf), "winrate_factor": float(np.clip(pf, 0.5, 2.0))}
+
+    def compute_dynamic_threshold(self, adx, coin):
+        base_threshold = 0.5
+        adx_value = 0 if adx is None or pd.isna(adx) else adx
+        # ADX-based adjustment
+        adx_factor = np.clip(adx_value / 50, 0, 0.2)
+        # Optional: coin PF factor
+        coin_pf = self.coin_stats.get(coin, {}).get("pf", 1.0)
+        coin_factor = np.clip((coin_pf - 1.0) / 5, 0, 0.1)
+        return base_threshold + adx_factor + coin_factor
 
     def train_signal_model(self):
         df = pd.DataFrame(self.trades_data)
@@ -475,19 +514,6 @@ def load_all_data(processed):
             with open(PROGRESS_FILE, "a") as f:
                 f.write(symbol + "\n")
             continue
-
-        file_15m = f"{DATA_DIR}/{symbol}_15m.parquet"
-        if os.path.exists(file_15m):
-            df_15m = pd.read_parquet(file_15m)
-            if 'timestamp' in df_15m.columns:
-                df_15m['timestamp'] = pd.to_datetime(df_15m['timestamp'])
-                df_15m = df_15m[(df_15m['timestamp'] >= START_DATE) & (df_15m['timestamp'] <= END_DATE)]
-                df_15m = df_15m.set_index('timestamp').sort_index()
-            else:
-                df_15m.index = pd.to_datetime(df_15m.index)
-                df_15m = df_15m.sort_index()
-            df_15m.index = pd.DatetimeIndex(df_15m.index)
-            all_data_15m[symbol] = df_15m    
 
         df_15m = None
         file_15m = f"{DATA_DIR}/{symbol}_15m.parquet"
@@ -1466,6 +1492,7 @@ def run_backtest():
 
                 all_trades.append(pos)
                 engine.trades_data.append(pos.copy())
+                engine.update_coin_stats()
                 if len(engine.trades_data) % 10 == 0:
                     engine.train_signal_model()
                 
@@ -1489,6 +1516,7 @@ def run_backtest():
 
         # ===== 2. ЗАПИСЫВАЕМ КАПИТАЛ =====
         equity_curve.append({'time': current_time, 'capital': capital})
+        engine.total_capital = capital
 
         # ===== 3. ПРОВЕРЯЕМ ВХОДЫ =====
         if len(open_positions) >= MAX_OPEN_TRADES:
@@ -1576,19 +1604,29 @@ def run_backtest():
                         entry_data['timestamp'] = entry_time
                         print(f"MTF entry aligned for {symbol} at {entry_time} price {entry_price}")
 
-            # ===== ML + VOLUME FILTER =====
+            # ===== ML + VOLUME FILTER + DYNAMIC CONFIDENCE =====
+            coin = symbol
             features = {
                 "adx": entry_data.get("adx"),
-                "bos_strength": entry_data.get("bos_strength"),
-                "fvg_size": entry_data.get("fvg_size"),
-                "range": entry_data.get("range", row['high'] - row['low']),
-                "volume": entry_data.get("volume", row.get('volume') if hasattr(row, 'get') else None),
-                "liquidity_sweep": entry_data.get("liquidity_sweep")
+                "bos_strength": engine._safe_num(entry_data.get("bos_strength"), 1.0),
+                "fvg_size": engine._safe_num(entry_data.get("fvg_size"), 1.0),
+                "range": engine._safe_num(entry_data.get("range", row['high'] - row['low']), 0.0),
+                "volume": engine._safe_num(entry_data.get("volume", row.get('volume') if hasattr(row, 'get') else None), 0.0),
+                "liquidity_sweep": entry_data.get("liquidity_sweep"),
+                "winrate_factor": engine.coin_stats.get(coin, {}).get("winrate_factor", 1.0)
             }
 
             features_for_model = features.copy()
             features_for_model["liquidity_sweep"] = engine._encode_liquidity(features_for_model["liquidity_sweep"])
-            feature_values = [features_for_model["adx"], features_for_model["bos_strength"], features_for_model["fvg_size"], features_for_model["range"], features_for_model["volume"], features_for_model["liquidity_sweep"]]
+            feature_values = [
+                features_for_model["adx"],
+                features_for_model["bos_strength"],
+                features_for_model["fvg_size"],
+                features_for_model["range"],
+                features_for_model["volume"],
+                features_for_model["liquidity_sweep"]
+            ]
+
             if any(v is None or pd.isna(v) for v in feature_values):
                 p_profit = 1.0
             else:
@@ -1596,13 +1634,14 @@ def run_backtest():
 
             df_15m = all_data_15m.get(symbol)
             if df_15m is not None and len(df_15m) > 0 and "volume" in df_15m.columns:
-                vol_window = df_15m[df_15m.index <= current_time]["volume"].tail(12)
-                avg_vol = vol_window.mean() if len(vol_window) > 0 else features["volume"]
+                avg_vol = df_15m["volume"].rolling(12).mean().iloc[-1]
             else:
                 avg_vol = features["volume"]
 
+            confidence_threshold = engine.compute_dynamic_threshold(adx=features["adx"], coin=coin)
+
             if features["volume"] is not None and avg_vol is not None:
-                if features["volume"] < avg_vol or p_profit < 0.5:
+                if features["volume"] < avg_vol or p_profit < confidence_threshold:
                     print(f"Trade filtered by ML/Volume: p_profit={p_profit:.2f}, volume={features['volume']:.2f}, avg_vol={avg_vol:.2f}")
                     continue
 
@@ -1665,12 +1704,22 @@ def run_backtest():
 
             risk_amount = capital * adjusted_risk * risk_multiplier
 
-            position_size = risk_amount / initial_risk
+            # Multi-coin capital allocation (fallback to legacy risk sizing)
+            coin_score = engine._safe_num(features.get("bos_strength"), 1.0) * engine._safe_num(features.get("fvg_size"), 1.0) * engine._safe_num(features.get("winrate_factor"), 1.0)
+            engine.coin_scores[coin] = max(float(coin_score), 0.0001)
+            total_scores = sum([score for score in engine.coin_scores.values()])
+
+            if total_scores > 0 and engine.total_capital > 0:
+                position_size = engine.total_capital * (engine.coin_scores[coin] / total_scores)
+            else:
+                position_size = risk_amount / initial_risk
 
             # защита от чрезмерного плеча
             max_position = capital * 50
             if position_size > max_position:
                 position_size = max_position
+
+            print(f"Dynamic threshold={confidence_threshold:.2f}, p_profit={p_profit:.2f}, volume={(features['volume'] if features['volume'] is not None else 0):.2f}, pos_size={position_size:.2f}")
 
             # Добавляем рассчитанные поля в entry_data
             entry_data["position_size"] = position_size
