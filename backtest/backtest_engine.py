@@ -12,6 +12,7 @@ from datetime import datetime
 import glob
 from tqdm import tqdm
 from collections import defaultdict
+from features.htf_trend import calculate_htf_trend
 
 # Импорты из наших модулей
 from analysis.levels import get_nearest_levels
@@ -1143,6 +1144,7 @@ def run_backtest():
 
     global_index = sorted(set(all_times))
     total_steps = len(global_index) - 200
+    htf_trend = calculate_htf_trend(df)
 
     pbar = tqdm(total=total_steps, desc="⏳ Портфельный анализ")
 

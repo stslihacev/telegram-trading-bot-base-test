@@ -52,13 +52,30 @@ class AdvancedStrategyAnalyzer:
 
     def confidence_analysis(self):
 
-        bins = pd.qcut(self.df["confidence"], 5)
+        bins = pd.qcut(self.df["confidence"], 5, duplicates='drop')
 
         return self.df.groupby(bins)["pnl"].mean()
 
     def time_analysis(self):
 
-        self.df["hour"] = pd.to_datetime(self.df["entry_time"]).dt.hour
+        possible_time_columns = [
+            "entry_time",
+            "open_time",
+            "timestamp",
+            "time"
+        ]
+
+        time_col = None
+
+        for col in possible_time_columns:
+            if col in self.df.columns:
+                time_col = col
+                break
+
+        if time_col is None:
+            return "No time column found in trades data"
+
+        self.df["hour"] = pd.to_datetime(self.df[time_col]).dt.hour
 
         return self.df.groupby("hour")["pnl"].mean()
 
