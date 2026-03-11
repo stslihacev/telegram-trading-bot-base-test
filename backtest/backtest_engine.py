@@ -358,6 +358,10 @@ class BacktestEngine:
         self.coin_stats = {}
         self.coin_scores = {}
         self.total_capital = INITIAL_CAPITAL
+        self.current_time = None
+        self.data_by_tf = {}
+        self.time_to_pos_by_tf = {}
+        self.pending_direction = None
 
     def _encode_liquidity(self, value):
         mapping = {None: 0, "SWEEP_LOW": 1, "SWEEP_HIGH": 2}
@@ -421,6 +425,60 @@ class BacktestEngine:
         model.fit(X, y)
         self.signal_model = model
         return model
+
+    def check_mtf_entry(self, symbol, tf_main='1h', tf_mtf='15m'):
+        if self.current_time is None:
+            return False
+
+        signal_direction = self.pending_direction
+        if signal_direction not in {"LONG", "SHORT"}:
+            return False
+
+        df_main = self.data_by_tf.get(tf_main, {}).get(symbol)
+        main_pos = self.time_to_pos_by_tf.get(tf_main, {}).get(symbol, {}).get(self.current_time)
+        if df_main is None or main_pos is None:
+            return False
+
+        main_row = df_main.iloc[main_pos]
+        main_direction = "LONG" if main_row['close'] >= main_row['open'] else "SHORT"
+        if main_direction != signal_direction:
+            return False
+
+        df_mtf = self.data_by_tf.get(tf_mtf, {}).get(symbol)
+        if df_mtf is None or len(df_mtf) < 50:
+            return False
+
+        hour_start = self.current_time
+        hour_end = self.current_time + pd.Timedelta(hours=1)
+        candles_mtf = df_mtf[(df_mtf.index >= hour_start) & (df_mtf.index < hour_end)]
+        if candles_mtf.empty:
+            return False
+
+        last_mtf = candles_mtf.iloc[-1]
+        mtf_direction = "LONG" if last_mtf['close'] >= last_mtf['open'] else "SHORT"
+
+        if mtf_direction != signal_direction:
+            return False
+
+        if "volume" not in df_mtf.columns or pd.isna(last_mtf.get("volume")):
+            return False
+
+        current_mtf_pos = self.time_to_pos_by_tf.get(tf_mtf, {}).get(symbol, {}).get(last_mtf.name)
+        if current_mtf_pos is None or current_mtf_pos < 49:
+            return False
+
+        vol_window = df_mtf["volume"].iloc[current_mtf_pos - 49: current_mtf_pos + 1]
+        avg_vol = vol_window.mean()
+        current_volume = float(last_mtf["volume"])
+
+        if pd.isna(avg_vol):
+            return False
+
+        if current_volume < 0.8 * avg_vol:
+            print(f"Trade filtered by volume: volume={current_volume}, avg_vol={avg_vol}")
+            return False
+
+        return True
 
 class Strategy:
     def __init__(self):
@@ -1223,6 +1281,20 @@ def run_backtest():
     }
     print(f"✅ Создано {len(time_to_pos)} маппингов")
 
+    time_to_pos_15m = {
+        symbol: {ts: idx for idx, ts in enumerate(df.index)}
+        for symbol, df in all_data_15m.items()
+    }
+
+    engine.data_by_tf = {
+        "1h": all_data,
+        "15m": all_data_15m
+    }
+    engine.time_to_pos_by_tf = {
+        "1h": time_to_pos,
+        "15m": time_to_pos_15m
+    }
+
     # ===== ПОРТФЕЛЬНЫЙ ДВИЖОК =====
     open_positions = []
     all_trades = []
@@ -1250,6 +1322,7 @@ def run_backtest():
     pbar = tqdm(total=total_steps, desc="⏳ Портфельный анализ")
 
     for idx in range(200, len(global_index)):
+        current_time = global_index[idx]
         current_time = global_index[idx]
 
         symbols_at_time = time_symbol_map.get(current_time, [])
@@ -1564,6 +1637,7 @@ def run_backtest():
                 continue
 
             entry_data = signal
+            engine.pending_direction = entry_data.get("direction")
 
             # ===== MTF ENTRY ALIGNMENT (1H signal -> 15M execution) =====
             df_15m = all_data_15m.get(symbol)
@@ -1703,6 +1777,10 @@ def run_backtest():
                 risk_multiplier *= 0.90
 
             risk_amount = capital * adjusted_risk * risk_multiplier
+
+            if not engine.check_mtf_entry(symbol, tf_main='1h', tf_mtf='15m'):
+                print(f"MTF entry blocked for {symbol} at {engine.current_time}")
+                continue
 
             # === START PATCH: Fixed position sizing with max cap ===
             # Multi-coin capital allocation (fallback to legacy risk sizing)
