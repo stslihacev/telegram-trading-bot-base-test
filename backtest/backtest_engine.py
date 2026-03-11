@@ -902,6 +902,9 @@ class BosStrategy(Strategy):
         if atr > atr_mean * 3:
             return None
 
+        # Поля для расширенного логирования трейдов
+        fvg = has_fvg
+
         # ===== СНАЧАЛА СОЗДАЁМ entry_data =====
         entry_data = {
             'direction': direction,
@@ -915,6 +918,9 @@ class BosStrategy(Strategy):
             'plus_di': round(plus_di, 4),
             'minus_di': round(minus_di, 4),
             'confidence': confidence,
+            'bos': locals().get("bos"),
+            'fvg': locals().get("fvg"),
+            'liquidity_sweep': locals().get("liquidity_sweep"),
             'signal_type': signal_type,
             'has_fvg': has_fvg,
             'timestamp': df.index[i] if hasattr(df.index, '__getitem__') else i
