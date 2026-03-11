@@ -204,9 +204,9 @@ def detect_bos_fast(i, close_arr, high_arr, low_arr,
                     diagnostics):
 
     # ===== BULLISH BOS =====
-    prev_highs = swing_high_indices[swing_high_indices < i]
-    if len(prev_highs) > 0:
-        last_high_idx = prev_highs[-1]
+    pos_high = np.searchsorted(swing_high_indices, i, side="left") - 1
+    if pos_high >= 0:
+        last_high_idx = swing_high_indices[pos_high]
         last_high = high_arr[last_high_idx]
 
         # подтверждённый пробой закрытием
@@ -215,9 +215,9 @@ def detect_bos_fast(i, close_arr, high_arr, low_arr,
             return "BULLISH_BOS"
 
     # ===== BEARISH BOS =====
-    prev_lows = swing_low_indices[swing_low_indices < i]
-    if len(prev_lows) > 0:
-        last_low_idx = prev_lows[-1]
+    pos_low = np.searchsorted(swing_low_indices, i, side="left") - 1
+    if pos_low >= 0:
+        last_low_idx = swing_low_indices[pos_low]
         last_low = low_arr[last_low_idx]
 
         if close_arr[i] < last_low:
@@ -294,7 +294,9 @@ def calculate_confidence_score(df, idx, direction, sweep, bos, bias):
 
     # 5️⃣ Волатильность (ATR)
     atr = df['atr'].iloc[idx]
-    atr_mean = df['atr'].iloc[max(0, idx-50):idx].mean()
+    atr_mean = df['atr_mean_50'].iloc[idx]
+    if pd.isna(atr_mean):
+        atr_mean = df['atr'].iloc[max(0, idx-50):idx].mean()
     if atr > atr_mean * 0.8:  # Волатильность не слишком низкая
         score += 1
 
@@ -302,22 +304,32 @@ def calculate_confidence_score(df, idx, direction, sweep, bos, bias):
 
 # ===== SWING POINTS =====
 def calculate_swings(df, left=2, right=2):
-    df["swing_high"] = False
-    df["swing_low"] = False
+    highs = df["high"]
+    lows = df["low"]
 
-    for i in range(left, len(df) - right):
-        high = df["high"].iloc[i]
-        low = df["low"].iloc[i]
+    left_high = pd.Series(True, index=df.index)
+    right_high = pd.Series(True, index=df.index)
+    left_low = pd.Series(True, index=df.index)
+    right_low = pd.Series(True, index=df.index)
 
-        # Swing High
-        if all(high > df["high"].iloc[i - j] for j in range(1, left + 1)) and \
-           all(high > df["high"].iloc[i + j] for j in range(1, right + 1)):
-            df.at[df.index[i], "swing_high"] = True
+    # Swing High
+    for shift in range(1, left + 1):
+        left_high &= highs > highs.shift(shift)
+        left_low &= lows < lows.shift(shift)
 
-        # Swing Low
-        if all(low < df["low"].iloc[i - j] for j in range(1, left + 1)) and \
-           all(low < df["low"].iloc[i + j] for j in range(1, right + 1)):
-            df.at[df.index[i], "swing_low"] = True
+    # Swing Low
+    for shift in range(1, right + 1):
+        right_high &= highs > highs.shift(-shift)
+        right_low &= lows < lows.shift(-shift)
+
+    df["swing_high"] = left_high & right_high
+    df["swing_low"] = left_low & right_low
+
+    # У крайних баров нет полного окна сравнения
+    df.iloc[:left, df.columns.get_loc("swing_high")] = False
+    df.iloc[:left, df.columns.get_loc("swing_low")] = False
+    df.iloc[len(df) - right:, df.columns.get_loc("swing_high")] = False
+    df.iloc[len(df) - right:, df.columns.get_loc("swing_low")] = False
 
     return df
 
@@ -437,21 +449,17 @@ def load_all_data(processed):
         low_arr = df["low"].values
         ema200_arr = df["ema200"].values
 
-        swing_low_mask = df["swing_low"].values
-        swing_high_mask = df["swing_high"].values
-
-        swing_low_indices = np.where(swing_low_mask)[0]
-        swing_high_indices = np.where(swing_high_mask)[0]
-
         df['timestamp'] = pd.to_datetime(df['timestamp'])
         df = df.set_index('timestamp').sort_index()
         df.index = pd.DatetimeIndex(df.index)
+        df["atr_mean_50"] = df["atr"].rolling(50).mean()
 
         # ==============================
         # ⚡ PRECOMPUTE SWING INDICES
         # ==============================
-        swing_low_indices = np.where(df["swing_low"].values == True)[0]
-        swing_high_indices = np.where(df["swing_high"].values == True)[0]
+        swing_low_indices = np.where(df["swing_low"].values)[0]
+        swing_high_indices = np.where(df["swing_high"].values)[0]
+
 
         swing_indices[symbol] = {
             'low': swing_low_indices,
@@ -473,7 +481,14 @@ def load_all_data(processed):
             "close": close_arr,
             "high": high_arr,
             "low": low_arr,
-            "ema200": ema200_arr
+            "ema200": ema200_arr,
+            "open": df["open"].values,
+            "ema50": df["ema50"].values,
+            "adx": df["adx"].values,
+            "atr": df["atr"].values,
+            "atr_mean_50": df["atr_mean_50"].values,
+            "plus_di": df["plus_di"].values,
+            "minus_di": df["minus_di"].values
         }
 
         symbols_loaded.append(symbol)
@@ -599,14 +614,21 @@ class BosStrategy(Strategy):
         high_arr = arrays["high"]
         low_arr = arrays["low"]
         ema200_arr = arrays["ema200"]
+        open_arr = arrays["open"]
+        ema50_arr = arrays["ema50"]
+        adx_arr = arrays["adx"]
+        atr_arr = arrays["atr"]
+        atr_mean_50_arr = arrays["atr_mean_50"]
+        plus_di_arr = arrays["plus_di"]
+        minus_di_arr = arrays["minus_di"]
         
         # ===== РАСПАКОВЫВАЕМ swing_indices =====
         swing_high_indices = swing_indices["high"]
         swing_low_indices = swing_indices["low"]
     
-        entry = df['close'].iloc[i]
-        plus_di = df['plus_di'].iloc[i]
-        minus_di = df['minus_di'].iloc[i]
+        entry = close_arr[i]
+        plus_di = plus_di_arr[i]
+        minus_di = minus_di_arr[i]
     
         # ===== СТРУКТУРНЫЙ ФИЛЬТР =====
         sweep_data = liquidity_sweep(df, i)
@@ -628,7 +650,7 @@ class BosStrategy(Strategy):
         regime = get_market_regime(df, i)
 
         # ADX для логирования и статистики
-        adx = df['adx'].iloc[i]
+        adx = adx_arr[i]
 
         # ===== ФИЛЬТР РЕЖИМА (ДИАГНОСТИКА) =====
         if MODE_FILTER == "TREND" and regime != "TREND":
@@ -646,7 +668,7 @@ class BosStrategy(Strategy):
             if (
                 bos == "BULLISH_BOS" 
                 and bias == "BULLISH"
-                and df['close'].iloc[i] > df['ema200'].iloc[i]
+                and close_arr[i] > ema200_arr[i]
             ):
                 direction = "LONG"
                 signal_type = "BOS"
@@ -655,7 +677,7 @@ class BosStrategy(Strategy):
             elif (
                 bos == "BEARISH_BOS" 
                 and bias == "BEARISH"
-                and df['close'].iloc[i] < df['ema200'].iloc[i]  # Цена ниже EMA200
+                and close_arr[i] < ema200_arr[i]  # Цена ниже EMA200
             ):
                 direction = "SHORT"
                 signal_type = "BOS"
@@ -675,7 +697,7 @@ class BosStrategy(Strategy):
 
         # ===== ADX ФИЛЬТР ТОЛЬКО ДЛЯ BOS =====
         if signal_type == "BOS":
-            adx_value = df['adx'].iloc[i]
+            adx_value = adx
             if adx_value < 25:
                 diagnostics.bos_block_adx += 1
                 return None
@@ -695,8 +717,8 @@ class BosStrategy(Strategy):
 
         # Проверка EMA для BOS
         if signal_type == "BOS" and regime == "TREND":
-            close = df['close'].iloc[i]
-            ema200 = df['ema200'].iloc[i]
+            close = close_arr[i]
+            ema200 = ema200_arr[i]
             
             if direction == "LONG" and close <= ema200:
                 diagnostics.bos_block_ema += 1
@@ -708,13 +730,13 @@ class BosStrategy(Strategy):
 
         # ===== ФИЛЬТР ЭКСТРЕМАЛЬНОГО ADX =====
         if signal_type == "BOS":
-            adx_value = df['adx'].iloc[i]
+            adx_value = adx
             if 24 < adx_value < 30:
                 return None
 
         # ===== ПОДТВЕРЖДАЮЩАЯ СВЕЧА =====
-        candle_body = abs(df['close'].iloc[i] - df['open'].iloc[i])
-        candle_range = df['high'].iloc[i] - df['low'].iloc[i]
+        candle_body = abs(close_arr[i] - open_arr[i])
+        candle_range = high_arr[i] - low_arr[i]
 
         # Минимум 50% тела от диапазона
         if candle_range == 0 or candle_body / candle_range < 0.5:
@@ -758,7 +780,7 @@ class BosStrategy(Strategy):
 
                 # берём последний свинг
                 last_i = valid_swings[-1]
-                sl = df["low"].iloc[last_i]
+                sl = low_arr[last_i]
 
                 if sl >= entry:
                     return None
@@ -773,7 +795,7 @@ class BosStrategy(Strategy):
                     return None
 
                 last_i = valid_swings[-1]
-                sl = df["high"].iloc[last_i]
+                sl = high_arr[last_i]
 
                 if sl <= entry:
                     return None
@@ -812,7 +834,7 @@ class BosStrategy(Strategy):
         if stop_distance <= 0 or np.isnan(stop_distance):
             return None
 
-        atr = df['atr'].iloc[i]
+        atr = atr_arr[i]
         min_stop = atr * 0.3
 
         rr_filter_required = True  # по умолчанию фильтруем RR
@@ -858,27 +880,26 @@ class BosStrategy(Strategy):
 
         # Убираем перегретый тренд
         if signal_type == "BOS":
-            adx_value = df['adx'].iloc[i]
+            adx_value = adx
             if adx_value < 25 or adx_value > 40:
                 return None
 
-        plus_di = df['plus_di'].iloc[i]
-        minus_di = df['minus_di'].iloc[i]
+        plus_di = plus_di_arr[i]
+        minus_di = minus_di_arr[i]
 
         if pd.isna(plus_di) or pd.isna(minus_di):
             return None
 
         # Фильтр волатильности
-        atr = df['atr'].iloc[i]
-        atr_mean = df['atr'].iloc[i-50:i].mean()
+        atr = atr_arr[i]
+        atr_mean = atr_mean_50_arr[i]
+        if np.isnan(atr_mean):
+            atr_mean = np.nanmean(atr_arr[max(0, i-50):i])
 
         if atr < atr_mean * 0.7:  
             return None
         if atr > atr_mean * 3:
             return None
-
-        # ===== ОПРЕДЕЛЯЕМ FVG =====
-        has_fvg = detect_fvg(df, i, direction)
 
         # ===== СНАЧАЛА СОЗДАЁМ entry_data =====
         entry_data = {
@@ -900,8 +921,8 @@ class BosStrategy(Strategy):
 
         # ===== EMA50 позиция для BOS =====
         if signal_type == "BOS":
-            ema_value = df['ema50'].iloc[i]
-            price = df['close'].iloc[i]
+            ema_value = ema50_arr[i]
+            price = close_arr[i]
 
             if price > ema_value:
                 entry_data["ema_position"] = "ABOVE"
@@ -1051,7 +1072,14 @@ def run_backtest():
             "close": df["close"].values,
             "high": df["high"].values,
             "low": df["low"].values,
-            "ema200": df["ema200"].values
+            "ema200": df["ema200"].values,
+            "open": df["open"].values,
+            "ema50": df["ema50"].values,
+            "adx": df["adx"].values,
+            "atr": df["atr"].values,
+            "atr_mean_50": df["atr_mean_50"].values,
+            "plus_di": df["plus_di"].values,
+            "minus_di": df["minus_di"].values
         }
         # 🔧 Пересчитываем swing индексы
         swing_low_indices = np.where(df["swing_low"].values == True)[0]
@@ -1086,6 +1114,13 @@ def run_backtest():
 
     print(f"✅ Созданы set'ы для {len(index_sets)} монет")
 
+    print("🔄 Создаём быстрый маппинг времени в позицию индекса...")
+    time_to_pos = {
+        symbol: {ts: idx for idx, ts in enumerate(df.index)}
+        for symbol, df in all_data.items()
+    }
+    print(f"✅ Создано {len(time_to_pos)} маппингов")
+
     # ===== ПОРТФЕЛЬНЫЙ ДВИЖОК =====
     open_positions = []
     all_trades = []
@@ -1119,19 +1154,14 @@ def run_backtest():
         # Подсчёт режимов для статистики
         for symbol in symbols_at_time:
             df = all_data[symbol]
-            try:
-                positions = df.index.get_indexer([current_time])
-                if positions[0] != -1:
-                    idx_in_df = positions[0]
-                    if idx_in_df >= 50:
-                        regime = get_market_regime(df, idx_in_df)
-                        if regime == "TREND":
-                            trend_count += 1
-                        else:
-                            range_count += 1
-                        break  # Считаем по одному разу за временную метку
-            except:
-                pass
+            idx_in_df = time_to_pos[symbol].get(current_time)
+            if idx_in_df is not None and idx_in_df >= 50:
+                regime = get_market_regime(df, idx_in_df)
+                if regime == "TREND":
+                    trend_count += 1
+                else:
+                    range_count += 1
+                break  # Считаем по одному разу за временную метку
 
         pbar.update(1)
 
@@ -1146,11 +1176,8 @@ def run_backtest():
                 continue
             
             # Берём индекс в df по времени
-            try:
-                pos_idx = df.index.get_loc(current_time)
-                if isinstance(pos_idx, slice):
-                    pos_idx = pos_idx.start
-            except KeyError:
+            pos_idx = time_to_pos[symbol].get(current_time)
+            if pos_idx is None:
                 still_open.append(pos)
                 continue
             
@@ -1388,9 +1415,10 @@ def run_backtest():
             continue
 
         symbols_at_time = time_symbol_map.get(current_time, [])
+        open_symbols = {p['symbol'] for p in open_positions}
 
         for symbol in symbols_at_time:
-            if any(p['symbol'] == symbol for p in open_positions):
+            if symbol in open_symbols:
                 continue
 
             df = all_data[symbol]
@@ -1400,10 +1428,9 @@ def run_backtest():
                 row = df.loc[current_time]
                 
                 # Находим индекс этой строки в DataFrame
-                positions = df.index.get_indexer([current_time])
-                if positions[0] == -1:
+                idx_in_df = time_to_pos[symbol].get(current_time)
+                if idx_in_df is None:
                     continue
-                idx_in_df = positions[0]
                 
                 if idx_in_df < 200:
                     continue
