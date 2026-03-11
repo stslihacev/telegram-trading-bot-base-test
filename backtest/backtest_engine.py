@@ -643,10 +643,10 @@ class Strategy:
                 trade["max_r"] = current_r
 
             # --- R-multiple trailing stop ---
-            # 1R -> BE, 2R -> +1R, 3R -> +2R, ...
+            # 2R -> BE, 3R -> +1R, 4R -> +2R, ...
             reached_r_steps = int(np.floor(favorable_r))
-            if reached_r_steps >= 1:
-                trail_offset_steps = reached_r_steps - 1
+            if reached_r_steps >= 2:
+                trail_offset_steps = reached_r_steps - 2
                 risk_unit = float(trade["initial_risk"])
                 if direction == "LONG":
                     candidate_sl = trade["entry"] + (trail_offset_steps * risk_unit)
@@ -929,8 +929,11 @@ def print_final_report(
         trades_df['mfe_r'] = 0.0
     if 'mae_r' not in trades_df.columns:
         trades_df['mae_r'] = 0.0
+    if 'max_r_reached' not in trades_df.columns:
+        trades_df['max_r_reached'] = 0.0
     trades_df['mfe_r'] = pd.to_numeric(trades_df['mfe_r'], errors='coerce').replace([np.inf, -np.inf], np.nan).fillna(0.0)
     trades_df['mae_r'] = pd.to_numeric(trades_df['mae_r'], errors='coerce').replace([np.inf, -np.inf], np.nan).fillna(0.0)
+    trades_df['max_r_reached'] = pd.to_numeric(trades_df['max_r_reached'], errors='coerce').replace([np.inf, -np.inf], np.nan).fillna(0.0)
 
     total_trades = len(trades_df)
     winning_trades = len(trades_df[trades_df['pnl'] > 0])

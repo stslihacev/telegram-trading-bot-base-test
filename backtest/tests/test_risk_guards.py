@@ -69,11 +69,15 @@ def test_r_trailing_stop_long_moves_forward_only():
 
     row_1r = pd.Series({"open": 100.0, "high": 102.1, "low": 99.8, "close": 101.0})
     strategy.check_exit(trade, row_1r, 0, df, pd.Index([]), pd.Index([]))
+    assert trade["sl"] == 98.0
+
+    row_2r = pd.Series({"open": 101.0, "high": 104.2, "low": 102.0, "close": 103.0})
+    strategy.check_exit(trade, row_2r, 0, df, pd.Index([]), pd.Index([]))
     assert trade["sl"] == 100.0
 
-    row_3r = pd.Series({"open": 101.0, "high": 106.2, "low": 103.0, "close": 105.0})
+    row_3r = pd.Series({"open": 103.0, "high": 106.2, "low": 104.0, "close": 105.0})
     strategy.check_exit(trade, row_3r, 0, df, pd.Index([]), pd.Index([]))
-    assert trade["sl"] == 104.0
+    assert trade["sl"] == 102.0
     assert trade["max_r_reached"] >= 3.0
 
 
@@ -100,9 +104,13 @@ def test_r_trailing_stop_short_moves_forward_only():
 
     row_1r = pd.Series({"open": 100.0, "high": 100.2, "low": 97.9, "close": 99.0})
     strategy.check_exit(trade, row_1r, 0, df, pd.Index([]), pd.Index([]))
+    assert trade["sl"] == 102.0
+
+    row_2r = pd.Series({"open": 99.0, "high": 98.0, "low": 95.8, "close": 97.0})
+    strategy.check_exit(trade, row_2r, 0, df, pd.Index([]), pd.Index([]))
     assert trade["sl"] == 100.0
 
-    row_3r = pd.Series({"open": 99.0, "high": 97.0, "low": 93.8, "close": 95.0})
+    row_3r = pd.Series({"open": 97.0, "high": 96.0, "low": 93.8, "close": 95.0})
     strategy.check_exit(trade, row_3r, 0, df, pd.Index([]), pd.Index([]))
-    assert trade["sl"] == 96.0
+    assert trade["sl"] == 98.0
     assert trade["max_r_reached"] >= 3.0
