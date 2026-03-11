@@ -67,6 +67,9 @@ os.makedirs(os.path.dirname(PROGRESS_FILE), exist_ok=True)
 MODE = "FULL"
 # ========================
 
+REJECTION_LOGGING_ENABLED = os.getenv("BACKTEST_REJECTION_LOGS", "1") == "1"
+REJECTION_LOG_LIMIT_PER_REASON = max(0, int(os.getenv("BACKTEST_REJECTION_LOG_LIMIT", "10")))
+
 if MODE == "TEST":
     START_DATE = "2024-01-01"
     SYMBOLS = [
@@ -897,7 +900,19 @@ def print_final_report(
 class BosStrategy(Strategy):
 
     def __init__(self):
-        pass
+        self.last_rejection_reason = None
+        self.last_rejection_message = ""
+        self._rejection_log_counts = defaultdict(int)
+
+    def _reject(self, reason, symbol, i, message):
+        self.last_rejection_reason = reason
+        self.last_rejection_message = message
+        if REJECTION_LOGGING_ENABLED:
+            count = self._rejection_log_counts[reason]
+            if count < REJECTION_LOG_LIMIT_PER_REASON:
+                tqdm.write(f"[REJECT:{reason}] {symbol} idx={i} :: {message}")
+                self._rejection_log_counts[reason] += 1
+        return None
 
     def generate_signal(
         self,
@@ -908,10 +923,12 @@ class BosStrategy(Strategy):
         swing_indices,
         diagnostics
     ):
+        self.last_rejection_reason = None
+        self.last_rejection_message = ""
 
         # Защита от некорректных индексов
         if i < 50 or i >= len(df):
-            return None
+            return self._reject("rejected_other", symbol, i, "invalid index window")
 
         # ===== РАСПАКОВЫВАЕМ arrays =====
         close_arr = arrays["close"]
@@ -958,10 +975,10 @@ class BosStrategy(Strategy):
 
         # ===== ФИЛЬТР РЕЖИМА (ДИАГНОСТИКА) =====
         if MODE_FILTER == "TREND" and regime != "TREND":
-            return None
+            return self._reject("rejected_other", symbol, i, f"regime filter mismatch: required TREND, got {regime}")
 
         if MODE_FILTER == "RANGE" and regime != "RANGE":
-            return None
+            return self._reject("rejected_other", symbol, i, f"regime filter mismatch: required RANGE, got {regime}")
 
         direction = None
         signal_type = None
@@ -1008,14 +1025,14 @@ class BosStrategy(Strategy):
                 signal_type = "BOS"
 
         if direction is None:
-            return None
+            return self._reject("rejected_entry_zone", symbol, i, "entry zone not reached (no BOS/SWEEP setup)")
 
         # ===== ADX ФИЛЬТР ТОЛЬКО ДЛЯ BOS =====
         if signal_type == "BOS":
             adx_value = adx
             if adx_value < 25:
                 diagnostics.bos_block_adx += 1
-                return None
+                return self._reject("rejected_price_condition", symbol, i, f"BOS ADX below minimum: {adx_value:.2f} < 25")
 
         # ===== ОПРЕДЕЛЯЕМ FVG =====
         has_fvg = detect_fvg(df, i, direction)
@@ -1023,7 +1040,7 @@ class BosStrategy(Strategy):
         # ===== ФИЛЬТР FVG (ТОЛЬКО СДЕЛКИ С FVG) =====
         if signal_type == "BOS":
             if not has_fvg:
-                return None
+                return self._reject("rejected_fvg", symbol, i, "FVG requirement failed for BOS")
 
         # новый блок
 
@@ -1037,17 +1054,17 @@ class BosStrategy(Strategy):
             
             if direction == "LONG" and close <= ema200:
                 diagnostics.bos_block_ema += 1
-                return None
+                return self._reject("rejected_price_condition", symbol, i, f"LONG price condition failed: close {close:.4f} <= ema200 {ema200:.4f}")
                 
             if direction == "SHORT" and close >= ema200:
                 diagnostics.bos_block_ema += 1
-                return None
+                return self._reject("rejected_price_condition", symbol, i, f"SHORT price condition failed: close {close:.4f} >= ema200 {ema200:.4f}")
 
         # ===== ФИЛЬТР ЭКСТРЕМАЛЬНОГО ADX =====
         if signal_type == "BOS":
             adx_value = adx
             if 24 < adx_value < 30:
-                return None
+                return self._reject("rejected_price_condition", symbol, i, f"BOS ADX in blocked band: 24 < {adx_value:.2f} < 30")
 
         # ===== ПОДТВЕРЖДАЮЩАЯ СВЕЧА =====
         candle_body = abs(close_arr[i] - open_arr[i])
@@ -1055,29 +1072,30 @@ class BosStrategy(Strategy):
 
         # Минимум 50% тела от диапазона
         if candle_range == 0 or candle_body / candle_range < 0.5:
-            return None
+            ratio = 0.0 if candle_range == 0 else candle_body / candle_range
+            return self._reject("rejected_price_condition", symbol, i, f"confirm candle body too small: ratio={ratio:.3f}")
 
         # ===== DI ФИЛЬТР ДЛЯ BOS =====
         if signal_type == "BOS":
 
             if pd.isna(plus_di) or pd.isna(minus_di):
-                return None
+                return self._reject("rejected_other", symbol, i, "DI data is NaN")
 
             DI_DELTA = 5
 
             if direction == "LONG" and plus_di <= minus_di + DI_DELTA:
                 diagnostics.bos_block_di += 1
-                return None
+                return self._reject("rejected_price_condition", symbol, i, f"LONG DI condition failed: +DI {plus_di:.2f} <= -DI {minus_di:.2f} + {DI_DELTA}")
 
             if direction == "SHORT" and minus_di <= plus_di + DI_DELTA:
                 diagnostics.bos_block_di += 1
-                return None
+                return self._reject("rejected_price_condition", symbol, i, f"SHORT DI condition failed: -DI {minus_di:.2f} <= +DI {plus_di:.2f} + {DI_DELTA}")
 
         elif regime == "RANGE":
             if adx > 25:
                 if signal_type == "BOS":
                     diagnostics.bos_block_adx += 1
-                return None
+                return self._reject("rejected_price_condition", symbol, i, f"RANGE mode ADX too high: {adx:.2f} > 25")
 
         # =========================
         # BOS → структурная модель (FAST VERSION)
@@ -1091,14 +1109,14 @@ class BosStrategy(Strategy):
                 valid_swings = swing_low_indices[swing_low_indices < i]
 
                 if len(valid_swings) == 0:
-                    return None
+                    return self._reject("rejected_entry_zone", symbol, i, "no prior swing low for BOS LONG")
 
                 # берём последний свинг
                 last_i = valid_swings[-1]
                 sl = low_arr[last_i]
 
                 if sl >= entry:
-                    return None
+                    return self._reject("rejected_price_condition", symbol, i, f"invalid BOS LONG stop: sl {sl:.4f} >= entry {entry:.4f}")
 
                 tp = None
 
@@ -1107,13 +1125,13 @@ class BosStrategy(Strategy):
                 valid_swings = swing_high_indices[swing_high_indices < i]
 
                 if len(valid_swings) == 0:
-                    return None
+                    return self._reject("rejected_entry_zone", symbol, i, "no prior swing high for BOS SHORT")
 
                 last_i = valid_swings[-1]
                 sl = high_arr[last_i]
 
                 if sl <= entry:
-                    return None
+                    return self._reject("rejected_price_condition", symbol, i, f"invalid BOS SHORT stop: sl {sl:.4f} <= entry {entry:.4f}")
 
                 tp = None
 
@@ -1124,31 +1142,31 @@ class BosStrategy(Strategy):
             current_df = df.iloc[:i+1]
             tp, sl = get_nearest_levels(current_df, direction, lookback=LOOKBACK_LEVELS)
             if tp is None or sl is None:
-                return None
+                return self._reject("rejected_entry_zone", symbol, i, "entry zone not reached: nearest levels missing")
         
         # Проверка, что уровни имеют смысл
         if direction == "LONG":
             if sl >= entry:
-                return None
+                return self._reject("rejected_price_condition", symbol, i, f"LONG validation failed: sl {sl:.4f} >= entry {entry:.4f}")
             if tp is not None and tp <= entry:
-                return None
+                return self._reject("rejected_price_condition", symbol, i, f"LONG validation failed: tp {tp:.4f} <= entry {entry:.4f}")
         else:
             if sl <= entry:
-                return None
+                return self._reject("rejected_price_condition", symbol, i, f"SHORT validation failed: sl {sl:.4f} <= entry {entry:.4f}")
             if tp is not None and tp >= entry:
-                return None
+                return self._reject("rejected_price_condition", symbol, i, f"SHORT validation failed: tp {tp:.4f} >= entry {entry:.4f}")
 
         # ===== РАСЧЁТ RR + финальная коррекция SL =====
 
         atr = atr_arr[i]
         if pd.isna(atr):
-            return None
+            return self._reject("rejected_other", symbol, i, "ATR is NaN")
 
         # 1️⃣ Базовая дистанция стопа
         stop_distance = (entry - sl) if direction == 'LONG' else (sl - entry)
 
         if stop_distance <= 0 or np.isnan(stop_distance):
-            return None
+            return self._reject("rejected_price_condition", symbol, i, f"stop distance invalid: {stop_distance}")
 
         # 2️⃣ Динамическая ATR-калибровка SL/TP
         sl, atr_based_tp, stop_distance = compute_atr_distances(entry, direction, atr, stop_distance, signal_type)
@@ -1165,7 +1183,7 @@ class BosStrategy(Strategy):
 
             if rr is not None and rr_filter_required:
                 if rr < MIN_RR or rr > MAX_RR:
-                    return None
+                    return self._reject("rejected_price_condition", symbol, i, f"RR filter failed: rr={rr:.2f}, range=[{MIN_RR},{MAX_RR}]")
 
         # ===== CONFIDENCE ФИЛЬТР =====
         confidence = calculate_confidence_score(
@@ -1179,25 +1197,25 @@ class BosStrategy(Strategy):
         
         confidence_threshold = SOFTER_CONFIDENCE_THRESHOLD if SOFTER_CONFIDENCE_FILTER else CONFIDENCE_THRESHOLD
         if confidence < confidence_threshold:
-            return None
+            return self._reject("rejected_confidence", symbol, i, f"confidence {confidence:.2f} below threshold {confidence_threshold:.2f}")
 
         # Фильтр качества BOS
         if signal_type == "BOS":
             bos_conf_threshold = 3
             if confidence < bos_conf_threshold:
-                return None
+                return self._reject("rejected_confidence", symbol, i, f"BOS confidence {confidence:.2f} below threshold {bos_conf_threshold:.2f}")
 
         # Убираем перегретый тренд
         if signal_type == "BOS":
             adx_value = adx
             if adx_value < 25 or adx_value > 40:
-                return None
+                return self._reject("rejected_price_condition", symbol, i, f"BOS ADX out of [25,40]: {adx_value:.2f}")
 
         plus_di = plus_di_arr[i]
         minus_di = minus_di_arr[i]
 
         if pd.isna(plus_di) or pd.isna(minus_di):
-            return None
+            return self._reject("rejected_other", symbol, i, "final DI check failed: NaN values")
 
         # Фильтр волатильности
         atr = atr_arr[i]
@@ -1206,9 +1224,9 @@ class BosStrategy(Strategy):
             atr_mean = np.nanmean(atr_arr[max(0, i-50):i])
 
         if atr < atr_mean * 0.7:  
-            return None
+            return self._reject("rejected_price_condition", symbol, i, f"volatility too low: atr {atr:.6f} < atr_mean*0.7 {atr_mean * 0.7:.6f}")
         if atr > atr_mean * 3:
-            return None
+            return self._reject("rejected_price_condition", symbol, i, f"volatility too high: atr {atr:.6f} > atr_mean*3 {atr_mean * 3:.6f}")
 
         # Поля для расширенного логирования трейдов
         fvg = has_fvg
@@ -1252,6 +1270,8 @@ class BosStrategy(Strategy):
             else:
                 entry_data["ema_position"] = "BELOW"
 
+        self.last_rejection_reason = None
+        self.last_rejection_message = ""
         return entry_data
 
 def run_backtest():
@@ -1271,6 +1291,13 @@ def run_backtest():
     bos_block_di = 0
 
     filter_stats = defaultdict(int)
+    rejection_breakdown_keys = [
+        "rejected_entry_zone",
+        "rejected_price_condition",
+        "rejected_fvg",
+        "rejected_confidence",
+        "rejected_other"
+    ]
 
     bos_above_ema = 0
     bos_below_ema = 0
@@ -1773,6 +1800,10 @@ def run_backtest():
 
                 if signal is None:
                     filter_stats["rejected_before_entry"] += 1
+                    rejection_reason = strategy.last_rejection_reason or "rejected_other"
+                    if rejection_reason not in rejection_breakdown_keys:
+                        rejection_reason = "rejected_other"
+                    filter_stats[rejection_reason] += 1
                     continue
 
             except KeyError:
@@ -1868,11 +1899,20 @@ def run_backtest():
                 if zero_volume and ml_ok:
                     should_filter = False
                 if should_filter:
-                    print(f"Trade filtered by ML/Volume: p_profit={p_profit:.2f}, volume={features['volume']:.2f}, avg_vol={avg_vol:.2f}")
+                    filter_stats["rejected_before_entry"] += 1
+                    filter_stats["rejected_confidence"] += 1
+                    if REJECTION_LOGGING_ENABLED and filter_stats["rejected_confidence"] <= REJECTION_LOG_LIMIT_PER_REASON:
+                        tqdm.write(
+                            f"[REJECT:rejected_confidence] {symbol} idx={idx_in_df} :: "
+                            f"ML/Volume filter: p_profit={p_profit:.2f}, threshold={confidence_threshold:.2f}, "
+                            f"volume={features['volume']:.2f}, avg_vol={avg_vol:.2f}"
+                        )
                     continue
             # ===== АДАПТИВНЫЙ РАСЧЁТ РАЗМЕРА ПОЗИЦИИ =====
             entry_price = float(np.nan_to_num(entry_data.get('entry', 0.0), nan=0.0, posinf=0.0, neginf=0.0))
             if entry_price <= 0:
+                filter_stats["rejected_before_entry"] += 1
+                filter_stats["rejected_other"] += 1
                 tqdm.write(f"   ⚠️ {symbol}: некорректный entry_price, пропускаем")
                 continue
 
@@ -1881,6 +1921,8 @@ def run_backtest():
             position_size = float(np.clip(np.nan_to_num(position_size, nan=0.0, posinf=0.0, neginf=0.0), 0.0, max_position))
 
             if position_size <= 0:
+                filter_stats["rejected_before_entry"] += 1
+                filter_stats["rejected_other"] += 1
                 tqdm.write(f"   ⚠️ {symbol}: некорректный position_size, пропускаем")
                 continue
         
@@ -1951,6 +1993,9 @@ def run_backtest():
     for key, value in sorted(filter_stats.items()):
         print(f"{key}: {value}")
 
+    print("\n🧪 REJECTION BREAKDOWN (before entry)")
+    for key in rejection_breakdown_keys:
+        print(f"{key}: {filter_stats.get(key, 0)}")
 
     return trades_df, equity_df
 
