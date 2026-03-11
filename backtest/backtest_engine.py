@@ -182,6 +182,49 @@ def calculate_rr(entry, tp, sl, direction):
         return 0
     return rr
 
+def calculate_trade_pnl_r(position_size, entry_price, exit_price, direction, initial_risk):
+    """Безопасный расчёт PnL и R для LONG/SHORT с защитой от NaN/inf."""
+    safe_pos_size = float(np.clip(np.nan_to_num(position_size, nan=0.0, posinf=0.0, neginf=0.0), 0.0, SAFE_FLOAT_LIMIT))
+    safe_entry = float(np.clip(np.nan_to_num(entry_price, nan=0.0, posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT), -SAFE_FLOAT_LIMIT, SAFE_FLOAT_LIMIT))
+    safe_exit = float(np.clip(np.nan_to_num(exit_price, nan=safe_entry, posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT), -SAFE_FLOAT_LIMIT, SAFE_FLOAT_LIMIT))
+
+    if direction == 'LONG':
+        move = safe_exit - safe_entry
+    else:
+        move = safe_entry - safe_exit
+
+    pnl = float(np.clip(np.nan_to_num(safe_pos_size * move, nan=0.0, posinf=MAX_PNL_CLIP, neginf=-MAX_PNL_CLIP), -MAX_PNL_CLIP, MAX_PNL_CLIP))
+
+    safe_risk = float(np.nan_to_num(initial_risk, nan=0.0, posinf=0.0, neginf=0.0))
+    if safe_risk <= 0:
+        r_result = 0.0
+    else:
+        r_result = move / safe_risk
+        if np.isnan(r_result) or np.isinf(r_result):
+            r_result = 0.0
+
+    return pnl, float(r_result)
+
+
+def select_mtf_entry_candle(candles_15m, row, direction):
+    """Подбирает 15m свечу внутри текущего часа для более надёжного входа."""
+    if candles_15m.empty or direction not in {'LONG', 'SHORT'}:
+        return None
+
+    if direction == 'LONG':
+        in_range = candles_15m[(candles_15m['low'] >= row['low']) & (candles_15m['low'] <= row['high'])]
+        preferred = in_range[in_range['close'] < row['close']]
+    else:
+        in_range = candles_15m[(candles_15m['high'] >= row['low']) & (candles_15m['high'] <= row['high'])]
+        preferred = in_range[in_range['close'] > row['close']]
+
+    if not preferred.empty:
+        return preferred.iloc[-1]
+    if not in_range.empty:
+        return in_range.iloc[-1]
+    return None
+
+
 
 def calculate_position_size(entry_data, capital, risk_factor=0.01):
     """
@@ -1395,22 +1438,19 @@ def run_backtest():
             )
             
             if exit_reason is not None:
-                # Безопасный расчёт PnL с ограничением экстремальных значений
-                pos_size = float(np.clip(pos.get('position_size', 0.0), 0.0, SAFE_FLOAT_LIMIT))
-                entry_px = float(np.clip(pos.get('entry', 0.0), -SAFE_FLOAT_LIMIT, SAFE_FLOAT_LIMIT))
-                exit_px = float(np.clip(exit_price, -SAFE_FLOAT_LIMIT, SAFE_FLOAT_LIMIT))
-
-                move = (exit_px - entry_px) if pos['direction'] == 'LONG' else (entry_px - exit_px)
-                pnl = float(np.clip(np.nan_to_num(pos_size * move, nan=0.0, posinf=MAX_PNL_CLIP, neginf=-MAX_PNL_CLIP), -MAX_PNL_CLIP, MAX_PNL_CLIP))
-
-                # 🚨 защита от битых значений
-                if np.isnan(pnl) or np.isinf(pnl):
-                    continue
+                pnl, r_result = calculate_trade_pnl_r(
+                    position_size=pos.get('position_size', 0.0),
+                    entry_price=pos.get('entry', 0.0),
+                    exit_price=exit_price,
+                    direction=pos.get('direction'),
+                    initial_risk=pos.get('initial_risk', 0.0)
+                )
 
                 capital = float(np.clip(capital + pnl, -SAFE_FLOAT_LIMIT, SAFE_FLOAT_LIMIT))
                 pos['exit_time'] = current_time
-                pos['exit_price'] = exit_price
+                pos['exit_price'] = float(np.clip(np.nan_to_num(exit_price, nan=0.0, posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT), -SAFE_FLOAT_LIMIT, SAFE_FLOAT_LIMIT))
                 pos['pnl'] = pnl
+                pos['rr'] = float(r_result)
                 pos['exit_reason'] = exit_reason
 
                 if pos["signal_type"] == "BOS":
@@ -1422,21 +1462,6 @@ def run_backtest():
                 if pos.get("signal_type") == "BOS":
                     ema_pos = pos.get("ema_position")
                     pnl = pos["pnl"]
-
-                    # считаем R правильно через расстояние до стопа
-                    entry_price = pos["entry"]
-                    stop_price = pos["sl"]
-                    exit_price = pos["exit_price"]
-
-                    initial_risk = pos.get("initial_risk", 0)
-
-                    if initial_risk > 0:
-                        if pos["direction"] == "LONG":
-                            r_result = (exit_price - entry_price) / initial_risk
-                        else:
-                            r_result = (entry_price - exit_price) / initial_risk
-                    else:
-                        r_result = 0
 
                     if ema_pos == "ABOVE":
                         bos_above_ema += 1
@@ -1675,42 +1700,18 @@ def run_backtest():
 
             # ===== MTF ENTRY ALIGNMENT (1H signal -> 15M execution) =====
             df_15m = all_data_15m.get(symbol)
-            if df_15m is not None and len(df_15m) > 0:
-                hour_start = current_time
-                hour_end = current_time + pd.Timedelta(hours=1)
+            if df_15m is not None and len(df_15m) > 0 and {'high', 'low', 'close'}.issubset(df_15m.columns):
+                hour_start = current_time.floor('h')
+                hour_end = hour_start + pd.Timedelta(hours=1)
                 candles_15m = df_15m[(df_15m.index >= hour_start) & (df_15m.index < hour_end)]
+                chosen_candle = select_mtf_entry_candle(candles_15m, row, entry_data.get('direction'))
 
-                if not candles_15m.empty and {'high', 'low', 'close'}.issubset(candles_15m.columns):
-                    chosen_candle = None
-
-                    if entry_data['direction'] == 'LONG':
-                        in_range = candles_15m[
-                            (candles_15m['low'] >= row['low']) &
-                            (candles_15m['low'] <= row['high'])
-                        ]
-                        preferred = in_range[in_range['close'] < row['close']] if not in_range.empty else in_range
-                        if not preferred.empty:
-                            chosen_candle = preferred.iloc[-1]
-                        elif not in_range.empty:
-                            chosen_candle = in_range.iloc[-1]
-
-                    elif entry_data['direction'] == 'SHORT':
-                        in_range = candles_15m[
-                            (candles_15m['high'] >= row['low']) &
-                            (candles_15m['high'] <= row['high'])
-                        ]
-                        preferred = in_range[in_range['close'] > row['close']] if not in_range.empty else in_range
-                        if not preferred.empty:
-                            chosen_candle = preferred.iloc[-1]
-                        elif not in_range.empty:
-                            chosen_candle = in_range.iloc[-1]
-
-                    if chosen_candle is not None:
-                        entry_time = chosen_candle.name
-                        entry_price = float(chosen_candle['close'])
-                        entry_data['entry'] = round(entry_price, 4)
-                        entry_data['timestamp'] = entry_time
-                        print(f"MTF entry aligned for {symbol} at {entry_time} price {entry_price}")
+                if chosen_candle is not None:
+                    entry_time = chosen_candle.name
+                    entry_price = float(np.nan_to_num(chosen_candle['close'], nan=entry_data.get('entry', 0.0)))
+                    entry_data['entry'] = round(entry_price, 4)
+                    entry_data['timestamp'] = entry_time
+                    print(f"MTF entry aligned for {symbol} at {entry_time} price {entry_price}")
 
             # ===== ML + VOLUME FILTER + DYNAMIC CONFIDENCE =====
             coin = symbol
@@ -1765,14 +1766,19 @@ def run_backtest():
                     print(f"Trade filtered by ML/Volume: p_profit={p_profit:.2f}, volume={features['volume']:.2f}, avg_vol={avg_vol:.2f}")
                     continue
             # ===== АДАПТИВНЫЙ РАСЧЁТ РАЗМЕРА ПОЗИЦИИ =====
+            entry_price = float(np.nan_to_num(entry_data.get('entry', 0.0), nan=0.0, posinf=0.0, neginf=0.0))
+            if entry_price <= 0:
+                tqdm.write(f"   ⚠️ {symbol}: некорректный entry_price, пропускаем")
+                continue
+
             position_size = calculate_position_size(entry_data, capital, risk_factor=0.01)
-            # Защита от нулевого или битого размера
-            if position_size <= 0 or np.isnan(position_size) or np.isinf(position_size):
+            max_position = float(np.clip((capital * 50.0) / max(entry_price, 1e-9), 0.0, SAFE_FLOAT_LIMIT))
+            position_size = float(np.clip(np.nan_to_num(position_size, nan=0.0, posinf=0.0, neginf=0.0), 0.0, max_position))
+
+            if position_size <= 0:
                 tqdm.write(f"   ⚠️ {symbol}: некорректный position_size, пропускаем")
                 continue
-            # Ограничиваем максимальный notional для защиты от экстремумов
-            max_position = (capital * 50) / max(entry_data['entry'], 1e-9)
-            position_size = float(np.clip(position_size, 0.0, max_position))
+        
             entry_data["position_size"] = position_size
 
             print(f"Dynamic threshold={confidence_threshold:.2f}, p_profit={p_profit:.2f}, volume={(features['volume'] if features['volume'] is not None else 0):.2f}, pos_size={position_size:.2f}")
