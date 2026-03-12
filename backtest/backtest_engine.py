@@ -607,6 +607,24 @@ class Strategy:
     def __init__(self):
         pass
 
+    def _apply_r_trailing(self, trade, direction, sl, favorable_r):
+        """Apply step-based R trailing (BOS only) and return updated SL."""
+        if trade.get('signal_type') != "BOS" or trade.get("initial_risk", 0) <= 0:
+            return sl
+
+        reached_r_steps = int(np.floor(max(0.0, float(favorable_r))))
+        if reached_r_steps < 2:
+            return sl
+
+        trail_offset_steps = reached_r_steps - 2
+        risk_unit = float(trade["initial_risk"])
+        if direction == "LONG":
+            candidate_sl = trade["entry"] + (trail_offset_steps * risk_unit)
+            return max(float(sl), float(candidate_sl))
+
+        candidate_sl = trade["entry"] - (trail_offset_steps * risk_unit)
+        return min(float(sl), float(candidate_sl))
+
     def check_exit(self, trade, row, current_idx, df, swing_low_indices, swing_high_indices):
 
         direction = trade['direction']
@@ -643,20 +661,8 @@ class Strategy:
             if current_r > trade["max_r"]:
                 trade["max_r"] = current_r
 
-            # --- R-multiple trailing stop (только BOS) ---
-            # 2R -> BE, 3R -> +1R, 4R -> +2R, ...
-            if signal_type == "BOS":
-                reached_r_steps = int(np.floor(favorable_r))
-                if reached_r_steps >= 2:
-                    trail_offset_steps = reached_r_steps - 2
-                    risk_unit = float(trade["initial_risk"])
-                    if direction == "LONG":
-                        candidate_sl = trade["entry"] + (trail_offset_steps * risk_unit)
-                        sl = max(float(sl), float(candidate_sl))
-                    else:
-                        candidate_sl = trade["entry"] - (trail_offset_steps * risk_unit)
-                        sl = min(float(sl), float(candidate_sl))
-                    trade["sl"] = sl
+            sl = self._apply_r_trailing(trade, direction, sl, favorable_r)
+            trade["sl"] = sl
 
         # --- BOS Trailing ---
         if signal_type == "BOS" and trade.get("regime") == "TREND":
@@ -679,17 +685,53 @@ class Strategy:
                         sl = last_swing_high
                         trade["sl"] = sl
 
-        # --- Exit conditions ---
+        # --- Intrabar execution ---
+        # Worst-case assumption when both TP and SL are hit within one candle.
         if direction == "LONG":
-            if tp is not None and row['high'] >= tp:
-                return "take_profit", tp, current_idx
-            if row['low'] <= sl:
+            if tp is not None and row['low'] <= sl and row['high'] >= tp:
                 return "stop_loss", sl, current_idx
+            path_points = [float(row['open']), float(row['low']), float(row['high']), float(row['close'])]
         else:
-            if tp is not None and row['low'] <= tp:
-                return "take_profit", tp, current_idx
-            if row['high'] >= sl:
+            if tp is not None and row['high'] >= sl and row['low'] <= tp:
                 return "stop_loss", sl, current_idx
+            path_points = [float(row['open']), float(row['high']), float(row['low']), float(row['close'])]
+
+        for start, end in zip(path_points, path_points[1:]):
+            seg_low = min(start, end)
+            seg_high = max(start, end)
+
+            if direction == "LONG":
+                if end <= start:
+                    if seg_low <= sl <= seg_high:
+                        return "stop_loss", sl, current_idx
+                else:
+                    if tp is not None and seg_low <= tp <= seg_high:
+                        return "take_profit", tp, current_idx
+                    if trade["initial_risk"] > 0:
+                        seg_favorable_r = max(0.0, float(np.nan_to_num((end - trade["entry"]) / trade["initial_risk"], nan=0.0)))
+                        new_sl = self._apply_r_trailing(trade, direction, sl, seg_favorable_r)
+                        if new_sl != sl:
+                            sl = new_sl
+                            trade["sl"] = sl
+            else:
+                if end >= start:
+                    if seg_low <= sl <= seg_high:
+                        return "stop_loss", sl, current_idx
+                else:
+                    if tp is not None and seg_low <= tp <= seg_high:
+                        return "take_profit", tp, current_idx
+                    if trade["initial_risk"] > 0:
+                        seg_favorable_r = max(0.0, float(np.nan_to_num((trade["entry"] - end) / trade["initial_risk"], nan=0.0)))
+                        new_sl = self._apply_r_trailing(trade, direction, sl, seg_favorable_r)
+                        if new_sl != sl:
+                            sl = new_sl
+                            trade["sl"] = sl
+
+        # Final close-level fallback for segments that include a boundary exactly at close.
+        if direction == "LONG" and row['close'] <= sl:
+            return "stop_loss", sl, current_idx
+        if direction == "SHORT" and row['close'] >= sl:
+            return "stop_loss", sl, current_idx
 
         return None, None, None
 

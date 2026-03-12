@@ -114,3 +114,59 @@ def test_r_trailing_stop_short_moves_forward_only():
     strategy.check_exit(trade, row_3r, 0, df, pd.Index([]), pd.Index([]))
     assert trade["sl"] == 98.0
     assert trade["max_r_reached"] >= 3.0
+
+
+def test_intrabar_worst_case_stop_before_tp_long_when_both_inside_candle():
+    from backtest.backtest_engine import Strategy
+    import pandas as pd
+
+    strategy = Strategy()
+    trade = {
+        "direction": "LONG",
+        "entry": 100.0,
+        "sl": 99.0,
+        "tp": 101.0,
+        "signal_type": "SWEEP",
+        "regime": "RANGE",
+        "bars_alive": 0,
+        "initial_risk": 1.0,
+        "mfe_r": 0.0,
+        "mae_r": 0.0,
+        "max_r": 0.0,
+        "max_r_reached": 0.0,
+    }
+    row = pd.Series({"open": 100.0, "high": 101.2, "low": 98.8, "close": 100.5})
+    df = pd.DataFrame({"low": [98.8], "high": [101.2]})
+
+    reason, price, _ = strategy.check_exit(trade, row, 0, df, pd.Index([]), pd.Index([]))
+    assert reason == "stop_loss"
+    assert price == 99.0
+
+
+def test_intrabar_trailing_stop_can_be_hit_within_same_candle_long():
+    from backtest.backtest_engine import Strategy
+    import pandas as pd
+
+    strategy = Strategy()
+    trade = {
+        "direction": "LONG",
+        "entry": 100.0,
+        "sl": 98.0,
+        "tp": None,
+        "signal_type": "BOS",
+        "regime": "TREND",
+        "bars_alive": 0,
+        "initial_risk": 2.0,
+        "mfe_r": 0.0,
+        "mae_r": 0.0,
+        "max_r": 0.0,
+        "max_r_reached": 0.0,
+    }
+    # LONG path: open -> low -> high -> close
+    # High reaches 2R+ so trailing moves to BE=100, then close retraces below 100.
+    row = pd.Series({"open": 100.0, "high": 104.5, "low": 99.8, "close": 99.9})
+    df = pd.DataFrame({"low": [99.8], "high": [104.5]})
+
+    reason, price, _ = strategy.check_exit(trade, row, 0, df, pd.Index([]), pd.Index([]))
+    assert reason == "stop_loss"
+    assert price == 100.0
