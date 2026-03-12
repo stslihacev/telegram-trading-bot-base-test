@@ -329,16 +329,10 @@ def calculate_position_size(entry_data, capital, risk_factor=0.01):
         corrected_sl = entry + sl_distance
     entry_data["sl"] = float(np.clip(corrected_sl, -SAFE_FLOAT_LIMIT, SAFE_FLOAT_LIMIT))
 
-    # Риск с масштабированием по confidence (дискретные уровни)
+    # Риск с масштабированием по confidence (до x2)
     confidence = float(entry_data.get("confidence", 0) or 0)
-    if confidence < 3.5:
-        confidence_multiplier = 0.5
-    elif confidence <= 4.5:
-        confidence_multiplier = 1.0
-    else:
-        confidence_multiplier = 1.5
-
-    adjusted_risk = float(np.clip(risk_factor * confidence_multiplier, 0.0001, risk_factor * 1.5))
+    confidence_multiplier = np.clip(1.0 + confidence / 5.0, 1.0, 2.0)
+    adjusted_risk = float(np.clip(risk_factor * confidence_multiplier, 0.0001, risk_factor * 2.0))
 
     safe_capital = float(np.clip(capital, 0.0, SAFE_FLOAT_LIMIT))
     position_size = (safe_capital * adjusted_risk) / sl_distance
@@ -356,7 +350,6 @@ def calculate_position_size(entry_data, capital, risk_factor=0.01):
 
     entry_data["position_size"] = position_size
     entry_data["risk_amount"] = float(np.clip(safe_capital * adjusted_risk, 0.0, SAFE_FLOAT_LIMIT))
-    entry_data["risk_percent"] = float(np.clip(adjusted_risk * 100, 0.0, 100.0))
     return position_size
 
 def get_htf_bias_fast(i, close_arr, ema200_arr):
@@ -1256,7 +1249,6 @@ class BosStrategy(Strategy):
 
         if signal_type == "BOS":
             zone_touch_confirmed = entry_mode == "momentum"
-            entry_type = "inside_zone" if entry_mode == "momentum" else None
 
             if direction == "LONG":
 
@@ -1282,16 +1274,7 @@ class BosStrategy(Strategy):
                     )
                     zone_low = zone_level - zone_width
                     zone_high = zone_level + zone_width
-                    zone_size = zone_high - zone_low
-                    entry_zone_tolerance = 0.25 * zone_size
-                    inside_zone = zone_low <= entry <= zone_high
-                    near_zone = (zone_low - entry_zone_tolerance) <= entry <= (zone_high + entry_zone_tolerance)
-                    if inside_zone:
-                        zone_touch_confirmed = True
-                        entry_type = "inside_zone"
-                    elif near_zone:
-                        zone_touch_confirmed = True
-                        entry_type = "near_zone"
+                    zone_touch_confirmed = zone_touch_confirmed or (low_arr[i] <= zone_high and high_arr[i] >= zone_low)
 
                 tp = None
 
@@ -1317,16 +1300,7 @@ class BosStrategy(Strategy):
                     )
                     zone_low = zone_level - zone_width
                     zone_high = zone_level + zone_width
-                    zone_size = zone_high - zone_low
-                    entry_zone_tolerance = 0.25 * zone_size
-                    inside_zone = zone_low <= entry <= zone_high
-                    near_zone = (zone_low - entry_zone_tolerance) <= entry <= (zone_high + entry_zone_tolerance)
-                    if inside_zone:
-                        zone_touch_confirmed = True
-                        entry_type = "inside_zone"
-                    elif near_zone:
-                        zone_touch_confirmed = True
-                        entry_type = "near_zone"
+                    zone_touch_confirmed = zone_touch_confirmed or (low_arr[i] <= zone_high and high_arr[i] >= zone_low)
 
                 tp = None
 
@@ -1396,8 +1370,6 @@ class BosStrategy(Strategy):
             confidence += 1.0 if has_fvg else -0.5
         
         confidence_threshold = SOFTER_CONFIDENCE_THRESHOLD if SOFTER_CONFIDENCE_FILTER else CONFIDENCE_THRESHOLD
-        if signal_type == "BOS" and locals().get("entry_type") == "near_zone":
-            confidence *= 0.8
         if confidence < confidence_threshold:
             return self._reject("rejected_confidence", symbol, i, f"confidence {confidence:.2f} below threshold {confidence_threshold:.2f}")
 
@@ -1463,7 +1435,6 @@ class BosStrategy(Strategy):
         }
         if signal_type == "BOS":
             entry_data["entry_mode"] = entry_mode
-            entry_data["entry_type"] = locals().get("entry_type", "inside_zone")
             entry_data["candles_since_bos"] = candles_since_bos
 
         # ===== EMA50 позиция для BOS =====

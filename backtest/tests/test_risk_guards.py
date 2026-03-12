@@ -8,7 +8,6 @@ from backtest.backtest_engine import (
     sanitize_pnl,
     sanitize_r,
     compute_atr_distances,
-    calculate_position_size,
 )
 
 
@@ -171,34 +170,3 @@ def test_intrabar_trailing_stop_can_be_hit_within_same_candle_long():
     reason, price, _ = strategy.check_exit(trade, row, 0, df, pd.Index([]), pd.Index([]))
     assert reason == "stop_loss"
     assert price == 100.0
-
-
-def test_position_sizing_confidence_tiers_and_risk_percent_tracking():
-    capital = 1_000.0
-
-    def build_entry(confidence):
-        return {
-            "entry": 100.0,
-            "sl": 99.0,
-            "direction": "LONG",
-            "signal_type": "BOS",
-            "last_swing_low": 99.0,
-            "atr": 0.0,
-            "confidence": confidence,
-        }
-
-    low_conf = build_entry(3.4)
-    mid_conf = build_entry(4.0)
-    high_conf = build_entry(4.6)
-
-    low_size = calculate_position_size(low_conf, capital, risk_factor=0.01)
-    mid_size = calculate_position_size(mid_conf, capital, risk_factor=0.01)
-    high_size = calculate_position_size(high_conf, capital, risk_factor=0.01)
-
-    assert low_conf["risk_percent"] == 0.5
-    assert mid_conf["risk_percent"] == 1.0
-    assert high_conf["risk_percent"] == 1.5
-
-    assert low_size == 5.0
-    assert mid_size == 10.0
-    assert high_size == 15.0
