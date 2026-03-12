@@ -1034,6 +1034,7 @@ class BosStrategy(Strategy):
         self.last_rejection_message = ""
         self._rejection_log_counts = defaultdict(int)
         self._last_bos_context = {}
+        self._entry_ladder_fills = defaultdict(set)
 
     def _reject(self, reason, symbol, i, message):
         self.last_rejection_reason = reason
@@ -1247,8 +1248,11 @@ class BosStrategy(Strategy):
         # BOS → структурная модель (FAST VERSION)
         # =========================
 
+        entry_level = None
+        
         if signal_type == "BOS":
             zone_touch_confirmed = entry_mode == "momentum"
+            signal_key = None
 
             if direction == "LONG":
 
@@ -1274,7 +1278,27 @@ class BosStrategy(Strategy):
                     )
                     zone_low = zone_level - zone_width
                     zone_high = zone_level + zone_width
-                    zone_touch_confirmed = zone_touch_confirmed or (low_arr[i] <= zone_high and high_arr[i] >= zone_low)
+                    signal_key = (symbol, "BOS", direction, int(last_i), int(swing_high_indices[pos_high]))
+                    ladder_levels = [
+                        (1, zone_high),
+                        (2, (zone_high + zone_low) / 2.0),
+                        (3, zone_low),
+                    ]
+                    touched_levels = [
+                        (level_num, level_price)
+                        for level_num, level_price in ladder_levels
+                        if low_arr[i] <= level_price <= high_arr[i]
+                    ]
+
+                    if touched_levels:
+                        used_levels = self._entry_ladder_fills[signal_key]
+                        for level_num, level_price in touched_levels:
+                            if level_num not in used_levels:
+                                entry = level_price
+                                entry_level = level_num
+                                used_levels.add(level_num)
+                                zone_touch_confirmed = True
+                                break
 
                 tp = None
 
@@ -1300,7 +1324,27 @@ class BosStrategy(Strategy):
                     )
                     zone_low = zone_level - zone_width
                     zone_high = zone_level + zone_width
-                    zone_touch_confirmed = zone_touch_confirmed or (low_arr[i] <= zone_high and high_arr[i] >= zone_low)
+                    signal_key = (symbol, "BOS", direction, int(last_i), int(swing_low_indices[pos_low]))
+                    ladder_levels = [
+                        (1, zone_low),
+                        (2, (zone_high + zone_low) / 2.0),
+                        (3, zone_high),
+                    ]
+                    touched_levels = [
+                        (level_num, level_price)
+                        for level_num, level_price in ladder_levels
+                        if low_arr[i] <= level_price <= high_arr[i]
+                    ]
+
+                    if touched_levels:
+                        used_levels = self._entry_ladder_fills[signal_key]
+                        for level_num, level_price in touched_levels:
+                            if level_num not in used_levels:
+                                entry = level_price
+                                entry_level = level_num
+                                used_levels.add(level_num)
+                                zone_touch_confirmed = True
+                                break
 
                 tp = None
 
@@ -1409,6 +1453,7 @@ class BosStrategy(Strategy):
         entry_data = {
             'direction': direction,
             'entry': round(entry, 4),
+            'entry_level': entry_level,
             'tp': float(np.nan_to_num(round(tp, 4), nan=0.0, posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT)) if tp is not None else None,
             'sl': float(np.nan_to_num(round(sl, 4), nan=entry, posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT)) if sl is not None else float(entry),
             'rr': round(rr, 2) if rr is not None else None,
