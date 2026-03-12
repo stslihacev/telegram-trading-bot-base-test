@@ -329,10 +329,16 @@ def calculate_position_size(entry_data, capital, risk_factor=0.01):
         corrected_sl = entry + sl_distance
     entry_data["sl"] = float(np.clip(corrected_sl, -SAFE_FLOAT_LIMIT, SAFE_FLOAT_LIMIT))
 
-    # Риск с масштабированием по confidence (до x2)
+    # Риск с масштабированием по confidence (дискретные уровни)
     confidence = float(entry_data.get("confidence", 0) or 0)
-    confidence_multiplier = np.clip(1.0 + confidence / 5.0, 1.0, 2.0)
-    adjusted_risk = float(np.clip(risk_factor * confidence_multiplier, 0.0001, risk_factor * 2.0))
+    if confidence < 3.5:
+        confidence_multiplier = 0.5
+    elif confidence <= 4.5:
+        confidence_multiplier = 1.0
+    else:
+        confidence_multiplier = 1.5
+
+    adjusted_risk = float(np.clip(risk_factor * confidence_multiplier, 0.0001, risk_factor * 1.5))
 
     safe_capital = float(np.clip(capital, 0.0, SAFE_FLOAT_LIMIT))
     position_size = (safe_capital * adjusted_risk) / sl_distance
@@ -350,6 +356,7 @@ def calculate_position_size(entry_data, capital, risk_factor=0.01):
 
     entry_data["position_size"] = position_size
     entry_data["risk_amount"] = float(np.clip(safe_capital * adjusted_risk, 0.0, SAFE_FLOAT_LIMIT))
+    entry_data["risk_percent"] = float(np.clip(adjusted_risk * 100, 0.0, 100.0))
     return position_size
 
 def get_htf_bias_fast(i, close_arr, ema200_arr):
