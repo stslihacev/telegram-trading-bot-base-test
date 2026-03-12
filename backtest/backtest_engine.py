@@ -609,6 +609,9 @@ class Strategy:
 
     def _apply_r_trailing(self, trade, direction, sl, favorable_r):
         """Apply step-based R trailing (BOS only) and return updated SL."""
+        if trade.get("scale_level", 0) > 0:
+            return sl
+
         if trade.get('signal_type') != "BOS" or trade.get("initial_risk", 0) <= 0:
             return sl
 
@@ -665,7 +668,7 @@ class Strategy:
             trade["sl"] = sl
 
         # --- BOS Trailing ---
-        if signal_type == "BOS" and trade.get("regime") == "TREND":
+        if signal_type == "BOS" and trade.get("regime") == "TREND" and trade.get("scale_level", 0) == 0:
 
             if direction == "LONG":
                 valid_swings = swing_low_indices[swing_low_indices < current_idx]
@@ -1725,6 +1728,28 @@ def run_backtest():
     htf_trend = calculate_htf_trend(df)
 
     pbar = tqdm(total=total_steps, desc="⏳ Портфельный анализ")
+    signal_counter = 0
+
+    def _build_scale_position(base_pos, row, current_time, scale_level):
+        addon = base_pos.copy()
+        entry_price = float(np.clip(np.nan_to_num(row['close'], nan=base_pos.get('entry', 0.0), posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT), -SAFE_FLOAT_LIMIT, SAFE_FLOAT_LIMIT))
+        addon['entry'] = entry_price
+        addon['timestamp'] = current_time
+        addon['tp'] = base_pos.get('tp')
+        addon['sl'] = float(base_pos.get('sl', entry_price))
+        addon['original_sl'] = float(base_pos.get('original_sl', addon['sl']))
+        addon['initial_risk'] = float(np.clip(np.nan_to_num(abs(addon['entry'] - addon['sl']), nan=0.0, posinf=SAFE_FLOAT_LIMIT, neginf=0.0), 0.0, SAFE_FLOAT_LIMIT))
+        addon['rr'] = sanitize_r(calculate_rr(addon['entry'], addon['tp'], addon['sl'], addon.get('direction')))
+        addon['position_size'] = float(base_pos.get('position_size', 0.0))
+        addon['bars_alive'] = 0
+        addon['max_r'] = sanitize_r(0)
+        addon['mfe_r'] = 0.0
+        addon['mae_r'] = 0.0
+        addon['max_r_reached'] = 0.0
+        addon['max_price_since_entry'] = float(addon['entry'])
+        addon['min_price_since_entry'] = float(addon['entry'])
+        addon['scale_level'] = int(scale_level)
+        return addon
 
     for idx in range(200, len(global_index)):
         current_time = global_index[idx]
@@ -1747,17 +1772,26 @@ def run_backtest():
 
                 # ===== 1. ПРОВЕРЯЕМ ВЫХОДЫ =====
         still_open = []
-        for pos in open_positions:
+        leader_sl_by_signal = {}
+        sorted_open_positions = sorted(open_positions, key=lambda p: (int(p.get("scale_level", 0)), p.get("timestamp")))
+        for pos in sorted_open_positions:
             symbol = pos['symbol']
             df = all_data[symbol]
+
+            if int(pos.get("scale_level", 0)) > 0 and pos.get("signal_id") in leader_sl_by_signal:
+                pos['sl'] = float(leader_sl_by_signal[pos['signal_id']])
             
             if current_time not in index_sets[symbol]:
+                if int(pos.get("scale_level", 0)) == 0:
+                    leader_sl_by_signal[pos.get("signal_id")] = float(pos.get("sl", 0.0))
                 still_open.append(pos)
                 continue
             
             # Берём индекс в df по времени
             pos_idx = time_to_pos[symbol].get(current_time)
             if pos_idx is None:
+                if int(pos.get("scale_level", 0)) == 0:
+                    leader_sl_by_signal[pos.get("signal_id")] = float(pos.get("sl", 0.0))
                 still_open.append(pos)
                 continue
             
@@ -1988,9 +2022,54 @@ def run_backtest():
                         bos_range.append(pos)
                 continue
 
+            if int(pos.get("scale_level", 0)) == 0:
+                leader_sl_by_signal[pos.get("signal_id")] = float(pos.get("sl", 0.0))
+            elif pos.get("signal_id") in leader_sl_by_signal:
+                pos['sl'] = float(leader_sl_by_signal[pos['signal_id']])
             still_open.append(pos)
 
         open_positions = still_open
+
+        # ===== 1.5 SCALE-IN FOR STRONG TREND TRADES =====
+        for leader in [p for p in open_positions if int(p.get("scale_level", 0)) == 0 and p.get("regime") == "TREND"]:
+            symbol = leader['symbol']
+            if current_time not in index_sets[symbol]:
+                continue
+
+            pos_idx = time_to_pos[symbol].get(current_time)
+            if pos_idx is None:
+                continue
+
+            row = all_data[symbol].iloc[pos_idx]
+            risk = float(np.nan_to_num(leader.get("initial_risk", 0.0), nan=0.0))
+            if risk <= 0:
+                continue
+
+            if leader.get('direction') == 'LONG':
+                favorable_r = (float(row['high']) - float(leader['entry'])) / risk
+            else:
+                favorable_r = (float(leader['entry']) - float(row['low'])) / risk
+
+            favorable_r = max(0.0, float(np.nan_to_num(favorable_r, nan=0.0)))
+            signal_id = leader.get("signal_id")
+            signal_positions = [p for p in open_positions if p.get("signal_id") == signal_id]
+            next_scale_level = int(max((p.get("scale_level", 0) for p in signal_positions), default=0)) + 1
+
+            if next_scale_level > 2 or len(signal_positions) >= 3 or len(open_positions) >= MAX_OPEN_TRADES:
+                continue
+
+            if favorable_r < float(next_scale_level):
+                continue
+
+            addon_pos = _build_scale_position(leader, row, current_time, next_scale_level)
+            open_positions.append(addon_pos)
+            tqdm.write(
+                f"   ➕ SCALE-IN {symbol} {leader['direction']} | "
+                f"уровень: {next_scale_level} | "
+                f"R: {favorable_r:.2f} | "
+                f"Вход: {addon_pos['entry']:.4f} | "
+                f"SL: {addon_pos['sl']:.4f}"
+            )
 
         # ===== 2. ЗАПИСЫВАЕМ КАПИТАЛ =====
         equity_curve.append({'time': current_time, 'capital': capital})
@@ -2177,6 +2256,9 @@ def run_backtest():
             pos["max_price_since_entry"] = float(pos["entry"])
             pos["min_price_since_entry"] = float(pos["entry"])
             pos["original_sl"] = float(pos["sl"])
+            pos["scale_level"] = 0
+            signal_counter += 1
+            pos["signal_id"] = signal_counter
             if pos["initial_risk"] <= 0:
                 pos["rr"] = 0.0
 
