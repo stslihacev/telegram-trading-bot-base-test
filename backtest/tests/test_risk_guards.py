@@ -8,6 +8,8 @@ from backtest.backtest_engine import (
     sanitize_pnl,
     sanitize_r,
     compute_atr_distances,
+    get_confidence_bucket,
+    calculate_position_size,
 )
 
 
@@ -170,3 +172,49 @@ def test_intrabar_trailing_stop_can_be_hit_within_same_candle_long():
     reason, price, _ = strategy.check_exit(trade, row, 0, df, pd.Index([]), pd.Index([]))
     assert reason == "stop_loss"
     assert price == 100.0
+
+
+def test_confidence_bucket_boundaries():
+    assert get_confidence_bucket(4.2) == ("full", 1.0)
+    assert get_confidence_bucket(4.0) == ("full", 1.0)
+    assert get_confidence_bucket(3.5) == ("half", 0.5)
+    assert get_confidence_bucket(3.0) == ("half", 0.5)
+    assert get_confidence_bucket(2.7) == ("small", 0.25)
+    assert get_confidence_bucket(2.5) == ("small", 0.25)
+    assert get_confidence_bucket(2.49) == ("reject", 0.0)
+
+
+def test_position_size_scales_with_confidence_bucket_risk():
+    base_data = {
+        "entry": 100.0,
+        "sl": 98.0,
+        "atr": 2.0,
+        "direction": "LONG",
+        "signal_type": "SWEEP",
+        "nearest_level": 98.0,
+    }
+    capital = 1000.0
+
+    full = dict(base_data, confidence=4.2)
+    half = dict(base_data, confidence=3.4)
+    small = dict(base_data, confidence=2.7)
+    reject = dict(base_data, confidence=2.4)
+
+    full_pos = calculate_position_size(full, capital, risk_factor=0.01)
+    half_pos = calculate_position_size(half, capital, risk_factor=0.01)
+    small_pos = calculate_position_size(small, capital, risk_factor=0.01)
+    reject_pos = calculate_position_size(reject, capital, risk_factor=0.01)
+
+    assert full["confidence_bucket"] == "full"
+    assert half["confidence_bucket"] == "half"
+    assert small["confidence_bucket"] == "small"
+    assert reject["confidence_bucket"] == "reject"
+
+    assert full["risk_amount"] == 10.0
+    assert half["risk_amount"] == 5.0
+    assert small["risk_amount"] == 2.5
+    assert reject["risk_amount"] == 0.0
+
+    assert half_pos == full_pos * 0.5
+    assert small_pos == full_pos * 0.25
+    assert reject_pos == 0.0

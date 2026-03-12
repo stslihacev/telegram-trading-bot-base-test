@@ -18,7 +18,6 @@ from features.htf_trend import calculate_htf_trend
 # Импорты из наших модулей
 from analysis.levels import get_nearest_levels
 from core.config import (
-    CONFIDENCE_THRESHOLD,
     MIN_RR,
     MAX_RR,
     VOLATILITY_THRESHOLD,
@@ -26,8 +25,6 @@ from core.config import (
     MODE_FILTER,
     ENABLE_BOS_IN_RANGE,
     ENABLE_SWEEP_IN_TREND,
-    SOFTER_CONFIDENCE_FILTER,
-    SOFTER_CONFIDENCE_THRESHOLD,
     MTF_EXECUTION_TIMEFRAMES,
     USE_DYNAMIC_ATR_SLTP,
     ATR_SL_MULTIPLIER,
@@ -285,11 +282,24 @@ def select_mtf_entry_candle(candles_15m, row, direction):
 
 
 
+def get_confidence_bucket(confidence):
+    """Возвращает bucket уверенности и множитель риска/размера позиции."""
+    safe_confidence = float(np.nan_to_num(confidence, nan=0.0))
+
+    if safe_confidence >= 4.0:
+        return "full", 1.0
+    if safe_confidence >= 3.0:
+        return "half", 0.5
+    if safe_confidence >= 2.5:
+        return "small", 0.25
+    return "reject", 0.0
+
+
 def calculate_position_size(entry_data, capital, risk_factor=0.01):
     """
     Адаптивный размер позиции:
     - финализирует SL после ATR/минимальной дистанции
-    - масштабирует риск по confidence (до x2)
+    - масштабирует риск по confidence-bucket (100% / 50% / 25%)
     - пишет результат в entry_data['position_size']
     """
     entry = float(entry_data.get("entry", 0.0) or 0.0)
@@ -299,6 +309,8 @@ def calculate_position_size(entry_data, capital, risk_factor=0.01):
 
     if entry <= 0 or direction not in {"LONG", "SHORT"}:
         entry_data["position_size"] = 0.0
+        entry_data["risk_amount"] = 0.0
+        entry_data["confidence_bucket"] = "reject"
         return 0.0
 
     atr_floor = max(atr * 0.3, 1e-9)
@@ -329,10 +341,15 @@ def calculate_position_size(entry_data, capital, risk_factor=0.01):
         corrected_sl = entry + sl_distance
     entry_data["sl"] = float(np.clip(corrected_sl, -SAFE_FLOAT_LIMIT, SAFE_FLOAT_LIMIT))
 
-    # Риск с масштабированием по confidence (до x2)
     confidence = float(entry_data.get("confidence", 0) or 0)
-    confidence_multiplier = np.clip(1.0 + confidence / 5.0, 1.0, 2.0)
-    adjusted_risk = float(np.clip(risk_factor * confidence_multiplier, 0.0001, risk_factor * 2.0))
+    confidence_bucket, position_scale = get_confidence_bucket(confidence)
+    entry_data["confidence_bucket"] = confidence_bucket
+    adjusted_risk = float(np.clip(risk_factor * position_scale, 0.0, risk_factor))
+
+    if adjusted_risk <= 0:
+        entry_data["position_size"] = 0.0
+        entry_data["risk_amount"] = 0.0
+        return 0.0
 
     safe_capital = float(np.clip(capital, 0.0, SAFE_FLOAT_LIMIT))
     position_size = (safe_capital * adjusted_risk) / sl_distance
@@ -1416,7 +1433,7 @@ class BosStrategy(Strategy):
         if signal_type == "BOS":
             confidence += 1.0 if has_fvg else -0.5
         
-        confidence_threshold = SOFTER_CONFIDENCE_THRESHOLD if SOFTER_CONFIDENCE_FILTER else CONFIDENCE_THRESHOLD
+        confidence_threshold = 2.5
         if confidence < confidence_threshold:
             return self._reject("rejected_confidence", symbol, i, f"confidence {confidence:.2f} below threshold {confidence_threshold:.2f}")
 
@@ -1466,6 +1483,7 @@ class BosStrategy(Strategy):
             'plus_di': round(plus_di, 4),
             'minus_di': round(minus_di, 4),
             'confidence': confidence,
+            'confidence_bucket': get_confidence_bucket(confidence)[0],
             'bos': locals().get("bos"),
             'fvg': locals().get("fvg"),
             'liquidity_sweep': locals().get("liquidity_sweep", locals().get("sweep_type")),
