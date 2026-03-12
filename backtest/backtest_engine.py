@@ -1249,6 +1249,7 @@ class BosStrategy(Strategy):
 
         if signal_type == "BOS":
             zone_touch_confirmed = entry_mode == "momentum"
+            entry_type = "inside_zone" if entry_mode == "momentum" else None
 
             if direction == "LONG":
 
@@ -1274,7 +1275,16 @@ class BosStrategy(Strategy):
                     )
                     zone_low = zone_level - zone_width
                     zone_high = zone_level + zone_width
-                    zone_touch_confirmed = zone_touch_confirmed or (low_arr[i] <= zone_high and high_arr[i] >= zone_low)
+                    zone_size = zone_high - zone_low
+                    entry_zone_tolerance = 0.25 * zone_size
+                    inside_zone = zone_low <= entry <= zone_high
+                    near_zone = (zone_low - entry_zone_tolerance) <= entry <= (zone_high + entry_zone_tolerance)
+                    if inside_zone:
+                        zone_touch_confirmed = True
+                        entry_type = "inside_zone"
+                    elif near_zone:
+                        zone_touch_confirmed = True
+                        entry_type = "near_zone"
 
                 tp = None
 
@@ -1300,7 +1310,16 @@ class BosStrategy(Strategy):
                     )
                     zone_low = zone_level - zone_width
                     zone_high = zone_level + zone_width
-                    zone_touch_confirmed = zone_touch_confirmed or (low_arr[i] <= zone_high and high_arr[i] >= zone_low)
+                    zone_size = zone_high - zone_low
+                    entry_zone_tolerance = 0.25 * zone_size
+                    inside_zone = zone_low <= entry <= zone_high
+                    near_zone = (zone_low - entry_zone_tolerance) <= entry <= (zone_high + entry_zone_tolerance)
+                    if inside_zone:
+                        zone_touch_confirmed = True
+                        entry_type = "inside_zone"
+                    elif near_zone:
+                        zone_touch_confirmed = True
+                        entry_type = "near_zone"
 
                 tp = None
 
@@ -1370,6 +1389,8 @@ class BosStrategy(Strategy):
             confidence += 1.0 if has_fvg else -0.5
         
         confidence_threshold = SOFTER_CONFIDENCE_THRESHOLD if SOFTER_CONFIDENCE_FILTER else CONFIDENCE_THRESHOLD
+        if signal_type == "BOS" and locals().get("entry_type") == "near_zone":
+            confidence *= 0.8
         if confidence < confidence_threshold:
             return self._reject("rejected_confidence", symbol, i, f"confidence {confidence:.2f} below threshold {confidence_threshold:.2f}")
 
@@ -1435,6 +1456,7 @@ class BosStrategy(Strategy):
         }
         if signal_type == "BOS":
             entry_data["entry_mode"] = entry_mode
+            entry_data["entry_type"] = locals().get("entry_type", "inside_zone")
             entry_data["candles_since_bos"] = candles_since_bos
 
         # ===== EMA50 позиция для BOS =====
