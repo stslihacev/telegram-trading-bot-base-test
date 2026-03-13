@@ -1574,11 +1574,13 @@ class BosStrategy(Strategy):
         
         if signal_type == "BOS":
             zone_touch_confirmed = entry_mode == "momentum"
+            zone_entry_type = None
             signal_key = None
             zone_touch_low = None
             zone_touch_high = None
             ladder_levels = []
             touched_levels = []
+            partial_entry_anchor = None
 
             # More permissive BOS zone touch: wider ATR gate and explicit zone expansion.
             zone_atr_tolerance_multiplier = 1.5
@@ -1610,6 +1612,22 @@ class BosStrategy(Strategy):
                     zone_size_at_entry = zone_width
                     zone_low = zone_level - zone_width
                     zone_high = zone_level + zone_width
+
+                    # PATCH: dynamic zone size
+                    zone_span = abs(zone_high - zone_low)
+                    minimum_zone = atr_arr[i] * 0.15
+                    if zone_span < minimum_zone:
+                        zone_mid = (zone_high + zone_low) / 2.0
+                        half_zone = minimum_zone / 2.0
+                        zone_low = zone_mid - half_zone
+                        zone_high = zone_mid + half_zone
+                        zone_span = minimum_zone
+                    zone_size_at_entry = zone_span
+
+                    # PATCH: zone tolerance
+                    zone_tolerance = zone_span * 0.4
+                    partial_entry_anchor = zone_high - zone_tolerance
+
                     zone_touch_low, zone_touch_high = expand_zone_with_tolerance(
                         zone_low,
                         zone_high,
@@ -1662,6 +1680,22 @@ class BosStrategy(Strategy):
                     zone_size_at_entry = zone_width
                     zone_low = zone_level - zone_width
                     zone_high = zone_level + zone_width
+
+                    # PATCH: dynamic zone size
+                    zone_span = abs(zone_high - zone_low)
+                    minimum_zone = atr_arr[i] * 0.15
+                    if zone_span < minimum_zone:
+                        zone_mid = (zone_high + zone_low) / 2.0
+                        half_zone = minimum_zone / 2.0
+                        zone_low = zone_mid - half_zone
+                        zone_high = zone_mid + half_zone
+                        zone_span = minimum_zone
+                    zone_size_at_entry = zone_span
+
+                    # PATCH: zone tolerance
+                    zone_tolerance = zone_span * 0.4
+                    partial_entry_anchor = zone_low + zone_tolerance
+
                     zone_touch_low, zone_touch_high = expand_zone_with_tolerance(
                         zone_low,
                         zone_high,
@@ -1698,6 +1732,7 @@ class BosStrategy(Strategy):
                         entry_level = level_num
                         used_levels.add(level_num)
                         zone_touch_confirmed = True
+                        zone_entry_type = "full"
                         break
 
             # Fallback: if candle entered expanded zone but missed ladder level prints,
@@ -1723,14 +1758,44 @@ class BosStrategy(Strategy):
                     entry_level = nearest_level_num
                     used_levels.add(nearest_level_num)
                     zone_touch_confirmed = True
+                    zone_entry_type = "full"
                     tqdm.write(
                         f"[BOS:FALLBACK] {symbol} idx={i} {direction} nearest_level={nearest_level_num} "
                         f"price={nearest_price:.4f} close={close_arr[i]:.4f}"
                     )
 
+            # PATCH: zone tolerance
+            if (
+                not zone_touch_confirmed
+                and partial_entry_anchor is not None
+            ):
+                if direction == "LONG":
+                    partial_hit = high_arr[i] >= partial_entry_anchor and low_arr[i] <= zone_high
+                else:
+                    partial_hit = low_arr[i] <= partial_entry_anchor and high_arr[i] >= zone_low
+
+                if partial_hit:
+                    entry = partial_entry_anchor
+                    entry_level = 2
+                    zone_touch_confirmed = True
+                    zone_entry_type = "partial"
+
+            # PATCH: momentum entry
+            momentum_ratio = candle_body / candle_range if candle_range > 0 else 0.0
+            if (
+                not zone_touch_confirmed
+                and momentum_ratio > 0.65
+                and adx > 32
+            ):
+                entry = close_arr[i]
+                entry_level = None
+                entry_mode = "momentum"
+                zone_touch_confirmed = True
+                zone_entry_type = "momentum"
+
             tp = None
 
-            if not zone_touch_confirmed and entry_mode == "momentum":
+            if not zone_touch_confirmed:
                 return self._reject("rejected_entry_zone", symbol, i, "entry zone not reached within tolerance band")
 
         # =========================
@@ -1865,6 +1930,7 @@ class BosStrategy(Strategy):
             'timestamp': df.index[i] if hasattr(df.index, '__getitem__') else i,
             'confidence_threshold_used': confidence_threshold,
             'entry_type': 'momentum' if entry_mode == 'momentum' else 'zone',
+            'zone_entry_type': zone_entry_type if signal_type == "BOS" else None,
             'htf_filter_variant': HTF_FILTER_VARIANT,
             'htf_filter_applied': HTF_FILTER_VARIANT != 'NONE'
         }
@@ -1912,6 +1978,7 @@ def run_backtest():
         "rejected_other"
     ]
     filter_stats["zone_entries"] = 0
+    filter_stats["zone_partial_entries"] = 0
     filter_stats["momentum_entries"] = 0
     filter_stats["zone_size_at_entry"] = 0.0
     filter_stats["zone_size_at_entry_count"] = 0
@@ -2025,44 +2092,44 @@ def run_backtest():
     all_data, all_data_15m, all_data_30m, all_data_4h, all_arrays, swing_indices = load_all_data(processed)
 
     # ===== WALK-FORWARD SPLIT ТЕСТ =====
-    split_ratio = 0.7
-    mode = "train"   # ← меняешь на "test" или "train" или "full" когда нужно
-
-    for symbol in list(all_data.keys()):
-        df = all_data[symbol]
-        split_index = int(len(df) * split_ratio)
-
-        if mode == "train":
-            df = df.iloc[:split_index]
-        else:
-            df = df.iloc[split_index:]
-
-        all_data[symbol] = df
-
-        # Обновляем массивы под новый df
-        all_arrays[symbol] = {
-            "close": df["close"].values,
-            "high": df["high"].values,
-            "low": df["low"].values,
-            "ema200": df["ema200"].values,
-            "open": df["open"].values,
-            "ema50": df["ema50"].values,
-            "adx": df["adx"].values,
-            "atr": df["atr"].values,
-            "atr_mean_50": df["atr_mean_50"].values,
-            "plus_di": df["plus_di"].values,
-            "minus_di": df["minus_di"].values
-        }
-        # 🔧 Пересчитываем swing индексы
-        swing_low_indices = np.where(df["swing_low"].values == True)[0]
-        swing_high_indices = np.where(df["swing_high"].values == True)[0]
-
-        swing_indices[symbol] = {
-            'low': swing_low_indices,
-            'high': swing_high_indices
-        }
-
-    print(f"🚀 WALK FORWARD MODE: {mode.upper()}")
+#    split_ratio = 0.7
+#    mode = "train"   # ← меняешь на "test" или "train" когда нужно
+#
+#    for symbol in list(all_data.keys()):
+#        df = all_data[symbol]
+#        split_index = int(len(df) * split_ratio)
+#
+#        if mode == "train":
+#            df = df.iloc[:split_index]
+#        else:
+#            df = df.iloc[split_index:]
+#
+#        all_data[symbol] = df
+#
+#        # Обновляем массивы под новый df
+#        all_arrays[symbol] = {
+#            "close": df["close"].values,
+#            "high": df["high"].values,
+#            "low": df["low"].values,
+#            "ema200": df["ema200"].values,
+#            "open": df["open"].values,
+#            "ema50": df["ema50"].values,
+#            "adx": df["adx"].values,
+#            "atr": df["atr"].values,
+#            "atr_mean_50": df["atr_mean_50"].values,
+#            "plus_di": df["plus_di"].values,
+#            "minus_di": df["minus_di"].values
+#        }
+#        # 🔧 Пересчитываем swing индексы
+#        swing_low_indices = np.where(df["swing_low"].values == True)[0]
+#        swing_high_indices = np.where(df["swing_high"].values == True)[0]
+#
+#        swing_indices[symbol] = {
+#            'low': swing_low_indices,
+#            'high': swing_high_indices
+#        }
+#
+#    print(f"🚀 WALK FORWARD MODE: {mode.upper()}")
 
     if not all_data:
         print("❌ Нет данных для анализа")
@@ -2668,6 +2735,9 @@ def run_backtest():
                 filter_stats["momentum_entries"] += 1
             else:
                 filter_stats["zone_entries"] += 1
+
+            if entry_data.get("zone_entry_type") == "partial":
+                filter_stats["zone_partial_entries"] += 1
 
             zone_size_used = entry_data.get("zone_size_at_entry")
             if zone_size_used is not None:
