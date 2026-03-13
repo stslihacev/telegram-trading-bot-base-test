@@ -56,6 +56,7 @@ SAFE_FLOAT_LIMIT = 1e12
 MAX_PNL_CLIP = 1e6
 MAX_R_CLIP = 100
 MIN_R_CLIP = -100
+RISK_PER_TRADE = 0.01
 
 os.makedirs(os.path.dirname(PROGRESS_FILE), exist_ok=True)
 
@@ -1109,6 +1110,201 @@ def _print_excursion_analysis(trades_df):
     print(f"average MAE: {avg_mae:.2f}R")
     print(f"median MAE: {med_mae:.2f}R")
 
+def _run_backtest_audit(trades_df, equity_df):
+    os.makedirs("backtest/results", exist_ok=True)
+    audit_df = trades_df.copy()
+
+    if len(audit_df) == 0:
+        print("\n===== BACKTEST AUDIT =====")
+        print("Нет сделок для аудита")
+        return
+
+    print("\n===== BACKTEST AUDIT =====")
+    print(f"initial_capital: {INITIAL_CAPITAL}")
+    print(f"risk_per_trade: {RISK_PER_TRADE}")
+
+    for col, default in [
+        ("entry", 0.0),
+        ("exit_price", 0.0),
+        ("rr", 0.0),
+        ("pnl", 0.0),
+        ("confidence", 0.0),
+        ("position_size", 0.0),
+        ("trade_risk", 0.0),
+        ("capital_before_entry", INITIAL_CAPITAL),
+        ("bars_alive", 0),
+        ("mfe_r", 0.0),
+        ("mae_r", 0.0),
+    ]:
+        if col not in audit_df.columns:
+            audit_df[col] = default
+
+    for ts_col in ["timestamp", "exit_time"]:
+        if ts_col in audit_df.columns:
+            audit_df[ts_col] = pd.to_datetime(audit_df[ts_col], errors="coerce")
+
+    audit_df["trade_duration_bars"] = pd.to_numeric(audit_df["bars_alive"], errors="coerce").fillna(0).astype(int)
+    if "timestamp" in audit_df.columns and "exit_time" in audit_df.columns:
+        audit_df["trade_duration"] = (
+            audit_df["exit_time"] - audit_df["timestamp"]
+        ).dt.total_seconds() / 60
+    else:
+        audit_df["trade_duration"] = np.nan
+
+    # 1) Position sizing and risk checks
+    sizing_rows = audit_df[["symbol", "capital_before_entry", "position_size", "trade_risk", "pnl"]].head(20)
+    print("\nPosition sizing sample (first 20 trades):")
+    for _, row in sizing_rows.iterrows():
+        expected_position_size = float(row["capital_before_entry"]) * RISK_PER_TRADE
+        print(
+            f"{row.get('symbol', 'N/A')}: capital={row['capital_before_entry']:.4f}, "
+            f"position_size={row['position_size']:.6f}, expected={expected_position_size:.6f}, "
+            f"trade_risk={row['trade_risk']:.6f}"
+        )
+
+    risk_violations = []
+    for _, row in audit_df.iterrows():
+        trade_loss = max(-float(np.nan_to_num(row.get("pnl", 0.0), nan=0.0)), 0.0)
+        trade_risk = max(float(np.nan_to_num(row.get("trade_risk", 0.0), nan=0.0)), 0.0)
+        if trade_loss > trade_risk + 1e-9:
+            risk_violations.append((row.get("symbol"), row.get("timestamp"), trade_loss, trade_risk))
+            print("RISK VIOLATION")
+
+    # 2) Top 20 RR trades
+    top_rr = audit_df.sort_values("rr", ascending=False).head(20).copy()
+    top_rr_export = pd.DataFrame({
+        "symbol": top_rr.get("symbol"),
+        "entry_price": top_rr.get("entry"),
+        "exit_price": top_rr.get("exit_price"),
+        "RR": top_rr.get("rr"),
+        "PnL": top_rr.get("pnl"),
+        "trade_duration": top_rr.get("trade_duration"),
+        "entry_type": top_rr.get("entry_type"),
+        "confidence": top_rr.get("confidence"),
+    })
+    print("\nTop 20 trades by RR:")
+    print(top_rr_export.to_string(index=False))
+    top_rr_export.to_csv("backtest/results/top_rr_trades.csv", index=False)
+
+    # 3) Excursion distribution export
+    excursion_df = pd.DataFrame({
+        "symbol": audit_df.get("symbol"),
+        "entry_time": audit_df.get("timestamp"),
+        "exit_time": audit_df.get("exit_time"),
+        "MFE": audit_df.get("mfe_r"),
+        "MAE": audit_df.get("mae_r"),
+        "final_R": audit_df.get("rr"),
+    })
+    excursion_df.to_csv("backtest/results/excursion_analysis.csv", index=False)
+    mfe_series = pd.to_numeric(audit_df["mfe_r"], errors="coerce").replace([np.inf, -np.inf], np.nan).dropna()
+    max_mfe = float(mfe_series.max()) if len(mfe_series) else 0.0
+    median_mfe = float(mfe_series.median()) if len(mfe_series) else 0.0
+    p95_mfe = float(mfe_series.quantile(0.95)) if len(mfe_series) else 0.0
+    print(f"\nmax_MFE: {max_mfe:.4f}")
+    print(f"median_MFE: {median_mfe:.4f}")
+    print(f"95_percentile_MFE: {p95_mfe:.4f}")
+
+    # 4) Momentum vs zone entries
+    entry_type_series = audit_df.get("entry_type", pd.Series(["unknown"] * len(audit_df))).fillna("unknown")
+    momentum_df = audit_df[entry_type_series == "momentum"]
+    zone_df = audit_df[entry_type_series == "zone"]
+
+    def _calc_pf(df_part):
+        gross_profit = float(df_part[df_part["pnl"] > 0]["pnl"].sum()) if len(df_part) else 0.0
+        gross_loss = abs(float(df_part[df_part["pnl"] < 0]["pnl"].sum())) if len(df_part) else 0.0
+        return gross_profit / gross_loss if gross_loss > 0 else 0.0
+
+    momentum_winrate = (len(momentum_df[momentum_df["pnl"] > 0]) / len(momentum_df) * 100) if len(momentum_df) else 0.0
+    momentum_avg_pnl = float(momentum_df["pnl"].mean()) if len(momentum_df) else 0.0
+    momentum_pf = _calc_pf(momentum_df)
+    zone_winrate = (len(zone_df[zone_df["pnl"] > 0]) / len(zone_df) * 100) if len(zone_df) else 0.0
+    zone_avg_pnl = float(zone_df["pnl"].mean()) if len(zone_df) else 0.0
+    zone_pf = _calc_pf(zone_df)
+
+    print("\nMomentum vs Zone entries:")
+    print(
+        f"momentum_trades={len(momentum_df)}, momentum_winrate={momentum_winrate:.2f}%, "
+        f"momentum_avg_pnl={momentum_avg_pnl:.4f}, momentum_profit_factor={momentum_pf:.4f}"
+    )
+    print(
+        f"zone_trades={len(zone_df)}, zone_winrate={zone_winrate:.2f}%, "
+        f"zone_avg_pnl={zone_avg_pnl:.4f}, zone_profit_factor={zone_pf:.4f}"
+    )
+
+    # 5) Equity curve validation
+    if len(equity_df) > 0 and "capital" in equity_df.columns:
+        equity_local = equity_df.copy()
+        equity_local["capital"] = pd.to_numeric(equity_local["capital"], errors="coerce").fillna(INITIAL_CAPITAL)
+        equity_local["peak"] = equity_local["capital"].cummax()
+        drawdown = (equity_local["peak"] - equity_local["capital"]) / equity_local["peak"].replace(0, np.nan)
+        max_drawdown = float(drawdown.fillna(0.0).max())
+        max_equity_peak = float(equity_local["peak"].max())
+        print(f"\nmax drawdown: {max_drawdown * 100:.2f}%")
+        print(f"max equity peak: {max_equity_peak:.4f}")
+        equity_local.to_csv("backtest/results/equity_curve.csv", index=False)
+    else:
+        max_drawdown = 0.0
+        max_equity_peak = float(INITIAL_CAPITAL)
+
+    # 6) Duplicate trade timestamp detection
+    duplicate_count = 0
+    if "timestamp" in audit_df.columns:
+        audit_df = audit_df.sort_values("timestamp")
+        prev_entry_time = None
+        for _, row in audit_df.iterrows():
+            entry_time = row.get("timestamp")
+            if pd.notna(entry_time) and prev_entry_time is not None and entry_time == prev_entry_time:
+                duplicate_count += 1
+                print(f"WARNING: duplicate entry timestamp detected at {entry_time}")
+            prev_entry_time = entry_time if pd.notna(entry_time) else prev_entry_time
+
+    # 7) Impossible trade durations
+    impossible_duration = audit_df[(audit_df["trade_duration_bars"] < 1) | (audit_df["trade_duration_bars"] > 500)]
+    if len(impossible_duration) > 0:
+        print(f"\nImpossible duration trades: {len(impossible_duration)}")
+        print(impossible_duration[["symbol", "timestamp", "exit_time", "trade_duration_bars"]].head(20).to_string(index=False))
+
+    # 8) Full trade log export
+    full_trade_log = pd.DataFrame({
+        "symbol": audit_df.get("symbol"),
+        "entry_time": audit_df.get("timestamp"),
+        "exit_time": audit_df.get("exit_time"),
+        "entry_price": audit_df.get("entry"),
+        "exit_price": audit_df.get("exit_price"),
+        "stop_loss": audit_df.get("original_sl", audit_df.get("sl")),
+        "RR": audit_df.get("rr"),
+        "PnL": audit_df.get("pnl"),
+        "confidence": audit_df.get("confidence"),
+        "entry_type": audit_df.get("entry_type"),
+        "regime": audit_df.get("regime"),
+        "ADX": audit_df.get("adx"),
+    })
+    full_trade_log.to_csv("backtest/results/full_trade_log.csv", index=False)
+
+    # 9) Summary
+    largest_winning_trade = audit_df.loc[audit_df["pnl"].idxmax()] if len(audit_df) else None
+    largest_losing_trade = audit_df.loc[audit_df["pnl"].idxmin()] if len(audit_df) else None
+    median_trade_duration = float(audit_df["trade_duration_bars"].median()) if len(audit_df) else 0.0
+    median_rr = float(pd.to_numeric(audit_df["rr"], errors="coerce").median()) if len(audit_df) else 0.0
+
+    print("\nAudit summary:")
+    if largest_winning_trade is not None:
+        print(
+            f"largest winning trade: {largest_winning_trade.get('symbol')} | "
+            f"PnL={largest_winning_trade.get('pnl', 0):.4f} | RR={largest_winning_trade.get('rr', 0):.4f}"
+        )
+    if largest_losing_trade is not None:
+        print(
+            f"largest losing trade: {largest_losing_trade.get('symbol')} | "
+            f"PnL={largest_losing_trade.get('pnl', 0):.4f} | RR={largest_losing_trade.get('rr', 0):.4f}"
+        )
+    print("top 10 RR trades:")
+    print(top_rr_export.head(10).to_string(index=False))
+    print(f"median trade duration: {median_trade_duration:.2f} bars")
+    print(f"median RR: {median_rr:.4f}")
+    print(f"risk violations: {len(risk_violations)}")
+    print(f"duplicate timestamp warnings: {duplicate_count}")
+
 def print_final_report(
     trades_df,
     equity_df,
@@ -1239,6 +1435,8 @@ def print_final_report(
     os.makedirs("backtest/results", exist_ok=True)
     trades_df.to_csv(f"backtest/results/trades_{timestamp}.csv", index=False)
     equity_df.to_csv(f"backtest/results/equity_{timestamp}.csv", index=False)
+
+    _run_backtest_audit(trades_df, equity_df)
 
     print(f"\n✅ Результаты сохранены в backtest/results/")
 
@@ -2188,6 +2386,7 @@ def run_backtest():
 
     pbar = tqdm(total=total_steps, desc="⏳ Портфельный анализ")
     signal_counter = 0
+    previous_entry_time = None
 
     def _build_scale_position(base_pos, row, current_time, scale_level):
         addon = base_pos.copy()
@@ -2692,9 +2891,18 @@ def run_backtest():
                 tqdm.write(f"   ⚠️ {symbol}: некорректный entry_price, пропускаем")
                 continue
 
-            position_size = calculate_position_size(entry_data, capital, risk_factor=0.01)
+            position_size = calculate_position_size(entry_data, capital, risk_factor=RISK_PER_TRADE)
             max_position = float(np.clip((capital * 50.0) / max(entry_price, 1e-9), 0.0, SAFE_FLOAT_LIMIT))
             position_size = float(np.clip(np.nan_to_num(position_size, nan=0.0, posinf=0.0, neginf=0.0), 0.0, max_position))
+            trade_risk = float(np.clip(np.nan_to_num(entry_data.get("risk_amount", capital * RISK_PER_TRADE), nan=0.0), 0.0, SAFE_FLOAT_LIMIT))
+            expected_position_size = float(np.clip(capital * RISK_PER_TRADE, 0.0, SAFE_FLOAT_LIMIT))
+
+            print(
+                f"[AUDIT:RISK] symbol={symbol} initial_capital={INITIAL_CAPITAL:.4f} "
+                f"capital={capital:.4f} risk_per_trade={RISK_PER_TRADE:.4f} "
+                f"position_size={position_size:.6f} expected_position_size={expected_position_size:.6f} "
+                f"trade_risk={trade_risk:.6f}"
+            )
 
             if position_size <= 0:
                 filter_stats["rejected_before_entry"] += 1
@@ -2703,11 +2911,18 @@ def run_backtest():
                 continue
         
             entry_data["position_size"] = position_size
+            entry_data["capital_before_entry"] = float(np.clip(capital, -SAFE_FLOAT_LIMIT, SAFE_FLOAT_LIMIT))
+            entry_data["trade_risk"] = trade_risk
 
             print(f"Dynamic threshold={confidence_threshold:.2f}, p_profit={p_profit:.2f}, volume={(features['volume'] if features['volume'] is not None else 0):.2f}, pos_size={position_size:.2f}")
 
             pos = entry_data.copy()
             pos.setdefault('entry_type', 'momentum' if pos.get('entry_mode') == 'momentum' else 'zone')
+
+            current_entry_time = pos.get('timestamp')
+            if previous_entry_time is not None and current_entry_time == previous_entry_time:
+                print(f"WARNING: duplicate signal entry_time detected ({current_entry_time})")
+            previous_entry_time = current_entry_time
 
             # служебные поля
             pos["symbol"] = symbol
