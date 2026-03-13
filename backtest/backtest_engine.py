@@ -74,6 +74,8 @@ HTF_FILTER_VARIANT = os.getenv("HTF_FILTER_VARIANT", "NONE").upper()  # NONE|EMA
 ENTRY_CONFIRMATION_VARIANT = os.getenv("ENTRY_CONFIRMATION_VARIANT", "NONE").upper()  # NONE|A|B|C|D
 MOMENTUM_ENTRY_CANDLES = int(os.getenv("MOMENTUM_ENTRY_CANDLES", "7"))
 MOMENTUM_ENTRY_MAX_EXTENSION = int(os.getenv("MOMENTUM_ENTRY_MAX_EXTENSION", "20"))
+MTF_FILTER_ADX_MIN_1H = float(os.getenv("MTF_FILTER_ADX_MIN_1H", "20"))
+MTF_FILTER_ADX_MIN_4H = float(os.getenv("MTF_FILTER_ADX_MIN_4H", "20"))
 
 
 def get_adaptive_zone_atr_multiplier(confidence):
@@ -1247,6 +1249,57 @@ class BosStrategy(Strategy):
         self._rejection_log_counts = defaultdict(int)
         self._last_bos_context = {}
         self._entry_ladder_fills = defaultdict(set)
+        self.stats = defaultdict(int)
+        self.stats.setdefault("rejected_1h_filter", 0)
+        self.stats.setdefault("rejected_4h_filter", 0)
+        self.filter_config = {
+            "adx_min_1h": MTF_FILTER_ADX_MIN_1H,
+            "adx_min_4h": MTF_FILTER_ADX_MIN_4H,
+        }
+
+    def _trend_from_row(self, row):
+        close_price = float(np.nan_to_num(row.get("close", np.nan), nan=np.nan))
+        ema50_value = float(np.nan_to_num(row.get("ema50", np.nan), nan=np.nan))
+        ema200_value = float(np.nan_to_num(row.get("ema200", np.nan), nan=np.nan))
+        if np.isnan(close_price):
+            return None
+        if not np.isnan(ema50_value):
+            if close_price > ema50_value:
+                return "LONG"
+            if close_price < ema50_value:
+                return "SHORT"
+        if not np.isnan(ema200_value):
+            if close_price > ema200_value:
+                return "LONG"
+            if close_price < ema200_value:
+                return "SHORT"
+        return None
+
+    def check_mtf_filters(self, symbol, i, direction, df, df_4h=None):
+        """Returns True when both 1H/4H trend + ADX filters pass."""
+        current_row = df.iloc[i]
+        trend_1h = self._trend_from_row(current_row)
+        adx_1h = float(np.nan_to_num(current_row.get("adx", np.nan), nan=0.0))
+        if trend_1h != direction or adx_1h < self.filter_config["adx_min_1h"]:
+            self.stats["rejected_1h_filter"] += 1
+            return False
+
+        if df_4h is None or len(df_4h) == 0:
+            self.stats["rejected_4h_filter"] += 1
+            return False
+
+        htf_row = df_4h[df_4h.index <= df.index[i]].tail(1)
+        if len(htf_row) == 0:
+            self.stats["rejected_4h_filter"] += 1
+            return False
+
+        trend_4h = self._trend_from_row(htf_row.iloc[-1])
+        adx_4h = float(np.nan_to_num(htf_row.iloc[-1].get("adx", np.nan), nan=0.0))
+        if trend_4h != direction or adx_4h < self.filter_config["adx_min_4h"]:
+            self.stats["rejected_4h_filter"] += 1
+            return False
+
+        return True
 
     def _reject(self, reason, symbol, i, message):
         self.last_rejection_reason = reason
@@ -1668,6 +1721,11 @@ class BosStrategy(Strategy):
             if tp is None or sl is None:
                 return self._reject("rejected_entry_zone", symbol, i, "entry zone not reached: nearest levels missing")
         
+        if signal_type in ["BOS", "SWEEP"]:
+            passed_mtf = self.check_mtf_filters(symbol, i, direction, df, df_4h)
+            if not passed_mtf:
+                return self._reject("rejected_mtf_filter", symbol, i, "failed 1H/4H filter")
+
         # Проверка, что уровни имеют смысл
         if direction == "LONG":
             if sl >= entry:
@@ -1818,6 +1876,7 @@ def run_backtest():
     filter_stats = defaultdict(int)
     rejection_breakdown_keys = [
         "rejected_entry_zone",
+        "rejected_mtf_filter",
         "rejected_price_condition",
         "rejected_fvg",
         "rejected_confidence",
@@ -2634,6 +2693,8 @@ def run_backtest():
     )
 
     print("\n📈 FILTER CONFIG STATS")
+    for key, value in strategy.stats.items():
+        filter_stats[key] += value
     for key, value in sorted(filter_stats.items()):
         print(f"{key}: {value}")
 
