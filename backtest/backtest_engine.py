@@ -61,23 +61,71 @@ os.makedirs(os.path.dirname(PROGRESS_FILE), exist_ok=True)
 
 # ===== РЕЖИМ РАБОТЫ =====
 #MODE = "TEST"
-MODE = "FULL"
+#MODE = "FULL"
+MODE = os.getenv("BACKTEST_MODE", "FULL").upper()
 # ========================
 
 REJECTION_LOGGING_ENABLED = os.getenv("BACKTEST_REJECTION_LOGS", "1") == "1"
 REJECTION_LOG_LIMIT_PER_REASON = max(0, int(os.getenv("BACKTEST_REJECTION_LOG_LIMIT", "10")))
 ENTRY_ZONE_TOLERANCE_PCT = float(os.getenv("ENTRY_ZONE_TOLERANCE_PCT", "0.0015"))
 ENTRY_ZONE_ATR_MULTIPLIER = float(os.getenv("ENTRY_ZONE_ATR_MULTIPLIER", "0.25"))
+ENTRY_CONDITION_VARIANT = os.getenv("ENTRY_CONDITION_VARIANT", "B").upper()  # A|B|C
+HTF_FILTER_VARIANT = os.getenv("HTF_FILTER_VARIANT", "NONE").upper()  # NONE|EMA|BOS|ADX
+ENTRY_CONFIRMATION_VARIANT = os.getenv("ENTRY_CONFIRMATION_VARIANT", "NONE").upper()  # NONE|A|B|C|D
 MOMENTUM_ENTRY_CANDLES = int(os.getenv("MOMENTUM_ENTRY_CANDLES", "7"))
 MOMENTUM_ENTRY_MAX_EXTENSION = int(os.getenv("MOMENTUM_ENTRY_MAX_EXTENSION", "20"))
 
 
 def get_adaptive_zone_atr_multiplier(confidence):
+    if ENTRY_ZONE_ATR_MULTIPLIER > 0:
+        return ENTRY_ZONE_ATR_MULTIPLIER
     if confidence < 4.0:
         return 0.25
     if confidence < 5.0:
         return 0.5
     return 0.75
+
+
+def zone_level_touched(level_price, high_price, low_price, close_price, atr_value, zone_low, zone_high):
+    if ENTRY_CONDITION_VARIANT == "A":
+        return zone_low <= close_price <= zone_high
+    if ENTRY_CONDITION_VARIANT == "C":
+        atr_buffer = max(0.5 * float(np.nan_to_num(atr_value, nan=0.0)), 0.0)
+        if zone_low <= close_price <= zone_high:
+            return True
+        if close_price < zone_low:
+            return (zone_low - close_price) <= atr_buffer
+        return (close_price - zone_high) <= atr_buffer
+    return low_price <= level_price <= high_price
+
+
+def build_4h_frame(df_1h):
+    ohlc = {
+        "open": "first",
+        "high": "max",
+        "low": "min",
+        "close": "last",
+        "volume": "sum",
+    }
+    df_4h = df_1h.resample("4h").agg(ohlc).dropna()
+    if len(df_4h) == 0:
+        return df_4h
+    df_4h["ema50"] = df_4h["close"].ewm(span=50, adjust=False).mean()
+    df_4h["ema200"] = df_4h["close"].ewm(span=200, adjust=False).mean()
+    high = df_4h["high"]
+    low = df_4h["low"]
+    close = df_4h["close"]
+    tr = pd.concat([(high - low), (high - close.shift()).abs(), (low - close.shift()).abs()], axis=1).max(axis=1)
+    atr = tr.rolling(14).mean()
+    plus_dm = high.diff()
+    minus_dm = (low.diff() * -1)
+    plus_dm = plus_dm.where((plus_dm > minus_dm) & (plus_dm > 0), 0.0)
+    minus_dm = minus_dm.where((minus_dm > plus_dm) & (minus_dm > 0), 0.0)
+    plus_di = 100 * (plus_dm.rolling(14).mean() / atr)
+    minus_di = 100 * (minus_dm.rolling(14).mean() / atr)
+    dx = (abs(plus_di - minus_di) / (plus_di + minus_di)) * 100
+    df_4h["adx"] = dx.rolling(14).mean()
+    return df_4h
 
 if MODE == "TEST":
     START_DATE = "2024-01-01"
@@ -289,6 +337,45 @@ def select_mtf_entry_candle(candles_15m, row, direction):
     return None
 
 
+def is_mtf_confirmation_valid(df_mtf, candle_time, direction):
+    if ENTRY_CONFIRMATION_VARIANT == "NONE":
+        return True
+    if df_mtf is None or len(df_mtf) < 3 or direction not in {"LONG", "SHORT"}:
+        return False
+    recent = df_mtf[df_mtf.index <= candle_time].tail(6)
+    if len(recent) < 3:
+        return False
+    last = recent.iloc[-1]
+    prev = recent.iloc[-2]
+    prev2 = recent.iloc[-3]
+
+    if ENTRY_CONFIRMATION_VARIANT == "A":
+        if direction == "LONG":
+            return last["close"] > prev["high"]
+        return last["close"] < prev["low"]
+
+    if ENTRY_CONFIRMATION_VARIANT == "B":
+        if direction == "LONG":
+            return (last["low"] < prev["low"]) and (last["close"] > prev["close"])
+        return (last["high"] > prev["high"]) and (last["close"] < prev["close"])
+
+    if ENTRY_CONFIRMATION_VARIANT == "C":
+        prev_body_low = min(prev["open"], prev["close"])
+        prev_body_high = max(prev["open"], prev["close"])
+        last_body_low = min(last["open"], last["close"])
+        last_body_high = max(last["open"], last["close"])
+        if direction == "LONG":
+            return last["close"] > last["open"] and last_body_low <= prev_body_low and last_body_high >= prev_body_high
+        return last["close"] < last["open"] and last_body_low <= prev_body_low and last_body_high >= prev_body_high
+
+    if ENTRY_CONFIRMATION_VARIANT == "D":
+        last_range = max(last["high"] - last["low"], 1e-9)
+        prev_range = max(prev["high"] - prev["low"], 1e-9)
+        body = abs(last["close"] - last["open"])
+        direction_ok = (last["close"] > last["open"]) if direction == "LONG" else (last["close"] < last["open"])
+        return direction_ok and (body / last_range >= 0.6) and (last_range > prev_range) and (last_range > (prev2["high"] - prev2["low"]))
+
+    return True
 
 def get_confidence_bucket(confidence):
     """Возвращает bucket уверенности и множитель риска/размера позиции."""
@@ -770,6 +857,7 @@ def load_all_data(processed):
     all_data = {}
     all_data_15m = {}
     all_data_30m = {}
+    all_data_4h = {}
     all_arrays = {}
     symbols_loaded = []
     swing_stats = []    # для сбора статистики по swing точкам
@@ -801,6 +889,10 @@ def load_all_data(processed):
                 f.write(symbol + "\n")
             continue
 
+        df_4h = build_4h_frame(df_1h)
+        if len(df_4h) > 0:
+            all_data_4h[symbol] = df_4h
+
         df_15m = None
         file_15m = f"{DATA_DIR}/{symbol}_15m.parquet"
         if os.path.exists(file_15m):
@@ -824,6 +916,7 @@ def load_all_data(processed):
         print(f"{symbol} 1H rows:", len(df_1h))
         print(f"{symbol} 15M rows:", len(df_15m) if df_15m is not None else "no 15m data")
         print(f"{symbol} 30M rows:", len(df_30m) if df_30m is not None else "no 30m data")
+        print(f"{symbol} 4H rows:", len(df_4h) if len(df_4h) > 0 else "no 4h data")
 
         df = add_indicators(df_1h)
 
@@ -883,6 +976,7 @@ def load_all_data(processed):
     print(f"Loaded 1H data: {len(all_data)} symbols")
     print(f"Loaded 15M data: {len(all_data_15m)} symbols")
     print(f"Loaded 30M data: {len(all_data_30m)} symbols")
+    print(f"Loaded 4H data: {len(all_data_4h)} symbols")
 
     # ВЫВОДИМ ВСЮ SWING СТАТИСТИКУ ОДНИМ БЛОКОМ
     print("\n📊 СТАТИСТИКА SWING ТОЧЕК")
@@ -893,7 +987,7 @@ def load_all_data(processed):
 
     if not all_data:
         print("❌ Нет данных для анализа")
-    return all_data, all_data_15m, all_data_30m, all_arrays, swing_indices
+    return all_data, all_data_15m, all_data_30m, all_data_4h, all_arrays, swing_indices
 
 def _print_excursion_analysis(trades_df):
     if len(trades_df) == 0:
@@ -1083,7 +1177,8 @@ class BosStrategy(Strategy):
         df,
         arrays,
         swing_indices,
-        diagnostics
+        diagnostics,
+        df_4h=None
     ):
         self.last_rejection_reason = None
         self.last_rejection_message = ""
@@ -1142,6 +1237,31 @@ class BosStrategy(Strategy):
 
         # ADX для логирования и статистики
         adx = adx_arr[i]
+
+        # ===== 4H FILTERS (optional) =====
+        if HTF_FILTER_VARIANT != "NONE" and df_4h is not None and len(df_4h) > 10:
+            htf_row = df_4h[df_4h.index <= df.index[i]].tail(1)
+            if len(htf_row) == 0:
+                return self._reject("rejected_other", symbol, i, "missing 4h context")
+            htf = htf_row.iloc[-1]
+            if HTF_FILTER_VARIANT == "EMA":
+                htf_trend = "LONG" if htf.get("ema50", np.nan) > htf.get("ema200", np.nan) else "SHORT"
+                if (bias == "BULLISH" and htf_trend != "LONG") or (bias == "BEARISH" and htf_trend != "SHORT"):
+                    return self._reject("rejected_price_condition", symbol, i, f"4h EMA filter mismatch: {htf_trend}")
+            elif HTF_FILTER_VARIANT == "BOS":
+                recent_4h = df_4h[df_4h.index <= df.index[i]].tail(3)
+                if len(recent_4h) < 3:
+                    return self._reject("rejected_other", symbol, i, "not enough 4h bars for BOS filter")
+                prev_high = float(recent_4h.iloc[-2]["high"])
+                prev_low = float(recent_4h.iloc[-2]["low"])
+                close_4h = float(recent_4h.iloc[-1]["close"])
+                htf_dir = "LONG" if close_4h > prev_high else ("SHORT" if close_4h < prev_low else "NEUTRAL")
+                if (bias == "BULLISH" and htf_dir != "LONG") or (bias == "BEARISH" and htf_dir != "SHORT"):
+                    return self._reject("rejected_price_condition", symbol, i, f"4h BOS filter mismatch: {htf_dir}")
+            elif HTF_FILTER_VARIANT == "ADX":
+                htf_adx = float(np.nan_to_num(htf.get("adx", np.nan), nan=0.0))
+                if htf_adx < 20:
+                    return self._reject("rejected_price_condition", symbol, i, f"4h ADX too low: {htf_adx:.2f}")
 
         # ===== ФИЛЬТР РЕЖИМА (ДИАГНОСТИКА) =====
         if MODE_FILTER == "TREND" and regime != "TREND":
@@ -1348,7 +1468,7 @@ class BosStrategy(Strategy):
                     touched_levels = [
                         (level_num, level_price)
                         for level_num, level_price in ladder_levels
-                        if low_arr[i] <= level_price <= high_arr[i]
+                        if zone_level_touched(level_price, high_arr[i], low_arr[i], close_arr[i], atr_arr[i], zone_low, zone_high)
                     ]
 
                     if touched_levels:
@@ -1396,7 +1516,7 @@ class BosStrategy(Strategy):
                     touched_levels = [
                         (level_num, level_price)
                         for level_num, level_price in ladder_levels
-                        if low_arr[i] <= level_price <= high_arr[i]
+                        if zone_level_touched(level_price, high_arr[i], low_arr[i], close_arr[i], atr_arr[i], zone_low, zone_high)
                     ]
 
                     if touched_levels:
@@ -1685,11 +1805,11 @@ def run_backtest():
         with open(PROGRESS_FILE, "r") as f:
             processed = set(line.strip() for line in f)
 
-    all_data, all_data_15m, all_data_30m, all_arrays, swing_indices = load_all_data(processed)
+    all_data, all_data_15m, all_data_30m, all_data_4h, all_arrays, swing_indices = load_all_data(processed)
 
     # ===== WALK-FORWARD SPLIT ТЕСТ =====
     split_ratio = 0.7
-    mode = "test"   # ← меняешь на "test" или "train" когда нужно
+    mode = "train"   # ← меняешь на "test" или "train" или "full" когда нужно
 
     for symbol in list(all_data.keys()):
         df = all_data[symbol]
@@ -2163,7 +2283,8 @@ def run_backtest():
                     df,
                     all_arrays[symbol],
                     swing_indices[symbol],
-                    diagnostics
+                    diagnostics,
+                    all_data_4h.get(symbol)
                 )
 
                 if signal is None:
@@ -2189,6 +2310,9 @@ def run_backtest():
                 hour_end = hour_start + pd.Timedelta(hours=1)
                 candles_mtf = df_mtf[(df_mtf.index >= hour_start) & (df_mtf.index < hour_end)]
                 chosen_candle = select_mtf_entry_candle(candles_mtf, row, entry_data.get('direction'))
+
+                if chosen_candle is not None and not is_mtf_confirmation_valid(df_mtf, chosen_candle.name, entry_data.get('direction')):
+                    chosen_candle = None
 
                 if chosen_candle is not None:
                     entry_time = chosen_candle.name
@@ -2384,7 +2508,7 @@ def run_backtest():
     for key in rejection_breakdown_keys:
         print(f"{key}: {filter_stats.get(key, 0)}")
 
-    return trades_df, equity_df
+    return trades_df, equity_df, dict(filter_stats)
 
 class BosAnalytics:
 
@@ -2446,7 +2570,7 @@ class BosAnalytics:
         print("PnL < 0:", len(self.df[self.df["pnl"] < 0]))
 
 if __name__ == "__main__":
-    trades_df, equity_df = run_backtest()
+    trades_df, equity_df, _ = run_backtest()
 
     from backtest.analytics import AdvancedAnalytics
     from analysis.advanced_analyzer import AdvancedStrategyAnalyzer
