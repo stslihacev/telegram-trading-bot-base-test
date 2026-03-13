@@ -71,6 +71,14 @@ ENTRY_ZONE_ATR_MULTIPLIER = float(os.getenv("ENTRY_ZONE_ATR_MULTIPLIER", "0.25")
 MOMENTUM_ENTRY_CANDLES = int(os.getenv("MOMENTUM_ENTRY_CANDLES", "7"))
 MOMENTUM_ENTRY_MAX_EXTENSION = int(os.getenv("MOMENTUM_ENTRY_MAX_EXTENSION", "20"))
 
+
+def get_adaptive_zone_atr_multiplier(confidence):
+    if confidence < 4.0:
+        return 0.25
+    if confidence < 5.0:
+        return 0.5
+    return 0.75
+
 if MODE == "TEST":
     START_DATE = "2024-01-01"
     SYMBOLS = [
@@ -1229,6 +1237,18 @@ class BosStrategy(Strategy):
         # ===== ОПРЕДЕЛЯЕМ FVG =====
         has_fvg = detect_fvg(df, i, direction)
 
+        # ===== CONFIDENCE (используется и для адаптивной зоны входа) =====
+        confidence = calculate_confidence_score(
+            df,
+            i,
+            direction,
+            sweep_type,
+            bos,
+            bias
+        )
+        if signal_type == "BOS":
+            confidence += 1.0 if has_fvg else -0.5
+
         if signal_type == "BOS":
             diagnostics.bos_attempts += 1
 
@@ -1287,6 +1307,7 @@ class BosStrategy(Strategy):
         # =========================
 
         entry_level = None
+        zone_size_at_entry = None
         
         if signal_type == "BOS":
             zone_touch_confirmed = entry_mode == "momentum"
@@ -1310,10 +1331,12 @@ class BosStrategy(Strategy):
                 pos_high = np.searchsorted(swing_high_indices, i, side="left") - 1
                 if pos_high >= 0:
                     zone_level = high_arr[swing_high_indices[pos_high]]
+                    zone_atr_multiplier = get_adaptive_zone_atr_multiplier(confidence)
                     zone_width = max(
-                        atr_arr[i] * ENTRY_ZONE_ATR_MULTIPLIER,
+                        atr_arr[i] * zone_atr_multiplier,
                         entry * ENTRY_ZONE_TOLERANCE_PCT
                     )
+                    zone_size_at_entry = zone_width
                     zone_low = zone_level - zone_width
                     zone_high = zone_level + zone_width
                     signal_key = (symbol, "BOS", direction, int(last_i), int(swing_high_indices[pos_high]))
@@ -1356,10 +1379,12 @@ class BosStrategy(Strategy):
                 pos_low = np.searchsorted(swing_low_indices, i, side="left") - 1
                 if pos_low >= 0:
                     zone_level = low_arr[swing_low_indices[pos_low]]
+                    zone_atr_multiplier = get_adaptive_zone_atr_multiplier(confidence)
                     zone_width = max(
-                        atr_arr[i] * ENTRY_ZONE_ATR_MULTIPLIER,
+                        atr_arr[i] * zone_atr_multiplier,
                         entry * ENTRY_ZONE_TOLERANCE_PCT
                     )
+                    zone_size_at_entry = zone_width
                     zone_low = zone_level - zone_width
                     zone_high = zone_level + zone_width
                     signal_key = (symbol, "BOS", direction, int(last_i), int(swing_low_indices[pos_low]))
@@ -1440,17 +1465,6 @@ class BosStrategy(Strategy):
                     return self._reject("rejected_price_condition", symbol, i, f"RR filter failed: rr={rr:.2f}, range=[{MIN_RR},{MAX_RR}]")
 
         # ===== CONFIDENCE ФИЛЬТР =====
-        confidence = calculate_confidence_score(
-            df,
-            i,
-            direction,
-            sweep_type,
-            bos,
-            bias
-        )
-        if signal_type == "BOS":
-            confidence += 1.0 if has_fvg else -0.5
-        
         confidence_threshold = 2.5
         if confidence < confidence_threshold:
             return self._reject("rejected_confidence", symbol, i, f"confidence {confidence:.2f} below threshold {confidence_threshold:.2f}")
@@ -1492,6 +1506,7 @@ class BosStrategy(Strategy):
             'direction': direction,
             'entry': round(entry, 4),
             'entry_level': entry_level,
+            'zone_size_at_entry': round(zone_size_at_entry, 6) if zone_size_at_entry is not None else None,
             'tp': float(np.nan_to_num(round(tp, 4), nan=0.0, posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT)) if tp is not None else None,
             'sl': float(np.nan_to_num(round(sl, 4), nan=entry, posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT)) if sl is not None else float(entry),
             'rr': round(rr, 2) if rr is not None else None,
@@ -1563,6 +1578,8 @@ def run_backtest():
     ]
     filter_stats["zone_entries"] = 0
     filter_stats["momentum_entries"] = 0
+    filter_stats["zone_size_at_entry"] = 0.0
+    filter_stats["zone_size_at_entry_count"] = 0
 
     bos_above_ema = 0
     bos_below_ema = 0
@@ -2306,6 +2323,11 @@ def run_backtest():
                 filter_stats["momentum_entries"] += 1
             else:
                 filter_stats["zone_entries"] += 1
+
+            zone_size_used = entry_data.get("zone_size_at_entry")
+            if zone_size_used is not None:
+                filter_stats["zone_size_at_entry"] += float(zone_size_used)
+                filter_stats["zone_size_at_entry_count"] += 1
 
             rr_text = f"{entry_data['rr']:.2f}" if entry_data['rr'] is not None else "STRUCT"
 
