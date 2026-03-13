@@ -67,7 +67,7 @@ MODE = os.getenv("BACKTEST_MODE", "FULL").upper()
 
 REJECTION_LOGGING_ENABLED = os.getenv("BACKTEST_REJECTION_LOGS", "1") == "1"
 REJECTION_LOG_LIMIT_PER_REASON = max(0, int(os.getenv("BACKTEST_REJECTION_LOG_LIMIT", "10")))
-ENTRY_ZONE_TOLERANCE_PCT = float(os.getenv("ENTRY_ZONE_TOLERANCE_PCT", "0.0015"))
+ENTRY_ZONE_TOLERANCE_PCT = float(os.getenv("ENTRY_ZONE_TOLERANCE_PCT", "0.0"))
 ENTRY_ZONE_ATR_MULTIPLIER = float(os.getenv("ENTRY_ZONE_ATR_MULTIPLIER", "0.25"))
 ENTRY_CONDITION_VARIANT = os.getenv("ENTRY_CONDITION_VARIANT", "B").upper()  # A|B|C
 HTF_FILTER_VARIANT = os.getenv("HTF_FILTER_VARIANT", "NONE").upper()  # NONE|EMA|BOS|ADX
@@ -85,6 +85,11 @@ def get_adaptive_zone_atr_multiplier(confidence):
         return 0.5
     return 0.75
 
+def expand_zone_with_tolerance(zone_low, zone_high):
+    zone_size = max(float(zone_high - zone_low), 0.0)
+    tolerance = max(float(ENTRY_ZONE_TOLERANCE_PCT), 0.0)
+    extension = zone_size * tolerance
+    return zone_low - extension, zone_high + extension
 
 def zone_level_touched(level_price, high_price, low_price, close_price, atr_value, zone_low, zone_high):
     if ENTRY_CONDITION_VARIANT == "A":
@@ -1522,6 +1527,7 @@ class BosStrategy(Strategy):
                     zone_size_at_entry = zone_width
                     zone_low = zone_level - zone_width
                     zone_high = zone_level + zone_width
+                    zone_touch_low, zone_touch_high = expand_zone_with_tolerance(zone_low, zone_high)
                     signal_key = (symbol, "BOS", direction, int(last_i), int(swing_high_indices[pos_high]))
                     ladder_levels = [
                         (1, zone_high),
@@ -1531,7 +1537,7 @@ class BosStrategy(Strategy):
                     touched_levels = [
                         (level_num, level_price)
                         for level_num, level_price in ladder_levels
-                        if zone_level_touched(level_price, high_arr[i], low_arr[i], close_arr[i], atr_arr[i], zone_low, zone_high)
+                        if zone_level_touched(level_price, high_arr[i], low_arr[i], close_arr[i], atr_arr[i], zone_touch_low, zone_touch_high)
                     ]
 
                     if touched_levels:
@@ -1570,6 +1576,7 @@ class BosStrategy(Strategy):
                     zone_size_at_entry = zone_width
                     zone_low = zone_level - zone_width
                     zone_high = zone_level + zone_width
+                    zone_touch_low, zone_touch_high = expand_zone_with_tolerance(zone_low, zone_high)
                     signal_key = (symbol, "BOS", direction, int(last_i), int(swing_low_indices[pos_low]))
                     ladder_levels = [
                         (1, zone_low),
@@ -1579,7 +1586,7 @@ class BosStrategy(Strategy):
                     touched_levels = [
                         (level_num, level_price)
                         for level_num, level_price in ladder_levels
-                        if zone_level_touched(level_price, high_arr[i], low_arr[i], close_arr[i], atr_arr[i], zone_low, zone_high)
+                        if zone_level_touched(level_price, high_arr[i], low_arr[i], close_arr[i], atr_arr[i], zone_touch_low, zone_touch_high)
                     ]
 
                     if touched_levels:
