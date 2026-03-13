@@ -46,3 +46,47 @@ def test_evaluate_4h_filter_ema_and_adx_variants():
     assert ok_ema is True
     assert ok_adx is True
     assert ok_bos is True
+
+from backtest.backtest_engine import BosStrategy
+
+
+def test_check_mtf_filters_and_logic_tracks_rejections():
+    strategy = BosStrategy()
+    strategy.filter_config["adx_min_1h"] = 25
+    strategy.filter_config["adx_min_4h"] = 27
+
+    idx_1h = pd.date_range("2024-01-01", periods=3, freq="1h")
+    df_1h = pd.DataFrame(
+        {
+            "close": [105.0, 90.0, 105.0],
+            "ema50": [100.0, 100.0, 100.0],
+            "ema200": [99.0, 99.0, 99.0],
+            "adx": [30.0, 30.0, 20.0],
+        },
+        index=idx_1h,
+    )
+
+    idx_4h = pd.date_range("2023-12-31 20:00:00", periods=1, freq="4h")
+    df_4h = pd.DataFrame(
+        {
+            "close": [95.0],
+            "ema50": [100.0],
+            "ema200": [101.0],
+            "adx": [30.0],
+        },
+        index=idx_4h,
+    )
+
+    # i=0: 1H passes LONG, 4H fails LONG due to trend mismatch.
+    assert strategy.check_mtf_filters("BTCUSDT", 0, "LONG", df_1h, df_4h, logic="AND") is False
+    assert strategy.stats["rejected_4h_filter"] == 1
+    assert strategy.stats["rejected_mtf_filter"] == 1
+
+    # With OR logic the same setup should pass due to 1H passing.
+    assert strategy.check_mtf_filters("BTCUSDT", 0, "LONG", df_1h, df_4h, logic="OR") is True
+
+    # i=2: 1H fails ADX, 4H fails trend => both fail and combined fail.
+    assert strategy.check_mtf_filters("BTCUSDT", 2, "LONG", df_1h, df_4h, logic="OR") is False
+    assert strategy.stats["rejected_1h_filter"] >= 1
+    assert strategy.stats["rejected_4h_filter"] >= 2
+    assert strategy.stats["rejected_mtf_filter"] >= 2

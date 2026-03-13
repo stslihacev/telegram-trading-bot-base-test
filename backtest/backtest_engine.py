@@ -76,6 +76,7 @@ MOMENTUM_ENTRY_CANDLES = int(os.getenv("MOMENTUM_ENTRY_CANDLES", "7"))
 MOMENTUM_ENTRY_MAX_EXTENSION = int(os.getenv("MOMENTUM_ENTRY_MAX_EXTENSION", "20"))
 MTF_FILTER_ADX_MIN_1H = float(os.getenv("MTF_FILTER_ADX_MIN_1H", "20"))
 MTF_FILTER_ADX_MIN_4H = float(os.getenv("MTF_FILTER_ADX_MIN_4H", "20"))
+MTF_FILTER_LOGIC = os.getenv("MTF_FILTER_LOGIC", "AND").upper()
 
 
 def get_adaptive_zone_atr_multiplier(confidence):
@@ -1252,9 +1253,11 @@ class BosStrategy(Strategy):
         self.stats = defaultdict(int)
         self.stats.setdefault("rejected_1h_filter", 0)
         self.stats.setdefault("rejected_4h_filter", 0)
+        self.stats.setdefault("rejected_mtf_filter", 0)
         self.filter_config = {
             "adx_min_1h": MTF_FILTER_ADX_MIN_1H,
             "adx_min_4h": MTF_FILTER_ADX_MIN_4H,
+            "logic": MTF_FILTER_LOGIC,
         }
 
     def _trend_from_row(self, row):
@@ -1275,31 +1278,49 @@ class BosStrategy(Strategy):
                 return "SHORT"
         return None
 
-    def check_mtf_filters(self, symbol, i, direction, df, df_4h=None):
-        """Returns True when both 1H/4H trend + ADX filters pass."""
+    def check_mtf_filters(self, symbol, i, direction, df, df_4h=None, thresholds=None, logic="AND"):
+        """Check 1H/4H filters with flexible thresholds and AND/OR combining logic."""
+        if thresholds is None:
+            thresholds = {
+                "1h": self.filter_config["adx_min_1h"],
+                "4h": self.filter_config["adx_min_4h"],
+            }
+        combine_logic = str(logic or self.filter_config.get("logic", "AND")).upper()
+        if combine_logic not in {"AND", "OR"}:
+            combine_logic = "AND"
+
+        passed = {}
         current_row = df.iloc[i]
         trend_1h = self._trend_from_row(current_row)
         adx_1h = float(np.nan_to_num(current_row.get("adx", np.nan), nan=0.0))
-        if trend_1h != direction or adx_1h < self.filter_config["adx_min_1h"]:
-            self.stats["rejected_1h_filter"] += 1
-            return False
+        passed["1h"] = trend_1h == direction and adx_1h >= thresholds["1h"]
+
+        passed["4h"] = True
 
         if df_4h is None or len(df_4h) == 0:
-            self.stats["rejected_4h_filter"] += 1
-            return False
+            passed["4h"] = False
+        else:
+            htf_row = df_4h[df_4h.index <= df.index[i]].tail(1)
+            if len(htf_row) == 0:
+                passed["4h"] = False
+            else:
+                trend_4h = self._trend_from_row(htf_row.iloc[-1])
+                adx_4h = float(np.nan_to_num(htf_row.iloc[-1].get("adx", np.nan), nan=0.0))
+                passed["4h"] = trend_4h == direction and adx_4h >= thresholds["4h"]
 
-        htf_row = df_4h[df_4h.index <= df.index[i]].tail(1)
-        if len(htf_row) == 0:
-            self.stats["rejected_4h_filter"] += 1
-            return False
+        if combine_logic == "AND":
+            combined = passed["1h"] and passed["4h"]
+        else:
+            combined = passed["1h"] or passed["4h"]
 
-        trend_4h = self._trend_from_row(htf_row.iloc[-1])
-        adx_4h = float(np.nan_to_num(htf_row.iloc[-1].get("adx", np.nan), nan=0.0))
-        if trend_4h != direction or adx_4h < self.filter_config["adx_min_4h"]:
+        if not passed["1h"]:
+            self.stats["rejected_1h_filter"] += 1
+        if not passed["4h"]:
             self.stats["rejected_4h_filter"] += 1
-            return False
+        if not combined:
+            self.stats["rejected_mtf_filter"] += 1
 
-        return True
+        return combined
 
     def _reject(self, reason, symbol, i, message):
         self.last_rejection_reason = reason
@@ -1722,7 +1743,15 @@ class BosStrategy(Strategy):
                 return self._reject("rejected_entry_zone", symbol, i, "entry zone not reached: nearest levels missing")
         
         if signal_type in ["BOS", "SWEEP"]:
-            passed_mtf = self.check_mtf_filters(symbol, i, direction, df, df_4h)
+            passed_mtf = self.check_mtf_filters(
+                symbol,
+                i,
+                direction,
+                df,
+                df_4h,
+                thresholds={"1h": self.filter_config["adx_min_1h"], "4h": self.filter_config["adx_min_4h"]},
+                logic=self.filter_config["logic"],
+            )
             if not passed_mtf:
                 return self._reject("rejected_mtf_filter", symbol, i, "failed 1H/4H filter")
 
