@@ -85,10 +85,11 @@ def get_adaptive_zone_atr_multiplier(confidence):
         return 0.5
     return 0.75
 
-def expand_zone_with_tolerance(zone_low, zone_high):
+def expand_zone_with_tolerance(zone_low, zone_high, tolerance=None):
     zone_size = max(float(zone_high - zone_low), 0.0)
-    tolerance = max(float(ENTRY_ZONE_TOLERANCE_PCT), 0.0)
-    extension = zone_size * tolerance
+    tolerance_value = ENTRY_ZONE_TOLERANCE_PCT if tolerance is None else tolerance
+    tolerance_value = max(float(tolerance_value), 0.0)
+    extension = zone_size * tolerance_value
     return zone_low - extension, zone_high + extension
 
 def zone_level_touched(level_price, high_price, low_price, close_price, atr_value, zone_low, zone_high):
@@ -1500,6 +1501,14 @@ class BosStrategy(Strategy):
         if signal_type == "BOS":
             zone_touch_confirmed = entry_mode == "momentum"
             signal_key = None
+            zone_touch_low = None
+            zone_touch_high = None
+            ladder_levels = []
+            touched_levels = []
+
+            # More permissive BOS zone touch: wider ATR gate and explicit zone expansion.
+            zone_atr_tolerance_multiplier = 1.5
+            zone_expansion_tolerance = 0.5
 
             if direction == "LONG":
 
@@ -1519,15 +1528,19 @@ class BosStrategy(Strategy):
                 pos_high = np.searchsorted(swing_high_indices, i, side="left") - 1
                 if pos_high >= 0:
                     zone_level = high_arr[swing_high_indices[pos_high]]
-                    zone_atr_multiplier = get_adaptive_zone_atr_multiplier(confidence)
+                    zone_atr_multiplier = get_adaptive_zone_atr_multiplier(confidence) * zone_atr_tolerance_multiplier
                     zone_width = max(
                         atr_arr[i] * zone_atr_multiplier,
-                        entry * ENTRY_ZONE_TOLERANCE_PCT
+                        entry * ENTRY_ZONE_TOLERANCE_PCT * zone_atr_tolerance_multiplier
                     )
                     zone_size_at_entry = zone_width
                     zone_low = zone_level - zone_width
                     zone_high = zone_level + zone_width
-                    zone_touch_low, zone_touch_high = expand_zone_with_tolerance(zone_low, zone_high)
+                    zone_touch_low, zone_touch_high = expand_zone_with_tolerance(
+                        zone_low,
+                        zone_high,
+                        tolerance=zone_expansion_tolerance,
+                    )
                     signal_key = (symbol, "BOS", direction, int(last_i), int(swing_high_indices[pos_high]))
                     ladder_levels = [
                         (1, zone_high),
@@ -1537,20 +1550,19 @@ class BosStrategy(Strategy):
                     touched_levels = [
                         (level_num, level_price)
                         for level_num, level_price in ladder_levels
-                        if zone_level_touched(level_price, high_arr[i], low_arr[i], close_arr[i], atr_arr[i], zone_touch_low, zone_touch_high)
+                        if (
+                            low_arr[i] <= level_price <= high_arr[i]
+                            or zone_level_touched(
+                                level_price,
+                                high_arr[i],
+                                low_arr[i],
+                                close_arr[i],
+                                atr_arr[i],
+                                zone_touch_low,
+                                zone_touch_high,
+                            )
+                        )
                     ]
-
-                    if touched_levels:
-                        used_levels = self._entry_ladder_fills[signal_key]
-                        for level_num, level_price in touched_levels:
-                            if level_num not in used_levels:
-                                entry = level_price
-                                entry_level = level_num
-                                used_levels.add(level_num)
-                                zone_touch_confirmed = True
-                                break
-
-                tp = None
 
             elif direction == "SHORT":
 
@@ -1568,15 +1580,19 @@ class BosStrategy(Strategy):
                 pos_low = np.searchsorted(swing_low_indices, i, side="left") - 1
                 if pos_low >= 0:
                     zone_level = low_arr[swing_low_indices[pos_low]]
-                    zone_atr_multiplier = get_adaptive_zone_atr_multiplier(confidence)
+                    zone_atr_multiplier = get_adaptive_zone_atr_multiplier(confidence) * zone_atr_tolerance_multiplier
                     zone_width = max(
                         atr_arr[i] * zone_atr_multiplier,
-                        entry * ENTRY_ZONE_TOLERANCE_PCT
+                        entry * ENTRY_ZONE_TOLERANCE_PCT * zone_atr_tolerance_multiplier
                     )
                     zone_size_at_entry = zone_width
                     zone_low = zone_level - zone_width
                     zone_high = zone_level + zone_width
-                    zone_touch_low, zone_touch_high = expand_zone_with_tolerance(zone_low, zone_high)
+                    zone_touch_low, zone_touch_high = expand_zone_with_tolerance(
+                        zone_low,
+                        zone_high,
+                        tolerance=zone_expansion_tolerance,
+                    )
                     signal_key = (symbol, "BOS", direction, int(last_i), int(swing_low_indices[pos_low]))
                     ladder_levels = [
                         (1, zone_low),
@@ -1586,22 +1602,61 @@ class BosStrategy(Strategy):
                     touched_levels = [
                         (level_num, level_price)
                         for level_num, level_price in ladder_levels
-                        if zone_level_touched(level_price, high_arr[i], low_arr[i], close_arr[i], atr_arr[i], zone_touch_low, zone_touch_high)
+                        if (
+                            low_arr[i] <= level_price <= high_arr[i]
+                            or zone_level_touched(
+                                level_price,
+                                high_arr[i],
+                                low_arr[i],
+                                close_arr[i],
+                                atr_arr[i],
+                                zone_touch_low,
+                                zone_touch_high,
+                            )
+                        )
                     ]
 
-                    if touched_levels:
-                        used_levels = self._entry_ladder_fills[signal_key]
-                        for level_num, level_price in touched_levels:
-                            if level_num not in used_levels:
-                                entry = level_price
-                                entry_level = level_num
-                                used_levels.add(level_num)
-                                zone_touch_confirmed = True
-                                break
+            if signal_key is not None and touched_levels:
+                used_levels = self._entry_ladder_fills[signal_key]
+                for level_num, level_price in touched_levels:
+                    if level_num not in used_levels:
+                        entry = level_price
+                        entry_level = level_num
+                        used_levels.add(level_num)
+                        zone_touch_confirmed = True
+                        break
 
-                tp = None
+            # Fallback: if candle entered expanded zone but missed ladder level prints,
+            # use nearest not-yet-used level to reduce false zone rejects.
+            if (
+                not zone_touch_confirmed
+                and signal_key is not None
+                and zone_touch_low is not None
+                and zone_touch_high is not None
+                and high_arr[i] >= zone_touch_low
+                and low_arr[i] <= zone_touch_high
+                and ladder_levels
+            ):
+                used_levels = self._entry_ladder_fills[signal_key]
+                available_levels = [
+                    (level_num, level_price)
+                    for level_num, level_price in ladder_levels
+                    if level_num not in used_levels
+                ]
+                if available_levels:
+                    nearest_level_num, nearest_price = min(available_levels, key=lambda lvl: abs(lvl[1] - close_arr[i]))
+                    entry = nearest_price
+                    entry_level = nearest_level_num
+                    used_levels.add(nearest_level_num)
+                    zone_touch_confirmed = True
+                    tqdm.write(
+                        f"[BOS:FALLBACK] {symbol} idx={i} {direction} nearest_level={nearest_level_num} "
+                        f"price={nearest_price:.4f} close={close_arr[i]:.4f}"
+                    )
 
-            if not zone_touch_confirmed and entry_mode != "momentum":
+            tp = None
+
+            if not zone_touch_confirmed and entry_mode == "momentum":
                 return self._reject("rejected_entry_zone", symbol, i, "entry zone not reached within tolerance band")
 
         # =========================
