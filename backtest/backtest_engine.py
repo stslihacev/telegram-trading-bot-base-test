@@ -125,7 +125,83 @@ def build_4h_frame(df_1h):
     minus_di = 100 * (minus_dm.rolling(14).mean() / atr)
     dx = (abs(plus_di - minus_di) / (plus_di + minus_di)) * 100
     df_4h["adx"] = dx.rolling(14).mean()
+    df_4h["bos_direction"] = compute_4h_bos_direction(df_4h)
     return df_4h
+
+def compute_4h_bos_direction(df_4h):
+    if df_4h is None or len(df_4h) == 0:
+        return pd.Series(dtype=object)
+
+    directions = []
+    last_direction = None
+    prev_high = None
+    prev_low = None
+
+    for _, row in df_4h.iterrows():
+        if prev_high is not None and prev_low is not None:
+            close = float(np.nan_to_num(row.get("close", np.nan), nan=np.nan))
+            if not np.isnan(close):
+                if close > prev_high:
+                    last_direction = "LONG"
+                elif close < prev_low:
+                    last_direction = "SHORT"
+        directions.append(last_direction)
+        prev_high = float(np.nan_to_num(row.get("high", np.nan), nan=np.nan))
+        prev_low = float(np.nan_to_num(row.get("low", np.nan), nan=np.nan))
+
+    return pd.Series(directions, index=df_4h.index, dtype=object)
+
+
+def load_timeframe_data(symbol, timeframe):
+    timeframe_aliases = {
+        "15m": ["15m"],
+        "30m": ["30m"],
+        "4h": ["4h", "240m"],
+    }
+    aliases = timeframe_aliases.get(str(timeframe).lower(), [str(timeframe).lower()])
+
+    for alias in aliases:
+        file_path = f"{DATA_DIR}/{symbol}_{alias}.parquet"
+        if os.path.exists(file_path):
+            df_tf = pd.read_parquet(file_path)
+            df_tf["timestamp"] = pd.to_datetime(df_tf["timestamp"])
+            df_tf = df_tf.sort_values("timestamp")
+            df_tf = df_tf.set_index("timestamp")
+            df_tf = df_tf[(df_tf.index >= START_DATE) & (df_tf.index <= END_DATE)]
+            return df_tf, alias
+    return None, None
+
+
+def evaluate_4h_filter(df_4h, candle_time, direction, variant):
+    if variant == "NONE" or direction not in {"LONG", "SHORT"}:
+        return True, "4h filter disabled"
+    if df_4h is None or len(df_4h) < 10:
+        return False, "missing 4h context"
+
+    htf_row = df_4h[df_4h.index <= candle_time].tail(1)
+    if len(htf_row) == 0:
+        return False, "missing 4h context"
+    htf = htf_row.iloc[-1]
+
+    if variant == "EMA":
+        ema_value = float(np.nan_to_num(htf.get("ema50", np.nan), nan=np.nan))
+        close_4h = float(np.nan_to_num(htf.get("close", np.nan), nan=np.nan))
+        if np.isnan(ema_value) or np.isnan(close_4h):
+            return False, "4h EMA context unavailable"
+        allowed = (direction == "LONG" and close_4h > ema_value) or (direction == "SHORT" and close_4h < ema_value)
+        return allowed, f"4h EMA filter mismatch: close={close_4h:.4f}, ema50={ema_value:.4f}"
+
+    if variant == "BOS":
+        bos_direction = htf.get("bos_direction")
+        if bos_direction not in {"LONG", "SHORT"}:
+            return False, "4h BOS direction unavailable"
+        return direction == bos_direction, f"4h BOS filter mismatch: bos_direction={bos_direction}"
+
+    if variant == "ADX":
+        htf_adx = float(np.nan_to_num(htf.get("adx", np.nan), nan=0.0))
+        return htf_adx > 20, f"4h ADX too low: {htf_adx:.2f}"
+
+    return True, "unknown 4h filter variant"
 
 if MODE == "TEST":
     START_DATE = "2024-01-01"
@@ -889,35 +965,28 @@ def load_all_data(processed):
                 f.write(symbol + "\n")
             continue
 
-        df_4h = build_4h_frame(df_1h)
+        df_4h_raw, tf_4h_source = load_timeframe_data(symbol, "4h")
+        if df_4h_raw is not None and len(df_4h_raw) > 0:
+            df_4h = build_4h_frame(df_4h_raw)
+            tf_4h_source = f"file:{tf_4h_source}"
+        else:
+            df_4h = build_4h_frame(df_1h)
+            tf_4h_source = "resampled:1h"
         if len(df_4h) > 0:
             all_data_4h[symbol] = df_4h
 
-        df_15m = None
-        file_15m = f"{DATA_DIR}/{symbol}_15m.parquet"
-        if os.path.exists(file_15m):
-            df_15m = pd.read_parquet(file_15m)
-            df_15m["timestamp"] = pd.to_datetime(df_15m["timestamp"])
-            df_15m = df_15m.sort_values("timestamp")
-            df_15m = df_15m.set_index("timestamp")
-            df_15m = df_15m[(df_15m.index >= START_DATE) & (df_15m.index <= END_DATE)]
+        df_15m, _ = load_timeframe_data(symbol, "15m")
+        if df_15m is not None and len(df_15m) > 0:
             all_data_15m[symbol] = df_15m
 
-        df_30m = None
-        file_30m = f"{DATA_DIR}/{symbol}_30m.parquet"
-        if os.path.exists(file_30m):
-            df_30m = pd.read_parquet(file_30m)
-            df_30m["timestamp"] = pd.to_datetime(df_30m["timestamp"])
-            df_30m = df_30m.sort_values("timestamp")
-            df_30m = df_30m.set_index("timestamp")
-            df_30m = df_30m[(df_30m.index >= START_DATE) & (df_30m.index <= END_DATE)]
+        df_30m, _ = load_timeframe_data(symbol, "30m")
+        if df_30m is not None and len(df_30m) > 0:
             all_data_30m[symbol] = df_30m
 
         print(f"{symbol} 1H rows:", len(df_1h))
         print(f"{symbol} 15M rows:", len(df_15m) if df_15m is not None else "no 15m data")
         print(f"{symbol} 30M rows:", len(df_30m) if df_30m is not None else "no 30m data")
-        print(f"{symbol} 4H rows:", len(df_4h) if len(df_4h) > 0 else "no 4h data")
-
+        print(f"{symbol} 4H rows:", len(df_4h) if len(df_4h) > 0 else "no 4h data", f"({tf_4h_source})")
         df = add_indicators(df_1h)
 
         # ==============================
@@ -1136,6 +1205,19 @@ def print_final_report(
     print(f"Макс. просадка:          {max_dd:.2f}%")
     print(f"Profit Factor:           {profit_factor:.2f}")
 
+    if "htf_filter_applied" in trades_df.columns:
+        with_4h = trades_df[trades_df["htf_filter_applied"] == True]
+        without_4h = trades_df[trades_df["htf_filter_applied"] != True]
+        with_pnl = float(np.nan_to_num(with_4h["pnl"].sum(), nan=0.0)) if len(with_4h) else 0.0
+        without_pnl = float(np.nan_to_num(without_4h["pnl"].sum(), nan=0.0)) if len(without_4h) else 0.0
+        with_winrate = (len(with_4h[with_4h["pnl"] > 0]) / len(with_4h) * 100) if len(with_4h) else 0.0
+        without_winrate = (len(without_4h[without_4h["pnl"] > 0]) / len(without_4h) * 100) if len(without_4h) else 0.0
+
+        print("\n📊 4H FILTER COMPARISON")
+        print("-" * 30)
+        print(f"trades_with_4h_filter:    {len(with_4h)} | Winrate: {with_winrate:.2f}% | PnL: {with_pnl:.2f}")
+        print(f"trades_without_4h_filter: {len(without_4h)} | Winrate: {without_winrate:.2f}% | PnL: {without_pnl:.2f}")
+
     print("\n📊 BOS сигналов обнаружено:", diagnostics.bos_detected)
     print("Попыток BOS:", diagnostics.bos_attempts)
     print("Blocked by ADX:", diagnostics.bos_block_adx)
@@ -1238,31 +1320,6 @@ class BosStrategy(Strategy):
         # ADX для логирования и статистики
         adx = adx_arr[i]
 
-        # ===== 4H FILTERS (optional) =====
-        if HTF_FILTER_VARIANT != "NONE" and df_4h is not None and len(df_4h) > 10:
-            htf_row = df_4h[df_4h.index <= df.index[i]].tail(1)
-            if len(htf_row) == 0:
-                return self._reject("rejected_other", symbol, i, "missing 4h context")
-            htf = htf_row.iloc[-1]
-            if HTF_FILTER_VARIANT == "EMA":
-                htf_trend = "LONG" if htf.get("ema50", np.nan) > htf.get("ema200", np.nan) else "SHORT"
-                if (bias == "BULLISH" and htf_trend != "LONG") or (bias == "BEARISH" and htf_trend != "SHORT"):
-                    return self._reject("rejected_price_condition", symbol, i, f"4h EMA filter mismatch: {htf_trend}")
-            elif HTF_FILTER_VARIANT == "BOS":
-                recent_4h = df_4h[df_4h.index <= df.index[i]].tail(3)
-                if len(recent_4h) < 3:
-                    return self._reject("rejected_other", symbol, i, "not enough 4h bars for BOS filter")
-                prev_high = float(recent_4h.iloc[-2]["high"])
-                prev_low = float(recent_4h.iloc[-2]["low"])
-                close_4h = float(recent_4h.iloc[-1]["close"])
-                htf_dir = "LONG" if close_4h > prev_high else ("SHORT" if close_4h < prev_low else "NEUTRAL")
-                if (bias == "BULLISH" and htf_dir != "LONG") or (bias == "BEARISH" and htf_dir != "SHORT"):
-                    return self._reject("rejected_price_condition", symbol, i, f"4h BOS filter mismatch: {htf_dir}")
-            elif HTF_FILTER_VARIANT == "ADX":
-                htf_adx = float(np.nan_to_num(htf.get("adx", np.nan), nan=0.0))
-                if htf_adx < 20:
-                    return self._reject("rejected_price_condition", symbol, i, f"4h ADX too low: {htf_adx:.2f}")
-
         # ===== ФИЛЬТР РЕЖИМА (ДИАГНОСТИКА) =====
         if MODE_FILTER == "TREND" and regime != "TREND":
             return self._reject("rejected_other", symbol, i, f"regime filter mismatch: required TREND, got {regime}")
@@ -1346,6 +1403,12 @@ class BosStrategy(Strategy):
 
         if direction is None:
             return self._reject("rejected_entry_zone", symbol, i, "entry zone not reached (no BOS/SWEEP setup)")
+
+        if HTF_FILTER_VARIANT != "NONE":
+            htf_ok, htf_message = evaluate_4h_filter(df_4h, df.index[i], direction, HTF_FILTER_VARIANT)
+            if not htf_ok:
+                reject_reason = "rejected_price_condition" if HTF_FILTER_VARIANT in {"EMA", "BOS", "ADX"} else "rejected_other"
+                return self._reject(reject_reason, symbol, i, htf_message)
 
         # ===== ADX ФИЛЬТР ТОЛЬКО ДЛЯ BOS =====
         if signal_type == "BOS":
@@ -1652,7 +1715,9 @@ class BosStrategy(Strategy):
             'last_swing_high': round(high_arr[last_i], 4) if signal_type == 'BOS' and direction == 'SHORT' else None,
             'timestamp': df.index[i] if hasattr(df.index, '__getitem__') else i,
             'confidence_threshold_used': confidence_threshold,
-            'entry_type': 'momentum' if entry_mode == 'momentum' else 'zone'
+            'entry_type': 'momentum' if entry_mode == 'momentum' else 'zone',
+            'htf_filter_variant': HTF_FILTER_VARIANT,
+            'htf_filter_applied': HTF_FILTER_VARIANT != 'NONE'
         }
         if signal_type == "BOS":
             entry_data["entry_mode"] = entry_mode
@@ -1700,6 +1765,8 @@ def run_backtest():
     filter_stats["momentum_entries"] = 0
     filter_stats["zone_size_at_entry"] = 0.0
     filter_stats["zone_size_at_entry_count"] = 0
+    filter_stats["trades_with_4h_filter"] = 0
+    filter_stats["trades_without_4h_filter"] = 0
 
     bos_above_ema = 0
     bos_below_ema = 0
@@ -2443,6 +2510,10 @@ def run_backtest():
                 pos["rr"] = 0.0
 
             open_positions.append(pos)
+            if pos.get("htf_filter_applied"):
+                filter_stats["trades_with_4h_filter"] += 1
+            else:
+                filter_stats["trades_without_4h_filter"] += 1
             if entry_data.get("entry_mode") == "momentum":
                 filter_stats["momentum_entries"] += 1
             else:
