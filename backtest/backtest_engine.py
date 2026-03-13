@@ -286,20 +286,20 @@ def get_confidence_bucket(confidence):
     """Возвращает bucket уверенности и множитель риска/размера позиции."""
     safe_confidence = float(np.nan_to_num(confidence, nan=0.0))
 
+    if safe_confidence >= 5.0:
+        return "5_plus", 1.25
     if safe_confidence >= 4.0:
-        return "full", 1.0
+        return "4_to_5", 1.0
     if safe_confidence >= 3.0:
-        return "half", 0.5
-    if safe_confidence >= 2.5:
-        return "small", 0.25
-    return "reject", 0.0
+        return "3_to_4", 0.5
+    return "below_3", 1.0
 
 
 def calculate_position_size(entry_data, capital, risk_factor=0.01):
     """
     Адаптивный размер позиции:
     - финализирует SL после ATR/минимальной дистанции
-    - масштабирует риск по confidence-bucket (100% / 50% / 25%)
+    - масштабирует риск по confidence-bucket
     - пишет результат в entry_data['position_size']
     """
     entry = float(entry_data.get("entry", 0.0) or 0.0)
@@ -310,7 +310,8 @@ def calculate_position_size(entry_data, capital, risk_factor=0.01):
     if entry <= 0 or direction not in {"LONG", "SHORT"}:
         entry_data["position_size"] = 0.0
         entry_data["risk_amount"] = 0.0
-        entry_data["confidence_bucket"] = "reject"
+        entry_data["confidence_bucket"] = "below_3"
+        entry_data["position_size_multiplier"] = 0.0
         return 0.0
 
     atr_floor = max(atr * 0.3, 1e-9)
@@ -344,7 +345,8 @@ def calculate_position_size(entry_data, capital, risk_factor=0.01):
     confidence = float(entry_data.get("confidence", 0) or 0)
     confidence_bucket, position_scale = get_confidence_bucket(confidence)
     entry_data["confidence_bucket"] = confidence_bucket
-    adjusted_risk = float(np.clip(risk_factor * position_scale, 0.0, risk_factor))
+    entry_data["position_size_multiplier"] = float(position_scale)
+    adjusted_risk = float(max(risk_factor * position_scale, 0.0))
 
     if adjusted_risk <= 0:
         entry_data["position_size"] = 0.0
@@ -1116,9 +1118,13 @@ class BosStrategy(Strategy):
             diagnostics
         )
         if bos == "BULLISH_BOS":
-            self._last_bos_context[symbol] = {"index": i, "direction": "LONG"}
+            pos_high = np.searchsorted(swing_high_indices, i, side="left") - 1
+            bos_level = high_arr[swing_high_indices[pos_high]] if pos_high >= 0 else close_arr[i]
+            self._last_bos_context[symbol] = {"index": i, "direction": "LONG", "bos_level": float(bos_level)}
         elif bos == "BEARISH_BOS":
-            self._last_bos_context[symbol] = {"index": i, "direction": "SHORT"}
+            pos_low = np.searchsorted(swing_low_indices, i, side="left") - 1
+            bos_level = low_arr[swing_low_indices[pos_low]] if pos_low >= 0 else close_arr[i]
+            self._last_bos_context[symbol] = {"index": i, "direction": "SHORT", "bos_level": float(bos_level)}
 
         bias = get_htf_bias_fast(
             i,
@@ -1190,9 +1196,21 @@ class BosStrategy(Strategy):
                     (bos_ctx["direction"] == "LONG" and bias == "BULLISH" and close_arr[i] > ema200_arr[i]) or
                     (bos_ctx["direction"] == "SHORT" and bias == "BEARISH" and close_arr[i] < ema200_arr[i])
                 )
+                candle_range = high_arr[i] - low_arr[i]
+                candle_body = abs(close_arr[i] - open_arr[i])
+                body_ratio = candle_body / candle_range if candle_range > 0 else 0.0
+                bos_level = float(np.nan_to_num(bos_ctx.get("bos_level", close_arr[i]), nan=close_arr[i]))
+                atr_now = float(np.nan_to_num(atr_arr[i], nan=0.0))
+                extension = (close_arr[i] - bos_level) if bos_ctx["direction"] == "LONG" else (bos_level - close_arr[i])
+                momentum_ready = (
+                    extension > (0.5 * atr_now)
+                    and adx > 25
+                    and body_ratio > 0.6
+                )
                 if (
                     direction_matches_bias
-                    and MOMENTUM_ENTRY_CANDLES < candles_since_bos <= (MOMENTUM_ENTRY_CANDLES + MOMENTUM_ENTRY_MAX_EXTENSION)
+                    and momentum_ready
+                    and 0 < candles_since_bos <= (MOMENTUM_ENTRY_CANDLES + MOMENTUM_ENTRY_MAX_EXTENSION)
                 ):
                     direction = bos_ctx["direction"]
                     signal_type = "BOS"
@@ -1484,6 +1502,7 @@ class BosStrategy(Strategy):
             'minus_di': round(minus_di, 4),
             'confidence': confidence,
             'confidence_bucket': get_confidence_bucket(confidence)[0],
+            'position_size_multiplier': get_confidence_bucket(confidence)[1],
             'bos': locals().get("bos"),
             'fvg': locals().get("fvg"),
             'liquidity_sweep': locals().get("liquidity_sweep", locals().get("sweep_type")),
@@ -1497,7 +1516,8 @@ class BosStrategy(Strategy):
             'last_swing_low': round(low_arr[last_i], 4) if signal_type == 'BOS' and direction == 'LONG' else None,
             'last_swing_high': round(high_arr[last_i], 4) if signal_type == 'BOS' and direction == 'SHORT' else None,
             'timestamp': df.index[i] if hasattr(df.index, '__getitem__') else i,
-            'confidence_threshold_used': confidence_threshold
+            'confidence_threshold_used': confidence_threshold,
+            'entry_type': 'momentum' if entry_mode == 'momentum' else 'zone'
         }
         if signal_type == "BOS":
             entry_data["entry_mode"] = entry_mode
@@ -2262,6 +2282,7 @@ def run_backtest():
             print(f"Dynamic threshold={confidence_threshold:.2f}, p_profit={p_profit:.2f}, volume={(features['volume'] if features['volume'] is not None else 0):.2f}, pos_size={position_size:.2f}")
 
             pos = entry_data.copy()
+            pos.setdefault('entry_type', 'momentum' if pos.get('entry_mode') == 'momentum' else 'zone')
 
             # служебные поля
             pos["symbol"] = symbol
