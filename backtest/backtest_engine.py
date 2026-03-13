@@ -57,6 +57,8 @@ MAX_PNL_CLIP = 1e6
 MAX_R_CLIP = 100
 MIN_R_CLIP = -100
 RISK_PER_TRADE = 0.01
+MIN_STOP_PCT = 0.001
+MAX_TRADE_BARS = 200
 
 os.makedirs(os.path.dirname(PROGRESS_FILE), exist_ok=True)
 
@@ -372,12 +374,13 @@ def sanitize_r(value):
 def compute_atr_distances(entry, direction, atr, base_sl_distance, signal_type):
     safe_entry = float(np.nan_to_num(entry, nan=0.0))
     safe_atr = float(np.nan_to_num(atr, nan=0.0))
-    safe_base = max(float(np.nan_to_num(base_sl_distance, nan=0.0)), 1e-9)
+    min_stop_distance = max(safe_entry * MIN_STOP_PCT, 1e-9)
+    safe_base = max(float(np.nan_to_num(base_sl_distance, nan=0.0)), min_stop_distance)
 
     if not USE_DYNAMIC_ATR_SLTP or safe_atr <= 0:
         sl_distance = safe_base
     else:
-        atr_sl_floor = max(safe_atr * ATR_SL_MULTIPLIER, safe_atr * 0.3, 1e-9)
+        atr_sl_floor = max(safe_atr * ATR_SL_MULTIPLIER, safe_atr * 0.3, min_stop_distance, 1e-9)
         sl_distance = max(safe_base, atr_sl_floor)
 
     tp_distance = None
@@ -496,23 +499,24 @@ def calculate_position_size(entry_data, capital, risk_factor=0.01):
         return 0.0
 
     atr_floor = max(atr * 0.3, 1e-9)
+    min_stop_distance = max(entry * MIN_STOP_PCT, 1e-9)
     distance = abs(entry - float(entry_data.get("sl", entry) or entry))
-    min_sl_distance = max(distance, atr_floor)
+    min_sl_distance = max(distance, atr_floor, min_stop_distance)
 
     # Базовая дистанция стопа по модели входа
     if signal_type == "BOS":
         if direction == "LONG":
-            raw_distance = max(entry - float(entry_data.get("last_swing_low", entry) or entry), atr_floor)
+            raw_distance = max(entry - float(entry_data.get("last_swing_low", entry) or entry), atr_floor, min_stop_distance)
         else:
-            raw_distance = max(float(entry_data.get("last_swing_high", entry) or entry) - entry, atr_floor)
+            raw_distance = max(float(entry_data.get("last_swing_high", entry) or entry) - entry, atr_floor, min_stop_distance)
     elif signal_type == "SWEEP":
         nearest_level = float(entry_data.get("nearest_level", entry_data.get("sl", entry)) or entry)
         if direction == "LONG":
-            raw_distance = max(entry - nearest_level, atr_floor)
+            raw_distance = max(entry - nearest_level, atr_floor, min_stop_distance)
         else:
-            raw_distance = max(nearest_level - entry, atr_floor)
+            raw_distance = max(nearest_level - entry, atr_floor, min_stop_distance)
     else:
-        raw_distance = max(distance, atr_floor)
+        raw_distance = max(distance, atr_floor, min_stop_distance)
 
     sl_distance = max(raw_distance, min_sl_distance, 1e-9)
 
@@ -2036,11 +2040,20 @@ class BosStrategy(Strategy):
         if pd.isna(atr):
             return self._reject("rejected_other", symbol, i, "ATR is NaN")
 
-        # 1️⃣ Базовая дистанция стопа
-        stop_distance = (entry - sl) if direction == 'LONG' else (sl - entry)
+        # 1️⃣ Базовая дистанция стопа + минимальная защита
+        structure_stop = sl
+        min_stop = max(entry * MIN_STOP_PCT, 1e-9)
+        stop_distance = max(
+            abs(entry - structure_stop),
+            0.3 * atr,
+            min_stop,
+        )
 
         if stop_distance <= 0 or np.isnan(stop_distance):
             return self._reject("rejected_price_condition", symbol, i, f"stop distance invalid: {stop_distance}")
+
+        # Пересчёт SL из финальной дистанции в сторону сделки
+        sl = entry - stop_distance if direction == 'LONG' else entry + stop_distance
 
         # 2️⃣ Динамическая ATR-калибровка SL/TP
         sl, atr_based_tp, stop_distance = compute_atr_distances(entry, direction, atr, stop_distance, signal_type)
@@ -2387,6 +2400,7 @@ def run_backtest():
     pbar = tqdm(total=total_steps, desc="⏳ Портфельный анализ")
     signal_counter = 0
     previous_entry_time = None
+    executed_entries = set()
 
     def _build_scale_position(base_pos, row, current_time, scale_level):
         addon = base_pos.copy()
@@ -2463,6 +2477,12 @@ def run_backtest():
                 swing_indices[symbol]['low'],
                 swing_indices[symbol]['high']
             )
+
+            entry_bar_index = int(pos.get("entry_bar_index", pos_idx))
+            if exit_reason is None and (pos_idx - entry_bar_index) > MAX_TRADE_BARS:
+                exit_reason = "timeout"
+                exit_price = float(np.clip(np.nan_to_num(row.get('close', pos.get('entry', 0.0)), nan=pos.get('entry', 0.0), posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT), -SAFE_FLOAT_LIMIT, SAFE_FLOAT_LIMIT))
+                exit_idx = pos_idx
             
             if exit_reason is not None:
                 pnl, r_result = calculate_trade_pnl_r(
@@ -2894,8 +2914,11 @@ def run_backtest():
             position_size = calculate_position_size(entry_data, capital, risk_factor=RISK_PER_TRADE)
             max_position = float(np.clip((capital * 50.0) / max(entry_price, 1e-9), 0.0, SAFE_FLOAT_LIMIT))
             position_size = float(np.clip(np.nan_to_num(position_size, nan=0.0, posinf=0.0, neginf=0.0), 0.0, max_position))
-            trade_risk = float(np.clip(np.nan_to_num(entry_data.get("risk_amount", capital * RISK_PER_TRADE), nan=0.0), 0.0, SAFE_FLOAT_LIMIT))
-            expected_position_size = float(np.clip(capital * RISK_PER_TRADE, 0.0, SAFE_FLOAT_LIMIT))
+            stop_distance = float(np.clip(np.nan_to_num(abs(entry_data.get('entry', entry_price) - entry_data.get('sl', entry_price)), nan=0.0), 0.0, SAFE_FLOAT_LIMIT))
+            expected_risk = float(np.clip(capital * RISK_PER_TRADE, 0.0, SAFE_FLOAT_LIMIT))
+            actual_risk = float(np.clip(position_size * stop_distance, 0.0, SAFE_FLOAT_LIMIT))
+            trade_risk = float(np.clip(np.nan_to_num(entry_data.get("risk_amount", expected_risk), nan=0.0), 0.0, SAFE_FLOAT_LIMIT))
+            expected_position_size = expected_risk
 
             print(
                 f"[AUDIT:RISK] symbol={symbol} initial_capital={INITIAL_CAPITAL:.4f} "
@@ -2910,6 +2933,22 @@ def run_backtest():
                 tqdm.write(f"   ⚠️ {symbol}: некорректный position_size, пропускаем")
                 continue
         
+            if actual_risk > expected_risk * 1.05:
+                filter_stats["rejected_before_entry"] += 1
+                filter_stats["rejected_price_condition"] += 1
+                tqdm.write(
+                    f"   ⚠️ {symbol}: risk violation guard skip (actual={actual_risk:.6f}, expected={expected_risk:.6f})"
+                )
+                continue
+
+            entry_key = (symbol, entry_data.get('timestamp', current_time))
+            if entry_key in executed_entries:
+                filter_stats["rejected_before_entry"] += 1
+                filter_stats["rejected_other"] += 1
+                tqdm.write(f"   ⚠️ {symbol}: duplicate entry blocked at {entry_key[1]}")
+                continue
+            executed_entries.add(entry_key)
+
             entry_data["position_size"] = position_size
             entry_data["capital_before_entry"] = float(np.clip(capital, -SAFE_FLOAT_LIMIT, SAFE_FLOAT_LIMIT))
             entry_data["trade_risk"] = trade_risk
@@ -2938,6 +2977,7 @@ def run_backtest():
             pos["scale_level"] = 0
             signal_counter += 1
             pos["signal_id"] = signal_counter
+            pos["entry_bar_index"] = int(idx_in_df)
             if pos["initial_risk"] <= 0:
                 pos["rr"] = 0.0
 
