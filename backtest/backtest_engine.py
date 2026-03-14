@@ -398,14 +398,16 @@ def calculate_trade_pnl_r(position_size, entry_price, exit_price, direction, ini
     pnl = float(np.nan_to_num(gross_pnl - fees, nan=0.0, posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT))
 
     safe_risk = float(np.nan_to_num(initial_risk, nan=0.0, posinf=0.0, neginf=0.0))
-    if safe_risk <= 0:
+    if initial_risk <= 0 or np.isnan(initial_risk):
         raw_r = 0.0
+        print(f"⚠️ initial_risk некорректен: {initial_risk}")
     else:
-        raw_r = (gross_pnl - fees) / safe_risk
+        raw_r = (gross_pnl - fees) / initial_risk
 
-    if raw_r > 50:  # разумный максимум
-        print(f"⚠️ Огромный RR: {raw_r:.2f}, ограничиваем до 50")
-        raw_r = 50
+    # Ограничиваем экстремальные значения (опционально)
+    if abs(raw_r) > 1000:
+        print(f"⚠️ Экстремальный RR: {raw_r:.2f}, ограничиваем до 1000")
+        raw_r = 1000 if raw_r > 0 else -1000
     
     r_result = sanitize_r(raw_r)
 
@@ -1892,8 +1894,12 @@ class BosStrategy(Strategy):
         # ===== РАСПАКОВЫВАЕМ swing_indices =====
         swing_high_indices = swing_indices["high"]
         swing_low_indices = swing_indices["low"]
+
+        if i + 1 >= len(close_arr):
+            return self._reject("rejected_other", symbol, i, "no next candle for entry")
     
-        entry = close_arr[i]
+        entry_next_open = open_arr[i + 1]
+        current_close = close_arr[i]
         plus_di = plus_di_arr[i]
         minus_di = minus_di_arr[i]
     
@@ -2137,7 +2143,7 @@ class BosStrategy(Strategy):
                 last_i = valid_swings[-1]
                 sl = low_arr[last_i]
 
-                if sl >= entry:
+                if sl >= entry_next_open:
                     return self._reject("rejected_price_condition", symbol, i, f"invalid BOS LONG stop: sl {sl:.4f} >= entry {entry:.4f}")
 
                 pos_high = np.searchsorted(swing_high_indices, i, side="left") - 1
@@ -2205,7 +2211,7 @@ class BosStrategy(Strategy):
                 last_i = valid_swings[-1]
                 sl = high_arr[last_i]
 
-                if sl <= entry:
+                if sl <= entry_next_open:
                     return self._reject("rejected_price_condition", symbol, i, f"invalid BOS SHORT stop: sl {sl:.4f} <= entry {entry:.4f}")
 
                 pos_low = np.searchsorted(swing_low_indices, i, side="left") - 1
@@ -2267,7 +2273,7 @@ class BosStrategy(Strategy):
                 used_levels = self._entry_ladder_fills[signal_key]
                 for level_num, level_price in touched_levels:
                     if level_num not in used_levels:
-                        entry = level_price
+                        entry = open_arr[i+1] if i+1 < len(open_arr) else level_price
                         entry_level = level_num
                         used_levels.add(level_num)
                         zone_touch_confirmed = True
@@ -2326,7 +2332,7 @@ class BosStrategy(Strategy):
                 and momentum_ratio > 0.65
                 and adx > 32
             ):
-                entry = close_arr[i]
+                entry = open_arr[i+1] if i+1 < len(open_arr) else close_arr[i]
                 entry_level = None
                 entry_mode = "momentum"
                 zone_touch_confirmed = True
@@ -2361,14 +2367,14 @@ class BosStrategy(Strategy):
 
         # Проверка, что уровни имеют смысл
         if direction == "LONG":
-            if sl >= entry:
+            if sl >= entry_next_open:
                 return self._reject("rejected_price_condition", symbol, i, f"LONG validation failed: sl {sl:.4f} >= entry {entry:.4f}")
-            if tp is not None and tp <= entry:
+            if tp is not None and tp <= entry_next_open:
                 return self._reject("rejected_price_condition", symbol, i, f"LONG validation failed: tp {tp:.4f} <= entry {entry:.4f}")
         else:
-            if sl <= entry:
+            if sl <= entry_next_open:
                 return self._reject("rejected_price_condition", symbol, i, f"SHORT validation failed: sl {sl:.4f} <= entry {entry:.4f}")
-            if tp is not None and tp >= entry:
+            if tp is not None and tp >= entry_next_open:
                 return self._reject("rejected_price_condition", symbol, i, f"SHORT validation failed: tp {tp:.4f} >= entry {entry:.4f}")
 
         # ===== РАСЧЁТ RR + финальная коррекция SL =====
@@ -2379,9 +2385,9 @@ class BosStrategy(Strategy):
 
         # 1️⃣ Базовая дистанция стопа + минимальная защита
         structure_stop = sl
-        min_stop = max(entry * MIN_STOP_PCT, 1e-9)
+        min_stop = max(entry_next_open * MIN_STOP_PCT, 1e-9)
         stop_distance = max(
-            abs(entry - structure_stop),
+            abs(entry_next_open - structure_stop),
             0.3 * atr,
             min_stop,
         )
@@ -2390,10 +2396,10 @@ class BosStrategy(Strategy):
             return self._reject("rejected_price_condition", symbol, i, f"stop distance invalid: {stop_distance}")
 
         # Пересчёт SL из финальной дистанции в сторону сделки
-        sl = entry - stop_distance if direction == 'LONG' else entry + stop_distance
+        sl = entry_next_open - stop_distance if direction == 'LONG' else entry_next_open + stop_distance
 
         # 2️⃣ Динамическая ATR-калибровка SL/TP
-        sl, atr_based_tp, stop_distance = compute_atr_distances(entry, direction, atr, stop_distance, signal_type)
+        sl, atr_based_tp, stop_distance = compute_atr_distances(entry_next_open, direction, atr, stop_distance, signal_type)
         rr_filter_required = True
 
         if signal_type == "SWEEP" and atr_based_tp is not None:
@@ -2450,7 +2456,7 @@ class BosStrategy(Strategy):
         entry_data = {
             'symbol': symbol,
             'direction': direction,
-            'entry': round(entry, 4),
+            'entry': round(entry_next_open, 4),
             'entry_level': entry_level,
             'zone_size_at_entry': round(zone_size_at_entry, 6) if zone_size_at_entry is not None else None,
             'tp': float(np.nan_to_num(round(tp, 4), nan=0.0, posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT)) if tp is not None else None,
@@ -2501,7 +2507,7 @@ class BosStrategy(Strategy):
         self.last_rejection_message = ""
         return entry_data
 
-def run_backtest():
+def run_backtest(return_trades: bool = False):
     if BACKTEST_VERBOSE:
         print("🚀 Запуск бэктеста...")
         print(f"Начальный капитал: {INITIAL_CAPITAL} USDT")
@@ -2773,7 +2779,8 @@ def run_backtest():
             else:
                 addon['sl'] = addon['entry'] + stop_distance
         
-        addon['initial_risk'] = float(np.clip(np.nan_to_num(abs(addon['entry'] - addon['sl']), nan=0.0, posinf=SAFE_FLOAT_LIMIT, neginf=0.0), 0.0, SAFE_FLOAT_LIMIT))
+        stop_distance = abs(addon['entry'] - addon['sl'])
+        addon['initial_risk'] = addon['position_size'] * stop_distance
         addon['rr'] = sanitize_r(calculate_rr(addon['entry'], addon['tp'], addon['sl'], addon.get('direction')))
         addon['position_size'] = float(base_pos.get('position_size', 0.0))
         addon['bars_alive'] = 0
@@ -3286,25 +3293,26 @@ def run_backtest():
                     chosen_candle = None
 
                 if chosen_candle is not None:
-                    entry_time = chosen_candle.name
-                    if entry_data.get('direction') == 'LONG':
-                        refined_price = chosen_candle.get('low', chosen_candle.get('close', entry_data.get('entry', 0.0)))
-                    else:
-                        refined_price = chosen_candle.get('high', chosen_candle.get('close', entry_data.get('entry', 0.0)))
-                    entry_price = float(np.nan_to_num(refined_price, nan=entry_data.get('entry', 0.0)))
-                    entry_data['entry'] = round(entry_price, 4)
-                    entry_data['timestamp'] = entry_time
+                    if chosen_candle.name > current_time:
+                        entry_time = chosen_candle.name
+                        if entry_data.get('direction') == 'LONG':
+                            refined_price = chosen_candle.get('low', chosen_candle.get('close', entry_data.get('entry', 0.0)))
+                        else:
+                            refined_price = chosen_candle.get('high', chosen_candle.get('close', entry_data.get('entry', 0.0)))
+                        entry_price = float(np.nan_to_num(refined_price, nan=entry_data.get('entry', 0.0)))
+                        entry_data['entry'] = round(entry_price, 4)
+                        entry_data['timestamp'] = entry_time
 
-                    direction = entry_data.get('direction')
-                    atr_for_recalc = float(np.nan_to_num(entry_data.get('atr', row.get('atr', 0.0) if hasattr(row, 'get') else 0.0), nan=0.0))
-                    raw_stop_distance = abs(entry_price - float(np.nan_to_num(entry_data.get('sl', entry_price), nan=entry_price)))
-                    sl_val, tp_val, _ = compute_atr_distances(
-                        entry_price,
-                        direction,
-                        atr_for_recalc,
-                        max(raw_stop_distance, 1e-9),
-                        entry_data.get('signal_type')
-                    )
+                        direction = entry_data.get('direction')
+                        atr_for_recalc = float(np.nan_to_num(entry_data.get('atr', row.get('atr', 0.0) if hasattr(row, 'get') else 0.0), nan=0.0))
+                        raw_stop_distance = abs(entry_price - float(np.nan_to_num(entry_data.get('sl', entry_price), nan=entry_price)))
+                        sl_val, tp_val, _ = compute_atr_distances(
+                            entry_price,
+                            direction,
+                            atr_for_recalc,
+                            max(raw_stop_distance, 1e-9),
+                            entry_data.get('signal_type')
+                        )
 
                     if entry_data.get('signal_type') == 'BOS':
                         tp_val = None
@@ -3441,7 +3449,17 @@ def run_backtest():
             pos["symbol"] = symbol
             pos["bars_alive"] = 0
             pos["max_r"] = sanitize_r(0)
-            pos["initial_risk"] = float(np.clip(np.nan_to_num(abs(pos["entry"] - pos["sl"]), nan=0.0, posinf=0.0, neginf=0.0), 0.0, SAFE_FLOAT_LIMIT))
+            stop_distance = abs(pos["entry"] - pos["sl"])
+            initial_risk_correct = pos["position_size"] * stop_distance
+
+            # Защита от микро-риска
+            MIN_RISK_USDT = 0.01
+            if initial_risk_correct < MIN_RISK_USDT and initial_risk_correct > 0:
+                pos["position_size"] = MIN_RISK_USDT / stop_distance
+                initial_risk_correct = MIN_RISK_USDT
+                print(f"⚠️ Корректировка риска: увеличили до {MIN_RISK_USDT} USDT")
+
+            pos["initial_risk"] = initial_risk_correct
             pos["mfe_r"] = 0.0
             pos["mae_r"] = 0.0
             pos["max_r_reached"] = 0.0
@@ -3572,6 +3590,9 @@ def run_backtest():
     for item in anomalies[:10]:
         print(f"- idx={item.trade_index} symbol={item.symbol} pnl={item.pnl:.6f} reason={item.reason}")
 
+    if return_trades:
+        return trades_df.to_dict("records")
+
     return trades_df, equity_df, stats
 
 class BosAnalytics:
@@ -3669,6 +3690,15 @@ if __name__ == "__main__":
     print("\n📊 BOS FVG EDGE")
     print("-"*30)
     print(analytics.bos_fvg_edge())
+
+    initial_risks = [t.get("initial_risk", 0) for t in all_trades if t.get("initial_risk", 0) > 0]
+    if initial_risks:
+        print("\n📊 СТАТИСТИКА INITIAL_RISK:")
+        print(f"  Минимальный: {min(initial_risks):.6f}")
+        print(f"  Максимальный: {max(initial_risks):.2f}")
+        print(f"  Средний: {sum(initial_risks)/len(initial_risks):.2f}")
+        print(f"  Медиана: {sorted(initial_risks)[len(initial_risks)//2]:.2f}")
+        print(f"  Сделок с риском < 0.01: {sum(1 for r in initial_risks if r < 0.01)}")
     
     analytics = BosAnalytics(trades_df)
     analytics.print_full_report()

@@ -53,29 +53,62 @@ def run_random_entry_test(seed: int = 42) -> None:
         if signal is None:
             return None
 
-        direction = rng.choice(["LONG", "SHORT"])
-        randomized = dict(signal)
-        entry = float(randomized.get("entry", 0.0))
-        sl = float(randomized.get("sl", entry))
-        tp = randomized.get("tp")
+        # Более безопасное копирование с проверкой типа
+        randomized = {}
+        for k, v in signal.items():
+            # Пытаемся преобразовать числовые значения в float, если это возможно
+            if isinstance(v, (int, float, str)) and k in ['entry', 'sl', 'tp', 'rr']:
+                try:
+                    randomized[k] = float(v)
+                except (ValueError, TypeError):
+                    randomized[k] = v
+            else:
+                randomized[k] = v
 
-        initial_risk = abs(entry - sl)
+        # Проверяем наличие обязательных полей
+        if randomized.get("entry") is None:
+            print(f"⚠️ Пропуск сигнала: отсутствует entry для {symbol}")
+            return None
+
+        direction = rng.choice(["LONG", "SHORT"])
+        
+        # В тесте у нас нет доступа к open_arr, поэтому используем небольшое смещение
+        open_next = arrays["open"][i + 1] if i + 1 < len(arrays["open"]) else randomized["entry"]
+        
+        entry_price = randomized["entry"]  # цена на момент сигнала (для анализа)
+        entry_next_open = open_next  # цена для реального входа
+
+        sl = randomized.get("sl", entry_price)
+
+        # Безопасное получение initial_risk
+        if sl is None:
+            initial_risk = 0.0
+        else:
+            initial_risk = abs(entry_price - sl)
+
         if initial_risk <= 1e-9:
             return None
 
-        rr = float(randomized.get("rr", 2.0))
-        rr_abs = abs(rr) if np.isfinite(rr) and rr != 0 else 2.0
+        # Безопасное получение RR
+        rr = randomized.get("rr")
+        if rr is None or not np.isfinite(rr) or rr == 0:
+            rr_abs = 2.0
+        else:
+            rr_abs = abs(rr)
+
+        # Обновляем поля в зависимости от направления
+        randomized["direction"] = direction
 
         if direction == "LONG":
-            randomized["sl"] = entry - initial_risk
-            randomized["tp"] = None if tp is None else entry + initial_risk * rr_abs
+            randomized["sl"] = entry_next_open - initial_risk
+            randomized["tp"] = None if randomized.get("tp") is None else entry_next_open + initial_risk * rr_abs
         else:
-            randomized["sl"] = entry + initial_risk
-            randomized["tp"] = None if tp is None else entry - initial_risk * rr_abs
+            randomized["sl"] = entry_next_open + initial_risk
+            randomized["tp"] = None if randomized.get("tp") is None else entry_next_open - initial_risk * rr_abs
 
-        randomized["direction"] = direction
-        randomized["rr"] = rr_abs
-        randomized["initial_risk"] = abs(entry - float(randomized["sl"]))
+        randomized["initial_risk"] = abs(entry_next_open - float(randomized["sl"]))
+        randomized["entry"] = entry_next_open  
+        
         return randomized
 
     backtest_engine.BosStrategy.generate_signal = randomize

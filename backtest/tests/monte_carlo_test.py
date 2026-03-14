@@ -42,22 +42,33 @@ def print_metrics(metrics: dict) -> None:
 
 def run_monte_carlo(simulations: int = 1000, seed: int = 42) -> None:
     print("===== MONTE CARLO TEST =====")
-    trades_df, _, _ = run_backtest()
+    trades = run_backtest(return_trades=True)
+    trades_df = pd.DataFrame(trades)
     print_metrics(compute_metrics(trades_df))
-    if trades_df.empty:
+    if not trades:
         print("\nNo trades available for Monte Carlo simulation.")
         return
 
-    pnl = pd.to_numeric(trades_df["pnl"], errors="coerce").fillna(0.0).to_numpy()
+    pnl = [trade["pnl"] for trade in trades]
     rng = np.random.default_rng(seed)
     finals = []
     for _ in range(simulations):
-        finals.append(float(np.cumsum(rng.permutation(pnl))[-1]))
-    finals = np.array(finals)
+        shuffled = list(pnl)
+        rng.shuffle(shuffled)
+
+        equity = 100.0
+        for trade_pnl in shuffled:
+            equity += float(trade_pnl)
+
+        finals.append(equity)
+
+    finals = np.array(finals, dtype=float)
     print("\nMonte Carlo final equity distribution:")
     print(f"Worst final equity: {finals.min():.4f}")
-    print(f"Median equity: {np.median(finals):.4f}")
-    print(f"Best equity: {finals.max():.4f}")
+    print(f"Median final equity: {np.median(finals):.4f}")
+    print(f"Best final equity: {finals.max():.4f}")
+    print(f"5% percentile: {np.percentile(finals, 5):.4f}")
+    print(f"95% percentile: {np.percentile(finals, 95):.4f}")
 
 
 if __name__ == "__main__":
