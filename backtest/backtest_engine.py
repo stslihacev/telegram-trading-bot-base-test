@@ -634,7 +634,7 @@ def get_confidence_bucket(confidence):
     return "below_3", 1.0
 
 
-def calculate_position_size(entry_data, capital, risk_factor=0.01):
+def calculate_risk_based_position_size(entry_data, capital, risk_factor=0.01):
     """
     Адаптивный размер позиции:
     - финализирует SL после ATR/минимальной дистанции
@@ -714,6 +714,13 @@ def calculate_position_size(entry_data, capital, risk_factor=0.01):
     entry_data["position_size"] = position_size
     entry_data["risk_amount"] = float(np.clip(position_size * sl_distance, 0.0, risk_budget))
     return position_size
+
+def calculate_position_size(requested_size, current_capital, risk_percent=0.2):
+    """Limit requested notional/risk allocation by available capital and risk budget."""
+    safe_requested = float(np.clip(np.nan_to_num(requested_size, nan=0.0), 0.0, SAFE_FLOAT_LIMIT))
+    safe_capital = float(np.clip(np.nan_to_num(current_capital, nan=0.0), 0.0, SAFE_FLOAT_LIMIT))
+    safe_risk_percent = _normalize_risk_fraction(risk_percent, default=0.20)
+    return float(min(safe_requested, safe_capital * safe_risk_percent))
 
 def get_htf_bias_fast(i, close_arr, ema200_arr):
 
@@ -3050,8 +3057,12 @@ def run_backtest():
 
             remaining_risk_budget = calculate_remaining_risk_budget(signal_positions, leader)
             available_capital = calculate_available_capital(capital, open_positions)
-            available_risk_budget = float(np.clip(available_capital * _normalize_risk_fraction(RISK_PER_TRADE, default=0.20), 0.0, SAFE_FLOAT_LIMIT))
-            effective_scale_risk_budget = float(np.clip(min(remaining_risk_budget, available_risk_budget), 0.0, SAFE_FLOAT_LIMIT))
+            requested_scale_risk = float(np.clip(min(remaining_risk_budget, available_capital), 0.0, SAFE_FLOAT_LIMIT))
+            effective_scale_risk_budget = calculate_position_size(
+                requested_size=requested_scale_risk,
+                current_capital=available_capital,
+                risk_percent=RISK_PER_TRADE,
+            )
             if effective_scale_risk_budget <= 0:
                 continue
 
@@ -3060,7 +3071,10 @@ def run_backtest():
             if addon_stop_distance <= 0:
                 continue
 
-            max_addon_size = float(np.clip(effective_scale_risk_budget / addon_stop_distance, 0.0, SAFE_FLOAT_LIMIT))
+            addon_entry_price = float(np.nan_to_num(addon_pos.get('entry', 0.0), nan=0.0))
+            max_addon_size_by_risk = float(np.clip(effective_scale_risk_budget / addon_stop_distance, 0.0, SAFE_FLOAT_LIMIT))
+            max_addon_size_by_capital = float(np.clip(available_capital / max(addon_entry_price, 1e-9), 0.0, SAFE_FLOAT_LIMIT))
+            max_addon_size = float(np.clip(min(max_addon_size_by_risk, max_addon_size_by_capital), 0.0, SAFE_FLOAT_LIMIT))
             addon_pos['position_size'] = float(np.clip(min(addon_pos.get('position_size', 0.0), max_addon_size), 0.0, SAFE_FLOAT_LIMIT))
             addon_pos['trade_risk'] = float(np.clip(addon_pos['position_size'] * addon_stop_distance, 0.0, effective_scale_risk_budget))
             addon_pos['capital_before_entry'] = float(np.clip(available_capital, 0.0, SAFE_FLOAT_LIMIT))
@@ -3257,13 +3271,25 @@ def run_backtest():
             if available_capital <= 0:
                 continue
 
-            position_size = calculate_position_size(entry_data, available_capital, risk_factor=RISK_PER_TRADE)
+            requested_position_size = calculate_risk_based_position_size(entry_data, available_capital, risk_factor=RISK_PER_TRADE)
+            capped_risk_amount = calculate_position_size(
+                requested_size=entry_data.get("risk_amount", 0.0),
+                current_capital=available_capital,
+                risk_percent=RISK_PER_TRADE,
+            )
+            stop_distance = float(np.clip(np.nan_to_num(abs(entry_data.get('entry', entry_price) - entry_data.get('sl', entry_price)), nan=0.0), 0.0, SAFE_FLOAT_LIMIT))
+            position_size = float(np.clip(np.nan_to_num(requested_position_size, nan=0.0, posinf=0.0, neginf=0.0), 0.0, SAFE_FLOAT_LIMIT))
+            if stop_distance > 0:
+                max_size_by_cap = float(np.clip(available_capital / max(entry_price, 1e-9), 0.0, SAFE_FLOAT_LIMIT))
+                max_size_by_risk = float(np.clip(capped_risk_amount / stop_distance, 0.0, SAFE_FLOAT_LIMIT))
+                position_size = float(np.clip(min(position_size, max_size_by_risk), 0.0, max_size_by_cap))
+            else:
+                position_size = 0.0
             max_position = float(np.clip((available_capital * max(MAX_NOTIONAL_LEVERAGE, 0.0)) / max(entry_price, 1e-9), 0.0, SAFE_FLOAT_LIMIT))
             position_size = float(np.clip(np.nan_to_num(position_size, nan=0.0, posinf=0.0, neginf=0.0), 0.0, max_position))
-            stop_distance = float(np.clip(np.nan_to_num(abs(entry_data.get('entry', entry_price) - entry_data.get('sl', entry_price)), nan=0.0), 0.0, SAFE_FLOAT_LIMIT))
             expected_risk = float(np.clip(available_capital * _normalize_risk_fraction(RISK_PER_TRADE, default=0.20), 0.0, SAFE_FLOAT_LIMIT))
             actual_risk = float(np.clip(position_size * stop_distance, 0.0, SAFE_FLOAT_LIMIT))
-            trade_risk = float(np.clip(np.nan_to_num(entry_data.get("risk_amount", expected_risk), nan=0.0), 0.0, expected_risk))
+            trade_risk = float(np.clip(min(actual_risk, capped_risk_amount), 0.0, expected_risk))
 
             if position_size <= 0:
                 filter_stats["rejected_before_entry"] += 1
