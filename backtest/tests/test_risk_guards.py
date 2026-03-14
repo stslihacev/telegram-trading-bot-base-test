@@ -10,6 +10,7 @@ from backtest.backtest_engine import (
     compute_atr_distances,
     get_confidence_bucket,
     calculate_position_size,
+    calculate_remaining_risk_budget,
 )
 
 
@@ -218,3 +219,30 @@ def test_position_size_scales_with_confidence_bucket_risk():
     assert half_pos == full_pos * 0.5
     assert small_pos == full_pos * 0.25
     assert reject_pos == 0.0
+
+def test_scale_in_remaining_risk_budget_never_exceeds_leader_budget():
+    leader = {
+        "trade_risk": 10.0,
+        "capital_before_entry": 1000.0,
+    }
+    signal_positions = [
+        {"entry": 100.0, "sl": 99.0, "position_size": 5.0},
+        {"entry": 101.0, "sl": 100.0, "position_size": 2.0},
+    ]
+
+    remaining = calculate_remaining_risk_budget(signal_positions, leader)
+    assert remaining == 3.0
+
+
+def test_scale_in_remaining_risk_budget_falls_back_to_base_risk():
+    leader = {
+        "trade_risk": 0.0,
+        "capital_before_entry": 1000.0,
+    }
+    signal_positions = [
+        {"entry": 100.0, "sl": 99.0, "position_size": 8.0},
+        {"entry": 100.0, "sl": 99.0, "position_size": 4.0},
+    ]
+
+    remaining = calculate_remaining_risk_budget(signal_positions, leader)
+    assert remaining == 0.0

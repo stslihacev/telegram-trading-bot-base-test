@@ -438,6 +438,21 @@ def select_mtf_entry_candle(candles_15m, row, direction):
         idx = candles_15m['high'].astype(float).idxmax()
     return candles_15m.loc[idx]
 
+def calculate_remaining_risk_budget(signal_positions, leader):
+    """Return remaining risk budget for scale-ins so total signal risk never exceeds initial trade risk."""
+    risk_budget = float(np.nan_to_num(leader.get("trade_risk", 0.0), nan=0.0))
+    if risk_budget <= 0:
+        capital_before_entry = float(np.nan_to_num(leader.get("capital_before_entry", 0.0), nan=0.0))
+        risk_budget = float(np.clip(capital_before_entry * RISK_PER_TRADE, 0.0, SAFE_FLOAT_LIMIT))
+
+    current_signal_risk = 0.0
+    for pos in signal_positions:
+        pos_size = float(np.nan_to_num(pos.get("position_size", 0.0), nan=0.0))
+        pos_stop_distance = float(np.nan_to_num(abs(pos.get("entry", 0.0) - pos.get("sl", 0.0)), nan=0.0))
+        current_signal_risk += pos_size * pos_stop_distance
+
+    return float(np.clip(risk_budget - current_signal_risk, 0.0, SAFE_FLOAT_LIMIT))
+
 
 def is_mtf_confirmation_valid(df_mtf, candle_time, direction):
     if ENTRY_CONFIRMATION_VARIANT == "NONE":
@@ -2845,14 +2860,29 @@ def run_backtest():
             if favorable_r < float(next_scale_level):
                 continue
 
+            remaining_risk_budget = calculate_remaining_risk_budget(signal_positions, leader)
+            if remaining_risk_budget <= 0:
+                continue
+
             addon_pos = _build_scale_position(leader, row, current_time, next_scale_level)
+            addon_stop_distance = float(np.nan_to_num(abs(addon_pos.get('entry', 0.0) - addon_pos.get('sl', 0.0)), nan=0.0))
+            if addon_stop_distance <= 0:
+                continue
+
+            max_addon_size = float(np.clip(remaining_risk_budget / addon_stop_distance, 0.0, SAFE_FLOAT_LIMIT))
+            addon_pos['position_size'] = float(np.clip(min(addon_pos.get('position_size', 0.0), max_addon_size), 0.0, SAFE_FLOAT_LIMIT))
+            addon_pos['trade_risk'] = float(np.clip(addon_pos['position_size'] * addon_stop_distance, 0.0, SAFE_FLOAT_LIMIT))
+            if addon_pos['position_size'] <= 0:
+                continue
+
             open_positions.append(addon_pos)
             tqdm.write(
                 f"   ➕ SCALE-IN {symbol} {leader['direction']} | "
                 f"уровень: {next_scale_level} | "
                 f"R: {favorable_r:.2f} | "
                 f"Вход: {addon_pos['entry']:.4f} | "
-                f"SL: {addon_pos['sl']:.4f}"
+                f"SL: {addon_pos['sl']:.4f} | "
+                f"risk: {addon_pos['trade_risk']:.4f}/{remaining_risk_budget:.4f}"
             )
 
         # ===== 2. ЗАПИСЫВАЕМ КАПИТАЛ =====
