@@ -13,7 +13,6 @@ import glob
 from tqdm import tqdm
 from collections import defaultdict
 import lightgbm as lgb
-from features.htf_trend import calculate_htf_trend
 
 # Импорты из наших модулей
 from analysis.levels import get_nearest_levels
@@ -81,6 +80,8 @@ MTF_FILTER_ADX_MIN_1H = float(os.getenv("MTF_FILTER_ADX_MIN_1H", "20"))
 MTF_FILTER_ADX_MIN_4H = float(os.getenv("MTF_FILTER_ADX_MIN_4H", "20"))
 MTF_FILTER_LOGIC = os.getenv("MTF_FILTER_LOGIC", "AND").upper()
 BACKTEST_VERBOSE = os.getenv("BACKTEST_VERBOSE", "0") == "1"
+USE_4H_TREND_CONFIRMATION = os.getenv("USE_4H_TREND_CONFIRMATION", "1") == "1"
+PARTIAL_TP_ENABLED = os.getenv("PARTIAL_TP_ENABLED", "1") == "1"
 
 
 def get_adaptive_zone_atr_multiplier(confidence):
@@ -215,6 +216,23 @@ def evaluate_4h_filter(df_4h, candle_time, direction, variant):
         return htf_adx > 20, f"4h ADX too low: {htf_adx:.2f}"
 
     return True, "unknown 4h filter variant"
+
+def infer_directional_bias_from_row(row):
+    """Directional bias from ema200 + adx + DI profile."""
+    if row is None:
+        return None
+    close_price = float(np.nan_to_num(row.get("close", np.nan), nan=np.nan))
+    ema200 = float(np.nan_to_num(row.get("ema200", np.nan), nan=np.nan))
+    adx_value = float(np.nan_to_num(row.get("adx", np.nan), nan=0.0))
+    plus_di = float(np.nan_to_num(row.get("plus_di", np.nan), nan=0.0))
+    minus_di = float(np.nan_to_num(row.get("minus_di", np.nan), nan=0.0))
+    if np.isnan(close_price) or np.isnan(ema200) or adx_value <= 0:
+        return None
+    if close_price > ema200 and plus_di >= minus_di:
+        return "LONG"
+    if close_price < ema200 and minus_di >= plus_di:
+        return "SHORT"
+    return None
 
 if MODE == "TEST":
     START_DATE = "2024-01-01"
@@ -410,22 +428,15 @@ def choose_mtf_dataset(symbol, all_data_15m, all_data_30m):
     return None, None
 
 def select_mtf_entry_candle(candles_15m, row, direction):
-    """Подбирает 15m свечу внутри текущего часа для более надёжного входа."""
+    """Refine entry inside the 1H bar: LONG -> lowest low, SHORT -> highest high."""
     if candles_15m.empty or direction not in {'LONG', 'SHORT'}:
         return None
 
     if direction == 'LONG':
-        in_range = candles_15m[(candles_15m['low'] >= row['low']) & (candles_15m['low'] <= row['high'])]
-        preferred = in_range[in_range['close'] < row['close']]
+        idx = candles_15m['low'].astype(float).idxmin()
     else:
-        in_range = candles_15m[(candles_15m['high'] >= row['low']) & (candles_15m['high'] <= row['high'])]
-        preferred = in_range[in_range['close'] > row['close']]
-
-    if not preferred.empty:
-        return preferred.iloc[-1]
-    if not in_range.empty:
-        return in_range.iloc[-1]
-    return None
+        idx = candles_15m['high'].astype(float).idxmax()
+    return candles_15m.loc[idx]
 
 
 def is_mtf_confirmation_valid(df_mtf, candle_time, direction):
@@ -896,14 +907,15 @@ class Strategy:
                         trade["sl"] = sl
 
         # --- Intrabar execution ---
-        # Worst-case assumption when both TP and SL are hit within one candle.
+        tp1 = trade.get("tp1_price")
+        tp1_taken = bool(trade.get("tp1_taken", False))
         if direction == "LONG":
             if tp is not None and row['low'] <= sl and row['high'] >= tp:
-                return "stop_loss", sl, current_idx
+                return "stop_loss", sl, current_idx, 1.0
             path_points = [float(row['open']), float(row['low']), float(row['high']), float(row['close'])]
         else:
             if tp is not None and row['high'] >= sl and row['low'] <= tp:
-                return "stop_loss", sl, current_idx
+                return "stop_loss", sl, current_idx, 1.0
             path_points = [float(row['open']), float(row['high']), float(row['low']), float(row['close'])]
 
         for start, end in zip(path_points, path_points[1:]):
@@ -913,10 +925,13 @@ class Strategy:
             if direction == "LONG":
                 if end <= start:
                     if seg_low <= sl <= seg_high:
-                        return "stop_loss", sl, current_idx
+                        return "stop_loss", sl, current_idx, 1.0
                 else:
+                    if (not tp1_taken) and tp1 is not None and seg_low <= tp1 <= seg_high:
+                        trade["tp1_taken"] = True
+                        return "partial_take_profit", tp1, current_idx, 0.5
                     if tp is not None and seg_low <= tp <= seg_high:
-                        return "take_profit", tp, current_idx
+                        return "take_profit", tp, current_idx, 1.0
                     if trade["initial_risk"] > 0:
                         seg_favorable_r = max(0.0, float(np.nan_to_num((end - trade["entry"]) / trade["initial_risk"], nan=0.0)))
                         new_sl = self._apply_r_trailing(trade, direction, sl, seg_favorable_r)
@@ -926,10 +941,13 @@ class Strategy:
             else:
                 if end >= start:
                     if seg_low <= sl <= seg_high:
-                        return "stop_loss", sl, current_idx
+                        return "stop_loss", sl, current_idx, 1.0
                 else:
+                    if (not tp1_taken) and tp1 is not None and seg_low <= tp1 <= seg_high:
+                        trade["tp1_taken"] = True
+                        return "partial_take_profit", tp1, current_idx, 0.5
                     if tp is not None and seg_low <= tp <= seg_high:
-                        return "take_profit", tp, current_idx
+                        return "take_profit", tp, current_idx, 1.0
                     if trade["initial_risk"] > 0:
                         seg_favorable_r = max(0.0, float(np.nan_to_num((trade["entry"] - end) / trade["initial_risk"], nan=0.0)))
                         new_sl = self._apply_r_trailing(trade, direction, sl, seg_favorable_r)
@@ -937,13 +955,12 @@ class Strategy:
                             sl = new_sl
                             trade["sl"] = sl
 
-        # Final close-level fallback for segments that include a boundary exactly at close.
         if direction == "LONG" and row['close'] <= sl:
-            return "stop_loss", sl, current_idx
+            return "stop_loss", sl, current_idx, 1.0
         if direction == "SHORT" and row['close'] >= sl:
-            return "stop_loss", sl, current_idx
+            return "stop_loss", sl, current_idx, 1.0
 
-        return None, None, None
+        return None, None, None, 0.0
 
 def load_all_data(processed):    
     # ===== ЗАГРУЗКА ВСЕХ ДАННЫХ =====
@@ -1344,7 +1361,13 @@ def print_final_report(
     if len(trades_df) == 0:
         print("\n===== BACKTEST SUMMARY =====")
         print("Trades: 0")
-        return
+        return {
+            "initial_capital": float(INITIAL_CAPITAL),
+            "final_capital": float(capital),
+            "total_profit": float(capital - INITIAL_CAPITAL),
+            "roi_pct": float(((capital / INITIAL_CAPITAL) - 1.0) * 100.0 if INITIAL_CAPITAL else 0.0),
+            "trades": 0,
+        }
 
     local_df = trades_df.copy()
     local_df['pnl'] = pd.to_numeric(local_df.get('pnl', 0.0), errors='coerce').replace([np.inf, -np.inf], np.nan).fillna(0.0)
@@ -1367,6 +1390,14 @@ def print_final_report(
     avg_trade_duration = float(local_df['bars_alive'].mean()) if total_trades else 0.0
     avg_mfe = float(local_df['mfe_r'].mean()) if total_trades else 0.0
     p95_mfe = float(local_df['mfe_r'].quantile(0.95)) if total_trades else 0.0
+    avg_win = float(local_df.loc[wins_mask, 'pnl'].mean()) if winning_trades else 0.0
+    losing_trades = int(losses_mask.sum())
+    avg_loss = float(local_df.loc[losses_mask, 'pnl'].mean()) if losing_trades else 0.0
+
+    initial_capital = float(INITIAL_CAPITAL)
+    final_capital = float(capital)
+    total_profit = float(final_capital - initial_capital)
+    roi_pct = float(((final_capital / initial_capital) - 1.0) * 100.0) if initial_capital else 0.0
 
     max_dd = 0.0
     if len(equity_df) > 0 and 'capital' in equity_df.columns:
@@ -1377,6 +1408,10 @@ def print_final_report(
         max_dd = float(drawdown.max() * 100.0)
 
     print("\n===== BACKTEST SUMMARY =====")
+    print(f"Initial Capital: {initial_capital:.2f}")
+    print(f"Final Capital: {final_capital:.2f}")
+    print(f"Total Profit: {total_profit:.2f}")
+    print(f"ROI %: {roi_pct:.2f}%")
     print(f"Trades: {total_trades}")
     print(f"Winrate: {winrate:.2f}%")
     print(f"Profit Factor: {profit_factor:.2f}")
@@ -1386,6 +1421,8 @@ def print_final_report(
     print(f"Average Trade Duration: {avg_trade_duration:.2f} bars")
     print(f"Average MFE: {avg_mfe:.4f}R")
     print(f"95% MFE: {p95_mfe:.4f}R")
+    print(f"Average Win: {avg_win:.6f}")
+    print(f"Average Loss: {avg_loss:.6f}")
 
     momentum_df = local_df[local_df.get('entry_mode', '').astype(str) == 'momentum'] if 'entry_mode' in local_df.columns else local_df.iloc[0:0]
     zone_df = local_df[local_df.get('entry_mode', '').astype(str) != 'momentum'] if 'entry_mode' in local_df.columns else local_df.iloc[0:0]
@@ -1435,6 +1472,24 @@ def print_final_report(
         _print_excursion_analysis(local_df)
         _run_backtest_audit(local_df, equity_df)
         print(f"\n✅ Результаты сохранены в backtest/results/")
+
+    return {
+        "initial_capital": initial_capital,
+        "final_capital": final_capital,
+        "total_profit": total_profit,
+        "roi_pct": roi_pct,
+        "trades": total_trades,
+        "winrate": winrate,
+        "profit_factor": float(profit_factor),
+        "average_rr": avg_rr,
+        "median_rr": median_rr,
+        "average_trade_duration": avg_trade_duration,
+        "average_mfe": avg_mfe,
+        "p95_mfe": p95_mfe,
+        "average_win": avg_win,
+        "average_loss": avg_loss,
+        "max_drawdown_pct": max_dd,
+    }
 
 class BosStrategy(Strategy):
 
@@ -1683,6 +1738,18 @@ class BosStrategy(Strategy):
             if not htf_ok:
                 reject_reason = "rejected_price_condition" if HTF_FILTER_VARIANT in {"EMA", "BOS", "ADX"} else "rejected_other"
                 return self._reject(reject_reason, symbol, i, htf_message)
+
+        if USE_4H_TREND_CONFIRMATION:
+            current_1h_bias = infer_directional_bias_from_row(df.iloc[i])
+            htf_row = None if df_4h is None else df_4h[df_4h.index <= df.index[i]].tail(1)
+            current_4h_bias = infer_directional_bias_from_row(htf_row.iloc[-1]) if htf_row is not None and len(htf_row) else None
+            if current_1h_bias != direction or current_4h_bias != direction:
+                return self._reject(
+                    "rejected_mtf_filter",
+                    symbol,
+                    i,
+                    f"4h confirm mismatch: 1h={current_1h_bias}, 4h={current_4h_bias}, direction={direction}"
+                )
 
         # ===== ADX ФИЛЬТР ТОЛЬКО ДЛЯ BOS =====
         if signal_type == "BOS":
@@ -2337,7 +2404,9 @@ def run_backtest():
 
     if not all_data:
         print("❌ Нет данных для анализа")
-        return
+        empty_trades = pd.DataFrame(columns=['pnl', 'rr', 'signal_type', 'regime'])
+        empty_equity = pd.DataFrame(columns=['time', 'capital'])
+        return empty_trades, empty_equity, {'error': 'no_data'}
     
     # ===== СОЗДАЁМ МАППИНГ ВРЕМЯ → МОНЕТЫ =====
     if BACKTEST_VERBOSE:
@@ -2394,11 +2463,16 @@ def run_backtest():
 
     global_index = sorted(set(all_times))
     total_steps = len(global_index) - 200
-    htf_trend = calculate_htf_trend(df)
 
     pbar = tqdm(total=total_steps, desc="⏳ Портфельный анализ", disable=not BACKTEST_VERBOSE)
+    processed_symbols_runtime = set()
+    total_symbols = max(len(all_data), 1)
     signal_counter = 0
     executed_entries = set()
+    avg_vol_15m_cache = {}
+    for sym, df_15 in all_data_15m.items():
+        if len(df_15) > 0 and "volume" in df_15.columns:
+            avg_vol_15m_cache[sym] = float(pd.to_numeric(df_15["volume"], errors="coerce").rolling(12).mean().iloc[-1])
 
     def _build_scale_position(base_pos, row, current_time, scale_level):
         addon = base_pos.copy()
@@ -2425,6 +2499,18 @@ def run_backtest():
         current_time = global_index[idx]
 
         symbols_at_time = time_symbol_map.get(current_time, [])
+        if symbols_at_time:
+            processed_symbols_runtime.update(symbols_at_time)
+            if BACKTEST_VERBOSE and idx % 25 == 0:
+                pct = int((len(processed_symbols_runtime) / total_symbols) * 100)
+                elapsed = pbar.format_dict.get("elapsed", 0.0)
+                rate = (idx - 199) / elapsed if elapsed > 0 else 0.0
+                remain_steps = max(total_steps - (idx - 199), 0)
+                eta_sec = int(remain_steps / rate) if rate > 0 else 0
+                eta_m, eta_s = divmod(eta_sec, 60)
+                pbar.set_postfix_str(
+                    f"Progress: {pct}% | Symbols processed: {len(processed_symbols_runtime)} / {total_symbols} | ETA: {eta_m}m {eta_s}s"
+                )
 
         # Подсчёт режимов для статистики
         for symbol in symbols_at_time:
@@ -2467,7 +2553,7 @@ def run_backtest():
             
             row = df.iloc[pos_idx]
 
-            exit_reason, exit_price, exit_idx = strategy.check_exit(
+            exit_reason, exit_price, exit_idx, fill_ratio = strategy.check_exit(
                 pos,
                 row,
                 pos_idx,
@@ -2483,6 +2569,26 @@ def run_backtest():
                 exit_idx = pos_idx
             
             if exit_reason is not None:
+                if exit_reason == "partial_take_profit" and fill_ratio > 0:
+                    partial_size = float(np.clip(pos.get('position_size', 0.0) * fill_ratio, 0.0, SAFE_FLOAT_LIMIT))
+                    pnl_partial, r_partial = calculate_trade_pnl_r(
+                        position_size=partial_size,
+                        entry_price=pos.get('entry', 0.0),
+                        exit_price=exit_price,
+                        direction=pos.get('direction'),
+                        initial_risk=pos.get('initial_risk', 0.0)
+                    )
+                    pos['position_size'] = float(np.clip(pos.get('position_size', 0.0) - partial_size, 0.0, SAFE_FLOAT_LIMIT))
+                    pos['realized_pnl'] = float(np.nan_to_num(pos.get('realized_pnl', 0.0), nan=0.0) + pnl_partial)
+                    pos['realized_r'] = float(np.nan_to_num(pos.get('realized_r', 0.0), nan=0.0) + (r_partial * fill_ratio))
+                    pos['partial_tp_hits'] = int(pos.get('partial_tp_hits', 0)) + 1
+                    if pos['position_size'] <= 0:
+                        continue
+                    if int(pos.get("scale_level", 0)) == 0:
+                        leader_sl_by_signal[pos.get("signal_id")] = float(pos.get("sl", 0.0))
+                    still_open.append(pos)
+                    continue
+
                 pnl, r_result = calculate_trade_pnl_r(
                     position_size=pos.get('position_size', 0.0),
                     entry_price=pos.get('entry', 0.0),
@@ -2490,6 +2596,8 @@ def run_backtest():
                     direction=pos.get('direction'),
                     initial_risk=pos.get('initial_risk', 0.0)
                 )
+                pnl += float(np.nan_to_num(pos.get('realized_pnl', 0.0), nan=0.0))
+                r_result += float(np.nan_to_num(pos.get('realized_r', 0.0), nan=0.0))
 
                 capital = float(np.clip(capital + pnl, -SAFE_FLOAT_LIMIT, SAFE_FLOAT_LIMIT))
                 pos['exit_time'] = current_time
@@ -2809,15 +2917,29 @@ def run_backtest():
             if df_mtf is not None and len(df_mtf) > 0 and {'high', 'low', 'close'}.issubset(df_mtf.columns):
                 hour_start = current_time.floor('h')
                 hour_end = hour_start + pd.Timedelta(hours=1)
-                candles_mtf = df_mtf[(df_mtf.index >= hour_start) & (df_mtf.index < hour_end)]
+                candles_mtf = df_mtf.loc[hour_start:hour_end]
                 chosen_candle = select_mtf_entry_candle(candles_mtf, row, entry_data.get('direction'))
 
-                if chosen_candle is not None and not is_mtf_confirmation_valid(df_mtf, chosen_candle.name, entry_data.get('direction')):
+                # FIX: ensure chosen_candle is a single row (Series)
+                if isinstance(chosen_candle, pd.DataFrame):
+                    if len(chosen_candle) > 0:
+                        chosen_candle = chosen_candle.iloc[0]
+                    else:
+                        chosen_candle = None
+
+                if chosen_candle is not None and hasattr(chosen_candle, "name"):
+                    if not is_mtf_confirmation_valid(df_mtf, chosen_candle.name, entry_data.get('direction')):
+                        chosen_candle = None
+                else:
                     chosen_candle = None
 
                 if chosen_candle is not None:
                     entry_time = chosen_candle.name
-                    entry_price = float(np.nan_to_num(chosen_candle['close'], nan=entry_data.get('entry', 0.0)))
+                    if entry_data.get('direction') == 'LONG':
+                        refined_price = chosen_candle.get('low', chosen_candle.get('close', entry_data.get('entry', 0.0)))
+                    else:
+                        refined_price = chosen_candle.get('high', chosen_candle.get('close', entry_data.get('entry', 0.0)))
+                    entry_price = float(np.nan_to_num(refined_price, nan=entry_data.get('entry', 0.0)))
                     entry_data['entry'] = round(entry_price, 4)
                     entry_data['timestamp'] = entry_time
 
@@ -2871,11 +2993,7 @@ def run_backtest():
             else:
                 p_profit = engine.signal_model.predict_proba([feature_values])[0, 1] if engine.signal_model else 1.0
 
-            df_15m = all_data_15m.get(symbol)
-            if df_15m is not None and len(df_15m) > 0 and "volume" in df_15m.columns:
-                avg_vol = df_15m["volume"].rolling(12).mean().iloc[-1]
-            else:
-                avg_vol = features["volume"]
+            avg_vol = avg_vol_15m_cache.get(symbol, features["volume"])
 
             confidence_threshold = engine.compute_dynamic_threshold(adx=features["adx"], coin=coin)
 
@@ -2964,6 +3082,16 @@ def run_backtest():
             pos["min_price_since_entry"] = float(pos["entry"])
             pos["original_sl"] = float(pos["sl"])
             pos["scale_level"] = 0
+            pos["realized_pnl"] = 0.0
+            pos["realized_r"] = 0.0
+            pos["partial_tp_hits"] = 0
+            pos["tp1_taken"] = False
+            pos["tp1_price"] = None
+            if PARTIAL_TP_ENABLED and pos["initial_risk"] > 0:
+                if pos.get("direction") == "LONG":
+                    pos["tp1_price"] = float(pos["entry"] + pos["initial_risk"])
+                else:
+                    pos["tp1_price"] = float(pos["entry"] - pos["initial_risk"])
             signal_counter += 1
             pos["signal_id"] = signal_counter
             pos["entry_bar_index"] = int(idx_in_df)
@@ -3020,7 +3148,7 @@ def run_backtest():
 
     equity_df = pd.DataFrame(equity_curve)
 
-    print_final_report(
+    stats = print_final_report(
         trades_df,
         equity_df,
         capital,
@@ -3047,6 +3175,9 @@ def run_backtest():
         print("\n🧪 REJECTION BREAKDOWN (before entry)")
         for key in rejection_breakdown_keys:
             print(f"{key}: {filter_stats.get(key, 0)}")
+
+    stats["filter_stats"] = dict(filter_stats)
+    return trades_df, equity_df, stats
 
 class BosAnalytics:
 
