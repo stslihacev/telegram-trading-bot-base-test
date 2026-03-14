@@ -402,6 +402,10 @@ def calculate_trade_pnl_r(position_size, entry_price, exit_price, direction, ini
         raw_r = 0.0
     else:
         raw_r = (gross_pnl - fees) / safe_risk
+
+    if raw_r > 50:  # разумный максимум
+        print(f"⚠️ Огромный RR: {raw_r:.2f}, ограничиваем до 50")
+        raw_r = 50
     
     r_result = sanitize_r(raw_r)
 
@@ -734,6 +738,7 @@ def calculate_risk_based_position_size(entry_data, capital, risk_factor=0.01):
     MAX_LEVERAGE = 10
     MAX_NOTIONAL_MULTIPLIER = 50
     MAX_POSITION_UNITS = 1_000_000  # ограничение на единицы
+    MAX_POSITION_VALUE = 1_000_000
 
     risk_amount = safe_capital * risk_per_trade
     effective_stop_distance = max(abs(entry_price - stop_price), MIN_STOP_DISTANCE)
@@ -741,7 +746,7 @@ def calculate_risk_based_position_size(entry_data, capital, risk_factor=0.01):
 
     # Ограничение notional
     position_notional = position_size * entry_price
-    max_notional = min(safe_capital * MAX_LEVERAGE, safe_capital * MAX_NOTIONAL_MULTIPLIER, MAX_POSITION_UNITS * entry_price)
+    max_notional = min(safe_capital * MAX_LEVERAGE, safe_capital * MAX_NOTIONAL_MULTIPLIER, MAX_POSITION_UNITS * entry_price, MAX_POSITION_VALUE)
     if position_notional > max_notional and entry_price > 0:
         position_size = max_notional / entry_price
         position_notional = position_size * entry_price
@@ -763,9 +768,13 @@ def calculate_risk_based_position_size(entry_data, capital, risk_factor=0.01):
         entry_data["trade_risk"] = 0.0
         return 0.0
 
+    if position_notional >= MAX_POSITION_VALUE * 0.9:
+        print(f"⚠️ {symbol}: позиция близка к лимиту ${MAX_POSITION_VALUE:,.0f} (${position_notional:,.0f})")
+
     print(
         f"📗 OPEN {symbol} | entry_price={entry_price:.6f} | stop_price={stop_price:.6f} | "
         f"risk_amount={risk_amount:.2f} | position_size={position_size:.2f} | capital_before_trade={safe_capital:.2f}"
+        f"position_value=${position_notional:,.0f} | "
     )
 
     entry_data["position_size"] = position_size
@@ -2439,6 +2448,7 @@ class BosStrategy(Strategy):
 
         # ===== СНАЧАЛА СОЗДАЁМ entry_data =====
         entry_data = {
+            'symbol': symbol,
             'direction': direction,
             'entry': round(entry, 4),
             'entry_level': entry_level,
@@ -2752,6 +2762,17 @@ def run_backtest():
         addon['tp'] = base_pos.get('tp')
         addon['sl'] = float(base_pos.get('sl', entry_price))
         addon['original_sl'] = float(base_pos.get('original_sl', addon['sl']))
+        
+        # защита от нулевого стопа
+        stop_distance = abs(addon['entry'] - addon['sl'])
+        if stop_distance < 1e-12:  # если стоп практически равен цене
+            print(f"⚠️ Scale-in: стоп слишком близко, устанавливаем 0.1%")
+            stop_distance = addon['entry'] * 0.001
+            if addon.get('direction') == 'LONG':
+                addon['sl'] = addon['entry'] - stop_distance
+            else:
+                addon['sl'] = addon['entry'] + stop_distance
+        
         addon['initial_risk'] = float(np.clip(np.nan_to_num(abs(addon['entry'] - addon['sl']), nan=0.0, posinf=SAFE_FLOAT_LIMIT, neginf=0.0), 0.0, SAFE_FLOAT_LIMIT))
         addon['rr'] = sanitize_r(calculate_rr(addon['entry'], addon['tp'], addon['sl'], addon.get('direction')))
         addon['position_size'] = float(base_pos.get('position_size', 0.0))
@@ -3152,6 +3173,10 @@ def run_backtest():
                 log_prefix=f"SCALE-IN {symbol} L{next_scale_level}",
             )
             if sizing is None:
+                continue
+
+            if sizing['position_size'] > 1_000_000 or sizing['position_size'] < 0:
+                print(f"⚠️ Аномальный размер позиции в scale-in: {sizing['position_size']:.2f} для {symbol}, пропускаем")
                 continue
 
             scale_trade_risk = float(np.clip(min(sizing['trade_risk'], remaining_risk_budget), 0.0, SAFE_FLOAT_LIMIT))
