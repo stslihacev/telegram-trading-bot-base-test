@@ -527,10 +527,61 @@ def calculate_open_risk_exposure(open_positions):
 
 
 def calculate_available_capital(current_capital, open_positions):
-    """Conservative free-capital estimate = current capital - open risk exposure."""
+    """Free cash available for new entries (capital is already net of reserved allocations)."""
     safe_capital = float(np.clip(np.nan_to_num(current_capital, nan=0.0), 0.0, SAFE_FLOAT_LIMIT))
-    open_risk = calculate_open_risk_exposure(open_positions)
-    return float(np.clip(safe_capital - open_risk, 0.0, SAFE_FLOAT_LIMIT))
+    return safe_capital
+
+
+def _execute_signal(entry_data, available_capital, risk_percent=RISK_PER_TRADE, log_prefix="ENTRY"):
+    """Capital-aware sizing: requested_size from risk model, actual_size capped by free cash."""
+    safe_available = float(np.clip(np.nan_to_num(available_capital, nan=0.0), 0.0, SAFE_FLOAT_LIMIT))
+    entry_price = float(np.clip(np.nan_to_num(entry_data.get("entry", 0.0), nan=0.0), 0.0, SAFE_FLOAT_LIMIT))
+    stop_distance = float(
+        np.clip(
+            np.nan_to_num(abs(entry_price - float(entry_data.get("sl", entry_price))), nan=0.0),
+            0.0,
+            SAFE_FLOAT_LIMIT,
+        )
+    )
+    if safe_available <= 0 or entry_price <= 0 or stop_distance <= 0:
+        return None, safe_available
+
+    requested_units = float(
+        np.clip(
+            np.nan_to_num(calculate_risk_based_position_size(entry_data, safe_available, risk_factor=risk_percent), nan=0.0),
+            0.0,
+            SAFE_FLOAT_LIMIT,
+        )
+    )
+    requested_size = float(np.clip(requested_units * entry_price, 0.0, SAFE_FLOAT_LIMIT))
+    actual_size = float(np.clip(min(requested_size, safe_available), 0.0, SAFE_FLOAT_LIMIT))
+    actual_units = float(np.clip(actual_size / max(entry_price, 1e-9), 0.0, SAFE_FLOAT_LIMIT))
+    trade_risk = float(np.clip(actual_units * stop_distance, 0.0, SAFE_FLOAT_LIMIT))
+
+    if actual_units <= 0 or actual_size <= 0:
+        return None, safe_available
+
+    warning = requested_size > safe_available + 1e-12
+    log_message = (
+        f"{log_prefix}: requested_size={requested_size:.4f}, actual_size={actual_size:.4f}, "
+        f"available={safe_available:.4f}, units={actual_units:.6f}, trade_risk={trade_risk:.4f}"
+    )
+    if warning:
+        log_message = f"⚠️ {log_message} (requested > available, capped)"
+
+    payload = {
+        "position_size": actual_units,
+        "requested_size": requested_size,
+        "actual_size": actual_size,
+        "trade_risk": trade_risk,
+        "capital_before_entry": safe_available,
+        "risk_percent": float(_normalize_risk_fraction(risk_percent, default=RISK_PER_TRADE)),
+        "allocated_capital": actual_size,
+        "log_message": log_message,
+        "sizing_warning": warning,
+    }
+    remaining_capital = float(np.clip(safe_available - actual_size, 0.0, SAFE_FLOAT_LIMIT))
+    return payload, remaining_capital
 
 
 def cap_extreme_trade_pnl(pos, pnl_value):
@@ -1318,23 +1369,34 @@ def _detect_anomalies(trades_df: pd.DataFrame) -> List[AnomalyRecord]:
         pnl = float(np.nan_to_num(row.get("pnl", 0.0), nan=0.0))
         exit_reason = row.get("exit_reason")
         trade_risk = float(np.nan_to_num(row.get("trade_risk", 0.0), nan=0.0))
+        capital_before_entry = float(np.nan_to_num(row.get("capital_before_entry", INITIAL_CAPITAL), nan=INITIAL_CAPITAL))
+        allocated_capital = float(np.nan_to_num(row.get("allocated_capital", 0.0), nan=0.0))
 
-        # --- missing exit reason ---
         if pd.isna(exit_reason) or exit_reason in (None, ""):
             anomalies.append(AnomalyRecord(int(idx), symbol, entry, exit_price, pnl, "missing_exit_reason"))
 
-        # --- invalid MFE/MAE ---
         if not bool(row.get("mfe_valid", True)) or not bool(row.get("mae_valid", True)):
             anomalies.append(AnomalyRecord(int(idx), symbol, entry, exit_price, pnl, "invalid_mfe_mae"))
 
-        # --- extreme pnl flags ---
         anomaly_flags = row.get("anomaly_flags", [])
-        if not isinstance(anomaly_flags, list):
-            anomaly_flags = []  # безопасно на случай float, NaN и других типов
+        if isinstance(anomaly_flags, float) and np.isnan(anomaly_flags):
+            anomaly_flags = []
+        elif isinstance(anomaly_flags, (tuple, set)):
+            anomaly_flags = list(anomaly_flags)
+        elif isinstance(anomaly_flags, str):
+            anomaly_flags = [anomaly_flags] if anomaly_flags.strip() else []
+        elif not isinstance(anomaly_flags, list):
+            anomaly_flags = []
 
         if "extreme_pnl_capped" in anomaly_flags:
             anomalies.append(AnomalyRecord(int(idx), symbol, entry, exit_price, pnl, "extreme_pnl_capped"))
-        elif trade_risk > 0 and abs(pnl) > (trade_risk * MAX_PNL_TO_RISK_MULTIPLIER):
+            continue
+
+        pnl_cap_by_risk = trade_risk * MAX_PNL_TO_RISK_MULTIPLIER if trade_risk > 0 else 0.0
+        pnl_cap_by_capital = max(capital_before_entry + allocated_capital, 0.0) * MAX_NOTIONAL_LEVERAGE
+        effective_cap = float(np.clip(max(pnl_cap_by_risk, pnl_cap_by_capital), 0.0, MAX_PNL_CLIP))
+
+        if effective_cap > 0 and abs(pnl) > effective_cap:
             anomalies.append(AnomalyRecord(int(idx), symbol, entry, exit_price, pnl, "extreme_pnl"))
         elif abs(pnl) > (MAX_PNL_CLIP * 0.9):
             anomalies.append(AnomalyRecord(int(idx), symbol, entry, exit_price, pnl, "extreme_pnl"))
@@ -2779,6 +2841,9 @@ def run_backtest():
                         direction=pos.get('direction'),
                         initial_risk=pos.get('initial_risk', 0.0)
                     )
+                    released_allocated_capital = float(np.clip(np.nan_to_num(pos.get('allocated_capital', 0.0), nan=0.0) * fill_ratio, 0.0, SAFE_FLOAT_LIMIT))
+                    capital = float(np.clip(capital + released_allocated_capital + pnl_partial, 0.0, SAFE_FLOAT_LIMIT))
+                    pos['allocated_capital'] = float(np.clip(np.nan_to_num(pos.get('allocated_capital', 0.0), nan=0.0) - released_allocated_capital, 0.0, SAFE_FLOAT_LIMIT))
                     pos['position_size'] = float(np.clip(pos.get('position_size', 0.0) - partial_size, 0.0, SAFE_FLOAT_LIMIT))
                     pos['realized_pnl'] = float(np.nan_to_num(pos.get('realized_pnl', 0.0), nan=0.0) + pnl_partial)
                     pos['realized_r'] = float(np.nan_to_num(pos.get('realized_r', 0.0), nan=0.0) + (r_partial * fill_ratio))
@@ -2803,7 +2868,8 @@ def run_backtest():
                 validate_excursions_for_close(pos)
                 pnl, _ = cap_extreme_trade_pnl(pos, pnl)
 
-                capital = float(np.clip(capital + pnl, 0.0, SAFE_FLOAT_LIMIT))
+                released_capital = float(np.clip(np.nan_to_num(pos.get('allocated_capital', 0.0), nan=0.0), 0.0, SAFE_FLOAT_LIMIT))
+                capital = float(np.clip(capital + released_capital + pnl, 0.0, SAFE_FLOAT_LIMIT))
                 _close_position_atomically(
                     pos=pos,
                     current_time=current_time,
@@ -3056,41 +3122,49 @@ def run_backtest():
                 continue
 
             remaining_risk_budget = calculate_remaining_risk_budget(signal_positions, leader)
+            if remaining_risk_budget <= 0:
+                continue
+
             available_capital = calculate_available_capital(capital, open_positions)
-            requested_scale_risk = float(np.clip(min(remaining_risk_budget, available_capital), 0.0, SAFE_FLOAT_LIMIT))
-            effective_scale_risk_budget = calculate_position_size(
-                requested_size=requested_scale_risk,
-                current_capital=available_capital,
-                risk_percent=RISK_PER_TRADE,
-            )
-            if effective_scale_risk_budget <= 0:
+            if available_capital <= 0:
                 continue
 
             addon_pos = _build_scale_position(leader, row, current_time, next_scale_level)
+            sizing, remaining_capital_after_entry = _execute_signal(
+                addon_pos,
+                available_capital=available_capital,
+                risk_percent=RISK_PER_TRADE,
+                log_prefix=f"SCALE-IN {symbol} L{next_scale_level}",
+            )
+            if sizing is None:
+                continue
+
+            scale_trade_risk = float(np.clip(min(sizing['trade_risk'], remaining_risk_budget), 0.0, SAFE_FLOAT_LIMIT))
+            if scale_trade_risk <= 0:
+                continue
+
             addon_stop_distance = float(np.nan_to_num(abs(addon_pos.get('entry', 0.0) - addon_pos.get('sl', 0.0)), nan=0.0))
             if addon_stop_distance <= 0:
                 continue
 
-            addon_entry_price = float(np.nan_to_num(addon_pos.get('entry', 0.0), nan=0.0))
-            max_addon_size_by_risk = float(np.clip(effective_scale_risk_budget / addon_stop_distance, 0.0, SAFE_FLOAT_LIMIT))
-            max_addon_size_by_capital = float(np.clip(available_capital / max(addon_entry_price, 1e-9), 0.0, SAFE_FLOAT_LIMIT))
-            max_addon_size = float(np.clip(min(max_addon_size_by_risk, max_addon_size_by_capital), 0.0, SAFE_FLOAT_LIMIT))
-            addon_pos['position_size'] = float(np.clip(min(addon_pos.get('position_size', 0.0), max_addon_size), 0.0, SAFE_FLOAT_LIMIT))
-            addon_pos['trade_risk'] = float(np.clip(addon_pos['position_size'] * addon_stop_distance, 0.0, effective_scale_risk_budget))
-            addon_pos['capital_before_entry'] = float(np.clip(available_capital, 0.0, SAFE_FLOAT_LIMIT))
-            addon_pos['risk_percent'] = float(_normalize_risk_fraction(RISK_PER_TRADE, default=0.20))
-            addon_pos['allocated_capital'] = float(np.clip(addon_pos['trade_risk'], 0.0, available_capital))
-            if addon_pos['position_size'] <= 0:
+            addon_pos.update(sizing)
+            addon_pos['trade_risk'] = scale_trade_risk
+            addon_pos['position_size'] = float(np.clip(scale_trade_risk / addon_stop_distance, 0.0, SAFE_FLOAT_LIMIT))
+            addon_pos['actual_size'] = float(np.clip(addon_pos['position_size'] * float(addon_pos.get('entry', 0.0)), 0.0, SAFE_FLOAT_LIMIT))
+            addon_pos['allocated_capital'] = addon_pos['actual_size']
+            addon_pos['capital_after_entry'] = float(np.clip(available_capital - addon_pos['actual_size'], 0.0, SAFE_FLOAT_LIMIT))
+
+            if addon_pos['position_size'] <= 0 or addon_pos['allocated_capital'] <= 0:
                 continue
 
+            capital = float(np.clip(capital - addon_pos['allocated_capital'], 0.0, SAFE_FLOAT_LIMIT))
             open_positions.append(addon_pos)
             tqdm.write(
                 f"   ➕ SCALE-IN {symbol} {leader['direction']} | "
-                f"уровень: {next_scale_level} | "
-                f"R: {favorable_r:.2f} | "
-                f"Вход: {addon_pos['entry']:.4f} | "
-                f"SL: {addon_pos['sl']:.4f} | "
-                f"risk: {addon_pos['trade_risk']:.4f}/{remaining_risk_budget:.4f}"
+                f"уровень: {next_scale_level} | R: {favorable_r:.2f} | "
+                f"requested: {sizing['requested_size']:.4f} | actual: {addon_pos['actual_size']:.4f} | "
+                f"risk: {addon_pos['trade_risk']:.4f}/{remaining_risk_budget:.4f}" +
+                (" | ⚠️ capped" if sizing.get('sizing_warning') else "")
             )
 
         # ===== 2. ЗАПИСЫВАЕМ КАПИТАЛ =====
@@ -3271,40 +3345,17 @@ def run_backtest():
             if available_capital <= 0:
                 continue
 
-            requested_position_size = calculate_risk_based_position_size(entry_data, available_capital, risk_factor=RISK_PER_TRADE)
-            capped_risk_amount = calculate_position_size(
-                requested_size=entry_data.get("risk_amount", 0.0),
-                current_capital=available_capital,
+            sizing, capital_after_entry = _execute_signal(
+                entry_data,
+                available_capital=available_capital,
                 risk_percent=RISK_PER_TRADE,
+                log_prefix=f"ENTRY {symbol}",
             )
-            stop_distance = float(np.clip(np.nan_to_num(abs(entry_data.get('entry', entry_price) - entry_data.get('sl', entry_price)), nan=0.0), 0.0, SAFE_FLOAT_LIMIT))
-            position_size = float(np.clip(np.nan_to_num(requested_position_size, nan=0.0, posinf=0.0, neginf=0.0), 0.0, SAFE_FLOAT_LIMIT))
-            if stop_distance > 0:
-                max_size_by_cap = float(np.clip(available_capital / max(entry_price, 1e-9), 0.0, SAFE_FLOAT_LIMIT))
-                max_size_by_risk = float(np.clip(capped_risk_amount / stop_distance, 0.0, SAFE_FLOAT_LIMIT))
-                position_size = float(np.clip(min(position_size, max_size_by_risk), 0.0, max_size_by_cap))
-            else:
-                position_size = 0.0
-            max_position = float(np.clip((available_capital * max(MAX_NOTIONAL_LEVERAGE, 0.0)) / max(entry_price, 1e-9), 0.0, SAFE_FLOAT_LIMIT))
-            position_size = float(np.clip(np.nan_to_num(position_size, nan=0.0, posinf=0.0, neginf=0.0), 0.0, max_position))
-            expected_risk = float(np.clip(available_capital * _normalize_risk_fraction(RISK_PER_TRADE, default=0.20), 0.0, SAFE_FLOAT_LIMIT))
-            actual_risk = float(np.clip(position_size * stop_distance, 0.0, SAFE_FLOAT_LIMIT))
-            trade_risk = float(np.clip(min(actual_risk, capped_risk_amount), 0.0, expected_risk))
-
-            if position_size <= 0:
+            if sizing is None:
                 filter_stats["rejected_before_entry"] += 1
                 filter_stats["rejected_other"] += 1
                 if BACKTEST_VERBOSE:
-                    tqdm.write(f"   ⚠️ {symbol}: некорректный position_size, пропускаем")
-                continue
-        
-            if actual_risk > expected_risk * 1.02:
-                filter_stats["rejected_before_entry"] += 1
-                filter_stats["rejected_price_condition"] += 1
-                if BACKTEST_VERBOSE:
-                    tqdm.write(
-                        f"   ⚠️ {symbol}: risk violation guard skip (actual={actual_risk:.6f}, expected={expected_risk:.6f})"
-                    )
+                    tqdm.write(f"   ⚠️ {symbol}: некорректный размер позиции, пропускаем")
                 continue
 
             entry_key = (symbol, entry_data.get('timestamp', current_time))
@@ -3316,11 +3367,13 @@ def run_backtest():
                 continue
             executed_entries.add(entry_key)
 
-            entry_data["position_size"] = position_size
-            entry_data["capital_before_entry"] = float(np.clip(available_capital, 0.0, SAFE_FLOAT_LIMIT))
-            entry_data["trade_risk"] = trade_risk
-            entry_data["risk_percent"] = float(_normalize_risk_fraction(RISK_PER_TRADE, default=0.20))
-            entry_data["allocated_capital"] = float(np.clip(trade_risk, 0.0, available_capital))
+            entry_data.update(sizing)
+            entry_data["capital_after_entry"] = capital_after_entry
+
+            if BACKTEST_VERBOSE:
+                tqdm.write(f"   {sizing['log_message']}")
+
+            capital = float(np.clip(capital - entry_data["allocated_capital"], 0.0, SAFE_FLOAT_LIMIT))
 
             pos = entry_data.copy()
             pos.setdefault('entry_type', 'momentum' if pos.get('entry_mode') == 'momentum' else 'zone')
