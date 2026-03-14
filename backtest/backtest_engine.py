@@ -57,8 +57,8 @@ STEP = 60 * 60
 PROGRESS_FILE = "backtest/progress.txt"
 MAX_OPEN_TRADES = 3  # максимум одновременных позиций
 SAFE_FLOAT_LIMIT = 1e12
-MAX_RR_ALLOWED = 20.0
-MIN_RR_ALLOWED = -2.0
+MAX_RR_ALLOWED = 1000.0
+MIN_RR_ALLOWED = -1000.0
 MAX_POSITION_PERCENT = 0.10
 MIN_VOLUME_24H = float(os.getenv("MIN_VOLUME_24H", "20000000"))
 MIN_RR = float(os.getenv("MIN_RR", str(MIN_RR)))
@@ -399,10 +399,11 @@ def calculate_trade_pnl_r(position_size, entry_price, exit_price, direction, ini
 
     safe_risk = float(np.nan_to_num(initial_risk, nan=0.0, posinf=0.0, neginf=0.0))
     if safe_risk <= 0:
-        r_result = 0.0
+        raw_r = 0.0
     else:
-        r_result = float(np.nan_to_num((gross_pnl - fees) / safe_risk, nan=0.0, posinf=MAX_RR_ALLOWED, neginf=MIN_RR_ALLOWED))
-    r_result = sanitize_r(r_result)
+        raw_r = (gross_pnl - fees) / safe_risk
+    
+    r_result = sanitize_r(raw_r)
 
     return pnl, r_result
 
@@ -410,8 +411,35 @@ def sanitize_pnl(value):
     return float(np.nan_to_num(value, nan=0.0, posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT))
 
 
-def sanitize_r(value):
-    return float(np.clip(np.nan_to_num(value, nan=0.0, posinf=MAX_RR_ALLOWED, neginf=MIN_RR_ALLOWED), MIN_RR_ALLOWED, MAX_RR_ALLOWED))
+def sanitize_r(value, min_r=None, max_r=None):
+    """
+    Очищает R-multiple, убирает NaN и инфы, при этом позволяет реально достигать больших RR.
+    min_r и max_r можно задавать, если нужны кастомные ограничения.
+    
+    Параметры:
+        value: исходное значение R-multiple
+        min_r: минимально допустимое R (если None, используется MIN_RR_ALLOWED из глобальных)
+        max_r: максимально допустимое R (если None, используется MAX_RR_ALLOWED из глобальных)
+    
+    Возвращает:
+        float: очищенное значение R-multiple
+    """
+    # Используем глобальные значения по умолчанию, если не заданы кастомные
+    min_allowed = MIN_RR_ALLOWED if min_r is None else min_r
+    max_allowed = MAX_RR_ALLOWED if max_r is None else max_r
+    
+    # Защита от некорректных границ
+    if min_allowed >= max_allowed:
+        min_allowed, max_allowed = -1000.0, 1000.0
+    
+    # Обработка NaN и бесконечностей
+    if np.isnan(value) or np.isinf(value):
+        return 0.0
+    
+    # Обрезка в разумные пределы
+    safe_value = float(np.clip(value, min_allowed, max_allowed))
+    
+    return safe_value
 
 def _mark_invalid_excursion(trade: dict) -> None:
     trade["mfe_r"] = np.nan
@@ -536,12 +564,16 @@ def calculate_available_capital(current_capital, open_positions):
 
 
 def _execute_signal(entry_data, available_capital, risk_percent=RISK_PER_TRADE, log_prefix="ENTRY"):
-    """Risk-based sizing with stop-distance floor and notional leverage cap."""
+    """Risk-based sizing with stop-distance floor, notional leverage cap, and max position units."""
     safe_available = float(np.clip(np.nan_to_num(available_capital, nan=0.0), 0.0, SAFE_FLOAT_LIMIT))
-    entry_price = float(np.clip(np.nan_to_num(entry_data.get("entry", 0.0), nan=0.0), 0.0, SAFE_FLOAT_LIMIT))
+    
+    # --- Нормализация цены ---
+    entry_price = float(np.clip(np.nan_to_num(entry_data.get("entry", 0.0), nan=0.0), 1e-4, SAFE_FLOAT_LIMIT))
     raw_stop_distance = float(np.nan_to_num(abs(entry_price - float(entry_data.get("sl", entry_price))), nan=0.0))
-    min_stop_distance = float(np.clip(entry_price * MIN_STOP_PCT, 0.0, SAFE_FLOAT_LIMIT))
+    
+    min_stop_distance = float(np.clip(entry_price * MIN_STOP_PCT, 1e-6, SAFE_FLOAT_LIMIT))
     stop_distance = float(np.clip(max(raw_stop_distance, min_stop_distance), 0.0, SAFE_FLOAT_LIMIT))
+    
     if safe_available <= 0 or entry_price <= 0 or stop_distance <= 0:
         return None, safe_available
 
@@ -557,8 +589,14 @@ def _execute_signal(entry_data, available_capital, risk_percent=RISK_PER_TRADE, 
             SAFE_FLOAT_LIMIT,
         )
     )
+
+    # Ограничение notional
     max_units_by_notional = float(np.clip((safe_available * MAX_NOTIONAL_LEVERAGE) / max(entry_price, 1e-9), 0.0, SAFE_FLOAT_LIMIT))
     requested_units = float(np.clip(min(requested_units, max_units_by_notional), 0.0, SAFE_FLOAT_LIMIT))
+
+    # --- Ограничение на max position ---
+    MAX_POSITION_UNITS = 1_000_000
+    requested_units = min(requested_units, MAX_POSITION_UNITS)
 
     trade_risk = float(np.clip(requested_units * stop_distance, 0.0, SAFE_FLOAT_LIMIT))
     if trade_risk > risk_amount:
@@ -572,8 +610,8 @@ def _execute_signal(entry_data, available_capital, risk_percent=RISK_PER_TRADE, 
         return None, safe_available
 
     log_message = (
-        f"{log_prefix}: notional={actual_size:.4f}, "
-        f"capital={safe_available:.4f}, units={actual_units:.6f}, "
+        f"{log_prefix}: notional={actual_size:.6f}, "
+        f"capital={safe_available:.2f}, units={actual_units:.6f}, "
         f"risk_amount={risk_amount:.4f}, trade_risk={trade_risk:.4f}"
     )
 
@@ -673,10 +711,13 @@ def get_confidence_bucket(confidence):
 
 
 def calculate_risk_based_position_size(entry_data, capital, risk_factor=0.01):
-    """Fixed-risk sizing by stop distance with min stop guard and leverage cap."""
+    """Fixed-risk sizing with stop distance, leverage cap, and max position units."""
     entry_price = float(entry_data.get("entry", 0.0) or 0.0)
     direction = entry_data.get("direction")
     symbol = entry_data.get("symbol", "UNKNOWN")
+
+    # --- Нормализация цены ---
+    entry_price = max(entry_price, 1e-4)
 
     if entry_price <= 0 or direction not in {"LONG", "SHORT"}:
         entry_data["position_size"] = 0.0
@@ -688,32 +729,29 @@ def calculate_risk_based_position_size(entry_data, capital, risk_factor=0.01):
     safe_capital = float(np.clip(capital, 0.0, SAFE_FLOAT_LIMIT))
     risk_per_trade = float(_normalize_risk_fraction(risk_factor, default=RISK_PER_TRADE))
 
-    # ===== FIXED-RISK SIZING PATCH =====
-    # Настройки безопасности
-    MIN_STOP_DISTANCE = entry_price * 0.001  # минимальный стоп
-    MAX_LEVERAGE = 10  # максимальное плечо
-    MAX_NOTIONAL_MULTIPLIER = 50  # максимум в разах от капитала
+    # Настройки
+    MIN_STOP_DISTANCE = entry_price * 0.001
+    MAX_LEVERAGE = 10
+    MAX_NOTIONAL_MULTIPLIER = 50
+    MAX_POSITION_UNITS = 1_000_000  # ограничение на единицы
 
-    # Рассчёт риск-amount
     risk_amount = safe_capital * risk_per_trade
-
-    # Ограничиваем слишком маленький стоп
     effective_stop_distance = max(abs(entry_price - stop_price), MIN_STOP_DISTANCE)
-
-    # Рассчитываем позицию по фиксированному риску
     position_size = risk_amount / effective_stop_distance if effective_stop_distance > 0 else 0.0
 
-    # Ограничение по notional/плечу
+    # Ограничение notional
     position_notional = position_size * entry_price
-    max_notional = min(safe_capital * MAX_LEVERAGE, safe_capital * MAX_NOTIONAL_MULTIPLIER)
+    max_notional = min(safe_capital * MAX_LEVERAGE, safe_capital * MAX_NOTIONAL_MULTIPLIER, MAX_POSITION_UNITS * entry_price)
     if position_notional > max_notional and entry_price > 0:
         position_size = max_notional / entry_price
         position_notional = position_size * entry_price
 
-    # Итоговый trade_risk
-    trade_risk = position_size * effective_stop_distance
-    trade_risk = min(trade_risk, risk_amount)
+    # Ограничение max_position_units
+    position_size = min(position_size, MAX_POSITION_UNITS)
 
+    trade_risk = min(position_size * effective_stop_distance, risk_amount)
+
+    # Клип и запись
     position_size = float(np.clip(np.nan_to_num(position_size, nan=0.0), 0.0, SAFE_FLOAT_LIMIT))
     risk_amount = float(np.clip(np.nan_to_num(risk_amount, nan=0.0), 0.0, SAFE_FLOAT_LIMIT))
     trade_risk = float(np.clip(np.nan_to_num(trade_risk, nan=0.0), 0.0, SAFE_FLOAT_LIMIT))
@@ -729,12 +767,13 @@ def calculate_risk_based_position_size(entry_data, capital, risk_factor=0.01):
         f"📗 OPEN {symbol} | entry_price={entry_price:.6f} | stop_price={stop_price:.6f} | "
         f"risk_amount={risk_amount:.2f} | position_size={position_size:.2f} | capital_before_trade={safe_capital:.2f}"
     )
-    entry_data["position_size"] = float(position_size)
+
+    entry_data["position_size"] = position_size
     entry_data["risk_amount"] = risk_amount
     entry_data["trade_risk"] = trade_risk
     entry_data["stop_distance"] = effective_stop_distance
-    entry_data["max_leverage"] = 10.0
-    return float(position_size)
+    entry_data["max_leverage"] = float(MAX_LEVERAGE)
+    return position_size
 
 def calculate_position_size(requested_size, current_capital, risk_percent=0.2):
     """Limit requested notional/risk allocation by available capital and risk budget."""
