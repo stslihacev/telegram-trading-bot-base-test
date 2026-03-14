@@ -61,7 +61,19 @@ MIN_R_CLIP = -100
 MIN_VOLUME_24H = float(os.getenv("MIN_VOLUME_24H", "20000000"))
 MIN_RR = float(os.getenv("MIN_RR", str(MIN_RR)))
 SAFE_FLOAT_LIMIT = float(os.getenv("SAFE_FLOAT_LIMIT", str(SAFE_FLOAT_LIMIT)))
-RISK_PER_TRADE = 0.01
+def _normalize_risk_fraction(raw_value, default=0.20):
+    """Normalize risk setting from fraction or percent-like value."""
+    parsed = float(np.nan_to_num(raw_value, nan=default))
+    if parsed > 1.0:
+        parsed = parsed / 100.0
+    return float(np.clip(parsed, 0.0, 1.0))
+
+
+RISK_PER_TRADE = _normalize_risk_fraction(
+    os.getenv("RISK_PERCENT", os.getenv("RISK_PER_TRADE", "0.20")),
+    default=0.20,
+)
+MAX_NOTIONAL_LEVERAGE = float(os.getenv("MAX_NOTIONAL_LEVERAGE", "3.0"))
 MIN_STOP_PCT = 0.001
 MAX_TRADE_BARS = 200
 EPSILON_INITIAL_RISK = 1e-9
@@ -609,7 +621,8 @@ def calculate_position_size(entry_data, capital, risk_factor=0.01):
     confidence_bucket, position_scale = get_confidence_bucket(confidence)
     entry_data["confidence_bucket"] = confidence_bucket
     entry_data["position_size_multiplier"] = float(position_scale)
-    adjusted_risk = float(max(risk_factor * position_scale, 0.0))
+    normalized_risk_factor = _normalize_risk_fraction(risk_factor, default=RISK_PER_TRADE)
+    adjusted_risk = float(max(normalized_risk_factor * position_scale, 0.0))
 
     if adjusted_risk <= 0:
         entry_data["position_size"] = 0.0
@@ -617,21 +630,24 @@ def calculate_position_size(entry_data, capital, risk_factor=0.01):
         return 0.0
 
     safe_capital = float(np.clip(capital, 0.0, SAFE_FLOAT_LIMIT))
-    position_size = (safe_capital * adjusted_risk) / sl_distance
+    risk_budget = float(np.clip(safe_capital * normalized_risk_factor, 0.0, SAFE_FLOAT_LIMIT))
+    risk_amount = float(np.clip(safe_capital * adjusted_risk, 0.0, risk_budget))
+    if risk_amount <= 0.0 or sl_distance <= 1e-12:
+        entry_data["position_size"] = 0.0
+        entry_data["risk_amount"] = 0.0
+        return 0.0
+
+    position_size = risk_amount / sl_distance
     position_size = float(np.clip(position_size, 0.0, SAFE_FLOAT_LIMIT))
 
-    # Абсолютный лимит размера позиции: не более 5% капитала
-    max_risk_per_trade = 0.05
-    position_size = min(position_size, safe_capital * max_risk_per_trade)
-
-    max_position = float(np.clip((safe_capital * 50.0) / max(entry, 1e-9), 0.0, SAFE_FLOAT_LIMIT))
+    max_position = float(np.clip((safe_capital * max(MAX_NOTIONAL_LEVERAGE, 0.0)) / max(entry, 1e-9), 0.0, SAFE_FLOAT_LIMIT))
     position_size = float(np.clip(np.nan_to_num(position_size, nan=0.0, posinf=0.0, neginf=0.0), 0.0, max_position))
 
     if position_size <= 0 or np.isnan(position_size) or np.isinf(position_size):
         position_size = 0.0
 
     entry_data["position_size"] = position_size
-    entry_data["risk_amount"] = float(np.clip(safe_capital * adjusted_risk, 0.0, SAFE_FLOAT_LIMIT))
+    entry_data["risk_amount"] = float(np.clip(position_size * sl_distance, 0.0, risk_budget))
     return position_size
 
 def get_htf_bias_fast(i, close_arr, ema200_arr):
@@ -1436,6 +1452,7 @@ def print_final_report(
     trades_df,
     equity_df,
     capital,
+    trade_capital_df,
     trend_count,
     range_count,
     sweep_trades,
@@ -1457,6 +1474,7 @@ def print_final_report(
             "total_profit": float(capital - INITIAL_CAPITAL),
             "roi_pct": float(((capital / INITIAL_CAPITAL) - 1.0) * 100.0 if INITIAL_CAPITAL else 0.0),
             "trades": 0,
+            "capital_curve_points": 0,
         }
 
     local_df = trades_df.copy()
@@ -1510,6 +1528,7 @@ def print_final_report(
     print(f"Average RR: {avg_rr:.4f}")
     print(f"Median RR: {median_rr:.4f}")
     print(f"Max Drawdown: {max_dd:.2f}%")
+    print(f"Capital curve points (trades): {len(trade_capital_df) if isinstance(trade_capital_df, pd.DataFrame) else 0}")
     print(f"Average Trade Duration: {avg_trade_duration:.2f} bars")
     print(f"Average MFE: {avg_mfe:.4f}R")
     print(f"95% MFE: {p95_mfe:.4f}R")
@@ -1581,6 +1600,7 @@ def print_final_report(
         "average_win": avg_win,
         "average_loss": avg_loss,
         "max_drawdown_pct": max_dd,
+        "capital_curve_points": int(len(trade_capital_df)) if isinstance(trade_capital_df, pd.DataFrame) else 0,
     }
 
 class BosStrategy(Strategy):
@@ -2536,6 +2556,7 @@ def run_backtest():
     all_trades = []
     capital = INITIAL_CAPITAL
     equity_curve = []
+    trade_capital_curve = []
     trend_count = 0
     range_count = 0
 
@@ -2691,7 +2712,7 @@ def run_backtest():
                 pnl += float(np.nan_to_num(pos.get('realized_pnl', 0.0), nan=0.0))
                 r_result += float(np.nan_to_num(pos.get('realized_r', 0.0), nan=0.0))
 
-                capital = float(np.clip(capital + pnl, -SAFE_FLOAT_LIMIT, SAFE_FLOAT_LIMIT))
+                capital = float(np.clip(capital + pnl, 0.0, SAFE_FLOAT_LIMIT))
                 _close_position_atomically(
                     pos=pos,
                     current_time=current_time,
@@ -2700,6 +2721,18 @@ def run_backtest():
                     pnl=pnl,
                     r_result=r_result,
                 )
+                pos["capital_after_exit"] = float(capital)
+                trade_capital_curve.append({
+                    "time": current_time,
+                    "symbol": pos.get("symbol"),
+                    "signal_id": pos.get("signal_id"),
+                    "scale_level": int(pos.get("scale_level", 0)),
+                    "capital": float(capital),
+                    "pnl": float(np.nan_to_num(pos.get("pnl", 0.0), nan=0.0)),
+                    "trade_risk": float(np.nan_to_num(pos.get("trade_risk", 0.0), nan=0.0)),
+                    "capital_before_entry": float(np.nan_to_num(pos.get("capital_before_entry", capital), nan=capital)),
+                    "risk_percent": float(np.nan_to_num(pos.get("risk_percent", RISK_PER_TRADE), nan=RISK_PER_TRADE)),
+                })
 
                 if pos["signal_type"] == "BOS":
                     bos_stats.append({
@@ -3130,13 +3163,12 @@ def run_backtest():
                 continue
 
             position_size = calculate_position_size(entry_data, capital, risk_factor=RISK_PER_TRADE)
-            max_position = float(np.clip((capital * 50.0) / max(entry_price, 1e-9), 0.0, SAFE_FLOAT_LIMIT))
+            max_position = float(np.clip((capital * max(MAX_NOTIONAL_LEVERAGE, 0.0)) / max(entry_price, 1e-9), 0.0, SAFE_FLOAT_LIMIT))
             position_size = float(np.clip(np.nan_to_num(position_size, nan=0.0, posinf=0.0, neginf=0.0), 0.0, max_position))
             stop_distance = float(np.clip(np.nan_to_num(abs(entry_data.get('entry', entry_price) - entry_data.get('sl', entry_price)), nan=0.0), 0.0, SAFE_FLOAT_LIMIT))
-            expected_risk = float(np.clip(capital * RISK_PER_TRADE, 0.0, SAFE_FLOAT_LIMIT))
+            expected_risk = float(np.clip(capital * _normalize_risk_fraction(RISK_PER_TRADE, default=0.20), 0.0, SAFE_FLOAT_LIMIT))
             actual_risk = float(np.clip(position_size * stop_distance, 0.0, SAFE_FLOAT_LIMIT))
-            trade_risk = float(np.clip(np.nan_to_num(entry_data.get("risk_amount", expected_risk), nan=0.0), 0.0, SAFE_FLOAT_LIMIT))
-            expected_position_size = expected_risk
+            trade_risk = float(np.clip(np.nan_to_num(entry_data.get("risk_amount", expected_risk), nan=0.0), 0.0, expected_risk))
 
             if position_size <= 0:
                 filter_stats["rejected_before_entry"] += 1
@@ -3164,8 +3196,9 @@ def run_backtest():
             executed_entries.add(entry_key)
 
             entry_data["position_size"] = position_size
-            entry_data["capital_before_entry"] = float(np.clip(capital, -SAFE_FLOAT_LIMIT, SAFE_FLOAT_LIMIT))
+            entry_data["capital_before_entry"] = float(np.clip(capital, 0.0, SAFE_FLOAT_LIMIT))
             entry_data["trade_risk"] = trade_risk
+            entry_data["risk_percent"] = float(_normalize_risk_fraction(RISK_PER_TRADE, default=0.20))
 
             pos = entry_data.copy()
             pos.setdefault('entry_type', 'momentum' if pos.get('entry_mode') == 'momentum' else 'zone')
@@ -3251,6 +3284,11 @@ def run_backtest():
     trades_df['rr'] = np.clip(np.nan_to_num(trades_df['rr'].values, nan=0.0, posinf=MAX_R_CLIP, neginf=MIN_R_CLIP), MIN_R_CLIP, MAX_R_CLIP)
 
     equity_df = pd.DataFrame(equity_curve)
+    trade_capital_df = pd.DataFrame(trade_capital_curve)
+    if len(trade_capital_df) > 0:
+        trade_capital_df = trade_capital_df.sort_values(['time', 'symbol', 'signal_id', 'scale_level'], kind='mergesort').reset_index(drop=True)
+        os.makedirs("backtest/results", exist_ok=True)
+        trade_capital_df.to_csv("backtest/results/capital_by_trade.csv", index=False)
     sort_cols = [c for c in ['timestamp', 'symbol', 'signal_id', 'scale_level'] if c in trades_df.columns]
     if sort_cols:
         trades_df = trades_df.sort_values(sort_cols, kind='mergesort').reset_index(drop=True)
@@ -3261,6 +3299,7 @@ def run_backtest():
         trades_df,
         equity_df,
         capital,
+        trade_capital_df,
         trend_count,
         range_count,
         sweep_trades,
