@@ -51,13 +51,15 @@ DATA_DIR = "backtest/data"
 END_DATE = "2026-02-26"
 INITIAL_CAPITAL = 100
 COMMISSION = 0.0005
+FEE_RATE = 0.001
+SLIPPAGE_RATE = 0.0004
 STEP = 60 * 60
 PROGRESS_FILE = "backtest/progress.txt"
 MAX_OPEN_TRADES = 3  # максимум одновременных позиций
 SAFE_FLOAT_LIMIT = 1e12
-MAX_PNL_CLIP = 1e6
-MAX_R_CLIP = 100
-MIN_R_CLIP = -100
+MAX_RR_ALLOWED = 20.0
+MIN_RR_ALLOWED = -2.0
+MAX_POSITION_PERCENT = 0.10
 MIN_VOLUME_24H = float(os.getenv("MIN_VOLUME_24H", "20000000"))
 MIN_RR = float(os.getenv("MIN_RR", str(MIN_RR)))
 SAFE_FLOAT_LIMIT = float(os.getenv("SAFE_FLOAT_LIMIT", str(SAFE_FLOAT_LIMIT)))
@@ -69,16 +71,12 @@ def _normalize_risk_fraction(raw_value, default=0.20):
     return float(np.clip(parsed, 0.0, 1.0))
 
 
-RISK_PER_TRADE = _normalize_risk_fraction(
-    os.getenv("RISK_PERCENT", os.getenv("RISK_PER_TRADE", "0.20")),
-    default=0.20,
-)
+RISK_PER_TRADE = 0.01
 MAX_NOTIONAL_LEVERAGE = float(os.getenv("MAX_NOTIONAL_LEVERAGE", "3.0"))
 MIN_STOP_PCT = 0.001
 MAX_TRADE_BARS = 200
 EPSILON_INITIAL_RISK = 1e-9
 MAX_EXCURSION_R = 50.0
-MAX_PNL_TO_RISK_MULTIPLIER = float(os.getenv("MAX_PNL_TO_RISK_MULTIPLIER", "100.0"))
 
 os.makedirs(os.path.dirname(PROGRESS_FILE), exist_ok=True)
 
@@ -288,7 +286,7 @@ def print_signal_stats(name, trades):
     wins = sum(1 for t in trades if t["pnl"] > 0)
     total = len(trades)
     winrate = wins / total * 100
-    total_pnl = float(np.clip(np.nan_to_num(sum(t.get("pnl", 0) for t in trades), nan=0.0, posinf=MAX_PNL_CLIP, neginf=-MAX_PNL_CLIP), -MAX_PNL_CLIP, MAX_PNL_CLIP))
+    total_pnl = float(np.nan_to_num(sum(t.get("pnl", 0) for t in trades), nan=0.0, posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT))
 
     print(f"\n{name}")
     print(f"  Сделок: {total}")
@@ -303,7 +301,7 @@ def print_stats(trades_list, name):
 
     total = len(trades_list)
     wins = sum(1 for t in trades_list if t["pnl"] > 0)
-    pnl = float(np.clip(np.nan_to_num(sum(t.get("pnl", 0) for t in trades_list), nan=0.0, posinf=MAX_PNL_CLIP, neginf=-MAX_PNL_CLIP), -MAX_PNL_CLIP, MAX_PNL_CLIP))
+    pnl = float(np.nan_to_num(sum(t.get("pnl", 0) for t in trades_list), nan=0.0, posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT))
     winrate = wins / total * 100
 
     print(f"\n{name}")
@@ -382,35 +380,38 @@ def calculate_rr(entry, tp, sl, direction):
     return rr
 
 def calculate_trade_pnl_r(position_size, entry_price, exit_price, direction, initial_risk):
-    """Безопасный расчёт PnL и R для LONG/SHORT с защитой от NaN/inf."""
+    """Strict PnL model with fees/slippage, no artificial pnl clipping."""
     safe_pos_size = float(np.clip(np.nan_to_num(position_size, nan=0.0, posinf=0.0, neginf=0.0), 0.0, SAFE_FLOAT_LIMIT))
-    safe_entry = float(np.clip(np.nan_to_num(entry_price, nan=0.0, posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT), -SAFE_FLOAT_LIMIT, SAFE_FLOAT_LIMIT))
-    safe_exit = float(np.clip(np.nan_to_num(exit_price, nan=safe_entry, posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT), -SAFE_FLOAT_LIMIT, SAFE_FLOAT_LIMIT))
+    safe_entry = float(np.clip(np.nan_to_num(entry_price, nan=0.0, posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT), 0.0, SAFE_FLOAT_LIMIT))
+    safe_exit = float(np.clip(np.nan_to_num(exit_price, nan=safe_entry, posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT), 0.0, SAFE_FLOAT_LIMIT))
 
     if direction == 'LONG':
-        move = safe_exit - safe_entry
+        entry_exec = safe_entry * (1.0 + SLIPPAGE_RATE)
+        exit_exec = safe_exit * (1.0 - SLIPPAGE_RATE)
+        gross_pnl = safe_pos_size * (exit_exec - entry_exec)
     else:
-        move = safe_entry - safe_exit
+        entry_exec = safe_entry * (1.0 - SLIPPAGE_RATE)
+        exit_exec = safe_exit * (1.0 + SLIPPAGE_RATE)
+        gross_pnl = safe_pos_size * (entry_exec - exit_exec)
 
-    pnl = float(np.clip(np.nan_to_num(safe_pos_size * move, nan=0.0, posinf=MAX_PNL_CLIP, neginf=-MAX_PNL_CLIP), -MAX_PNL_CLIP, MAX_PNL_CLIP))
+    fees = safe_pos_size * (entry_exec + exit_exec) * FEE_RATE
+    pnl = float(np.nan_to_num(gross_pnl - fees, nan=0.0, posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT))
 
     safe_risk = float(np.nan_to_num(initial_risk, nan=0.0, posinf=0.0, neginf=0.0))
     if safe_risk <= 0:
         r_result = 0.0
     else:
-        r_result = move / safe_risk
-        if np.isnan(r_result) or np.isinf(r_result):
-            r_result = 0.0
-    r_result = float(np.clip(r_result, MIN_R_CLIP, MAX_R_CLIP))
+        r_result = float(np.nan_to_num((gross_pnl - fees) / safe_risk, nan=0.0, posinf=MAX_RR_ALLOWED, neginf=MIN_RR_ALLOWED))
+    r_result = sanitize_r(r_result)
 
-    return pnl, float(r_result)
+    return pnl, r_result
 
 def sanitize_pnl(value):
-    return float(np.clip(np.nan_to_num(value, nan=0.0, posinf=MAX_PNL_CLIP, neginf=-MAX_PNL_CLIP), -MAX_PNL_CLIP, MAX_PNL_CLIP))
+    return float(np.nan_to_num(value, nan=0.0, posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT))
 
 
 def sanitize_r(value):
-    return float(np.clip(np.nan_to_num(value, nan=0.0, posinf=MAX_R_CLIP, neginf=MIN_R_CLIP), MIN_R_CLIP, MAX_R_CLIP))
+    return float(np.clip(np.nan_to_num(value, nan=0.0, posinf=MAX_RR_ALLOWED, neginf=MIN_RR_ALLOWED), MIN_RR_ALLOWED, MAX_RR_ALLOWED))
 
 def _mark_invalid_excursion(trade: dict) -> None:
     trade["mfe_r"] = np.nan
@@ -501,12 +502,14 @@ def select_mtf_entry_candle(candles_15m, row, direction):
         idx = candles_15m['high'].astype(float).idxmax()
     return candles_15m.loc[idx]
 
-def calculate_remaining_risk_budget(signal_positions, leader):
+def calculate_remaining_risk_budget(signal_positions, leader, capital):
     """Return remaining risk budget for scale-ins so total signal risk never exceeds initial trade risk."""
     risk_budget = float(np.nan_to_num(leader.get("trade_risk", 0.0), nan=0.0))
     if risk_budget <= 0:
         capital_before_entry = float(np.nan_to_num(leader.get("capital_before_entry", 0.0), nan=0.0))
         risk_budget = float(np.clip(capital_before_entry * RISK_PER_TRADE, 0.0, SAFE_FLOAT_LIMIT))
+    current_cap_risk_budget = float(np.clip(float(np.nan_to_num(capital, nan=0.0)) * RISK_PER_TRADE, 0.0, SAFE_FLOAT_LIMIT))
+    risk_budget = min(risk_budget, current_cap_risk_budget)
 
     current_signal_risk = 0.0
     for pos in signal_positions:
@@ -585,32 +588,8 @@ def _execute_signal(entry_data, available_capital, risk_percent=RISK_PER_TRADE, 
 
 
 def cap_extreme_trade_pnl(pos, pnl_value):
-    """Cap anomalous PnL so a single trade cannot explode stats (e.g. > 100x risk)."""
-    raw_pnl = sanitize_pnl(pnl_value)
-    trade_risk = float(np.nan_to_num(pos.get("trade_risk", 0.0), nan=0.0))
-    if trade_risk <= 0:
-        trade_risk = float(
-            np.clip(
-                np.nan_to_num(pos.get("position_size", 0.0), nan=0.0)
-                * np.nan_to_num(pos.get("initial_risk", 0.0), nan=0.0),
-                0.0,
-                SAFE_FLOAT_LIMIT,
-            )
-        )
-
-    max_abs_pnl = float(np.clip(trade_risk * MAX_PNL_TO_RISK_MULTIPLIER, 0.0, MAX_PNL_CLIP))
-    if max_abs_pnl <= 0:
-        return raw_pnl, False
-
-    clipped = float(np.clip(raw_pnl, -max_abs_pnl, max_abs_pnl))
-    if abs(raw_pnl - clipped) > 1e-12:
-        flags = list(pos.get("anomaly_flags", []))
-        flags.append("extreme_pnl_capped")
-        pos["anomaly_flags"] = flags
-        pos["extreme_pnl_raw"] = raw_pnl
-        pos["extreme_pnl_cap"] = max_abs_pnl
-        return clipped, True
-    return clipped, False
+    """No artificial pnl caps: keep raw model-driven pnl."""
+    return sanitize_pnl(pnl_value), False
 
 
 def validate_excursions_for_close(pos):
@@ -686,85 +665,39 @@ def get_confidence_bucket(confidence):
 
 
 def calculate_risk_based_position_size(entry_data, capital, risk_factor=0.01):
-    """
-    Адаптивный размер позиции:
-    - финализирует SL после ATR/минимальной дистанции
-    - масштабирует риск по confidence-bucket
-    - пишет результат в entry_data['position_size']
-    """
+    """Strict fixed-risk sizing by stop distance with hard position cap."""
     entry = float(entry_data.get("entry", 0.0) or 0.0)
-    atr = float(entry_data.get("atr", 0.0) or 0.0)
     direction = entry_data.get("direction")
-    signal_type = entry_data.get("signal_type")
 
     if entry <= 0 or direction not in {"LONG", "SHORT"}:
         entry_data["position_size"] = 0.0
         entry_data["risk_amount"] = 0.0
-        entry_data["confidence_bucket"] = "below_3"
-        entry_data["position_size_multiplier"] = 0.0
         return 0.0
 
-    atr_floor = max(atr * 0.3, 1e-9)
-    min_stop_distance = max(entry * MIN_STOP_PCT, 1e-9)
-    distance = abs(entry - float(entry_data.get("sl", entry) or entry))
-    min_sl_distance = max(distance, atr_floor, min_stop_distance)
-
-    # Базовая дистанция стопа по модели входа
-    if signal_type == "BOS":
-        if direction == "LONG":
-            raw_distance = max(entry - float(entry_data.get("last_swing_low", entry) or entry), atr_floor, min_stop_distance)
-        else:
-            raw_distance = max(float(entry_data.get("last_swing_high", entry) or entry) - entry, atr_floor, min_stop_distance)
-    elif signal_type == "SWEEP":
-        nearest_level = float(entry_data.get("nearest_level", entry_data.get("sl", entry)) or entry)
-        if direction == "LONG":
-            raw_distance = max(entry - nearest_level, atr_floor, min_stop_distance)
-        else:
-            raw_distance = max(nearest_level - entry, atr_floor, min_stop_distance)
-    else:
-        raw_distance = max(distance, atr_floor, min_stop_distance)
-
-    sl_distance = max(raw_distance, min_sl_distance, 1e-9)
-
-    # Финальный SL сохраняем только после всех корректировок
-    if direction == "LONG":
-        corrected_sl = entry - sl_distance
-    else:
-        corrected_sl = entry + sl_distance
-    entry_data["sl"] = float(np.clip(corrected_sl, -SAFE_FLOAT_LIMIT, SAFE_FLOAT_LIMIT))
-
-    confidence = float(entry_data.get("confidence", 0) or 0)
-    confidence_bucket, position_scale = get_confidence_bucket(confidence)
-    entry_data["confidence_bucket"] = confidence_bucket
-    entry_data["position_size_multiplier"] = float(position_scale)
-    normalized_risk_factor = _normalize_risk_fraction(risk_factor, default=RISK_PER_TRADE)
-    adjusted_risk = float(max(normalized_risk_factor * position_scale, 0.0))
-
-    if adjusted_risk <= 0:
+    sl = float(entry_data.get("sl", entry) or entry)
+    stop_distance = float(np.clip(abs(entry - sl), 0.0, SAFE_FLOAT_LIMIT))
+    if stop_distance <= 1e-12:
         entry_data["position_size"] = 0.0
         entry_data["risk_amount"] = 0.0
         return 0.0
 
     safe_capital = float(np.clip(capital, 0.0, SAFE_FLOAT_LIMIT))
-    risk_budget = float(np.clip(safe_capital * normalized_risk_factor, 0.0, SAFE_FLOAT_LIMIT))
-    risk_amount = float(np.clip(safe_capital * adjusted_risk, 0.0, risk_budget))
-    if risk_amount <= 0.0 or sl_distance <= 1e-12:
+    fixed_risk = float(np.clip(safe_capital * RISK_PER_TRADE, 0.0, SAFE_FLOAT_LIMIT))
+    if fixed_risk <= 0:
         entry_data["position_size"] = 0.0
         entry_data["risk_amount"] = 0.0
         return 0.0
 
-    position_size = risk_amount / sl_distance
-    position_size = float(np.clip(position_size, 0.0, SAFE_FLOAT_LIMIT))
+    position_size = float(np.clip(fixed_risk / stop_distance, 0.0, SAFE_FLOAT_LIMIT))
 
-    max_position = float(np.clip((safe_capital * max(MAX_NOTIONAL_LEVERAGE, 0.0)) / max(entry, 1e-9), 0.0, SAFE_FLOAT_LIMIT))
-    position_size = float(np.clip(np.nan_to_num(position_size, nan=0.0, posinf=0.0, neginf=0.0), 0.0, max_position))
+    max_position_value = float(np.clip(safe_capital * MAX_POSITION_PERCENT, 0.0, SAFE_FLOAT_LIMIT))
+    max_position_units = float(np.clip(max_position_value / max(entry, 1e-9), 0.0, SAFE_FLOAT_LIMIT))
+    if position_size > max_position_units:
+        position_size = max_position_units
 
-    if position_size <= 0 or np.isnan(position_size) or np.isinf(position_size):
-        position_size = 0.0
-
-    entry_data["position_size"] = position_size
-    entry_data["risk_amount"] = float(np.clip(position_size * sl_distance, 0.0, risk_budget))
-    return position_size
+    entry_data["position_size"] = float(position_size)
+    entry_data["risk_amount"] = float(np.clip(position_size * stop_distance, 0.0, fixed_risk))
+    return float(position_size)
 
 def calculate_position_size(requested_size, current_capital, risk_percent=0.2):
     """Limit requested notional/risk allocation by available capital and risk budget."""
@@ -970,8 +903,8 @@ class BacktestEngine:
     def _sanitize_pnl_series(self, series):
         ser = pd.to_numeric(series, errors='coerce')
         ser = ser.replace([np.inf, -np.inf], np.nan)
-        ser = pd.Series(np.nan_to_num(ser.values, nan=0.0, posinf=MAX_PNL_CLIP, neginf=-MAX_PNL_CLIP), index=ser.index)
-        return ser.clip(-MAX_PNL_CLIP, MAX_PNL_CLIP)
+        ser = pd.Series(np.nan_to_num(ser.values, nan=0.0, posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT), index=ser.index)
+        return ser
 
     def update_coin_stats(self):
         stats = {}
@@ -980,7 +913,7 @@ class BacktestEngine:
             if coin is None:
                 continue
             rec = stats.setdefault(coin, {"profit": 0.0, "loss": 0.0})
-            pnl = float(np.clip(np.nan_to_num(trade.get("pnl", 0), nan=0.0, posinf=MAX_PNL_CLIP, neginf=-MAX_PNL_CLIP), -MAX_PNL_CLIP, MAX_PNL_CLIP))
+            pnl = float(np.nan_to_num(trade.get("pnl", 0), nan=0.0, posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT))
             if pnl > 0:
                 rec["profit"] += pnl
             elif pnl < 0:
@@ -1392,13 +1325,11 @@ def _detect_anomalies(trades_df: pd.DataFrame) -> List[AnomalyRecord]:
             anomalies.append(AnomalyRecord(int(idx), symbol, entry, exit_price, pnl, "extreme_pnl_capped"))
             continue
 
-        pnl_cap_by_risk = trade_risk * MAX_PNL_TO_RISK_MULTIPLIER if trade_risk > 0 else 0.0
-        pnl_cap_by_capital = max(capital_before_entry + allocated_capital, 0.0) * MAX_NOTIONAL_LEVERAGE
-        effective_cap = float(np.clip(max(pnl_cap_by_risk, pnl_cap_by_capital), 0.0, MAX_PNL_CLIP))
+        pnl_alert_by_risk = trade_risk * 100.0 if trade_risk > 0 else 0.0
+        pnl_alert_by_capital = max(capital_before_entry + allocated_capital, 0.0) * 3.0
+        effective_alert = float(max(pnl_alert_by_risk, pnl_alert_by_capital))
 
-        if effective_cap > 0 and abs(pnl) > effective_cap:
-            anomalies.append(AnomalyRecord(int(idx), symbol, entry, exit_price, pnl, "extreme_pnl"))
-        elif abs(pnl) > (MAX_PNL_CLIP * 0.9):
+        if effective_alert > 0 and abs(pnl) > effective_alert:
             anomalies.append(AnomalyRecord(int(idx), symbol, entry, exit_price, pnl, "extreme_pnl"))
 
     return anomalies
@@ -2761,6 +2692,10 @@ def run_backtest():
     for idx in range(200, len(global_index)):
         current_time = global_index[idx]
 
+        if capital <= 0:
+            tqdm.write(f"🛑 Capital depleted at {current_time}; stopping backtest loop.")
+            break
+
         symbols_at_time = time_symbol_map.get(current_time, [])
         if symbols_at_time:
             processed_symbols_runtime.update(symbols_at_time)
@@ -2866,7 +2801,6 @@ def run_backtest():
                 r_result += float(np.nan_to_num(pos.get('realized_r', 0.0), nan=0.0))
 
                 validate_excursions_for_close(pos)
-                pnl, _ = cap_extreme_trade_pnl(pos, pnl)
 
                 released_capital = float(np.clip(np.nan_to_num(pos.get('allocated_capital', 0.0), nan=0.0), 0.0, SAFE_FLOAT_LIMIT))
                 capital = float(np.clip(capital + released_capital + pnl, 0.0, SAFE_FLOAT_LIMIT))
@@ -2879,6 +2813,11 @@ def run_backtest():
                     r_result=r_result,
                 )
                 pos["capital_after_exit"] = float(capital)
+                trade_duration = int(max(0, pos_idx - int(pos.get("entry_bar_index", pos_idx))))
+                tqdm.write(
+                    f"📕 CLOSE {pos.get('symbol')} | pnl={pos.get('pnl', pnl):.4f} | capital_after_trade={capital:.4f} | "
+                    f"RR={sanitize_r(r_result):.2f} | trade_duration={trade_duration}"
+                )
                 trade_capital_curve.append({
                     "time": current_time,
                     "symbol": pos.get("symbol"),
@@ -3121,7 +3060,7 @@ def run_backtest():
             if favorable_r < float(next_scale_level):
                 continue
 
-            remaining_risk_budget = calculate_remaining_risk_budget(signal_positions, leader)
+            remaining_risk_budget = calculate_remaining_risk_budget(signal_positions, leader, capital)
             if remaining_risk_budget <= 0:
                 continue
 
@@ -3341,6 +3280,19 @@ def run_backtest():
                     tqdm.write(f"   ⚠️ {symbol}: некорректный entry_price, пропускаем")
                 continue
 
+            rr_raw = entry_data.get("rr", 0.0)
+
+            if rr_raw is None:
+                rr_raw = 0.0
+
+            rr_value = float(np.nan_to_num(rr_raw, nan=0.0))
+            if rr_value > MAX_RR_ALLOWED:
+                filter_stats["rejected_before_entry"] += 1
+                filter_stats["rejected_other"] += 1
+                continue
+            if rr_value < MIN_RR_ALLOWED:
+                entry_data["rr"] = MIN_RR_ALLOWED
+
             available_capital = calculate_available_capital(capital, open_positions)
             if available_capital <= 0:
                 continue
@@ -3372,6 +3324,12 @@ def run_backtest():
 
             if BACKTEST_VERBOSE:
                 tqdm.write(f"   {sizing['log_message']}")
+
+            tqdm.write(
+                f"📗 OPEN {symbol} | entry_price={entry_data['entry']:.6f} | stop_price={entry_data['sl']:.6f} | "
+                f"risk_amount={float(entry_data.get('risk_amount', 0.0)):.6f} | position_size={float(entry_data.get('position_size', 0.0)):.6f} | "
+                f"capital_before_trade={available_capital:.6f}"
+            )
 
             capital = float(np.clip(capital - entry_data["allocated_capital"], 0.0, SAFE_FLOAT_LIMIT))
 
@@ -3453,10 +3411,9 @@ def run_backtest():
     if 'rr' not in trades_df.columns:
         trades_df['rr'] = 0.0
     trades_df['pnl'] = pd.to_numeric(trades_df['pnl'], errors='coerce').replace([np.inf, -np.inf], np.nan)
-    trades_df['pnl'] = np.nan_to_num(trades_df['pnl'].values, nan=0.0, posinf=MAX_PNL_CLIP, neginf=-MAX_PNL_CLIP)
-    trades_df['pnl'] = pd.Series(trades_df['pnl']).clip(-MAX_PNL_CLIP, MAX_PNL_CLIP)
+    trades_df['pnl'] = np.nan_to_num(trades_df['pnl'].values, nan=0.0, posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT)
     trades_df['rr'] = pd.to_numeric(trades_df['rr'], errors='coerce').replace([np.inf, -np.inf], np.nan)
-    trades_df['rr'] = np.clip(np.nan_to_num(trades_df['rr'].values, nan=0.0, posinf=MAX_R_CLIP, neginf=MIN_R_CLIP), MIN_R_CLIP, MAX_R_CLIP)
+    trades_df['rr'] = np.clip(np.nan_to_num(trades_df['rr'].values, nan=0.0, posinf=MAX_RR_ALLOWED, neginf=MIN_RR_ALLOWED), MIN_RR_ALLOWED, MAX_RR_ALLOWED)
 
     equity_df = pd.DataFrame(equity_curve)
     trade_capital_df = pd.DataFrame(trade_capital_curve)
@@ -3539,7 +3496,7 @@ class BosAnalytics:
         print("\n📊 R DISTRIBUTION")
         print("-" * 30)
 
-        r_values = pd.to_numeric(self.df["rr"], errors="coerce").replace([np.inf, -np.inf], np.nan).fillna(0.0).clip(MIN_R_CLIP, MAX_R_CLIP)
+        r_values = pd.to_numeric(self.df["rr"], errors="coerce").replace([np.inf, -np.inf], np.nan).fillna(0.0).clip(MIN_RR_ALLOWED, MAX_RR_ALLOWED)
 
         print(f"Средний RR: {r_values.mean():.2f}")
         print(f"Медиана RR: {r_values.median():.2f}")
@@ -3562,8 +3519,8 @@ class BosAnalytics:
         print("\n📊 ADX PROFILE")
         print("-" * 30)
 
-        pnl = pd.to_numeric(self.df["pnl"], errors="coerce").replace([np.inf, -np.inf], np.nan).fillna(0.0).clip(-MAX_PNL_CLIP, MAX_PNL_CLIP)
-        pnl = pd.Series(np.nan_to_num(pnl.values, nan=0.0, posinf=MAX_PNL_CLIP, neginf=-MAX_PNL_CLIP), index=self.df.index).clip(-MAX_PNL_CLIP, MAX_PNL_CLIP)
+        pnl = pd.to_numeric(self.df["pnl"], errors="coerce").replace([np.inf, -np.inf], np.nan).fillna(0.0)
+        pnl = pd.Series(np.nan_to_num(pnl.values, nan=0.0, posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT), index=self.df.index)
         tmp = self.df.copy()
         tmp["pnl"] = pnl
         print(tmp.groupby(pd.cut(tmp["adx"], 5))["pnl"].mean())
