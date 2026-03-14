@@ -674,48 +674,66 @@ def get_confidence_bucket(confidence):
 
 def calculate_risk_based_position_size(entry_data, capital, risk_factor=0.01):
     """Fixed-risk sizing by stop distance with min stop guard and leverage cap."""
-    entry = float(entry_data.get("entry", 0.0) or 0.0)
+    entry_price = float(entry_data.get("entry", 0.0) or 0.0)
     direction = entry_data.get("direction")
+    symbol = entry_data.get("symbol", "UNKNOWN")
 
-    if entry <= 0 or direction not in {"LONG", "SHORT"}:
+    if entry_price <= 0 or direction not in {"LONG", "SHORT"}:
         entry_data["position_size"] = 0.0
         entry_data["risk_amount"] = 0.0
+        entry_data["trade_risk"] = 0.0
         return 0.0
 
-    sl = float(entry_data.get("sl", entry) or entry)
-    raw_stop_distance = float(np.clip(abs(entry - sl), 0.0, SAFE_FLOAT_LIMIT))
-    min_stop_distance = float(np.clip(entry * MIN_STOP_PCT, 0.0, SAFE_FLOAT_LIMIT))
-    stop_distance = float(np.clip(max(raw_stop_distance, min_stop_distance), 0.0, SAFE_FLOAT_LIMIT))
-    if stop_distance <= 0:
-        entry_data["position_size"] = 0.0
-        entry_data["risk_amount"] = 0.0
-        return 0.0
-
+    stop_price = float(entry_data.get("sl", entry_price) or entry_price)
     safe_capital = float(np.clip(capital, 0.0, SAFE_FLOAT_LIMIT))
-    normalized_risk = float(_normalize_risk_fraction(risk_factor, default=RISK_PER_TRADE))
-    risk_amount = float(np.clip(safe_capital * normalized_risk, 0.0, SAFE_FLOAT_LIMIT))
-    if risk_amount <= 0:
+    risk_per_trade = float(_normalize_risk_fraction(risk_factor, default=RISK_PER_TRADE))
+
+    # ===== FIXED-RISK SIZING PATCH =====
+    # Настройки безопасности
+    MIN_STOP_DISTANCE = entry_price * 0.001  # минимальный стоп
+    MAX_LEVERAGE = 10  # максимальное плечо
+    MAX_NOTIONAL_MULTIPLIER = 50  # максимум в разах от капитала
+
+    # Рассчёт риск-amount
+    risk_amount = safe_capital * risk_per_trade
+
+    # Ограничиваем слишком маленький стоп
+    effective_stop_distance = max(abs(entry_price - stop_price), MIN_STOP_DISTANCE)
+
+    # Рассчитываем позицию по фиксированному риску
+    position_size = risk_amount / effective_stop_distance if effective_stop_distance > 0 else 0.0
+
+    # Ограничение по notional/плечу
+    position_notional = position_size * entry_price
+    max_notional = min(safe_capital * MAX_LEVERAGE, safe_capital * MAX_NOTIONAL_MULTIPLIER)
+    if position_notional > max_notional and entry_price > 0:
+        position_size = max_notional / entry_price
+        position_notional = position_size * entry_price
+
+    # Итоговый trade_risk
+    trade_risk = position_size * effective_stop_distance
+    trade_risk = min(trade_risk, risk_amount)
+
+    position_size = float(np.clip(np.nan_to_num(position_size, nan=0.0), 0.0, SAFE_FLOAT_LIMIT))
+    risk_amount = float(np.clip(np.nan_to_num(risk_amount, nan=0.0), 0.0, SAFE_FLOAT_LIMIT))
+    trade_risk = float(np.clip(np.nan_to_num(trade_risk, nan=0.0), 0.0, SAFE_FLOAT_LIMIT))
+    effective_stop_distance = float(np.clip(np.nan_to_num(effective_stop_distance, nan=0.0), 0.0, SAFE_FLOAT_LIMIT))
+
+    if effective_stop_distance <= 0 or risk_amount <= 0 or position_size <= 0:
         entry_data["position_size"] = 0.0
         entry_data["risk_amount"] = 0.0
+        entry_data["trade_risk"] = 0.0
         return 0.0
 
-    position_size = float(np.clip(risk_amount / stop_distance, 0.0, SAFE_FLOAT_LIMIT))
-
-    notional = float(np.clip(position_size * entry, 0.0, SAFE_FLOAT_LIMIT))
-    max_notional = float(np.clip(safe_capital * MAX_NOTIONAL_LEVERAGE, 0.0, SAFE_FLOAT_LIMIT))
-    if notional > max_notional:
-        position_size = float(np.clip(max_notional / max(entry, 1e-9), 0.0, SAFE_FLOAT_LIMIT))
-
-    trade_risk = float(np.clip(position_size * stop_distance, 0.0, SAFE_FLOAT_LIMIT))
-    if trade_risk > risk_amount:
-        position_size = float(np.clip(risk_amount / max(stop_distance, 1e-9), 0.0, SAFE_FLOAT_LIMIT))
-        trade_risk = float(np.clip(position_size * stop_distance, 0.0, SAFE_FLOAT_LIMIT))
-
+    print(
+        f"📗 OPEN {symbol} | entry_price={entry_price:.6f} | stop_price={stop_price:.6f} | "
+        f"risk_amount={risk_amount:.2f} | position_size={position_size:.2f} | capital_before_trade={safe_capital:.2f}"
+    )
     entry_data["position_size"] = float(position_size)
     entry_data["risk_amount"] = risk_amount
     entry_data["trade_risk"] = trade_risk
-    entry_data["stop_distance"] = stop_distance
-    entry_data["max_leverage"] = float(MAX_NOTIONAL_LEVERAGE)
+    entry_data["stop_distance"] = effective_stop_distance
+    entry_data["max_leverage"] = 10.0
     return float(position_size)
 
 def calculate_position_size(requested_size, current_capital, risk_percent=0.2):
