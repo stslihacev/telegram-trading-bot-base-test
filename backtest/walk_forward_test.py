@@ -8,10 +8,11 @@ from typing import List, Optional, Tuple
 import numpy as np
 import pandas as pd
 import sys
-import os
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import backtest.backtest_engine as be
+from backtest.reporting import compute_summary_metrics, export_trade_csv, save_plots
 
 
 @dataclass
@@ -51,12 +52,13 @@ def _run_for_period(start: pd.Timestamp, end: pd.Timestamp) -> Tuple[pd.DataFram
     be.END_DATE = end.strftime("%Y-%m-%d")
     be.PROGRESS_FILE = "backtest/progress_walk_forward.txt"
 
-    # Prevent cross-window skips from persistent progress logs.
     if os.path.exists(be.PROGRESS_FILE):
         os.remove(be.PROGRESS_FILE)
 
     try:
-        trades_df, equity_df, stats = be.run_backtest()
+        trades_df, equity_df, _ = be.run_backtest()
+        stats = compute_summary_metrics(trades_df, equity_df, initial_capital=be.INITIAL_CAPITAL)
+        stats["trades"] = int(len(trades_df))
         return trades_df, equity_df, stats
     finally:
         if os.path.exists(be.PROGRESS_FILE):
@@ -126,9 +128,7 @@ def _consistency_ratio(test_value: float, train_value: float) -> Optional[float]
         return None
     if math.isinf(train) and math.isinf(test):
         return 1.0
-    if math.isinf(train):
-        return None
-    if math.isinf(test):
+    if math.isinf(train) or math.isinf(test):
         return None
     return test / train
 
@@ -136,6 +136,12 @@ def _consistency_ratio(test_value: float, train_value: float) -> Optional[float]
 def run_walk_forward_validation(train_pct: float = 0.4, test_pct: float = 0.2) -> List[WindowMetrics]:
     data_start, data_end = _discover_date_bounds(be.SYMBOLS, be.DATA_DIR)
     windows = _build_windows(data_start, data_end, train_pct=train_pct, test_pct=test_pct)
+
+    reports_dir = Path("backtest_reports")
+    folds_dir = reports_dir / "folds"
+    plots_dir = reports_dir / "plots"
+    folds_dir.mkdir(parents=True, exist_ok=True)
+    plots_dir.mkdir(parents=True, exist_ok=True)
 
     print("\n===== WALK FORWARD TEST =====")
 
@@ -150,8 +156,13 @@ def run_walk_forward_validation(train_pct: float = 0.4, test_pct: float = 0.2) -
         print(f"Train period: {train_start} -> {train_end}")
         print(f"Test period:  {test_start} -> {test_end}")
 
-        _, _, train_stats = _run_for_period(train_start, train_end)
-        _, _, test_stats = _run_for_period(test_start, test_end)
+        train_trades, train_equity, train_stats = _run_for_period(train_start, train_end)
+        test_trades, test_equity, test_stats = _run_for_period(test_start, test_end)
+
+        export_trade_csv(train_trades, folds_dir / f"fold_{idx:02d}_train_trades.csv")
+        export_trade_csv(test_trades, folds_dir / f"fold_{idx:02d}_test_trades.csv")
+        save_plots(train_trades, train_equity, plots_dir, prefix=f"fold_{idx:02d}_train")
+        save_plots(test_trades, test_equity, plots_dir, prefix=f"fold_{idx:02d}_test")
 
         print("Train metrics:")
         print(f"Trades: {int(_safe_float(train_stats.get('trades')))}")
@@ -178,6 +189,22 @@ def run_walk_forward_validation(train_pct: float = 0.4, test_pct: float = 0.2) -
                 test_stats=test_stats,
             )
         )
+
+    fold_summary = pd.DataFrame(
+        [
+            {
+                "fold": r.window_id,
+                "train_start": r.train_start,
+                "train_end": r.train_end,
+                "test_start": r.test_start,
+                "test_end": r.test_end,
+                **{f"train_{k}": v for k, v in r.train_stats.items()},
+                **{f"test_{k}": v for k, v in r.test_stats.items()},
+            }
+            for r in results
+        ]
+    )
+    fold_summary.to_csv(folds_dir / "walk_forward_summary.csv", index=False)
 
     return results
 
@@ -208,7 +235,8 @@ def print_walk_forward_summary(results: List[WindowMetrics]) -> None:
     print(f"average_test_winrate: {avg_test_winrate:.2f}%")
     print(f"average_test_profit_factor: {avg_test_pf:.4f}")
     print(f"average_test_rr: {avg_test_rr:.4f}")
-    print(f"Consistency Score: {consistency_score:.2f}")
+    print(f"consistency_score_mean: {consistency_score:.2f}")
+    print(f"consistency_score_std: {float(np.std(consistency_values)) if consistency_values else 0.0:.2f}")
 
     if consistency_score < 0.6:
         print("WARNING: strategy may be overfitted")

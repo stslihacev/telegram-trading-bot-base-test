@@ -24,13 +24,30 @@ end_ms = int(pd.Timestamp(END_DATE).timestamp() * 1000)
 # Сессия для получения данных
 session = HTTP(testnet=False)
 
+class GlobalRateLimiter:
+    def __init__(self, min_interval_s: float = 0.2):
+        self.min_interval_s = float(max(min_interval_s, 0.0))
+        self._last_call = 0.0
+
+    def wait(self) -> None:
+        now = time.monotonic()
+        elapsed = now - self._last_call
+        if elapsed < self.min_interval_s:
+            time.sleep(self.min_interval_s - elapsed)
+        self._last_call = time.monotonic()
+
+
+RATE_LIMITER = GlobalRateLimiter(min_interval_s=float(os.getenv("BACKTEST_API_MIN_INTERVAL", "0.25")))
+
 # Функция для получения списка топ-монет по объёму
 def get_top_symbols(limit=TOP_N):
     exchange = ccxt.bybit({
         'enableRateLimit': True,
         'options': {'defaultType': 'swap'}
     })
+    RATE_LIMITER.wait()
     markets = exchange.load_markets()
+    RATE_LIMITER.wait()
     tickers = exchange.fetch_tickers()
     
     usdt_swaps = []
@@ -62,6 +79,7 @@ def fetch_klines(symbol):
     current_start = start_ms
     while current_start < end_ms:
         try:
+            RATE_LIMITER.wait()
             response = session.get_kline(
                 category="linear",
                 symbol=symbol,
@@ -78,7 +96,6 @@ def fetch_klines(symbol):
             if last_ts <= current_start:
                 break
             current_start = last_ts + 1
-            time.sleep(0.1)
         except Exception as e:
             print(f"Ошибка при загрузке {symbol}: {e}")
             break

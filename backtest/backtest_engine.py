@@ -13,6 +13,9 @@ import glob
 from tqdm import tqdm
 from collections import defaultdict
 import lightgbm as lgb
+from typing import Dict, List
+
+from backtest.reporting import AnomalyRecord, save_plots, write_anomalies
 
 # Импорты из наших модулей
 from analysis.levels import get_nearest_levels
@@ -55,9 +58,14 @@ SAFE_FLOAT_LIMIT = 1e12
 MAX_PNL_CLIP = 1e6
 MAX_R_CLIP = 100
 MIN_R_CLIP = -100
+MIN_VOLUME_24H = float(os.getenv("MIN_VOLUME_24H", "20000000"))
+MIN_RR = float(os.getenv("MIN_RR", str(MIN_RR)))
+SAFE_FLOAT_LIMIT = float(os.getenv("SAFE_FLOAT_LIMIT", str(SAFE_FLOAT_LIMIT)))
 RISK_PER_TRADE = 0.01
 MIN_STOP_PCT = 0.001
 MAX_TRADE_BARS = 200
+EPSILON_INITIAL_RISK = 1e-9
+MAX_EXCURSION_R = 50.0
 
 os.makedirs(os.path.dirname(PROGRESS_FILE), exist_ok=True)
 
@@ -250,7 +258,7 @@ if MODE == "TEST":
     ]
 else:
     START_DATE = "2022-01-01"
-    files = glob.glob(f"{DATA_DIR}/*_1h.parquet")
+    files = sorted(glob.glob(f"{DATA_DIR}/*_1h.parquet"))
     SYMBOLS = [Path(f).stem.replace("_1h", "") for f in files]
 
 if BACKTEST_VERBOSE:
@@ -390,6 +398,48 @@ def sanitize_pnl(value):
 
 def sanitize_r(value):
     return float(np.clip(np.nan_to_num(value, nan=0.0, posinf=MAX_R_CLIP, neginf=MIN_R_CLIP), MIN_R_CLIP, MAX_R_CLIP))
+
+def _mark_invalid_excursion(trade: dict) -> None:
+    trade["mfe_r"] = np.nan
+    trade["mae_r"] = np.nan
+    trade["mfe_valid"] = False
+    trade["mae_valid"] = False
+
+
+def _close_position_atomically(pos: dict, current_time, exit_price: float, exit_reason: str, pnl: float, r_result: float) -> None:
+    pos.update(
+        {
+            "exit_time": current_time,
+            "exit_price": float(
+                np.clip(
+                    np.nan_to_num(exit_price, nan=0.0, posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT),
+                    -SAFE_FLOAT_LIMIT,
+                    SAFE_FLOAT_LIMIT,
+                )
+            ),
+            "pnl": sanitize_pnl(pnl),
+            "rr": sanitize_r(r_result),
+            "realized_r": sanitize_r(r_result),
+            "initial_risk": float(np.clip(np.nan_to_num(pos.get("initial_risk", 0.0), nan=0.0), 0.0, SAFE_FLOAT_LIMIT)),
+            "exit_reason": exit_reason,
+        }
+    )
+
+    if pos["exit_reason"] == "take_profit" and pos["pnl"] < 0:
+        pos["exit_reason"] = "stop_loss"
+    elif pos["exit_reason"] == "stop_loss" and pos["pnl"] > 0:
+        pos["exit_reason"] = "take_profit"
+
+    if pos["exit_reason"] == "take_profit":
+        pos["exit_type"] = "TP"
+    elif pos["exit_reason"] == "stop_loss":
+        is_trailed_stop = (
+            pos.get("signal_type") == "BOS"
+            and abs(float(pos.get("sl", 0.0)) - float(pos.get("original_sl", 0.0))) > 1e-12
+        )
+        pos["exit_type"] = "trailing_stop" if is_trailed_stop else "SL"
+    else:
+        pos["exit_type"] = pos["exit_reason"]
 
 def compute_atr_distances(entry, direction, atr, base_sl_distance, signal_type):
     safe_entry = float(np.nan_to_num(entry, nan=0.0))
@@ -830,7 +880,7 @@ class BacktestEngine:
 
         X = model_df[feature_cols]
         y = (model_df["pnl"] > 0).astype(int)
-        model = lgb.LGBMClassifier(n_estimators=100, max_depth=4)
+        model = lgb.LGBMClassifier(n_estimators=100, max_depth=4, random_state=42, n_jobs=1)
         model.fit(X, y)
         self.signal_model = model
         return model
@@ -872,7 +922,7 @@ class Strategy:
         current_r = 0.0
 
         # --- R calculation + excursion tracking ---
-        if trade["initial_risk"] > 0:
+        if trade["initial_risk"] > EPSILON_INITIAL_RISK:
             if direction == "LONG":
                 current_r = (row['close'] - trade["entry"]) / trade["initial_risk"]
                 favorable_move = row['high'] - trade["entry"]
@@ -888,10 +938,13 @@ class Strategy:
 
             current_r = sanitize_r(current_r)
             favorable_r = max(0.0, float(np.nan_to_num(favorable_move / trade["initial_risk"], nan=0.0)))
-            favorable_r = min(favorable_r, 50.0)
+            favorable_r = min(favorable_r, MAX_EXCURSION_R)
             adverse_r = max(0.0, float(np.nan_to_num(adverse_move / trade["initial_risk"], nan=0.0)))
-            trade["mfe_r"] = max(float(trade.get("mfe_r", 0.0)), favorable_r)
-            trade["mae_r"] = max(float(trade.get("mae_r", 0.0)), adverse_r)
+            adverse_r = min(adverse_r, MAX_EXCURSION_R)
+            trade["mfe_r"] = max(float(np.nan_to_num(trade.get("mfe_r", 0.0), nan=0.0)), favorable_r)
+            trade["mae_r"] = max(float(np.nan_to_num(trade.get("mae_r", 0.0), nan=0.0)), adverse_r)
+            trade["mfe_valid"] = True
+            trade["mae_valid"] = True
             trade["max_r_reached"] = max(float(trade.get("max_r_reached", 0.0)), favorable_r)
 
             if current_r > trade["max_r"]:
@@ -899,6 +952,9 @@ class Strategy:
 
             sl = self._apply_r_trailing(trade, direction, sl, favorable_r)
             trade["sl"] = sl
+
+        else:
+            _mark_invalid_excursion(trade)
 
         # --- BOS Trailing ---
         if signal_type == "BOS" and trade.get("regime") == "TREND" and trade.get("scale_level", 0) == 0:
@@ -947,7 +1003,7 @@ class Strategy:
                         return "partial_take_profit", tp1, current_idx, 0.5
                     if tp is not None and seg_low <= tp <= seg_high:
                         return "take_profit", tp, current_idx, 1.0
-                    if trade["initial_risk"] > 0:
+                    if trade["initial_risk"] > EPSILON_INITIAL_RISK:
                         seg_favorable_r = max(0.0, float(np.nan_to_num((end - trade["entry"]) / trade["initial_risk"], nan=0.0)))
                         new_sl = self._apply_r_trailing(trade, direction, sl, seg_favorable_r)
                         if new_sl != sl:
@@ -963,7 +1019,7 @@ class Strategy:
                         return "partial_take_profit", tp1, current_idx, 0.5
                     if tp is not None and seg_low <= tp <= seg_high:
                         return "take_profit", tp, current_idx, 1.0
-                    if trade["initial_risk"] > 0:
+                    if trade["initial_risk"] > EPSILON_INITIAL_RISK:
                         seg_favorable_r = max(0.0, float(np.nan_to_num((trade["entry"] - end) / trade["initial_risk"], nan=0.0)))
                         new_sl = self._apply_r_trailing(trade, direction, sl, seg_favorable_r)
                         if new_sl != sl:
@@ -1161,6 +1217,25 @@ def _print_excursion_analysis(trades_df):
     print(f"median MFE: {med_mfe:.2f}R")
     print(f"average MAE: {avg_mae:.2f}R")
     print(f"median MAE: {med_mae:.2f}R")
+
+def _detect_anomalies(trades_df: pd.DataFrame) -> List[AnomalyRecord]:
+    anomalies: List[AnomalyRecord] = []
+    if len(trades_df) == 0:
+        return anomalies
+    for idx, row in trades_df.iterrows():
+        symbol = str(row.get("symbol", "UNKNOWN"))
+        entry = float(np.nan_to_num(row.get("entry", 0.0), nan=0.0))
+        exit_price = float(np.nan_to_num(row.get("exit_price", 0.0), nan=0.0))
+        pnl = float(np.nan_to_num(row.get("pnl", 0.0), nan=0.0))
+        exit_reason = row.get("exit_reason")
+
+        if pd.isna(exit_reason) or exit_reason in (None, ""):
+            anomalies.append(AnomalyRecord(int(idx), symbol, entry, exit_price, pnl, "missing_exit_reason"))
+        if bool(row.get("mfe_valid", True)) is False or bool(row.get("mae_valid", True)) is False:
+            anomalies.append(AnomalyRecord(int(idx), symbol, entry, exit_price, pnl, "invalid_mfe_mae"))
+        if abs(pnl) > (MAX_PNL_CLIP * 0.9):
+            anomalies.append(AnomalyRecord(int(idx), symbol, entry, exit_price, pnl, "extreme_pnl"))
+    return anomalies
 
 def _run_backtest_audit(trades_df, equity_df):
     os.makedirs("backtest/results", exist_ok=True)
@@ -1387,7 +1462,7 @@ def print_final_report(
     local_df = trades_df.copy()
     local_df['pnl'] = pd.to_numeric(local_df.get('pnl', 0.0), errors='coerce').replace([np.inf, -np.inf], np.nan).fillna(0.0)
     local_df['rr'] = pd.to_numeric(local_df.get('rr', 0.0), errors='coerce').replace([np.inf, -np.inf], np.nan).fillna(0.0)
-    local_df['mfe_r'] = pd.to_numeric(local_df.get('mfe_r', 0.0), errors='coerce').replace([np.inf, -np.inf], np.nan).fillna(0.0).clip(upper=50.0)
+    local_df['mfe_r'] = pd.to_numeric(local_df.get('mfe_r', np.nan), errors='coerce').replace([np.inf, -np.inf], np.nan).clip(upper=MAX_EXCURSION_R)
     local_df['bars_alive'] = pd.to_numeric(local_df.get('bars_alive', 0), errors='coerce').replace([np.inf, -np.inf], np.nan).fillna(0.0)
 
     total_trades = len(local_df)
@@ -1403,8 +1478,10 @@ def print_final_report(
     avg_rr = float(local_df['rr'].mean()) if total_trades else 0.0
     median_rr = float(local_df['rr'].median()) if total_trades else 0.0
     avg_trade_duration = float(local_df['bars_alive'].mean()) if total_trades else 0.0
-    avg_mfe = float(local_df['mfe_r'].mean()) if total_trades else 0.0
-    p95_mfe = float(local_df['mfe_r'].quantile(0.95)) if total_trades else 0.0
+    mfe_valid_mask = local_df.get('mfe_valid', pd.Series([True] * len(local_df))).astype(bool)
+    valid_mfe = local_df.loc[mfe_valid_mask, 'mfe_r'].dropna()
+    avg_mfe = float(valid_mfe.mean()) if len(valid_mfe) else 0.0
+    p95_mfe = float(valid_mfe.quantile(0.95)) if len(valid_mfe) else 0.0
     avg_win = float(local_df.loc[wins_mask, 'pnl'].mean()) if winning_trades else 0.0
     losing_trades = int(losses_mask.sum())
     avg_loss = float(local_df.loc[losses_mask, 'pnl'].mean()) if losing_trades else 0.0
@@ -2615,21 +2692,14 @@ def run_backtest():
                 r_result += float(np.nan_to_num(pos.get('realized_r', 0.0), nan=0.0))
 
                 capital = float(np.clip(capital + pnl, -SAFE_FLOAT_LIMIT, SAFE_FLOAT_LIMIT))
-                pos['exit_time'] = current_time
-                pos['exit_price'] = float(np.clip(np.nan_to_num(exit_price, nan=0.0, posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT), -SAFE_FLOAT_LIMIT, SAFE_FLOAT_LIMIT))
-                pos['pnl'] = sanitize_pnl(pnl)
-                pos['rr'] = sanitize_r(r_result)
-                pos['exit_reason'] = exit_reason
-                if exit_reason == "take_profit":
-                    pos['exit_type'] = "TP"
-                elif exit_reason == "stop_loss":
-                    is_trailed_stop = (
-                        pos.get("signal_type") == "BOS"
-                        and abs(float(pos.get("sl", 0.0)) - float(pos.get("original_sl", 0.0))) > 1e-12
-                    )
-                    pos['exit_type'] = "trailing_stop" if is_trailed_stop else "SL"
-                else:
-                    pos['exit_type'] = exit_reason
+                _close_position_atomically(
+                    pos=pos,
+                    current_time=current_time,
+                    exit_price=exit_price,
+                    exit_reason=exit_reason,
+                    pnl=pnl,
+                    r_result=r_result,
+                )
 
                 if pos["signal_type"] == "BOS":
                     bos_stats.append({
@@ -3114,6 +3184,10 @@ def run_backtest():
             pos["scale_level"] = 0
             pos["realized_pnl"] = 0.0
             pos["realized_r"] = 0.0
+            pos["mfe_valid"] = pos["initial_risk"] > EPSILON_INITIAL_RISK
+            pos["mae_valid"] = pos["initial_risk"] > EPSILON_INITIAL_RISK
+            if not pos["mfe_valid"]:
+                _mark_invalid_excursion(pos)
             pos["partial_tp_hits"] = 0
             pos["tp1_taken"] = False
             pos["tp1_price"] = None
@@ -3177,6 +3251,11 @@ def run_backtest():
     trades_df['rr'] = np.clip(np.nan_to_num(trades_df['rr'].values, nan=0.0, posinf=MAX_R_CLIP, neginf=MIN_R_CLIP), MIN_R_CLIP, MAX_R_CLIP)
 
     equity_df = pd.DataFrame(equity_curve)
+    sort_cols = [c for c in ['timestamp', 'symbol', 'signal_id', 'scale_level'] if c in trades_df.columns]
+    if sort_cols:
+        trades_df = trades_df.sort_values(sort_cols, kind='mergesort').reset_index(drop=True)
+    if len(equity_df) and 'time' in equity_df.columns:
+        equity_df = equity_df.sort_values('time', kind='mergesort').reset_index(drop=True)
 
     stats = print_final_report(
         trades_df,
@@ -3207,6 +3286,20 @@ def run_backtest():
             print(f"{key}: {filter_stats.get(key, 0)}")
 
     stats["filter_stats"] = dict(filter_stats)
+
+    reports_root = Path("backtest_reports")
+    plots_dir = reports_root / "plots"
+    reports_root.mkdir(parents=True, exist_ok=True)
+    save_plots(trades_df, equity_df, plots_dir)
+
+    anomalies = _detect_anomalies(trades_df)
+    anomalies_file = reports_root / "anomalies.md"
+    anomaly_count = write_anomalies(anomalies, anomalies_file)
+    print(f"\n===== ANOMALY SUMMARY =====")
+    print(f"anomalies_detected: {anomaly_count}")
+    for item in anomalies[:10]:
+        print(f"- idx={item.trade_index} symbol={item.symbol} pnl={item.pnl:.6f} reason={item.reason}")
+
     return trades_df, equity_df, stats
 
 class BosAnalytics:
