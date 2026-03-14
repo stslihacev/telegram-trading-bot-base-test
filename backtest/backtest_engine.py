@@ -68,7 +68,7 @@ os.makedirs(os.path.dirname(PROGRESS_FILE), exist_ok=True)
 MODE = os.getenv("BACKTEST_MODE", "FULL").upper()
 # ========================
 
-REJECTION_LOGGING_ENABLED = os.getenv("BACKTEST_REJECTION_LOGS", "1") == "1"
+REJECTION_LOGGING_ENABLED = os.getenv("BACKTEST_REJECTION_LOGS", "0") == "1"
 REJECTION_LOG_LIMIT_PER_REASON = max(0, int(os.getenv("BACKTEST_REJECTION_LOG_LIMIT", "10")))
 ENTRY_ZONE_TOLERANCE_PCT = float(os.getenv("ENTRY_ZONE_TOLERANCE_PCT", "0.0"))
 ENTRY_ZONE_ATR_MULTIPLIER = float(os.getenv("ENTRY_ZONE_ATR_MULTIPLIER", "0.25"))
@@ -80,6 +80,7 @@ MOMENTUM_ENTRY_MAX_EXTENSION = int(os.getenv("MOMENTUM_ENTRY_MAX_EXTENSION", "20
 MTF_FILTER_ADX_MIN_1H = float(os.getenv("MTF_FILTER_ADX_MIN_1H", "20"))
 MTF_FILTER_ADX_MIN_4H = float(os.getenv("MTF_FILTER_ADX_MIN_4H", "20"))
 MTF_FILTER_LOGIC = os.getenv("MTF_FILTER_LOGIC", "AND").upper()
+BACKTEST_VERBOSE = os.getenv("BACKTEST_VERBOSE", "0") == "1"
 
 
 def get_adaptive_zone_atr_multiplier(confidence):
@@ -234,9 +235,10 @@ else:
     files = glob.glob(f"{DATA_DIR}/*_1h.parquet")
     SYMBOLS = [Path(f).stem.replace("_1h", "") for f in files]
 
-print(f"🚀 Режим: {MODE}")
-print(f"Период: {START_DATE} – {END_DATE}")
-print(f"Монет для анализа: {len(SYMBOLS)}")
+if BACKTEST_VERBOSE:
+    print(f"🚀 Режим: {MODE}")
+    print(f"Период: {START_DATE} – {END_DATE}")
+    print(f"Монет для анализа: {len(SYMBOLS)}")
 
 def print_signal_stats(name, trades):
     """Выводит статистику по типу сигнала"""
@@ -860,6 +862,7 @@ class Strategy:
 
             current_r = sanitize_r(current_r)
             favorable_r = max(0.0, float(np.nan_to_num(favorable_move / trade["initial_risk"], nan=0.0)))
+            favorable_r = min(favorable_r, 50.0)
             adverse_r = max(0.0, float(np.nan_to_num(adverse_move / trade["initial_risk"], nan=0.0)))
             trade["mfe_r"] = max(float(trade.get("mfe_r", 0.0)), favorable_r)
             trade["mae_r"] = max(float(trade.get("mae_r", 0.0)), adverse_r)
@@ -953,14 +956,16 @@ def load_all_data(processed):
     swing_stats = []    # для сбора статистики по swing точкам
     swing_indices = {}
 
-    for symbol in tqdm(SYMBOLS, desc="📥 Загрузка монет в память"):
+    for symbol in tqdm(SYMBOLS, desc="📥 Загрузка монет в память", disable=not BACKTEST_VERBOSE):
         if symbol in processed:
-            tqdm.write(f"⏩ {symbol} уже обработана, пропускаем")
+            if BACKTEST_VERBOSE:
+                tqdm.write(f"⏩ {symbol} уже обработана, пропускаем")
             continue
 
         file = f"{DATA_DIR}/{symbol}_1h.parquet"
         if not os.path.exists(file):
-            tqdm.write(f"❌ Файл {file} не найден, пропускаем {symbol}")
+            if BACKTEST_VERBOSE:
+                tqdm.write(f"❌ Файл {file} не найден, пропускаем {symbol}")
             processed.add(symbol)
             with open(PROGRESS_FILE, "a") as f:
                 f.write(symbol + "\n")
@@ -973,7 +978,8 @@ def load_all_data(processed):
         df_1h = df_1h[(df_1h.index >= START_DATE) & (df_1h.index <= END_DATE)]
 
         if len(df_1h) < 200:
-            tqdm.write(f"   ⚠️ {symbol}: недостаточно данных, пропускаем")
+            if BACKTEST_VERBOSE:
+                tqdm.write(f"   ⚠️ {symbol}: недостаточно данных, пропускаем")
             processed.add(symbol)
             with open(PROGRESS_FILE, "a") as f:
                 f.write(symbol + "\n")
@@ -997,10 +1003,11 @@ def load_all_data(processed):
         if df_30m is not None and len(df_30m) > 0:
             all_data_30m[symbol] = df_30m
 
-        print(f"{symbol} 1H rows:", len(df_1h))
-        print(f"{symbol} 15M rows:", len(df_15m) if df_15m is not None else "no 15m data")
-        print(f"{symbol} 30M rows:", len(df_30m) if df_30m is not None else "no 30m data")
-        print(f"{symbol} 4H rows:", len(df_4h) if len(df_4h) > 0 else "no 4h data", f"({tf_4h_source})")
+        if BACKTEST_VERBOSE:
+            print(f"{symbol} 1H rows:", len(df_1h))
+            print(f"{symbol} 15M rows:", len(df_15m) if df_15m is not None else "no 15m data")
+            print(f"{symbol} 30M rows:", len(df_30m) if df_30m is not None else "no 30m data")
+            print(f"{symbol} 4H rows:", len(df_4h) if len(df_4h) > 0 else "no 4h data", f"({tf_4h_source})")
         df = add_indicators(df_1h)
 
         # ==============================
@@ -1031,7 +1038,8 @@ def load_all_data(processed):
         # 🔥 Убираем дубликаты индекса (если они есть)
 
         if not df.index.is_unique:
-            tqdm.write(f"   ⚠️ {symbol}: дубликаты времени, удаляем")
+            if BACKTEST_VERBOSE:
+                tqdm.write(f"   ⚠️ {symbol}: дубликаты времени, удаляем")
             df = df[~df.index.duplicated(keep='first')]
 
         # ВРЕМЕННАЯ ПРОВЕРКА SWING
@@ -1055,18 +1063,26 @@ def load_all_data(processed):
 
         symbols_loaded.append(symbol)
 
-    tqdm.write(f"✅ Загружено {len(all_data)} монет")
-    print(f"Loaded 1H data: {len(all_data)} symbols")
-    print(f"Loaded 15M data: {len(all_data_15m)} symbols")
-    print(f"Loaded 30M data: {len(all_data_30m)} symbols")
-    print(f"Loaded 4H data: {len(all_data_4h)} symbols")
+    if BACKTEST_VERBOSE:
+        tqdm.write(f"✅ Загружено {len(all_data)} монет")
+    if BACKTEST_VERBOSE:
+        print(f"Loaded 1H data: {len(all_data)} symbols")
+    if BACKTEST_VERBOSE:
+        print(f"Loaded 15M data: {len(all_data_15m)} symbols")
+    if BACKTEST_VERBOSE:
+        print(f"Loaded 30M data: {len(all_data_30m)} symbols")
+    if BACKTEST_VERBOSE:
+        print(f"Loaded 4H data: {len(all_data_4h)} symbols")
 
     # ВЫВОДИМ ВСЮ SWING СТАТИСТИКУ ОДНИМ БЛОКОМ
-    print("\n📊 СТАТИСТИКА SWING ТОЧЕК")
-    print("-" * 40)
+    if BACKTEST_VERBOSE:
+        print("\n📊 СТАТИСТИКА SWING ТОЧЕК")
+        print("-" * 40)
     for stat in swing_stats:
-        print(stat)
-    print()
+        if BACKTEST_VERBOSE:
+            print(stat)
+    if BACKTEST_VERBOSE:
+        print()
 
     if not all_data:
         print("❌ Нет данных для анализа")
@@ -1324,125 +1340,101 @@ def print_final_report(
     bos_trend,
     bos_range
 ):
-    print("\n" + "="*50)
-    print("📊 ИТОГОВАЯ СТАТИСТИКА")
-    print("="*50)
-
-    print("\n📊 СТАТИСТИКА ПО РЕЖИМАМ")
-    print("-" * 30)
-
-    total_bars = trend_count + range_count
-    if total_bars > 0:
-        print(f"TREND баров: {trend_count} ({trend_count/total_bars*100:.1f}%)")
-        print(f"RANGE баров: {range_count} ({range_count/total_bars*100:.1f}%)")
-
-    print("\n" + "="*50)
-    print("📊 СТАТИСТИКА ПО ТИПУ СИГНАЛА")
-    print("="*50)
-
-    print_signal_stats("🔹 SWEEP", sweep_trades)
-    print_signal_stats("🔹 BOS", bos_trades)
-
-    print("\n" + "="*50)
-    print("📊 SWEEP ПО РЕЖИМАМ")
-    print("="*50)
-
-    print_stats(sweep_trend, "SWEEP (TREND)")
-    print_stats(sweep_range, "SWEEP (RANGE)")
-
-    print("\n" + "="*50)
-    print("📊 BOS ПО РЕЖИМАМ")
-    print("="*50)
-
-    print_stats(bos_trend, "BOS (TREND)")
-    print_stats(bos_range, "BOS (RANGE)")
 
     if len(trades_df) == 0:
-        print("❌ Нет сделок")
+        print("\n===== BACKTEST SUMMARY =====")
+        print("Trades: 0")
         return
 
-    # Защита от отсутствующих колонок/NaN
-    if 'pnl' not in trades_df.columns:
-        trades_df['pnl'] = 0.0
-    if 'rr' not in trades_df.columns:
-        trades_df['rr'] = 0.0
-    trades_df['pnl'] = pd.to_numeric(trades_df['pnl'], errors='coerce').replace([np.inf, -np.inf], np.nan)
-    trades_df['pnl'] = np.nan_to_num(trades_df['pnl'].values, nan=0.0, posinf=MAX_PNL_CLIP, neginf=-MAX_PNL_CLIP)
-    trades_df['pnl'] = pd.Series(trades_df['pnl']).clip(-MAX_PNL_CLIP, MAX_PNL_CLIP)
-    trades_df['rr'] = pd.to_numeric(trades_df['rr'], errors='coerce').replace([np.inf, -np.inf], np.nan)
-    trades_df['rr'] = np.clip(np.nan_to_num(trades_df['rr'].values, nan=0.0, posinf=MAX_R_CLIP, neginf=MIN_R_CLIP), MIN_R_CLIP, MAX_R_CLIP)
-    if 'mfe_r' not in trades_df.columns:
-        trades_df['mfe_r'] = 0.0
-    if 'mae_r' not in trades_df.columns:
-        trades_df['mae_r'] = 0.0
-    if 'max_r_reached' not in trades_df.columns:
-        trades_df['max_r_reached'] = 0.0
-    trades_df['mfe_r'] = pd.to_numeric(trades_df['mfe_r'], errors='coerce').replace([np.inf, -np.inf], np.nan).fillna(0.0)
-    trades_df['mae_r'] = pd.to_numeric(trades_df['mae_r'], errors='coerce').replace([np.inf, -np.inf], np.nan).fillna(0.0)
-    trades_df['max_r_reached'] = pd.to_numeric(trades_df['max_r_reached'], errors='coerce').replace([np.inf, -np.inf], np.nan).fillna(0.0)
+    local_df = trades_df.copy()
+    local_df['pnl'] = pd.to_numeric(local_df.get('pnl', 0.0), errors='coerce').replace([np.inf, -np.inf], np.nan).fillna(0.0)
+    local_df['rr'] = pd.to_numeric(local_df.get('rr', 0.0), errors='coerce').replace([np.inf, -np.inf], np.nan).fillna(0.0)
+    local_df['mfe_r'] = pd.to_numeric(local_df.get('mfe_r', 0.0), errors='coerce').replace([np.inf, -np.inf], np.nan).fillna(0.0).clip(upper=50.0)
+    local_df['bars_alive'] = pd.to_numeric(local_df.get('bars_alive', 0), errors='coerce').replace([np.inf, -np.inf], np.nan).fillna(0.0)
 
-    total_trades = len(trades_df)
-    winning_trades = len(trades_df[trades_df['pnl'] > 0])
-    losing_trades = len(trades_df[trades_df['pnl'] < 0])
-    winrate = winning_trades / total_trades * 100
+    total_trades = len(local_df)
+    wins_mask = local_df['pnl'] > 0
+    losses_mask = local_df['pnl'] < 0
+    winning_trades = int(wins_mask.sum())
+    winrate = (winning_trades / total_trades * 100.0) if total_trades else 0.0
 
-    total_pnl = float(np.clip(np.nan_to_num(trades_df['pnl'].sum(), nan=0.0, posinf=MAX_PNL_CLIP, neginf=-MAX_PNL_CLIP), -MAX_PNL_CLIP, MAX_PNL_CLIP))
-    avg_rr = float(np.clip(trades_df['rr'].mean(), -SAFE_FLOAT_LIMIT, SAFE_FLOAT_LIMIT))
-
-    if len(equity_df) == 0 or 'capital' not in equity_df.columns:
-        max_dd = 0.0
-    else:
-        equity_df['capital'] = pd.to_numeric(equity_df['capital'], errors='coerce').fillna(INITIAL_CAPITAL).clip(-SAFE_FLOAT_LIMIT, SAFE_FLOAT_LIMIT)
-        equity_df['peak'] = equity_df['capital'].cummax()
-        denom = equity_df['peak'].replace(0, np.nan)
-        equity_df['drawdown'] = ((equity_df['peak'] - equity_df['capital']) / denom * 100).fillna(0.0).clip(0, 100)
-        max_dd = float(equity_df['drawdown'].max())
-
-    gross_profit = float(np.nan_to_num(trades_df[trades_df['pnl'] > 0]['pnl'].sum(), nan=0.0, posinf=MAX_PNL_CLIP, neginf=0.0))
-    gross_loss = abs(float(np.nan_to_num(trades_df[trades_df['pnl'] < 0]['pnl'].sum(), nan=0.0, posinf=0.0, neginf=-MAX_PNL_CLIP)))
+    gross_profit = float(local_df.loc[wins_mask, 'pnl'].sum())
+    gross_loss = abs(float(local_df.loc[losses_mask, 'pnl'].sum()))
     profit_factor = gross_profit / gross_loss if gross_loss > 0 else float('inf')
 
-    print("\n📊 СТАТИСТИКА СДЕЛОК")
-    print("-" * 30)
-    print(f"Всего сделок:            {total_trades}")
-    print(f"Прибыльных:              {winning_trades} ({winrate:.2f}%)")
-    print(f"Убыточных:               {losing_trades}")
-    print(f"Суммарный PnL:           {total_pnl:.2f} USDT")
-    print(f"Конечный капитал:        {capital:.2f} USDT")
-    print(f"Доходность:              {(capital/INITIAL_CAPITAL - 1)*100:.2f}%")
-    print(f"Средний RR:              {avg_rr:.2f}")
-    print(f"Макс. просадка:          {max_dd:.2f}%")
-    print(f"Profit Factor:           {profit_factor:.2f}")
+    avg_rr = float(local_df['rr'].mean()) if total_trades else 0.0
+    median_rr = float(local_df['rr'].median()) if total_trades else 0.0
+    avg_trade_duration = float(local_df['bars_alive'].mean()) if total_trades else 0.0
+    avg_mfe = float(local_df['mfe_r'].mean()) if total_trades else 0.0
+    p95_mfe = float(local_df['mfe_r'].quantile(0.95)) if total_trades else 0.0
 
-    if "htf_filter_applied" in trades_df.columns:
-        with_4h = trades_df[trades_df["htf_filter_applied"] == True]
-        without_4h = trades_df[trades_df["htf_filter_applied"] != True]
-        with_pnl = float(np.nan_to_num(with_4h["pnl"].sum(), nan=0.0)) if len(with_4h) else 0.0
-        without_pnl = float(np.nan_to_num(without_4h["pnl"].sum(), nan=0.0)) if len(without_4h) else 0.0
-        with_winrate = (len(with_4h[with_4h["pnl"] > 0]) / len(with_4h) * 100) if len(with_4h) else 0.0
-        without_winrate = (len(without_4h[without_4h["pnl"] > 0]) / len(without_4h) * 100) if len(without_4h) else 0.0
+    max_dd = 0.0
+    if len(equity_df) > 0 and 'capital' in equity_df.columns:
+        cap = pd.to_numeric(equity_df['capital'], errors='coerce').replace([np.inf, -np.inf], np.nan).fillna(INITIAL_CAPITAL)
+        peak = cap.cummax()
+        denom = peak.replace(0, np.nan)
+        drawdown = ((peak - cap) / denom).fillna(0.0)
+        max_dd = float(drawdown.max() * 100.0)
 
-        print("\n📊 4H FILTER COMPARISON")
-        print("-" * 30)
-        print(f"trades_with_4h_filter:    {len(with_4h)} | Winrate: {with_winrate:.2f}% | PnL: {with_pnl:.2f}")
-        print(f"trades_without_4h_filter: {len(without_4h)} | Winrate: {without_winrate:.2f}% | PnL: {without_pnl:.2f}")
+    print("\n===== BACKTEST SUMMARY =====")
+    print(f"Trades: {total_trades}")
+    print(f"Winrate: {winrate:.2f}%")
+    print(f"Profit Factor: {profit_factor:.2f}")
+    print(f"Average RR: {avg_rr:.4f}")
+    print(f"Median RR: {median_rr:.4f}")
+    print(f"Max Drawdown: {max_dd:.2f}%")
+    print(f"Average Trade Duration: {avg_trade_duration:.2f} bars")
+    print(f"Average MFE: {avg_mfe:.4f}R")
+    print(f"95% MFE: {p95_mfe:.4f}R")
 
-    print("\n📊 BOS сигналов обнаружено:", diagnostics.bos_detected)
-    print("Попыток BOS:", diagnostics.bos_attempts)
-    print("Blocked by ADX:", diagnostics.bos_block_adx)
-    print("Blocked by EMA:", diagnostics.bos_block_ema)
-    print("Blocked by DI:", diagnostics.bos_block_di)
+    momentum_df = local_df[local_df.get('entry_mode', '').astype(str) == 'momentum'] if 'entry_mode' in local_df.columns else local_df.iloc[0:0]
+    zone_df = local_df[local_df.get('entry_mode', '').astype(str) != 'momentum'] if 'entry_mode' in local_df.columns else local_df.iloc[0:0]
 
-    _print_excursion_analysis(trades_df)
+    def _segment_stats(df):
+        if len(df) == 0:
+            return 0, 0.0, 0.0, 0.0
+        w = float((df['pnl'] > 0).mean() * 100.0)
+        avg_pnl = float(df['pnl'].mean())
+        gp = float(df.loc[df['pnl'] > 0, 'pnl'].sum())
+        gl = abs(float(df.loc[df['pnl'] < 0, 'pnl'].sum()))
+        pf = gp / gl if gl > 0 else float('inf')
+        return len(df), w, avg_pnl, pf
+
+    m_trades, m_winrate, m_avg_pnl, m_pf = _segment_stats(momentum_df)
+    z_trades, z_winrate, z_avg_pnl, z_pf = _segment_stats(zone_df)
+
+    print("\nMomentum vs Zone statistics:")
+    print(f"momentum_trades: {m_trades}")
+    print(f"momentum_winrate: {m_winrate:.2f}%")
+    print(f"momentum_avg_pnl: {m_avg_pnl:.6f}")
+    print(f"momentum_profit_factor: {m_pf:.4f}")
+    print(f"zone_trades: {z_trades}")
+    print(f"zone_winrate: {z_winrate:.2f}%")
+    print(f"zone_avg_pnl: {z_avg_pnl:.6f}")
+    print(f"zone_profit_factor: {z_pf:.4f}")
+
+    if 'confidence' in local_df.columns:
+        conf = pd.to_numeric(local_df['confidence'], errors='coerce').replace([np.inf, -np.inf], np.nan)
+        bins = [0, 2, 3, 4, 5, np.inf]
+        labels = ['0-2', '2-3', '3-4', '4-5', '5+']
+        conf_ranges = pd.cut(conf, bins=bins, labels=labels, include_lowest=True)
+        conf_stats = local_df.assign(conf_range=conf_ranges).dropna(subset=['conf_range']).groupby('conf_range', observed=True).agg(
+            trade_count=('pnl', 'count'),
+            winrate=('pnl', lambda x: float((x > 0).mean() * 100.0)),
+            avg_pnl=('pnl', 'mean')
+        )
+        print("\nConfidence statistics:")
+        for rng, row in conf_stats.iterrows():
+            print(f"{rng}: trade_count={int(row['trade_count'])}, winrate={float(row['winrate']):.2f}%, avg_pnl={float(row['avg_pnl']):.6f}")
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     os.makedirs("backtest/results", exist_ok=True)
-    trades_df.to_csv(f"backtest/results/trades_{timestamp}.csv", index=False)
+    local_df.to_csv(f"backtest/results/trades_{timestamp}.csv", index=False)
     equity_df.to_csv(f"backtest/results/equity_{timestamp}.csv", index=False)
-
-    _run_backtest_audit(trades_df, equity_df)
-
-    print(f"\n✅ Результаты сохранены в backtest/results/")
+    if BACKTEST_VERBOSE:
+        _print_excursion_analysis(local_df)
+        _run_backtest_audit(local_df, equity_df)
+        print(f"\n✅ Результаты сохранены в backtest/results/")
 
 class BosStrategy(Strategy):
 
@@ -2164,8 +2156,9 @@ class BosStrategy(Strategy):
         return entry_data
 
 def run_backtest():
-    print("🚀 Запуск бэктеста...")
-    print(f"Начальный капитал: {INITIAL_CAPITAL} USDT")
+    if BACKTEST_VERBOSE:
+        print("🚀 Запуск бэктеста...")
+        print(f"Начальный капитал: {INITIAL_CAPITAL} USDT")
 
     diagnostics = Diagnostics()
     strategy = BosStrategy()
@@ -2347,29 +2340,35 @@ def run_backtest():
         return
     
     # ===== СОЗДАЁМ МАППИНГ ВРЕМЯ → МОНЕТЫ =====
-    print("🔄 Создаём индекс времени...")
+    if BACKTEST_VERBOSE:
+        print("🔄 Создаём индекс времени...")
     time_symbol_map = defaultdict(list)
 
     for symbol, df in all_data.items():
         for timestamp in df.index:
             time_symbol_map[timestamp].append(symbol)
 
-    print(f"✅ Создан маппинг для {len(time_symbol_map)} временных меток")
+    if BACKTEST_VERBOSE:
+        print(f"✅ Создан маппинг для {len(time_symbol_map)} временных меток")
 
     # ===== СОЗДАЁМ SET ИНДЕКСОВ ДЛЯ КАЖДОЙ МОНЕТЫ =====
-    print("🔄 Создаём set индексов для монет...")
+    if BACKTEST_VERBOSE:
+        print("🔄 Создаём set индексов для монет...")
     index_sets = {}
     for symbol, df in all_data.items():
         index_sets[symbol] = set(df.index)
 
-    print(f"✅ Созданы set'ы для {len(index_sets)} монет")
+    if BACKTEST_VERBOSE:
+        print(f"✅ Созданы set'ы для {len(index_sets)} монет")
 
-    print("🔄 Создаём быстрый маппинг времени в позицию индекса...")
+    if BACKTEST_VERBOSE:
+        print("🔄 Создаём быстрый маппинг времени в позицию индекса...")
     time_to_pos = {
         symbol: {ts: idx for idx, ts in enumerate(df.index)}
         for symbol, df in all_data.items()
     }
-    print(f"✅ Создано {len(time_to_pos)} маппингов")
+    if BACKTEST_VERBOSE:
+        print(f"✅ Создано {len(time_to_pos)} маппингов")
 
     # ===== ПОРТФЕЛЬНЫЙ ДВИЖОК =====
     open_positions = []
@@ -2397,9 +2396,8 @@ def run_backtest():
     total_steps = len(global_index) - 200
     htf_trend = calculate_htf_trend(df)
 
-    pbar = tqdm(total=total_steps, desc="⏳ Портфельный анализ")
+    pbar = tqdm(total=total_steps, desc="⏳ Портфельный анализ", disable=not BACKTEST_VERBOSE)
     signal_counter = 0
-    previous_entry_time = None
     executed_entries = set()
 
     def _build_scale_position(base_pos, row, current_time, scale_level):
@@ -2842,7 +2840,8 @@ def run_backtest():
                     entry_data['initial_risk'] = abs(entry_data['entry'] - entry_data['sl'])
                     entry_data['rr'] = sanitize_r(calculate_rr(entry_data['entry'], entry_data['tp'], entry_data['sl'], direction))
                     entry_data['mtf_tf'] = mtf_tf
-                    print(f"MTF entry aligned ({mtf_tf}) for {symbol} at {entry_time} price {entry_price}")
+                    if BACKTEST_VERBOSE:
+                        print(f"MTF entry aligned ({mtf_tf}) for {symbol} at {entry_time} price {entry_price}")
 
             # ===== ML + VOLUME FILTER + DYNAMIC CONFIDENCE =====
             coin = symbol
@@ -2908,7 +2907,8 @@ def run_backtest():
             if entry_price <= 0:
                 filter_stats["rejected_before_entry"] += 1
                 filter_stats["rejected_other"] += 1
-                tqdm.write(f"   ⚠️ {symbol}: некорректный entry_price, пропускаем")
+                if BACKTEST_VERBOSE:
+                    tqdm.write(f"   ⚠️ {symbol}: некорректный entry_price, пропускаем")
                 continue
 
             position_size = calculate_position_size(entry_data, capital, risk_factor=RISK_PER_TRADE)
@@ -2920,32 +2920,28 @@ def run_backtest():
             trade_risk = float(np.clip(np.nan_to_num(entry_data.get("risk_amount", expected_risk), nan=0.0), 0.0, SAFE_FLOAT_LIMIT))
             expected_position_size = expected_risk
 
-            print(
-                f"[AUDIT:RISK] symbol={symbol} initial_capital={INITIAL_CAPITAL:.4f} "
-                f"capital={capital:.4f} risk_per_trade={RISK_PER_TRADE:.4f} "
-                f"position_size={position_size:.6f} expected_position_size={expected_position_size:.6f} "
-                f"trade_risk={trade_risk:.6f}"
-            )
-
             if position_size <= 0:
                 filter_stats["rejected_before_entry"] += 1
                 filter_stats["rejected_other"] += 1
-                tqdm.write(f"   ⚠️ {symbol}: некорректный position_size, пропускаем")
+                if BACKTEST_VERBOSE:
+                    tqdm.write(f"   ⚠️ {symbol}: некорректный position_size, пропускаем")
                 continue
         
-            if actual_risk > expected_risk * 1.05:
+            if actual_risk > expected_risk * 1.02:
                 filter_stats["rejected_before_entry"] += 1
                 filter_stats["rejected_price_condition"] += 1
-                tqdm.write(
-                    f"   ⚠️ {symbol}: risk violation guard skip (actual={actual_risk:.6f}, expected={expected_risk:.6f})"
-                )
+                if BACKTEST_VERBOSE:
+                    tqdm.write(
+                        f"   ⚠️ {symbol}: risk violation guard skip (actual={actual_risk:.6f}, expected={expected_risk:.6f})"
+                    )
                 continue
 
             entry_key = (symbol, entry_data.get('timestamp', current_time))
             if entry_key in executed_entries:
                 filter_stats["rejected_before_entry"] += 1
                 filter_stats["rejected_other"] += 1
-                tqdm.write(f"   ⚠️ {symbol}: duplicate entry blocked at {entry_key[1]}")
+                if BACKTEST_VERBOSE:
+                    tqdm.write(f"   ⚠️ {symbol}: duplicate entry blocked at {entry_key[1]}")
                 continue
             executed_entries.add(entry_key)
 
@@ -2953,15 +2949,8 @@ def run_backtest():
             entry_data["capital_before_entry"] = float(np.clip(capital, -SAFE_FLOAT_LIMIT, SAFE_FLOAT_LIMIT))
             entry_data["trade_risk"] = trade_risk
 
-            print(f"Dynamic threshold={confidence_threshold:.2f}, p_profit={p_profit:.2f}, volume={(features['volume'] if features['volume'] is not None else 0):.2f}, pos_size={position_size:.2f}")
-
             pos = entry_data.copy()
             pos.setdefault('entry_type', 'momentum' if pos.get('entry_mode') == 'momentum' else 'zone')
-
-            current_entry_time = pos.get('timestamp')
-            if previous_entry_time is not None and current_entry_time == previous_entry_time:
-                print(f"WARNING: duplicate signal entry_time detected ({current_entry_time})")
-            previous_entry_time = current_entry_time
 
             # служебные поля
             pos["symbol"] = symbol
@@ -3001,16 +2990,17 @@ def run_backtest():
 
             rr_text = f"{entry_data['rr']:.2f}" if entry_data['rr'] is not None else "STRUCT"
 
-            tqdm.write(
-                f"   📈 {symbol} {entry_data['direction']} | "
-                f"Вход: {entry_data['entry']:.4f} | "
-                f"TP: {entry_data['tp'] if entry_data['tp'] is not None else 'TRAIL'} | "
-                f"SL: {entry_data['sl']:.4f} | "
-                f"RR: {rr_text} | "
-                f"Тип: {entry_data['signal_type']} | "
-                f"Режим: {entry_data['regime']} | "
-                f"ADX: {entry_data['adx']:.1f}"
-            )
+            if BACKTEST_VERBOSE:
+                tqdm.write(
+                    f"   📈 {symbol} {entry_data['direction']} | "
+                    f"Вход: {entry_data['entry']:.4f} | "
+                    f"TP: {entry_data['tp'] if entry_data['tp'] is not None else 'TRAIL'} | "
+                    f"SL: {entry_data['sl']:.4f} | "
+                    f"RR: {rr_text} | "
+                    f"Тип: {entry_data['signal_type']} | "
+                    f"Режим: {entry_data['regime']} | "
+                    f"ADX: {entry_data['adx']:.1f}"
+                )
 
     pbar.close()
 
@@ -3046,17 +3036,17 @@ def run_backtest():
         bos_range
     )
 
-    print("\n📈 FILTER CONFIG STATS")
     for key, value in strategy.stats.items():
         filter_stats[key] += value
-    for key, value in sorted(filter_stats.items()):
-        print(f"{key}: {value}")
 
-    print("\n🧪 REJECTION BREAKDOWN (before entry)")
-    for key in rejection_breakdown_keys:
-        print(f"{key}: {filter_stats.get(key, 0)}")
+    if BACKTEST_VERBOSE:
+        print("\n📈 FILTER CONFIG STATS")
+        for key, value in sorted(filter_stats.items()):
+            print(f"{key}: {value}")
 
-    return trades_df, equity_df, dict(filter_stats)
+        print("\n🧪 REJECTION BREAKDOWN (before entry)")
+        for key in rejection_breakdown_keys:
+            print(f"{key}: {filter_stats.get(key, 0)}")
 
 class BosAnalytics:
 
