@@ -78,6 +78,7 @@ MIN_STOP_PCT = 0.001
 MAX_TRADE_BARS = 200
 EPSILON_INITIAL_RISK = 1e-9
 MAX_EXCURSION_R = 50.0
+MAX_PNL_TO_RISK_MULTIPLIER = float(os.getenv("MAX_PNL_TO_RISK_MULTIPLIER", "100.0"))
 
 os.makedirs(os.path.dirname(PROGRESS_FILE), exist_ok=True)
 
@@ -514,6 +515,70 @@ def calculate_remaining_risk_budget(signal_positions, leader):
         current_signal_risk += pos_size * pos_stop_distance
 
     return float(np.clip(risk_budget - current_signal_risk, 0.0, SAFE_FLOAT_LIMIT))
+
+def calculate_open_risk_exposure(open_positions):
+    """Aggregate current risk-at-stop for all open positions."""
+    exposure = 0.0
+    for pos in open_positions:
+        pos_size = float(np.nan_to_num(pos.get("position_size", 0.0), nan=0.0))
+        pos_stop_distance = float(np.nan_to_num(abs(pos.get("entry", 0.0) - pos.get("sl", 0.0)), nan=0.0))
+        exposure += pos_size * pos_stop_distance
+    return float(np.clip(exposure, 0.0, SAFE_FLOAT_LIMIT))
+
+
+def calculate_available_capital(current_capital, open_positions):
+    """Conservative free-capital estimate = current capital - open risk exposure."""
+    safe_capital = float(np.clip(np.nan_to_num(current_capital, nan=0.0), 0.0, SAFE_FLOAT_LIMIT))
+    open_risk = calculate_open_risk_exposure(open_positions)
+    return float(np.clip(safe_capital - open_risk, 0.0, SAFE_FLOAT_LIMIT))
+
+
+def cap_extreme_trade_pnl(pos, pnl_value):
+    """Cap anomalous PnL so a single trade cannot explode stats (e.g. > 100x risk)."""
+    raw_pnl = sanitize_pnl(pnl_value)
+    trade_risk = float(np.nan_to_num(pos.get("trade_risk", 0.0), nan=0.0))
+    if trade_risk <= 0:
+        trade_risk = float(
+            np.clip(
+                np.nan_to_num(pos.get("position_size", 0.0), nan=0.0)
+                * np.nan_to_num(pos.get("initial_risk", 0.0), nan=0.0),
+                0.0,
+                SAFE_FLOAT_LIMIT,
+            )
+        )
+
+    max_abs_pnl = float(np.clip(trade_risk * MAX_PNL_TO_RISK_MULTIPLIER, 0.0, MAX_PNL_CLIP))
+    if max_abs_pnl <= 0:
+        return raw_pnl, False
+
+    clipped = float(np.clip(raw_pnl, -max_abs_pnl, max_abs_pnl))
+    if abs(raw_pnl - clipped) > 1e-12:
+        flags = list(pos.get("anomaly_flags", []))
+        flags.append("extreme_pnl_capped")
+        pos["anomaly_flags"] = flags
+        pos["extreme_pnl_raw"] = raw_pnl
+        pos["extreme_pnl_cap"] = max_abs_pnl
+        return clipped, True
+    return clipped, False
+
+
+def validate_excursions_for_close(pos):
+    """Validate MFE/MAE bounds to prevent invalid R-side analytics artifacts."""
+    mfe = float(np.nan_to_num(pos.get("mfe_r", np.nan), nan=np.nan))
+    mae = float(np.nan_to_num(pos.get("mae_r", np.nan), nan=np.nan))
+    valid = (
+        np.isfinite(mfe)
+        and np.isfinite(mae)
+        and mfe >= 0.0
+        and mae >= 0.0
+        and mfe <= MAX_EXCURSION_R
+        and mae <= MAX_EXCURSION_R
+    )
+    if not valid:
+        _mark_invalid_excursion(pos)
+        flags = list(pos.get("anomaly_flags", []))
+        flags.append("invalid_mfe_mae")
+        pos["anomaly_flags"] = flags
 
 
 def is_mtf_confirmation_valid(df_mtf, candle_time, direction):
@@ -1238,19 +1303,35 @@ def _detect_anomalies(trades_df: pd.DataFrame) -> List[AnomalyRecord]:
     anomalies: List[AnomalyRecord] = []
     if len(trades_df) == 0:
         return anomalies
+
     for idx, row in trades_df.iterrows():
         symbol = str(row.get("symbol", "UNKNOWN"))
         entry = float(np.nan_to_num(row.get("entry", 0.0), nan=0.0))
         exit_price = float(np.nan_to_num(row.get("exit_price", 0.0), nan=0.0))
         pnl = float(np.nan_to_num(row.get("pnl", 0.0), nan=0.0))
         exit_reason = row.get("exit_reason")
+        trade_risk = float(np.nan_to_num(row.get("trade_risk", 0.0), nan=0.0))
 
+        # --- missing exit reason ---
         if pd.isna(exit_reason) or exit_reason in (None, ""):
             anomalies.append(AnomalyRecord(int(idx), symbol, entry, exit_price, pnl, "missing_exit_reason"))
-        if bool(row.get("mfe_valid", True)) is False or bool(row.get("mae_valid", True)) is False:
+
+        # --- invalid MFE/MAE ---
+        if not bool(row.get("mfe_valid", True)) or not bool(row.get("mae_valid", True)):
             anomalies.append(AnomalyRecord(int(idx), symbol, entry, exit_price, pnl, "invalid_mfe_mae"))
-        if abs(pnl) > (MAX_PNL_CLIP * 0.9):
+
+        # --- extreme pnl flags ---
+        anomaly_flags = row.get("anomaly_flags", [])
+        if not isinstance(anomaly_flags, list):
+            anomaly_flags = []  # безопасно на случай float, NaN и других типов
+
+        if "extreme_pnl_capped" in anomaly_flags:
+            anomalies.append(AnomalyRecord(int(idx), symbol, entry, exit_price, pnl, "extreme_pnl_capped"))
+        elif trade_risk > 0 and abs(pnl) > (trade_risk * MAX_PNL_TO_RISK_MULTIPLIER):
             anomalies.append(AnomalyRecord(int(idx), symbol, entry, exit_price, pnl, "extreme_pnl"))
+        elif abs(pnl) > (MAX_PNL_CLIP * 0.9):
+            anomalies.append(AnomalyRecord(int(idx), symbol, entry, exit_price, pnl, "extreme_pnl"))
+
     return anomalies
 
 def _run_backtest_audit(trades_df, equity_df):
@@ -2712,6 +2793,9 @@ def run_backtest():
                 pnl += float(np.nan_to_num(pos.get('realized_pnl', 0.0), nan=0.0))
                 r_result += float(np.nan_to_num(pos.get('realized_r', 0.0), nan=0.0))
 
+                validate_excursions_for_close(pos)
+                pnl, _ = cap_extreme_trade_pnl(pos, pnl)
+
                 capital = float(np.clip(capital + pnl, 0.0, SAFE_FLOAT_LIMIT))
                 _close_position_atomically(
                     pos=pos,
@@ -2732,6 +2816,7 @@ def run_backtest():
                     "trade_risk": float(np.nan_to_num(pos.get("trade_risk", 0.0), nan=0.0)),
                     "capital_before_entry": float(np.nan_to_num(pos.get("capital_before_entry", capital), nan=capital)),
                     "risk_percent": float(np.nan_to_num(pos.get("risk_percent", RISK_PER_TRADE), nan=RISK_PER_TRADE)),
+                    "allocated_capital": float(np.nan_to_num(pos.get("allocated_capital", 0.0), nan=0.0)),
                 })
 
                 if pos["signal_type"] == "BOS":
@@ -2964,7 +3049,10 @@ def run_backtest():
                 continue
 
             remaining_risk_budget = calculate_remaining_risk_budget(signal_positions, leader)
-            if remaining_risk_budget <= 0:
+            available_capital = calculate_available_capital(capital, open_positions)
+            available_risk_budget = float(np.clip(available_capital * _normalize_risk_fraction(RISK_PER_TRADE, default=0.20), 0.0, SAFE_FLOAT_LIMIT))
+            effective_scale_risk_budget = float(np.clip(min(remaining_risk_budget, available_risk_budget), 0.0, SAFE_FLOAT_LIMIT))
+            if effective_scale_risk_budget <= 0:
                 continue
 
             addon_pos = _build_scale_position(leader, row, current_time, next_scale_level)
@@ -2972,9 +3060,12 @@ def run_backtest():
             if addon_stop_distance <= 0:
                 continue
 
-            max_addon_size = float(np.clip(remaining_risk_budget / addon_stop_distance, 0.0, SAFE_FLOAT_LIMIT))
+            max_addon_size = float(np.clip(effective_scale_risk_budget / addon_stop_distance, 0.0, SAFE_FLOAT_LIMIT))
             addon_pos['position_size'] = float(np.clip(min(addon_pos.get('position_size', 0.0), max_addon_size), 0.0, SAFE_FLOAT_LIMIT))
-            addon_pos['trade_risk'] = float(np.clip(addon_pos['position_size'] * addon_stop_distance, 0.0, SAFE_FLOAT_LIMIT))
+            addon_pos['trade_risk'] = float(np.clip(addon_pos['position_size'] * addon_stop_distance, 0.0, effective_scale_risk_budget))
+            addon_pos['capital_before_entry'] = float(np.clip(available_capital, 0.0, SAFE_FLOAT_LIMIT))
+            addon_pos['risk_percent'] = float(_normalize_risk_fraction(RISK_PER_TRADE, default=0.20))
+            addon_pos['allocated_capital'] = float(np.clip(addon_pos['trade_risk'], 0.0, available_capital))
             if addon_pos['position_size'] <= 0:
                 continue
 
@@ -3162,11 +3253,15 @@ def run_backtest():
                     tqdm.write(f"   ⚠️ {symbol}: некорректный entry_price, пропускаем")
                 continue
 
-            position_size = calculate_position_size(entry_data, capital, risk_factor=RISK_PER_TRADE)
-            max_position = float(np.clip((capital * max(MAX_NOTIONAL_LEVERAGE, 0.0)) / max(entry_price, 1e-9), 0.0, SAFE_FLOAT_LIMIT))
+            available_capital = calculate_available_capital(capital, open_positions)
+            if available_capital <= 0:
+                continue
+
+            position_size = calculate_position_size(entry_data, available_capital, risk_factor=RISK_PER_TRADE)
+            max_position = float(np.clip((available_capital * max(MAX_NOTIONAL_LEVERAGE, 0.0)) / max(entry_price, 1e-9), 0.0, SAFE_FLOAT_LIMIT))
             position_size = float(np.clip(np.nan_to_num(position_size, nan=0.0, posinf=0.0, neginf=0.0), 0.0, max_position))
             stop_distance = float(np.clip(np.nan_to_num(abs(entry_data.get('entry', entry_price) - entry_data.get('sl', entry_price)), nan=0.0), 0.0, SAFE_FLOAT_LIMIT))
-            expected_risk = float(np.clip(capital * _normalize_risk_fraction(RISK_PER_TRADE, default=0.20), 0.0, SAFE_FLOAT_LIMIT))
+            expected_risk = float(np.clip(available_capital * _normalize_risk_fraction(RISK_PER_TRADE, default=0.20), 0.0, SAFE_FLOAT_LIMIT))
             actual_risk = float(np.clip(position_size * stop_distance, 0.0, SAFE_FLOAT_LIMIT))
             trade_risk = float(np.clip(np.nan_to_num(entry_data.get("risk_amount", expected_risk), nan=0.0), 0.0, expected_risk))
 
@@ -3196,9 +3291,10 @@ def run_backtest():
             executed_entries.add(entry_key)
 
             entry_data["position_size"] = position_size
-            entry_data["capital_before_entry"] = float(np.clip(capital, 0.0, SAFE_FLOAT_LIMIT))
+            entry_data["capital_before_entry"] = float(np.clip(available_capital, 0.0, SAFE_FLOAT_LIMIT))
             entry_data["trade_risk"] = trade_risk
             entry_data["risk_percent"] = float(_normalize_risk_fraction(RISK_PER_TRADE, default=0.20))
+            entry_data["allocated_capital"] = float(np.clip(trade_risk, 0.0, available_capital))
 
             pos = entry_data.copy()
             pos.setdefault('entry_type', 'momentum' if pos.get('entry_mode') == 'momentum' else 'zone')

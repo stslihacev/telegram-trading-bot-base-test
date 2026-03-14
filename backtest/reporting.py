@@ -147,6 +147,35 @@ def save_plots(trades_df: pd.DataFrame, equity_df: pd.DataFrame, out_dir: Path, 
         p = out_dir / f"{prefix}adx_vs_pnl.png"
         fig.tight_layout(); fig.savefig(p); plt.close(fig); paths.append(p)
 
+    if {"capital_before_entry", "allocated_capital"}.issubset(df.columns):
+        alloc = df.copy().reset_index(drop=True)
+        alloc["capital_before_entry"] = _safe_series(alloc, "capital_before_entry", 0.0)
+        alloc["allocated_capital"] = _safe_series(alloc, "allocated_capital", 0.0)
+        alloc["alloc_pct"] = np.where(
+            alloc["capital_before_entry"] > 0,
+            (alloc["allocated_capital"] / alloc["capital_before_entry"]) * 100.0,
+            0.0,
+        )
+        alloc["trade_no"] = np.arange(1, len(alloc) + 1)
+
+        fig, ax = plt.subplots(figsize=(10, 4))
+        ax.plot(alloc["trade_no"], alloc["capital_before_entry"], label="Capital before trade", color="tab:blue")
+        ax.bar(alloc["trade_no"], alloc["allocated_capital"], alpha=0.35, label="Allocated capital", color="tab:orange")
+        ax.set_title("Per-trade Capital Allocation")
+        ax.set_xlabel("Trade #")
+        ax.set_ylabel("Capital")
+        ax.legend(loc="best")
+        p = out_dir / f"{prefix}capital_allocation.png"
+        fig.tight_layout(); fig.savefig(p); plt.close(fig); paths.append(p)
+
+        fig, ax = plt.subplots(figsize=(10, 4))
+        ax.plot(alloc["trade_no"], alloc["alloc_pct"], color="tab:green")
+        ax.set_title("Capital Allocation % per Trade")
+        ax.set_xlabel("Trade #")
+        ax.set_ylabel("Allocation %")
+        p = out_dir / f"{prefix}capital_allocation_pct.png"
+        fig.tight_layout(); fig.savefig(p); plt.close(fig); paths.append(p)
+
     return paths
 
 
