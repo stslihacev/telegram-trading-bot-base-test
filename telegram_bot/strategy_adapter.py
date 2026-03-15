@@ -18,7 +18,7 @@ from core.config import MIN_SIGNAL_RR
 class BacktestStrategyAdapter:
     """Использует backtest.BosStrategy.generate_signal напрямую на последней свече."""
 
-    def __init__(self, min_rr: float = 0.8):
+    def __init__(self, min_rr: float = MIN_SIGNAL_RR):
         self.strategy = BosStrategy()
         self.diagnostics = Diagnostics()
         self.min_rr = float(min_rr)
@@ -57,6 +57,13 @@ class BacktestStrategyAdapter:
             "high": np.where(df["swing_high"].values)[0],
         }
 
+    @staticmethod
+    def _calculate_rr(entry: float, tp: float, sl: float) -> float:
+        denominator = entry - sl
+        if denominator == 0:
+            return 0.0
+        return float((tp - entry) / denominator)
+
     def generate_signal(self, symbol: str, candles: pd.DataFrame) -> dict | None:
         """Генерирует сигнал в telegram-формате только если backtest-логика даёт сделку."""
         if candles is None or len(candles) < 220:
@@ -81,7 +88,10 @@ class BacktestStrategyAdapter:
             if not signal:
                 return None
 
-            rr = float(signal.get("rr", 0.0) or 0.0)
+            entry = float(signal["entry"])
+            tp = float(signal["tp"])
+            sl = float(signal["sl"])
+            rr = self._calculate_rr(entry=entry, tp=tp, sl=sl)
             if rr < self.min_rr:
                 return None
 
@@ -92,9 +102,9 @@ class BacktestStrategyAdapter:
                 "symbol": signal["symbol"],
                 "signal_type": signal["signal_type"],
                 "direction": signal["direction"],
-                "entry": float(signal["entry"]),
-                "tp": float(signal["tp"]),
-                "sl": float(signal["sl"]),
+                "entry": entry,
+                "tp": tp,
+                "sl": sl,
                 "rr": rr,
                 "confidence": float(signal.get("confidence", 0.0)),
                 "regime": signal.get("regime", "N/A"),

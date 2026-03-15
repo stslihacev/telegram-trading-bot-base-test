@@ -2563,3 +2563,52 @@ Traceback (most recent call last):
   File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_updater.py", line 805, in stop
     raise RuntimeError("This Updater is not running!")
 RuntimeError: This Updater is not running!
+2026-03-15 22:54:10,888 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-15 22:54:24,720 - crypto_bot - ERROR - Критическая ошибка основного цикла: Cannot close a running event loop
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1006, in __run
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 995, in __run
+    loop.run_until_complete(self.initialize())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 630, in run_until_complete
+    self._check_running()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 589, in _check_running
+    raise RuntimeError('This event loop is already running')
+RuntimeError: This event loop is already running
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1017, in __run
+    loop.run_until_complete(self.shutdown())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 630, in run_until_complete
+    self._check_running()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 589, in _check_running
+    raise RuntimeError('This event loop is already running')
+RuntimeError: This event loop is already running
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 22, in <module>
+    asyncio.run(main())
+  File "D:\Python 3.11\Lib\asyncio\runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "D:\Python 3.11\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 18, in main
+    await bot.application.run_polling(drop_pending_updates=True)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 818, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1022, in __run
+    loop.close()
+  File "D:\Python 3.11\Lib\asyncio\proactor_events.py", line 686, in close
+    raise RuntimeError("Cannot close a running event loop")
+RuntimeError: Cannot close a running event loop

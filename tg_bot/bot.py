@@ -9,7 +9,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 from telegram.ext import Application, CallbackQueryHandler, CommandHandler
 
-from core.config import SCAN_INTERVAL
+from core.config import MIN_SIGNAL_RR, SCAN_INTERVAL
 from core.state_manager import state_manager
 from execution.signal_dispatcher import SignalDispatcher
 from scanner.market_scanner import MarketScanner
@@ -47,7 +47,7 @@ class TelegramTradingBot:
             pool_timeout=30.0         # 30 секунд на ожидание в пуле
         )
 
-        self.min_rr = float(os.getenv("MIN_SIGNAL_RR", "0.8"))
+        self.min_rr = float(os.getenv("MIN_SIGNAL_RR", str(MIN_SIGNAL_RR)))
         self.scan_interval_min = int(os.getenv("SCAN_INTERVAL_MIN", "5"))
 
         self.dispatcher = SignalDispatcher(dedup_minutes=60)
@@ -70,8 +70,9 @@ class TelegramTradingBot:
     async def get_manual_signal(self, pair: str) -> dict | None:
         market_symbol = f"{pair.replace('USDT', '/USDT')}:USDT"
         df = await self.scanner._fetch_ohlcv(market_symbol)
-        if df is None:
+        if df is None or len(df) < 2:
             return None
+        df = df.iloc[:-1].copy()
         return self.scanner.strategy.generate_signal(pair, df)
 
     def get_open_positions(self) -> list[dict]:
@@ -102,30 +103,35 @@ class TelegramTradingBot:
 
     async def scan_loop(self, interval_sec: int | None = None) -> None:
         if interval_sec is None:
-            interval_sec = max(60, self.scan_interval_min * 60)
+            interval_sec = SCAN_INTERVAL
+        interval_sec = max(60, int(interval_sec))
         while True:
             try:
                 signals = await self.scanner.scan()
                 for signal in signals:
                     await self.broadcast_if_needed(signal)
-            except Exception as exc:
-                logger.exception(f"Ошибка scan_loop: {exc}")
+            except Exception:
+                logger.error("scan_loop error", exc_info=True)
+                await asyncio.sleep(10)
+                continue
             await asyncio.sleep(interval_sec)
 
     async def run_polling(self) -> None:
-        self.application = Application.builder()\
-            .token(self.token)\
-            .request(self.request)\
-            .build()
-        self._register_handlers(self.application)
-        logger.info("✅ Telegram бот инициализирован")
-        await self.application.initialize()
-        await self.application.start()
-        await self.application.updater.start_polling(drop_pending_updates=True)
-        await asyncio.Event().wait()
+        if self.application is None:
+            await self.initialize()
+        await self.application.run_polling(drop_pending_updates=True)
 
     async def stop(self) -> None:
         if self.application:
             await self.application.updater.stop()
             await self.application.stop()
             await self.application.shutdown()
+            
+    async def initialize(self) -> None:
+        """Создаёт Telegram Application в текущем asyncio loop."""
+        self.application = Application.builder()\
+            .token(self.token)\
+            .request(self.request)\
+            .build()
+        self._register_handlers(self.application)
+        logger.info("✅ Telegram бот инициализирован")
