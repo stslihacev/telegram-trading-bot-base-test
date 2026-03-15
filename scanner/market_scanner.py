@@ -8,7 +8,7 @@ import pandas as pd
 
 from core.config import MIN_CHANGE_24H, MIN_VOLUME_24H, TOP_N
 from scanner.volume_scanner import get_top_usdt_pairs
-from tg_bot.adapters.strategy_adapter import LiveStrategyAdapter
+from telegram_bot.strategy_adapter import BacktestStrategyAdapter
 from utils.logger import logger
 
 
@@ -18,7 +18,7 @@ class MarketScanner:
     def __init__(self, timeframe: str = "1h", candle_limit: int = 220):
         self.timeframe = timeframe
         self.candle_limit = candle_limit
-        self.strategy = LiveStrategyAdapter()
+        self.strategy = BacktestStrategyAdapter()
         self.exchange = ccxt.bybit({"enableRateLimit": True, "options": {"defaultType": "swap"}})
 
     async def _fetch_ohlcv(self, symbol: str) -> pd.DataFrame | None:
