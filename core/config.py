@@ -19,6 +19,7 @@ MIN_VOLUME_24H = 20_000_000     # минимальный объём за 24ч
 MIN_CHANGE_24H = 2.0           # минимальное движение за 24ч (%)
 VOLATILITY_THRESHOLD = 0.009    # ATR >= 2% от цены
 MIN_RR = 1.2                         # соотношение риск/прибыль
+MIN_SIGNAL_RR = MIN_RR               # минимальный RR live-сигнала
 MAX_RR = 3.0   # максимальное допустимое соотношение риск/прибыль
 # ===== РЕЖИМ ДЛЯ ТЕСТА =====
 MODE_FILTER = "ALL" # OPTIONS: "ALL", "TREND", "RANGE"

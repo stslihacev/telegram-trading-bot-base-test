@@ -12,7 +12,7 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
     service = context.application.bot_data["service"]
     service.ensure_user(update.effective_chat.id)
     await update.message.reply_text(
-        "👋 Добро пожаловать в live SMC/BOS/Sweep бот!\nВыберите режим:",
+        "👋 Добро пожаловать!\nВыберите действие из меню:",
         reply_markup=main_menu(),
     )
 

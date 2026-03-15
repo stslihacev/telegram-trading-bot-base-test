@@ -1,14 +1,14 @@
-"""Inline-клавиатуры для выбора режима."""
+"""Inline-клавиатуры Telegram-бота."""
 
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
 
 def main_menu() -> InlineKeyboardMarkup:
-    """Главное меню с переключением режимов."""
     return InlineKeyboardMarkup(
         [
-            [InlineKeyboardButton("🤖 Авто режим", callback_data="mode:auto")],
-            [InlineKeyboardButton("🎯 Ручной режим", callback_data="mode:manual")],
-            [InlineKeyboardButton("ℹ️ Статус", callback_data="status")],
+            [InlineKeyboardButton("📊 Последние сигналы", callback_data="menu:last_signals")],
+            [InlineKeyboardButton("⚙️ Настройки", callback_data="menu:settings")],
+            [InlineKeyboardButton("📈 Статистика", callback_data="menu:stats")],
+            [InlineKeyboardButton("❓ Помощь", callback_data="menu:help")],
         ]
     )

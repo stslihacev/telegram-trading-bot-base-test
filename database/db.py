@@ -96,3 +96,29 @@ def get_signal_stats(symbol=None):
         "losses": losses,
         "winrate": winrate
     }
+
+def get_latest_signals(limit=5):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        SELECT symbol, signal_type, entry, tp, sl, timestamp
+        FROM signals
+        ORDER BY id DESC
+        LIMIT ?
+        """,
+        (int(limit),),
+    )
+    rows = cursor.fetchall()
+    conn.close()
+    return [
+        {
+            "symbol": r[0],
+            "signal_type": r[1],
+            "entry": r[2],
+            "tp": r[3],
+            "sl": r[4],
+            "timestamp": r[5],
+        }
+        for r in rows
+    ]
