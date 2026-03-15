@@ -66,16 +66,10 @@ def run_walk_forward() -> None:
     try:
         for train_start, train_end, test_start, test_end in windows:
             print(f"\n--- Train: {train_start} → {train_end} | Test: {test_start} → {test_end} ---")
-            backtest_engine.START_DATE = train_start
+            # Запускаем строго на test-окне, чтобы избежать пересечения train/test.
+            backtest_engine.START_DATE = test_start
             backtest_engine.END_DATE = test_end
-            trades_df, _, _ = run_backtest()
-
-            if not trades_df.empty and "exit_time" in trades_df.columns:
-                exit_time = pd.to_datetime(trades_df["exit_time"], errors="coerce")
-                mask = (exit_time >= pd.Timestamp(test_start)) & (exit_time <= pd.Timestamp(test_end))
-                test_trades = trades_df.loc[mask]
-            else:
-                test_trades = trades_df.iloc[0:0]
+            test_trades, _, _ = run_backtest()
 
             print_metrics(compute_metrics(test_trades))
 

@@ -68,6 +68,7 @@ def run_fixed_position_test() -> None:
     )
 
     original_execute_signal = backtest_engine._execute_signal
+    original_remaining_risk_budget = backtest_engine.calculate_remaining_risk_budget
 
     def fixed_size_execute_signal(entry_data, available_capital, risk_percent=None, log_prefix="ENTRY"):
         safe_available = float(
@@ -113,10 +114,12 @@ def run_fixed_position_test() -> None:
         return payload, safe_available
 
     backtest_engine._execute_signal = fixed_size_execute_signal
+    backtest_engine.calculate_remaining_risk_budget = lambda signal_positions, leader, capital: 0.0
     try:
         trades_df, equity_df, _ = run_backtest()
     finally:
         backtest_engine._execute_signal = original_execute_signal
+        backtest_engine.calculate_remaining_risk_budget = original_remaining_risk_budget
 
     print_metrics(compute_metrics(trades_df, equity_df))
 

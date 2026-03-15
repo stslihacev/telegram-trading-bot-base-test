@@ -53,6 +53,9 @@ INITIAL_CAPITAL = 100
 COMMISSION = 0.0005
 FEE_RATE = 0.001
 SLIPPAGE_RATE = 0.0004
+MEMECOIN_FEE_RATE = float(os.getenv("MEMECOIN_FEE_RATE", "0.0025"))
+MEMECOIN_SLIPPAGE_RATE = float(os.getenv("MEMECOIN_SLIPPAGE_RATE", "0.0015"))
+LOW_LIQUIDITY_VOLUME_15M = float(os.getenv("LOW_LIQUIDITY_VOLUME_15M", "150000"))
 STEP = 60 * 60
 PROGRESS_FILE = "backtest/progress.txt"
 MAX_OPEN_TRADES = 3  # максимум одновременных позиций
@@ -60,6 +63,9 @@ SAFE_FLOAT_LIMIT = 1e12
 MAX_RR_ALLOWED = 1000.0
 MIN_RR_ALLOWED = -1000.0
 MAX_POSITION_PERCENT = 0.10
+MAX_POSITION_UNITS = float(os.getenv("MAX_POSITION_UNITS", "1000000"))
+MAX_POSITION_VALUE = float(os.getenv("MAX_POSITION_VALUE", "1000000"))
+MIN_RISK_USDT = float(os.getenv("MIN_RISK_USDT", "0.01"))
 MIN_VOLUME_24H = float(os.getenv("MIN_VOLUME_24H", "20000000"))
 MIN_RR = float(os.getenv("MIN_RR", str(MIN_RR)))
 SAFE_FLOAT_LIMIT = float(os.getenv("SAFE_FLOAT_LIMIT", str(SAFE_FLOAT_LIMIT)))
@@ -77,6 +83,30 @@ MIN_STOP_PCT = 0.001
 MAX_TRADE_BARS = 200
 EPSILON_INITIAL_RISK = 1e-9
 MAX_EXCURSION_R = 50.0
+
+def _is_memecoin_symbol(symbol: str) -> bool:
+    upper_symbol = str(symbol or "").upper()
+    memecoin_tags = ("PEPE", "DOGE", "SHIB", "BONK", "WIF", "FART", "PUMP", "MEME", "PENGU")
+    return any(tag in upper_symbol for tag in memecoin_tags)
+
+
+def _execution_cost_params(symbol: str = "", avg_volume_15m: float | None = None) -> tuple[float, float]:
+    fee_rate = FEE_RATE
+    slippage_rate = SLIPPAGE_RATE
+    if _is_memecoin_symbol(symbol):
+        fee_rate = max(fee_rate, MEMECOIN_FEE_RATE)
+        slippage_rate = max(slippage_rate, MEMECOIN_SLIPPAGE_RATE)
+    if avg_volume_15m is not None and float(np.nan_to_num(avg_volume_15m, nan=0.0)) < LOW_LIQUIDITY_VOLUME_15M:
+        slippage_rate = max(slippage_rate, MEMECOIN_SLIPPAGE_RATE)
+    return float(fee_rate), float(slippage_rate)
+
+
+def _is_liquidity_sufficient(symbol: str, avg_volume_15m: float | None) -> bool:
+    if avg_volume_15m is None:
+        return True
+    safe_volume = float(np.nan_to_num(avg_volume_15m, nan=0.0))
+    min_required = LOW_LIQUIDITY_VOLUME_15M * (0.5 if _is_memecoin_symbol(symbol) else 1.0)
+    return safe_volume >= min_required
 
 os.makedirs(os.path.dirname(PROGRESS_FILE), exist_ok=True)
 
@@ -379,22 +409,24 @@ def calculate_rr(entry, tp, sl, direction):
         return 0
     return rr
 
-def calculate_trade_pnl_r(position_size, entry_price, exit_price, direction, initial_risk):
+def calculate_trade_pnl_r(position_size, entry_price, exit_price, direction, initial_risk, symbol="", avg_volume_15m=None):
     """Strict PnL model with fees/slippage, no artificial pnl clipping."""
     safe_pos_size = float(np.clip(np.nan_to_num(position_size, nan=0.0, posinf=0.0, neginf=0.0), 0.0, SAFE_FLOAT_LIMIT))
     safe_entry = float(np.clip(np.nan_to_num(entry_price, nan=0.0, posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT), 0.0, SAFE_FLOAT_LIMIT))
     safe_exit = float(np.clip(np.nan_to_num(exit_price, nan=safe_entry, posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT), 0.0, SAFE_FLOAT_LIMIT))
 
+    fee_rate, slippage_rate = _execution_cost_params(symbol=symbol, avg_volume_15m=avg_volume_15m)
+
     if direction == 'LONG':
-        entry_exec = safe_entry * (1.0 + SLIPPAGE_RATE)
-        exit_exec = safe_exit * (1.0 - SLIPPAGE_RATE)
+        entry_exec = safe_entry * (1.0 + slippage_rate)
+        exit_exec = safe_exit * (1.0 - slippage_rate)
         gross_pnl = safe_pos_size * (exit_exec - entry_exec)
     else:
-        entry_exec = safe_entry * (1.0 - SLIPPAGE_RATE)
-        exit_exec = safe_exit * (1.0 + SLIPPAGE_RATE)
+        entry_exec = safe_entry * (1.0 - slippage_rate)
+        exit_exec = safe_exit * (1.0 + slippage_rate)
         gross_pnl = safe_pos_size * (entry_exec - exit_exec)
 
-    fees = safe_pos_size * (entry_exec + exit_exec) * FEE_RATE
+    fees = safe_pos_size * (entry_exec + exit_exec) * fee_rate
     pnl = float(np.nan_to_num(gross_pnl - fees, nan=0.0, posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT))
 
     safe_risk = float(np.nan_to_num(initial_risk, nan=0.0, posinf=0.0, neginf=0.0))
@@ -601,7 +633,6 @@ def _execute_signal(entry_data, available_capital, risk_percent=RISK_PER_TRADE, 
     requested_units = float(np.clip(min(requested_units, max_units_by_notional), 0.0, SAFE_FLOAT_LIMIT))
 
     # --- Ограничение на max position ---
-    MAX_POSITION_UNITS = 1_000_000
     requested_units = min(requested_units, MAX_POSITION_UNITS)
 
     trade_risk = float(np.clip(requested_units * stop_distance, 0.0, SAFE_FLOAT_LIMIT))
@@ -739,8 +770,6 @@ def calculate_risk_based_position_size(entry_data, capital, risk_factor=0.01):
     MIN_STOP_DISTANCE = entry_price * 0.001
     MAX_LEVERAGE = 10
     MAX_NOTIONAL_MULTIPLIER = 50
-    MAX_POSITION_UNITS = 1_000_000  # ограничение на единицы
-    MAX_POSITION_VALUE = 1_000_000
 
     risk_amount = safe_capital * risk_per_trade
     effective_stop_distance = max(abs(entry_price - stop_price), MIN_STOP_DISTANCE)
@@ -1895,8 +1924,24 @@ class BosStrategy(Strategy):
         swing_high_indices = swing_indices["high"]
         swing_low_indices = swing_indices["low"]
 
-        if i + 1 >= len(close_arr):
-            return self._reject("rejected_other", symbol, i, "no next candle for entry")
+        required_arrays = {
+            "open": open_arr,
+            "close": close_arr,
+            "high": high_arr,
+            "low": low_arr,
+            "ema50": ema50_arr,
+            "ema200": ema200_arr,
+            "adx": adx_arr,
+            "atr": atr_arr,
+            "atr_mean_50": atr_mean_50_arr,
+            "plus_di": plus_di_arr,
+            "minus_di": minus_di_arr,
+        }
+        for arr_name, arr_values in required_arrays.items():
+            if i >= len(arr_values):
+                return self._reject("rejected_other", symbol, i, f"index out of bounds for {arr_name}: i={i}, len={len(arr_values)}")
+            if arr_name in {"open", "close"} and (i + 1) >= len(arr_values):
+                return self._reject("rejected_other", symbol, i, f"no next candle for {arr_name}: i+1={i+1}, len={len(arr_values)}")
     
         entry_next_open = open_arr[i + 1]
         current_close = close_arr[i]
@@ -2368,14 +2413,14 @@ class BosStrategy(Strategy):
         # Проверка, что уровни имеют смысл
         if direction == "LONG":
             if sl >= entry_next_open:
-                return self._reject("rejected_price_condition", symbol, i, f"LONG validation failed: sl {sl:.4f} >= entry_next_open {entry:.4f}")
+                return self._reject("rejected_price_condition", symbol, i, f"LONG validation failed: sl {sl:.4f} >= entry_next_open {entry_next_open:.4f}")
             if tp is not None and tp <= entry_next_open:
-                return self._reject("rejected_price_condition", symbol, i, f"LONG validation failed: tp {tp:.4f} <= entry_next_open {entry:.4f}")
+                return self._reject("rejected_price_condition", symbol, i, f"LONG validation failed: tp {tp:.4f} <= entry_next_open {entry_next_open:.4f}")
         else:
             if sl <= entry_next_open:
-                return self._reject("rejected_price_condition", symbol, i, f"SHORT validation failed: sl {sl:.4f} <= entry_next_open {entry:.4f}")
+                return self._reject("rejected_price_condition", symbol, i, f"SHORT validation failed: sl {sl:.4f} <= entry_next_open {entry_next_open:.4f}")
             if tp is not None and tp >= entry_next_open:
-                return self._reject("rejected_price_condition", symbol, i, f"SHORT validation failed: tp {tp:.4f} >= entry_next_open {entry:.4f}")
+                return self._reject("rejected_price_condition", symbol, i, f"SHORT validation failed: tp {tp:.4f} >= entry_next_open {entry_next_open:.4f}")
 
         # ===== РАСЧЁТ RR + финальная коррекция SL =====
 
@@ -2460,7 +2505,7 @@ class BosStrategy(Strategy):
             'entry_level': entry_level,
             'zone_size_at_entry': round(zone_size_at_entry, 6) if zone_size_at_entry is not None else None,
             'tp': float(np.nan_to_num(round(tp, 4), nan=0.0, posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT)) if tp is not None else None,
-            'sl': float(np.nan_to_num(round(sl, 4), nan=entry_next_open, posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT)) if sl is not None else float(entry),
+            'sl': float(np.nan_to_num(round(sl, 4), nan=entry_next_open, posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT)) if sl is not None else float(entry_next_open),
             'rr': round(rr, 2) if rr is not None else None,
             'regime': regime,
             'adx': round(adx, 4),
@@ -2762,7 +2807,7 @@ def run_backtest(return_trades: bool = False):
 
     def _build_scale_position(base_pos, row, current_time, scale_level):
         addon = base_pos.copy()
-        entry_price = float(np.clip(np.nan_to_num(row['close'], nan=base_pos.get('entry', 0.0), posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT), -SAFE_FLOAT_LIMIT, SAFE_FLOAT_LIMIT))
+        entry_price = float(np.clip(np.nan_to_num(row.get('open', row.get('close', base_pos.get('entry', 0.0))), nan=base_pos.get('entry', 0.0), posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT), -SAFE_FLOAT_LIMIT, SAFE_FLOAT_LIMIT))
         addon['entry'] = entry_price
         addon['timestamp'] = current_time
         addon['tp'] = base_pos.get('tp')
@@ -2780,9 +2825,9 @@ def run_backtest(return_trades: bool = False):
                 addon['sl'] = addon['entry'] + stop_distance
         
         stop_distance = abs(addon['entry'] - addon['sl'])
-        addon['initial_risk'] = addon['position_size'] * stop_distance
-        addon['rr'] = sanitize_r(calculate_rr(addon['entry'], addon['tp'], addon['sl'], addon.get('direction')))
         addon['position_size'] = float(base_pos.get('position_size', 0.0))
+        addon['initial_risk'] = max(addon['position_size'] * stop_distance, MIN_RISK_USDT if stop_distance > 0 else 0.0)
+        addon['rr'] = sanitize_r(calculate_rr(addon['entry'], addon['tp'], addon['sl'], addon.get('direction')))
         addon['bars_alive'] = 0
         addon['max_r'] = sanitize_r(0)
         addon['mfe_r'] = 0.0
@@ -2878,7 +2923,9 @@ def run_backtest(return_trades: bool = False):
                         entry_price=pos.get('entry', 0.0),
                         exit_price=exit_price,
                         direction=pos.get('direction'),
-                        initial_risk=pos.get('initial_risk', 0.0)
+                        initial_risk=pos.get('initial_risk', 0.0),
+                        symbol=pos.get('symbol', ''),
+                        avg_volume_15m=avg_vol_15m_cache.get(pos.get('symbol', ''), None)
                     )
                     released_allocated_capital = float(np.clip(np.nan_to_num(pos.get('allocated_capital', 0.0), nan=0.0) * fill_ratio, 0.0, SAFE_FLOAT_LIMIT))
                     capital = float(np.clip(capital + pnl_partial, 0.0, SAFE_FLOAT_LIMIT))
@@ -2899,7 +2946,9 @@ def run_backtest(return_trades: bool = False):
                     entry_price=pos.get('entry', 0.0),
                     exit_price=exit_price,
                     direction=pos.get('direction'),
-                    initial_risk=pos.get('initial_risk', 0.0)
+                    initial_risk=pos.get('initial_risk', 0.0),
+                    symbol=pos.get('symbol', ''),
+                    avg_volume_15m=avg_vol_15m_cache.get(pos.get('symbol', ''), None)
                 )
                 pnl += float(np.nan_to_num(pos.get('realized_pnl', 0.0), nan=0.0))
                 r_result += float(np.nan_to_num(pos.get('realized_r', 0.0), nan=0.0))
@@ -3355,6 +3404,15 @@ def run_backtest(return_trades: bool = False):
 
             avg_vol = avg_vol_15m_cache.get(symbol, features["volume"])
 
+            if not _is_liquidity_sufficient(symbol, avg_vol):
+                filter_stats["rejected_before_entry"] += 1
+                filter_stats["rejected_other"] += 1
+                if BACKTEST_VERBOSE:
+                    tqdm.write(
+                        f"[REJECT:rejected_other] {symbol} idx={idx_in_df} :: low liquidity avg_15m={float(np.nan_to_num(avg_vol, nan=0.0)):.2f}"
+                    )
+                continue
+
             confidence_threshold = engine.compute_dynamic_threshold(adx=features["adx"], coin=coin)
 
             if features["volume"] is not None and avg_vol is not None:
@@ -3453,7 +3511,6 @@ def run_backtest(return_trades: bool = False):
             initial_risk_correct = pos["position_size"] * stop_distance
 
             # Защита от микро-риска
-            MIN_RISK_USDT = 0.01
             if initial_risk_correct < MIN_RISK_USDT and initial_risk_correct > 0:
                 pos["position_size"] = MIN_RISK_USDT / stop_distance
                 initial_risk_correct = MIN_RISK_USDT

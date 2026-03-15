@@ -49,67 +49,45 @@ def run_random_entry_test(seed: int = 42) -> None:
     original = backtest_engine.BosStrategy.generate_signal
 
     def randomize(self, symbol, i, df, arrays, swing_points, diagnostics, df_4h=None):
-        signal = original(self, symbol, i, df, arrays, swing_points, diagnostics, df_4h)
-        if signal is None:
+        if i < 100:
+            return None
+        if i + 1 >= len(arrays.get("open", [])):
+            return None
+        
+        # Генерируем случайный вход независимо от edge стратегии,
+        # иначе получаем selection bias и завышенный PF.
+        if rng.random() > 0.08:
             return None
 
-        # Более безопасное копирование с проверкой типа
-        randomized = {}
-        for k, v in signal.items():
-            # Пытаемся преобразовать числовые значения в float, если это возможно
-            if isinstance(v, (int, float, str)) and k in ['entry', 'sl', 'tp', 'rr']:
-                try:
-                    randomized[k] = float(v)
-                except (ValueError, TypeError):
-                    randomized[k] = v
-            else:
-                randomized[k] = v
-
-        # Проверяем наличие обязательных полей
-        if randomized.get("entry") is None:
-            print(f"⚠️ Пропуск сигнала: отсутствует entry для {symbol}")
+        entry_next_open = float(np.nan_to_num(arrays["open"][i + 1], nan=0.0))
+        atr = float(np.nan_to_num(arrays.get("atr", [0.0])[i], nan=0.0)) if i < len(arrays.get("atr", [])) else 0.0
+        if entry_next_open <= 0:
             return None
 
+        stop_distance = max(entry_next_open * 0.005, atr * 0.5, 1e-6)
         direction = rng.choice(["LONG", "SHORT"])
-        
-        # В тесте у нас нет доступа к open_arr, поэтому используем небольшое смещение
-        open_next = arrays["open"][i + 1] if i + 1 < len(arrays["open"]) else randomized["entry"]
-        
-        entry_price = randomized["entry"]  # цена на момент сигнала (для анализа)
-        entry_next_open = open_next  # цена для реального входа
-
-        sl = randomized.get("sl", entry_price)
-
-        # Безопасное получение initial_risk
-        if sl is None:
-            initial_risk = 0.0
-        else:
-            initial_risk = abs(entry_price - sl)
-
-        if initial_risk <= 1e-9:
-            return None
-
-        # Безопасное получение RR
-        rr = randomized.get("rr")
-        if rr is None or not np.isfinite(rr) or rr == 0:
-            rr_abs = 2.0
-        else:
-            rr_abs = abs(rr)
-
-        # Обновляем поля в зависимости от направления
-        randomized["direction"] = direction
+        rr_abs = 1.0
 
         if direction == "LONG":
-            randomized["sl"] = entry_next_open - initial_risk
-            randomized["tp"] = None if randomized.get("tp") is None else entry_next_open + initial_risk * rr_abs
+            sl = entry_next_open - stop_distance
+            tp = entry_next_open + stop_distance * rr_abs
         else:
-            randomized["sl"] = entry_next_open + initial_risk
-            randomized["tp"] = None if randomized.get("tp") is None else entry_next_open - initial_risk * rr_abs
+            sl = entry_next_open + stop_distance
+            tp = entry_next_open - stop_distance * rr_abs
 
-        randomized["initial_risk"] = abs(entry_next_open - float(randomized["sl"]))
-        randomized["entry"] = entry_next_open  
-        
-        return randomized
+        return {
+            "symbol": symbol,
+            "direction": direction,
+            "entry": entry_next_open,
+            "sl": float(sl),
+            "tp": float(tp),
+            "rr": rr_abs,
+            "signal_type": "RANDOM",
+            "regime": "RANDOM",
+            "confidence": 5.0,
+            "timestamp": df.index[i],
+            "initial_risk": abs(entry_next_open - sl),
+        }
 
     backtest_engine.BosStrategy.generate_signal = randomize
     try:
