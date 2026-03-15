@@ -1,0 +1,576 @@
+ (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
+diff --git a/telegram_bot/bot/dispatcher.py b/telegram_bot/bot/dispatcher.py
+index 3ae0aab62627b6e02091d3aa81e3a91bf110a28a..dba090bf0d87a2b7953008fbc3760bb2e29aa0ec 100644
+--- a/telegram_bot/bot/dispatcher.py
++++ b/telegram_bot/bot/dispatcher.py
+@@ -1,56 +1,125 @@
+ import asyncio
++from contextlib import suppress
+ 
++import aiohttp
++from aiohttp import ClientConnectorDNSError
++from aiohttp.resolver import AsyncResolver
+ from aiogram import Bot, Dispatcher
++from aiogram.client.session.aiohttp import AiohttpSession
+ from apscheduler.schedulers.asyncio import AsyncIOScheduler
+ 
+ from telegram_bot.bot.handlers import inject, router
+-from telegram_bot.config.settings import settings
++from telegram_bot.config.settings import check_telegram_connection, settings
+ from telegram_bot.core.signal_generator import SignalGenerator
+ from telegram_bot.database.db_manager import DBManager
++from telegram_bot.utils.connection_monitor import ConnectionMonitor
+ from telegram_bot.utils.logger import setup_logger
+ 
+ 
+ async def start_bot() -> None:
+     logger = setup_logger(settings.log_path)
+     db = DBManager(settings.sqlite_path)
+     db.init_db()
+ 
+-    bot = Bot(token=settings.bot_token)
++    timeout = aiohttp.ClientTimeout(
++        total=None,
++        connect=settings.telegram_connect_timeout,
++        sock_read=settings.telegram_read_timeout,
++    )
++    connector = aiohttp.TCPConnector(resolver=AsyncResolver(nameservers=list(settings.telegram_dns_servers)))
++    session = AiohttpSession(timeout=timeout, connector=connector)
++    bot = Bot(token=settings.bot_token, session=session)
++
+     generator = SignalGenerator(db=db, bot=bot, logger=logger)
+     inject(db, generator)
+ 
+     dp = Dispatcher()
+     dp.include_router(router)
+ 
+     scheduler = AsyncIOScheduler()
+ 
+-    async def safe_scan_job():
++    async def safe_scan_job() -> None:
+         try:
+             created = await generator.scan_market()
+             logger.info("Scheduled scan completed: %s signals", created)
+         except Exception as exc:  # noqa: BLE001
+             logger.exception("Scheduled scan failed, auto-retry on next tick: %s", exc)
+ 
+     app_settings = db.get_settings()
+ 
+     def _interval_to_minutes(value: str) -> int:
+-        value = (value or '5m').strip().lower()
+-        if value.endswith('h'):
++        value = (value or "5m").strip().lower()
++        if value.endswith("h"):
+             return max(1, int(value[:-1]) * 60)
+-        if value.endswith('m'):
++        if value.endswith("m"):
+             return max(1, int(value[:-1]))
+         return max(1, int(value))
+ 
+-    if settings.scan_enabled and app_settings.mode == "auto":
+-        scheduler.add_job(safe_scan_job, "interval", minutes=_interval_to_minutes(app_settings.scan_interval))
+-        scheduler.start()
++    should_stop = asyncio.Event()
++
++    async def _on_disconnect() -> None:
++        logger.error("Connection monitor detected Telegram connection loss. Triggering restart.")
++        should_stop.set()
++        await bot.session.close()
++
++    monitor = ConnectionMonitor(bot=bot, logger=logger, on_disconnect=_on_disconnect)
++    monitor_task: asyncio.Task | None = None
+ 
+     try:
+-        await dp.start_polling(bot)
++        if not await check_telegram_connection():
++            raise aiohttp.ClientConnectionError("Telegram health-check failed")
++
++        if settings.scan_enabled and app_settings.mode == "auto":
++            scheduler.add_job(safe_scan_job, "interval", minutes=_interval_to_minutes(app_settings.scan_interval))
++            scheduler.start()
++
++        monitor_task = asyncio.create_task(monitor.run())
++
++        polling_task = asyncio.create_task(dp.start_polling(bot))
++        stop_task = asyncio.create_task(should_stop.wait())
++        done, pending = await asyncio.wait({polling_task, stop_task}, return_when=asyncio.FIRST_COMPLETED)
++
++        for task in pending:
++            task.cancel()
++            with suppress(asyncio.CancelledError):
++                await task
++
++        for task in done:
++            exc = task.exception()
++            if exc:
++                raise exc
+     finally:
+-        scheduler.shutdown(wait=False)
++        if monitor_task:
++            monitor.stop()
++            monitor_task.cancel()
++            with suppress(asyncio.CancelledError):
++                await monitor_task
++        if scheduler.running:
++            scheduler.shutdown(wait=False)
++        db.persist_open_signals_snapshot()
+         await bot.session.close()
+ 
+ 
++async def run_with_retry() -> None:
++    logger = setup_logger(settings.log_path)
++    for attempt in range(1, settings.telegram_retry_attempts + 1):
++        try:
++            logger.info("Starting bot (attempt %s/%s)", attempt, settings.telegram_retry_attempts)
++            await start_bot()
++            return
++        except ClientConnectorDNSError as exc:
++            delay = settings.telegram_retry_base_delay * (2 ** (attempt - 1))
++            logger.exception("Telegram DNS error: %s. Retrying in %.1fs", exc, delay)
++            if attempt >= settings.telegram_retry_attempts:
++                raise
++            await asyncio.sleep(delay)
++        except aiohttp.ClientError as exc:
++            delay = settings.telegram_retry_base_delay * (2 ** (attempt - 1))
++            logger.exception("Telegram client error: %s. Retrying in %.1fs", exc, delay)
++            if attempt >= settings.telegram_retry_attempts:
++                raise
++            await asyncio.sleep(delay)
++
++
+ def run() -> None:
+-    asyncio.run(start_bot())
+\ No newline at end of file
++    asyncio.run(run_with_retry())
+diff --git a/telegram_bot/config/settings.py b/telegram_bot/config/settings.py
+index c95c60252cf4ba5b7e9223010248ee02143323d9..f2102c72ab9a7f46baf5e3213b9bdbafa803933d 100644
+--- a/telegram_bot/config/settings.py
++++ b/telegram_bot/config/settings.py
+@@ -1,27 +1,73 @@
+-from dataclasses import dataclass
+ import os
++import re
++from dataclasses import dataclass
++
++import aiohttp
+ from dotenv import load_dotenv
+ 
+ from telegram_bot.config.constants import DEFAULT_SCAN_INTERVAL_MIN, DEFAULT_TOP_COINS
+ 
+ load_dotenv()
+ 
+ 
+ @dataclass(slots=True)
+ class Settings:
+     bot_token: str = os.getenv("BOT_TOKEN", "")
+     admin_chat_id: str = os.getenv("ADMIN_CHAT_ID", "")
+ 
+     bybit_api_key: str = os.getenv("BYBIT_API_KEY", "")
+     bybit_api_secret: str = os.getenv("BYBIT_API_SECRET", "")
+     bybit_testnet: bool = os.getenv("BYBIT_TESTNET", "true").lower() == "true"
+ 
+     sqlite_path: str = os.getenv("SQLITE_PATH", "telegram_bot/bot.db")
+     log_path: str = os.getenv("LOG_PATH", "telegram_bot/bot.log")
+ 
+     scan_enabled: bool = os.getenv("SCAN_ENABLED", "true").lower() == "true"
+     scan_interval_min: int = int(os.getenv("SCAN_INTERVAL_MIN", str(DEFAULT_SCAN_INTERVAL_MIN)))
+     top_coins: int = int(os.getenv("TOP_COINS", str(DEFAULT_TOP_COINS)))
+ 
++    telegram_connect_timeout: int = int(os.getenv("TELEGRAM_CONNECT_TIMEOUT", "30"))
++    telegram_read_timeout: int = int(os.getenv("TELEGRAM_READ_TIMEOUT", "60"))
++    telegram_retry_attempts: int = int(os.getenv("TELEGRAM_RETRY_ATTEMPTS", "6"))
++    telegram_retry_base_delay: float = float(os.getenv("TELEGRAM_RETRY_BASE_DELAY", "1.5"))
++    telegram_healthcheck_url: str = os.getenv("TELEGRAM_HEALTHCHECK_URL", "https://api.telegram.org")
++    telegram_dns_servers: tuple[str, ...] = tuple(
++        dns.strip()
++        for dns in os.getenv("TELEGRAM_DNS_SERVERS", "8.8.8.8,1.1.1.1").split(",")
++        if dns.strip()
++    )
++
++    bybit_retry_attempts: int = int(os.getenv("BYBIT_RETRY_ATTEMPTS", "5"))
++    bybit_retry_base_delay: float = float(os.getenv("BYBIT_RETRY_BASE_DELAY", "1.0"))
++    bybit_rate_limit_cooldown: float = float(os.getenv("BYBIT_RATE_LIMIT_COOLDOWN", "2.0"))
++    bybit_cache_ttl_sec: int = int(os.getenv("BYBIT_CACHE_TTL_SEC", "30"))
++
++    def validate(self) -> None:
++        required = {
++            "BOT_TOKEN": self.bot_token,
++            "ADMIN_CHAT_ID": self.admin_chat_id,
++        }
++        missing = [key for key, value in required.items() if not value]
++        if missing:
++            raise ValueError(f"Missing required env vars: {', '.join(missing)}")
++
++        if not re.fullmatch(r"\d{7,12}:[A-Za-z0-9_-]{20,}", self.bot_token):
++            raise ValueError("BOT_TOKEN format is invalid")
++
++
++async def check_telegram_connection(
++    timeout_connect: int | None = None,
++    timeout_read: int | None = None,
++) -> bool:
++    timeout = aiohttp.ClientTimeout(
++        total=None,
++        connect=timeout_connect or settings.telegram_connect_timeout,
++        sock_read=timeout_read or settings.telegram_read_timeout,
++    )
++    async with aiohttp.ClientSession(timeout=timeout) as session:
++        async with session.get(settings.telegram_healthcheck_url) as response:
++            return response.status < 500
++
+ 
+-settings = Settings()
+\ No newline at end of file
++settings = Settings()
++settings.validate()
+diff --git a/telegram_bot/core/signal_generator.py b/telegram_bot/core/signal_generator.py
+index 9267b9489912f4f64218bb55f7f3eb9259c98dcb..9c20c8faca3c7e5163c73ad309b18914caaa0b75 100644
+--- a/telegram_bot/core/signal_generator.py
++++ b/telegram_bot/core/signal_generator.py
+@@ -1,44 +1,44 @@
+ from aiogram import Bot
+ 
+ from telegram_bot.bot.keyboards import signal_actions_inline
+ from telegram_bot.bot.messages import format_signal_message
+ from telegram_bot.config.settings import settings
+ from telegram_bot.core.risk_manager import calculate_position
+ from telegram_bot.core.strategy import BosStrategy
+ from telegram_bot.data.exchange_client import BybitExchangeClient
+ from telegram_bot.data.market_data import MarketDataService
+ from telegram_bot.database.db_manager import DBManager
+ 
+ 
+ class SignalGenerator:
+     def __init__(self, db: DBManager, bot: Bot, logger):
+         self.db = db
+         self.bot = bot
+         self.logger = logger
+         self.strategy = BosStrategy()
+-        self.client = BybitExchangeClient()
++        self.client = BybitExchangeClient(logger=logger)
+         self.market_data = MarketDataService(self.client)
+ 
+     async def scan_market(self) -> int:
+         created = 0
+         app_settings = self.db.get_settings()
+         timeframe = app_settings.scan_interval
+         symbols = self.client.top_symbols_by_volume(app_settings.top_coins)
+         for symbol in symbols:
+             try:
+                 df = self.market_data.candles(symbol, timeframe=timeframe)
+                 signal = self.strategy.generate_signal(symbol=symbol.replace("/", ""), timeframe=timeframe, df=df)
+                 if not signal:
+                     continue
+                 if signal.confidence < app_settings.min_confidence or signal.rr < app_settings.min_rr:
+                     continue
+                 if self.db.signal_exists_open(signal.symbol, signal.direction):
+                     continue
+ 
+                 _position = calculate_position(10_000, signal.entry, signal.sl)
+                 payload = signal.__dict__.copy()
+                 payload["symbol"] = signal.symbol
+                 self.db.add_signal(payload)
+ 
+                 await self.bot.send_message(
+                     chat_id=settings.admin_chat_id,
+diff --git a/telegram_bot/data/exchange_client.py b/telegram_bot/data/exchange_client.py
+index fd104bd7589e69a0cc2f3d741580923ee04fddc2..968df3fdd6b2b233f2e7e457b602a6ed8a769db8 100644
+--- a/telegram_bot/data/exchange_client.py
++++ b/telegram_bot/data/exchange_client.py
+@@ -1,33 +1,106 @@
++import random
++import time
++from collections.abc import Callable
++from datetime import UTC, datetime, timedelta
++from typing import Any
++
+ import ccxt
+ 
+ from telegram_bot.config.settings import settings
+ 
+ 
+ class BybitExchangeClient:
+-    def __init__(self) -> None:
++    def __init__(self, logger=None) -> None:
++        self.logger = logger
+         self.exchange = ccxt.bybit(
+             {
+                 "apiKey": settings.bybit_api_key,
+                 "secret": settings.bybit_api_secret,
+                 "enableRateLimit": True,
+                 "options": {"defaultType": "swap"},
+             }
+         )
+         if settings.bybit_testnet:
+             self.exchange.set_sandbox_mode(True)
+ 
++        self._cache: dict[str, tuple[datetime, Any]] = {}
++        self._validate_credentials_on_start()
++
++    def _log(self, level: str, msg: str, *args) -> None:
++        if self.logger:
++            getattr(self.logger, level)(msg, *args)
++
++    def _validate_credentials_on_start(self) -> None:
++        if not settings.bybit_api_key or not settings.bybit_api_secret:
++            self._log("warning", "Bybit API credentials are not set. Private endpoints will be unavailable.")
++            return
++        try:
++            self._retry_call("fetch_balance", self.exchange.fetch_balance)
++            self._log("info", "Bybit API credentials validated successfully")
++        except Exception as exc:  # noqa: BLE001
++            raise ValueError(f"Invalid or unusable Bybit API credentials: {exc}") from exc
++
++    def _with_cache(self, key: str, fetcher: Callable[[], Any], ttl_sec: int | None = None) -> Any:
++        ttl = ttl_sec or settings.bybit_cache_ttl_sec
++        now = datetime.now(UTC)
++        cached = self._cache.get(key)
++        if cached and now - cached[0] < timedelta(seconds=ttl):
++            return cached[1]
++        value = fetcher()
++        self._cache[key] = (now, value)
++        return value
++
++    def _retry_call(self, operation_name: str, fn: Callable[..., Any], *args, **kwargs) -> Any:
++        for attempt in range(1, settings.bybit_retry_attempts + 1):
++            try:
++                return fn(*args, **kwargs)
++            except (ccxt.RateLimitExceeded, ccxt.DDoSProtection) as exc:
++                sleep_time = settings.bybit_rate_limit_cooldown * attempt
++                self._log("warning", "%s rate-limited (%s). Sleep %.2fs", operation_name, exc, sleep_time)
++                time.sleep(sleep_time)
++            except (ccxt.NetworkError, ccxt.ExchangeNotAvailable, ccxt.RequestTimeout) as exc:
++                delay = settings.bybit_retry_base_delay * (2 ** (attempt - 1)) + random.uniform(0, 0.2)
++                self._log(
++                    "warning",
++                    "%s network error (%s), attempt %s/%s. Retry in %.2fs",
++                    operation_name,
++                    exc,
++                    attempt,
++                    settings.bybit_retry_attempts,
++                    delay,
++                )
++                if attempt >= settings.bybit_retry_attempts:
++                    raise
++                time.sleep(delay)
++            except ccxt.AuthenticationError:
++                raise
++        raise RuntimeError(f"{operation_name} failed after retries")
++
+     def load_markets(self):
+-        return self.exchange.load_markets()
++        return self._with_cache("markets", lambda: self._retry_call("load_markets", self.exchange.load_markets), ttl_sec=300)
+ 
+     def fetch_ohlcv(self, symbol: str, timeframe: str = "15m", limit: int = 300):
+-        return self.exchange.fetch_ohlcv(symbol=symbol, timeframe=timeframe, limit=limit)
++        cache_key = f"ohlcv:{symbol}:{timeframe}:{limit}"
++        return self._with_cache(
++            cache_key,
++            lambda: self._retry_call(
++                "fetch_ohlcv",
++                self.exchange.fetch_ohlcv,
++                symbol=symbol,
++                timeframe=timeframe,
++                limit=limit,
++            ),
++        )
+ 
+     def top_symbols_by_volume(self, top_n: int = 20) -> list[str]:
+-        tickers = self.exchange.fetch_tickers()
++        tickers = self._with_cache(
++            "tickers",
++            lambda: self._retry_call("fetch_tickers", self.exchange.fetch_tickers),
++        )
+         usdt = [
+             (k, v.get("quoteVolume", 0) or 0)
+             for k, v in tickers.items()
+             if "/USDT" in k and ":USDT" not in k
+         ]
+         usdt.sort(key=lambda x: x[1], reverse=True)
+-        return [symbol for symbol, _ in usdt[:top_n]]
+\ No newline at end of file
++        return [symbol for symbol, _ in usdt[:top_n]]
+diff --git a/telegram_bot/database/db_manager.py b/telegram_bot/database/db_manager.py
+index cb286375f21bf395dc5e4143b69f2478a2d82ffb..ef62ab767a0590f3cce6ec7e0c3b7f09352bfc30 100644
+--- a/telegram_bot/database/db_manager.py
++++ b/telegram_bot/database/db_manager.py
+@@ -1,61 +1,101 @@
++import json
++from dataclasses import asdict, dataclass
++from datetime import datetime
++
+ from sqlalchemy import create_engine, select
+ from sqlalchemy.orm import Session, sessionmaker
+ 
+ from telegram_bot.database.models import Base, BotSettingsModel, SignalModel
+ 
+ 
++@dataclass(slots=True)
++class OpenSignalSnapshot:
++    id: int
++    symbol: str
++    direction: str
++    entry: float
++    tp: float
++    sl: float
++    confidence: int
++    rr: float
++
++
+ class DBManager:
+     def __init__(self, db_url: str):
+         self.engine = create_engine(f"sqlite:///{db_url}", echo=False, future=True)
+         self.SessionLocal = sessionmaker(self.engine, expire_on_commit=False)
+ 
+     def init_db(self) -> None:
+         Base.metadata.create_all(self.engine)
+         with self.SessionLocal() as session:
+             if session.scalar(select(BotSettingsModel).limit(1)) is None:
+                 session.add(BotSettingsModel())
+                 session.commit()
+ 
+     def get_settings(self) -> BotSettingsModel:
+         with self.SessionLocal() as session:
+             return session.scalar(select(BotSettingsModel).limit(1))
+ 
+     def save_settings(self, **updates) -> BotSettingsModel:
+         with self.SessionLocal() as session:
+             settings = session.scalar(select(BotSettingsModel).limit(1))
+             for key, value in updates.items():
+                 if hasattr(settings, key):
+                     setattr(settings, key, value)
+             session.commit()
+             session.refresh(settings)
+             return settings
+ 
+     def signal_exists_open(self, symbol: str, direction: str) -> bool:
+         with self.SessionLocal() as session:
+             stmt = select(SignalModel).where(
+                 SignalModel.symbol == symbol,
+                 SignalModel.direction == direction,
+                 SignalModel.is_open.is_(True),
+             )
+             return session.scalar(stmt) is not None
+ 
+     def add_signal(self, payload: dict) -> SignalModel:
+         with self.SessionLocal() as session:
+             model = SignalModel(**payload)
+             session.add(model)
+             session.commit()
+             session.refresh(model)
+             return model
+ 
+     def list_open_signals(self) -> list[SignalModel]:
+         with self.SessionLocal() as session:
+             return list(session.scalars(select(SignalModel).where(SignalModel.is_open.is_(True))))
+ 
++    def persist_open_signals_snapshot(self, path: str = "telegram_bot/open_signals_snapshot.json") -> None:
++        signals = self.list_open_signals()
++        payload = {
++            "saved_at": datetime.utcnow().isoformat() + "Z",
++            "count": len(signals),
++            "signals": [
++                asdict(
++                    OpenSignalSnapshot(
++                        id=s.id,
++                        symbol=s.symbol,
++                        direction=s.direction,
++                        entry=s.entry,
++                        tp=s.tp,
++                        sl=s.sl,
++                        confidence=s.confidence,
++                        rr=s.rr,
++                    )
++                )
++                for s in signals
++            ],
++        }
++        with open(path, "w", encoding="utf-8") as fh:
++            json.dump(payload, fh, ensure_ascii=False, indent=2)
++
+     def stats(self) -> dict:
+         with Session(self.engine) as session:
+             all_signals = list(session.scalars(select(SignalModel)))
+         total = len(all_signals)
+         wins = len([s for s in all_signals if s.rr >= 1.0])
+         losses = max(total - wins, 0)
+         winrate = (wins / total * 100) if total else 0.0
+-        return {"total": total, "wins": wins, "losses": losses, "winrate": winrate}
+\ No newline at end of file
++        return {"total": total, "wins": wins, "losses": losses, "winrate": winrate}
+diff --git a/telegram_bot/requirements.txt b/telegram_bot/requirements.txt
+index 557efbb1a280a3c7515802a04d3aa7da386da5ac..3bf1edb757b5971267aa906de5e4ef11273112f6 100644
+--- a/telegram_bot/requirements.txt
++++ b/telegram_bot/requirements.txt
+@@ -1,9 +1,12 @@
+ ccxt>=4.0.0
+ aiogram>=3.0.0
++aiohttp[speedups]>=3.8.0
++aiodns>=3.0.0
++backoff>=2.2.0
+ pandas>=2.0.0
+ numpy>=1.24.0
+ python-dotenv>=1.0.0
+ sqlalchemy>=2.0.0
+ apscheduler>=3.10.0
+ aiofiles>=23.0.0
+-matplotlib>=3.5.0
+\ No newline at end of file
++matplotlib>=3.5.0
+diff --git a/telegram_bot/utils/connection_monitor.py b/telegram_bot/utils/connection_monitor.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..a78ecd0bf14ed2eaa0137d65c289ed6ef573fecf
+--- /dev/null
++++ b/telegram_bot/utils/connection_monitor.py
+@@ -0,0 +1,48 @@
++import asyncio
++from collections.abc import Awaitable, Callable
++
++from aiogram import Bot
++
++from telegram_bot.config.settings import check_telegram_connection, settings
++
++
++class ConnectionMonitor:
++    def __init__(
++        self,
++        bot: Bot,
++        logger,
++        on_disconnect: Callable[[], Awaitable[None]],
++        interval_sec: int = 30,
++    ) -> None:
++        self.bot = bot
++        self.logger = logger
++        self.on_disconnect = on_disconnect
++        self.interval_sec = interval_sec
++        self._stopped = asyncio.Event()
++
++    async def _notify_admin(self, message: str) -> None:
++        if not settings.admin_chat_id:
++            return
++        try:
++            await self.bot.send_message(chat_id=settings.admin_chat_id, text=message)
++        except Exception as exc:  # noqa: BLE001
++            self.logger.exception("Failed to notify admin about connection issue: %s", exc)
++
++    async def run(self) -> None:
++        while not self._stopped.is_set():
++            try:
++                ok = await check_telegram_connection()
++                if not ok:
++                    self.logger.error("Telegram health-check returned non-OK status")
++                    await self._notify_admin("⚠️ Потеряно соединение с Telegram API. Перезапускаю polling.")
++                    await self.on_disconnect()
++                    return
++            except Exception as exc:  # noqa: BLE001
++                self.logger.exception("Connection monitor failed: %s", exc)
++                await self._notify_admin("⚠️ Ошибка проверки соединения с Telegram API. Перезапускаю polling.")
++                await self.on_disconnect()
++                return
++            await asyncio.sleep(self.interval_sec)
++
++    def stop(self) -> None:
++        self._stopped.set()
+ 
+EOF
+)
