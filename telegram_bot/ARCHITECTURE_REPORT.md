@@ -3,46 +3,47 @@
 ## Обновления runtime Telegram-бота
 
 ### 1) Исправлен конфликт asyncio event loop
-- Telegram `Application` теперь инициализируется в том же loop, где запускается scanner.
-- В `main.py` используется единый сценарий запуска:
-  - `await bot.initialize()`
-  - `asyncio.create_task(bot.scan_loop())`
-  - `await bot.application.run_polling(...)`
-- Это устраняет `RuntimeError: Event is bound to a different event loop`.
+- `run_polling()` переведён в синхронный режим, как требует `python-telegram-bot v20`.
+- Polling больше не `await`-ится и теперь сам управляет своим loop.
+- В `main.py` запуск упрощён до:
+  - `bot.initialize()`
+  - `bot.run_polling()`
 
-### 2) Убран lookahead bias в scanner
-- Перед передачей данных в стратегию последняя (незакрытая) свеча удаляется:
+### 2) Убран deprecated updater usage
+- В `stop()` удалён вызов `await self.application.updater.stop()`.
+- Оставлен корректный lifecycle для v20:
+  - `await self.application.stop()`
+  - `await self.application.shutdown()`
+
+### 3) Улучшена надёжность scanner loop
+- Сканирование обёрнуто в таймаут:
+  - `signals = await asyncio.wait_for(self.scanner.scan(), timeout=120)`
+- Добавлена отдельная обработка timeout с логированием и backoff.
+- Добавлена безопасная обработка `asyncio.CancelledError` для корректного завершения фоновой задачи.
+
+### 4) Улучшен выбор символов
+- Удалён нестабильный срез `exchange.symbols[:30]`.
+- Для списка пар используется детерминированный volume-отбор:
+  - `symbols = get_top_usdt_pairs(limit=30)`
+
+### 5) Гарантировано использование только закрытых свечей
+- Расчёты сигналов используют только закрытые свечи:
   - `df = df.iloc[:-1].copy()`
-- Применено как в цикле scanner, так и при ручной проверке сигнала.
+- Это сохранено как в сканере рынка, так и в ручном сигнале бота.
 
-### 3) Исправлен расчёт RR и фильтр по MIN_SIGNAL_RR
-- В адаптере RR считается строго по формуле:
-  - `RR = (TP - ENTRY) / (ENTRY - SL)`
-- Если `RR < MIN_SIGNAL_RR`, сигнал отбрасывается.
-
-### 4) Добавлен scanner rate limit
-- Интервал `scan_loop` жёстко ограничен снизу:
+### 6) Добавлена защита scan interval
+- Интервал сканирования теперь принудительно ограничен:
   - `interval_sec = max(60, int(interval_sec))`
-- Даже при неверной конфигурации частота сканирования не превышает 1 раз в минуту.
+Для дефолтного интервала учитывается конфигурация в минутах:
+  - `interval_sec = max(SCAN_INTERVAL, self.scan_interval_min * 60)`
 
-### 5) Добавлена error protection в scan_loop
-- Каждая итерация сканирования защищена `try/except`.
-- При ошибке пишется:
-  - `logger.error("scan_loop error", exc_info=True)`
-- После ошибки применяется backoff:
-  - `await asyncio.sleep(10)`
-
-### 6) Адаптер стратегии синхронизирован с backtest-логикой
-- Для live используются те же ключевые компоненты backtest-пайплайна:
-  - `add_indicators(...)`
-  - `BosStrategy.generate_signal(...)`
-  - `build_4h_frame(...)` (HTF-контекст)
-- Scanner оставлен на `1h`, что соответствует базовому таймфрейму стратегии.
-- BOS-логика и фильтры идут через тот же класс `BosStrategy`, что и в backtest.
+### 7) Корректный запуск polling + scanner
+- Scanner запускается в `post_init` Telegram Application как фоновая задача.
+- Scanner корректно отменяется в `post_shutdown`.
+- Это обеспечивает непрерывное сканирование без конфликтов loop и без ручного управления задачами в `main.py`.
 
 ## Итог
-- Runtime Telegram-бота работает в едином asyncio loop.
-- Сигналы очищены от lookahead bias.
-- RR считается по заданной формуле и фильтруется по `MIN_SIGNAL_RR`.
-- Scanner ограничен по частоте и устойчив к исключениям.
-- Live-сигналы максимально выровнены относительно backtest-пайплайна.
+- Бот запускается без конфликтов event loop.
+- Polling работает в корректной модели `python-telegram-bot v20`.
+- Scanner работает непрерывно, с таймаутом и безопасным восстановлением.
+- Сигналы формируются по закрытым свечам и ближе к backtest-поведению.

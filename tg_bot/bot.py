@@ -13,6 +13,7 @@ from core.config import MIN_SIGNAL_RR, SCAN_INTERVAL
 from core.state_manager import state_manager
 from execution.signal_dispatcher import SignalDispatcher
 from scanner.market_scanner import MarketScanner
+from scanner.volume_scanner import get_top_usdt_pairs
 from tg_bot.handlers.callbacks import callback_handler
 from tg_bot.handlers.commands import (
     help_command,
@@ -54,6 +55,7 @@ class TelegramTradingBot:
         self.scanner = MarketScanner()
         self.scanner.strategy.min_rr = self.min_rr
         self.application: Application | None = None
+        self.scan_task: asyncio.Task | None = None
 
     def ensure_user(self, chat_id: int) -> None:
         state_manager.init_user(chat_id)
@@ -63,9 +65,10 @@ class TelegramTradingBot:
 
     def get_pairs(self) -> list[str]:
         try:
-            return [s.split(":")[0].replace("/", "") for s in self.scanner._filter_active_symbols(self.scanner.exchange.symbols[:30])]
+            symbols = get_top_usdt_pairs(limit=30)
+            return [s.split(":")[0].replace("/", "") for s in symbols]
         except Exception:
-            return ["BTCUSDT", "ETHUSDT"]
+            return ["ADAUSDT", "BTCUSDT", "ETHUSDT", "SOLUSDT", "XRPUSDT"]
 
     async def get_manual_signal(self, pair: str) -> dict | None:
         market_symbol = f"{pair.replace('USDT', '/USDT')}:USDT"
@@ -103,35 +106,56 @@ class TelegramTradingBot:
 
     async def scan_loop(self, interval_sec: int | None = None) -> None:
         if interval_sec is None:
-            interval_sec = SCAN_INTERVAL
+            interval_sec = max(SCAN_INTERVAL, self.scan_interval_min * 60)
         interval_sec = max(60, int(interval_sec))
         while True:
             try:
-                signals = await self.scanner.scan()
+                signals = await asyncio.wait_for(
+                    self.scanner.scan(),
+                    timeout=120,
+                )
                 for signal in signals:
                     await self.broadcast_if_needed(signal)
+
+            except TimeoutError:
+                logger.warning("scan_loop timeout: scanner.scan exceeded 120s")
+                await asyncio.sleep(10)
+                continue
+            except asyncio.CancelledError:
+                logger.info("scan_loop cancelled")
+                raise
+
             except Exception:
                 logger.error("scan_loop error", exc_info=True)
                 await asyncio.sleep(10)
                 continue
             await asyncio.sleep(interval_sec)
 
-    async def run_polling(self) -> None:
+    def run_polling(self) -> None:
         if self.application is None:
-            await self.initialize()
-        await self.application.run_polling(drop_pending_updates=True)
+            raise RuntimeError("Application not initialized")
+        self.application.run_polling(drop_pending_updates=True)
 
     async def stop(self) -> None:
         if self.application:
-            await self.application.updater.stop()
             await self.application.stop()
             await self.application.shutdown()
-            
-    async def initialize(self) -> None:
+
+    async def _post_init(self, _app: Application) -> None:
+        self.scan_task = asyncio.create_task(self.scan_loop())
+
+    async def _post_shutdown(self, _app: Application) -> None:
+        if self.scan_task and not self.scan_task.done():
+            self.scan_task.cancel()
+            await asyncio.gather(self.scan_task, return_exceptions=True)
+
+    def initialize(self) -> None:
         """Создаёт Telegram Application в текущем asyncio loop."""
         self.application = Application.builder()\
             .token(self.token)\
             .request(self.request)\
+            .post_init(self._post_init)\
+            .post_shutdown(self._post_shutdown)\
             .build()
         self._register_handlers(self.application)
         logger.info("✅ Telegram бот инициализирован")

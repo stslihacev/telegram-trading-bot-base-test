@@ -1,25 +1,21 @@
-"""Главная точка входа: общий asyncio loop для Telegram и scanner."""
+"""Главная точка входа: Telegram polling + scanner lifecycle."""
 
 from __future__ import annotations
-
-import asyncio
 
 from database.db import init_db
 from tg_bot.telegram_bot import TelegramTradingBot
 from utils.logger import logger
 
-async def main() -> None:
-    """Инициализация бота и запуск polling/scanner в одном loop."""
+def main() -> None:
+    """Инициализация бота и запуск polling (scanner стартует в post_init)."""
     init_db()
     bot = TelegramTradingBot()
-
-    await bot.initialize()
-    asyncio.create_task(bot.scan_loop())
-    await bot.application.run_polling(drop_pending_updates=True)
+    bot.initialize()
+    bot.run_polling()
 
 if __name__ == "__main__":
     try:
-        asyncio.run(main())
+        main()
     except KeyboardInterrupt:
         logger.info("Остановка по KeyboardInterrupt")
     except Exception as exc:
