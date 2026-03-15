@@ -2437,6 +2437,10 @@ class BosStrategy(Strategy):
             min_stop,
         )
 
+        if stop_distance < 1e-12:
+            print(f"⚠️ {symbol}: нулевой стоп (sl={sl:.6f}, entry={entry_next_open:.6f}), устанавливаем минимальный")
+            stop_distance = entry_next_open * MIN_STOP_PCT
+
         if stop_distance <= 0 or np.isnan(stop_distance):
             return self._reject("rejected_price_condition", symbol, i, f"stop distance invalid: {stop_distance}")
 
@@ -3341,27 +3345,26 @@ def run_backtest(return_trades: bool = False):
                 else:
                     chosen_candle = None
 
-                if chosen_candle is not None:
-                    if chosen_candle.name > current_time:
-                        entry_time = chosen_candle.name
-                        if entry_data.get('direction') == 'LONG':
-                            refined_price = chosen_candle.get('low', chosen_candle.get('close', entry_data.get('entry', 0.0)))
-                        else:
-                            refined_price = chosen_candle.get('high', chosen_candle.get('close', entry_data.get('entry', 0.0)))
-                        entry_price = float(np.nan_to_num(refined_price, nan=entry_data.get('entry', 0.0)))
-                        entry_data['entry'] = round(entry_price, 4)
-                        entry_data['timestamp'] = entry_time
+                if chosen_candle is not None and chosen_candle.name > current_time:
+                    entry_time = chosen_candle.name
+                    if entry_data.get('direction') == 'LONG':
+                        refined_price = chosen_candle.get('low', chosen_candle.get('close', entry_data.get('entry', 0.0)))
+                    else:
+                        refined_price = chosen_candle.get('high', chosen_candle.get('close', entry_data.get('entry', 0.0)))
+                    entry_price = float(np.nan_to_num(refined_price, nan=entry_data.get('entry', 0.0)))
+                    entry_data['entry'] = round(entry_price, 4)
+                    entry_data['timestamp'] = entry_time
 
-                        direction = entry_data.get('direction')
-                        atr_for_recalc = float(np.nan_to_num(entry_data.get('atr', row.get('atr', 0.0) if hasattr(row, 'get') else 0.0), nan=0.0))
-                        raw_stop_distance = abs(entry_price - float(np.nan_to_num(entry_data.get('sl', entry_price), nan=entry_price)))
-                        sl_val, tp_val, _ = compute_atr_distances(
-                            entry_price,
-                            direction,
-                            atr_for_recalc,
-                            max(raw_stop_distance, 1e-9),
-                            entry_data.get('signal_type')
-                        )
+                    direction = entry_data.get('direction')
+                    atr_for_recalc = float(np.nan_to_num(entry_data.get('atr', row.get('atr', 0.0) if hasattr(row, 'get') else 0.0), nan=0.0))
+                    raw_stop_distance = abs(entry_price - float(np.nan_to_num(entry_data.get('sl', entry_price), nan=entry_price)))
+                    sl_val, tp_val, _ = compute_atr_distances(
+                        entry_price,
+                        direction,
+                        atr_for_recalc,
+                        max(raw_stop_distance, 1e-9),
+                        entry_data.get('signal_type')
+                    )
 
                     if entry_data.get('signal_type') == 'BOS':
                         tp_val = None
