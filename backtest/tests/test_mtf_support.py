@@ -1,7 +1,6 @@
 import pandas as pd
 
-from backtest.backtest_engine import build_4h_frame, evaluate_4h_filter
-
+from backtest.backtest_engine import build_4h_frame, evaluate_4h_filter, is_blocked_standalone_1h_trade
 
 def test_build_4h_frame_contains_bos_direction():
     idx = pd.date_range("2024-01-01", periods=48, freq="1h")
@@ -90,3 +89,9 @@ def test_check_mtf_filters_and_logic_tracks_rejections():
     assert strategy.stats["rejected_1h_filter"] >= 1
     assert strategy.stats["rejected_4h_filter"] >= 2
     assert strategy.stats["rejected_mtf_filter"] >= 2
+
+
+def test_blocks_only_standalone_1h_execution():
+    assert is_blocked_standalone_1h_trade({"trade_type": "standalone", "tf": "1h"}) is True
+    assert is_blocked_standalone_1h_trade({"trade_type": "aligned", "tf": "1h"}) is False
+    assert is_blocked_standalone_1h_trade({"trade_type": "standalone", "tf": "15m"}) is False

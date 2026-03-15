@@ -571,6 +571,12 @@ def select_mtf_entry_candle(candles_mtf, row, direction):
         return None
     return ordered.iloc[0]
 
+def is_blocked_standalone_1h_trade(entry_data):
+    """Disable standalone executions on 1H while keeping 1H signal/trend context intact."""
+    trade_type = str(entry_data.get("trade_type", "")).lower()
+    timeframe = str(entry_data.get("tf", "")).lower()
+    return trade_type == "standalone" and timeframe == "1h"
+
 def calculate_remaining_risk_budget(signal_positions, leader, capital):
     """Return remaining risk budget for scale-ins so total signal risk never exceeds initial trade risk."""
     risk_budget = float(np.nan_to_num(leader.get("trade_risk", 0.0), nan=0.0))
@@ -3521,6 +3527,20 @@ def run_backtest(return_trades: bool = False):
 
             available_capital = calculate_available_capital(capital, open_positions)
             if available_capital <= 0:
+                continue
+
+            if is_blocked_standalone_1h_trade(entry_data):
+                filter_stats["rejected_before_entry"] += 1
+                filter_stats["rejected_mtf_filter"] += 1
+                mtf_signal_logs.append({
+                    'time': entry_data.get('timestamp', current_time),
+                    'symbol': symbol,
+                    'direction': entry_data.get('direction'),
+                    'signal_type': entry_data.get('signal_type'),
+                    'selected_tf': entry_data.get('tf', '1h'),
+                    'trade_type': entry_data.get('trade_type', 'standalone'),
+                    'status': 'blocked_standalone_1h',
+                })
                 continue
 
             sizing, capital_after_entry = _execute_signal(
