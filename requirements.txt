@@ -1,0 +1,9 @@
+aiogram==3.13.1
+ccxt==4.4.98
+pandas==2.2.3
+numpy==2.1.1
+python-dotenv==1.0.1
+pybit==5.8.0
+tqdm==4.66.5
+lightgbm==4.5.0
+python-telegram-bot==20.7
