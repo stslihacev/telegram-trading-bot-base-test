@@ -1,176 +1,124 @@
-import os
-import socket
-import asyncio
-from pathlib import Path
-from dotenv import load_dotenv
+"""Основной класс Telegram-бота (python-telegram-bot v20)."""
 
-from aiogram import Bot, Dispatcher
-from aiogram.filters import Command
-from aiogram.types import (
-    Message,
-    CallbackQuery,
-    InlineKeyboardMarkup,
-    InlineKeyboardButton,
-)
-from aiohttp import TCPConnector, ClientSession
-import aiohttp
+from __future__ import annotations
+
+import asyncio
+import os
+from pathlib import Path
+
+from dotenv import load_dotenv
+from telegram.ext import Application, CallbackQueryHandler, CommandHandler
 
 from core.state_manager import state_manager
-from database.db import get_signal_stats
+from execution.signal_dispatcher import SignalDispatcher
+from scanner.market_scanner import MarketScanner
+from tg_bot.handlers.callbacks import callback_handler
+from tg_bot.handlers.commands import (
+    help_command,
+    pairs_command,
+    signal_command,
+    start_command,
+    status_command,
+)
+from tg_bot.handlers.signals import broadcast_signal
 from utils.logger import logger
 
-
-# ===== Загрузка .env =====
 BASE_DIR = Path(__file__).resolve().parent.parent
-env_path = BASE_DIR / ".env"
-
-load_dotenv(dotenv_path=env_path, override=True)
-
-TOKEN = os.environ.get("TELEGRAM_TOKEN")
-
-logger.info(f"ENV PATH: {env_path}")
-logger.info(f"TOKEN FROM ENV: {TOKEN}")
-
-if not TOKEN:
-    raise ValueError("TELEGRAM_TOKEN не найден в .env файле")
+load_dotenv(BASE_DIR / ".env")
 
 
-# ===== Telegram объекты =====
-bot = None
-dp = Dispatcher()
+class TelegramTradingBot:
+    """Оркестратор Telegram + сканер + диспетчер сигналов."""
 
+    def __init__(self):
+        self.token = os.getenv("TELEGRAM_TOKEN", "")
+        self.default_chat_id = os.getenv("TELEGRAM_CHAT_ID")
+        if not self.token:
+            raise ValueError("TELEGRAM_TOKEN не задан в .env")
 
-# ===== Главное меню =====
-def main_menu():
-    keyboard = [
-        [InlineKeyboardButton(text="🎯 Ручной выбор монеты", callback_data="manual")],
-        [InlineKeyboardButton(text="🤖 Авто-сканирование (топ сигналы)", callback_data="auto")],
-        [InlineKeyboardButton(text="📊 Статистика", callback_data="stats")],
-        [InlineKeyboardButton(text="⚙️ Настройки", callback_data="settings")],
-    ]
-    return InlineKeyboardMarkup(inline_keyboard=keyboard)
-
-
-# ===== Команда /start =====
-@dp.message(Command("start"))
-async def start_handler(message: Message):
-    chat_id = message.chat.id
-
-    state_manager.init_user(chat_id)
-
-    await message.answer(
-        "🤖 Торговый бот\n\nВыбери режим:",
-        reply_markup=main_menu()
-    )
-
-
-# ===== Обработка кнопок =====
-@dp.callback_query()
-async def callback_handler(callback: CallbackQuery):
-    chat_id = callback.message.chat.id
-    data = callback.data
-
-    state_manager.init_user(chat_id)
-
-    if data == "manual":
-        state_manager.set_mode(chat_id, "manual")
-
-    elif data == "auto":
-        state_manager.set_mode(chat_id, "auto")
-
-    elif data == "settings":
-        await callback.answer("⚙️ Скоро будет доступно")
-        return
-
-    elif data == "stats":
-        stats = get_signal_stats()  # возвращает словарь
-        text = (
-            f"📊 Статистика сигналов\n\n"
-            f"Всего сигналов: {stats['total']}\n"
-            f"WIN: {stats['wins']}\n"
-            f"LOSS: {stats['losses']}\n"
-            f"Winrate: {stats['winrate']}%"
-        )
-        await callback.message.answer(text)
-        await callback.answer()
-        return
-
-    mode = state_manager.get_mode(chat_id)
-
-    new_text = (
-        f"🤖 Торговый бот\n\n"
-        f"Текущий режим: {mode.upper() if mode else 'не выбран'}\n\n"
-        f"Выбери режим:"
-    )
-
-    if callback.message.text != new_text:
-        await callback.message.edit_text(
-            new_text,
-            reply_markup=main_menu()
+        # 👇 СОЗДАЁМ КАСТОМНЫЙ REQUEST С БОЛЬШИМИ ТАЙМАУТАМИ
+        from telegram.request import HTTPXRequest
+        self.request = HTTPXRequest(
+            connection_pool_size=10,
+            connect_timeout=30.0,   # 30 секунд на подключение
+            read_timeout=30.0,       # 30 секунд на чтение
+            write_timeout=30.0,       # 30 секунд на запись
+            pool_timeout=30.0         # 30 секунд на ожидание в пуле
         )
 
-    await callback.answer()
+        self.dispatcher = SignalDispatcher(dedup_minutes=60)
+        self.scanner = MarketScanner()
+        self.application: Application | None = None
 
+    def ensure_user(self, chat_id: int) -> None:
+        state_manager.init_user(chat_id)
 
-# ===== Кастомный резолвер для Windows =====
-class WindowsResolver(aiohttp.abc.AbstractResolver):
+    def set_mode(self, chat_id: int, mode: str) -> None:
+        state_manager.set_mode(chat_id, mode)
 
-    async def resolve(self, host, port, family=socket.AF_INET):
-        loop = asyncio.get_running_loop()
-
-        infos = await loop.getaddrinfo(
-            host,
-            port,
-            type=socket.SOCK_STREAM,
-            family=family,
-            flags=socket.AI_ADDRCONFIG
-        )
-
-        return [{
-            'hostname': host,
-            'host': info[4][0],
-            'port': port,
-            'family': info[0],
-            'proto': info[1],
-            'flags': info[2]
-        } for info in infos]
-
-    async def close(self):
-        pass
-
-
-# ===== Запуск Telegram =====
-async def run_telegram():
-    global bot
-
-    resolver = WindowsResolver()
-
-    connector = TCPConnector(
-        resolver=resolver,
-        family=socket.AF_INET,
-        force_close=True,
-        ttl_dns_cache=300
-    )
-
-    session = ClientSession(connector=connector)
-
-    bot = Bot(token=TOKEN)
-    bot.session._session = session
-
-    me = await bot.get_me()
-    logger.info(f"✅ Бот @{me.username} успешно запущен!")
-
-    await dp.start_polling(bot, skip_updates=True)
-
-
-# ===== Отправка сигнала (используется engine) =====
-async def send_signal(text: str):
-    global bot
-
-    auto_users = state_manager.get_all_auto_users()
-
-    for chat_id in auto_users:
+    def get_pairs(self) -> list[str]:
         try:
-            await bot.send_message(chat_id=chat_id, text=text)
-        except Exception as e:
-            logger.error(f"Ошибка отправки {chat_id}: {e}")
+            return [s.split(":")[0].replace("/", "") for s in self.scanner._filter_active_symbols(self.scanner.exchange.symbols[:30])]
+        except Exception:
+            return ["BTCUSDT", "ETHUSDT"]
+
+    async def get_manual_signal(self, pair: str) -> dict | None:
+        market_symbol = f"{pair.replace('USDT', '/USDT')}:USDT"
+        df = await self.scanner._fetch_ohlcv(market_symbol)
+        if df is None:
+            return None
+        return self.scanner.strategy.generate_signal(pair, df)
+
+    def get_open_positions(self) -> list[dict]:
+        return self.dispatcher.get_open_positions()
+
+    def _register_handlers(self, app: Application) -> None:
+        app.bot_data["service"] = self
+        app.add_handler(CommandHandler("start", start_command))
+        app.add_handler(CommandHandler("help", help_command))
+        app.add_handler(CommandHandler("pairs", pairs_command))
+        app.add_handler(CommandHandler("signal", signal_command))
+        app.add_handler(CommandHandler("status", status_command))
+        app.add_handler(CallbackQueryHandler(callback_handler))
+
+    async def broadcast_if_needed(self, signal: dict) -> None:
+        if self.dispatcher.is_duplicate(signal):
+            return
+        self.dispatcher.register_position(signal)
+        from database.db import save_signal
+
+        save_signal(signal["symbol"], signal["direction"], signal["entry"], signal["tp"], signal["sl"])
+        auto_users = state_manager.get_all_auto_users()
+        if self.default_chat_id:
+            auto_users.append(int(self.default_chat_id))
+        unique_users = sorted(set(auto_users))
+        if self.application and unique_users:
+            await broadcast_signal(self.application.bot, unique_users, signal)
+
+    async def scan_loop(self, interval_sec: int = 60) -> None:
+        while True:
+            try:
+                signals = await self.scanner.scan()
+                for signal in signals:
+                    await self.broadcast_if_needed(signal)
+            except Exception as exc:
+                logger.exception(f"Ошибка scan_loop: {exc}")
+            await asyncio.sleep(interval_sec)
+
+    async def run_polling(self) -> None:
+        self.application = Application.builder()\
+            .token(self.token)\
+            .request(self.request)\
+            .build()
+        self._register_handlers(self.application)
+        logger.info("✅ Telegram бот инициализирован")
+        await self.application.initialize()
+        await self.application.start()
+        await self.application.updater.start_polling(drop_pending_updates=True)
+        await asyncio.Event().wait()
+
+    async def stop(self) -> None:
+        if self.application:
+            await self.application.updater.stop()
+            await self.application.stop()
+            await self.application.shutdown()
