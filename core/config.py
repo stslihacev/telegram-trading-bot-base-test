@@ -29,9 +29,14 @@ SOFTER_CONFIDENCE_FILTER = False
 SOFTER_CONFIDENCE_THRESHOLD = 3
 
 # ===== MTF execution settings =====
-MTF_EXECUTION_TIMEFRAMES = ("15m",)
+MTF_EXECUTION_TIMEFRAMES = ("30m", "15m")
 
 # ===== ATR risk calibration =====
 USE_DYNAMIC_ATR_SLTP = True
 ATR_SL_MULTIPLIER = 1.0
 ATR_TP_MULTIPLIER = 2.0
+
+# ===== Risk limits (shared between strategy/backtest) =====
+MIN_RISK_USDT = 0.01
+MAX_POSITION_UNITS = 1_000_000
+MAX_POSITION_VALUE = 1_000_000
