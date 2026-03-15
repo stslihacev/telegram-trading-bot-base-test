@@ -2144,7 +2144,7 @@ class BosStrategy(Strategy):
                 sl = low_arr[last_i]
 
                 if sl >= entry_next_open:
-                    return self._reject("rejected_price_condition", symbol, i, f"invalid BOS LONG stop: sl {sl:.4f} >= entry {entry:.4f}")
+                    return self._reject("rejected_price_condition", symbol, i, f"invalid BOS LONG stop: sl {sl:.4f} >= entry {entry_next_open:.4f}")
 
                 pos_high = np.searchsorted(swing_high_indices, i, side="left") - 1
                 if pos_high >= 0:
@@ -2152,7 +2152,7 @@ class BosStrategy(Strategy):
                     zone_atr_multiplier = get_adaptive_zone_atr_multiplier(confidence) * zone_atr_tolerance_multiplier
                     zone_width = max(
                         atr_arr[i] * zone_atr_multiplier,
-                        entry * ENTRY_ZONE_TOLERANCE_PCT * zone_atr_tolerance_multiplier
+                        entry_next_open * ENTRY_ZONE_TOLERANCE_PCT * zone_atr_tolerance_multiplier
                     )
                     zone_size_at_entry = zone_width
                     zone_low = zone_level - zone_width
@@ -2212,7 +2212,7 @@ class BosStrategy(Strategy):
                 sl = high_arr[last_i]
 
                 if sl <= entry_next_open:
-                    return self._reject("rejected_price_condition", symbol, i, f"invalid BOS SHORT stop: sl {sl:.4f} <= entry {entry:.4f}")
+                    return self._reject("rejected_price_condition", symbol, i, f"invalid BOS SHORT stop: sl {sl:.4f} <= entry {entry_next_open:.4f}")
 
                 pos_low = np.searchsorted(swing_low_indices, i, side="left") - 1
                 if pos_low >= 0:
@@ -2220,7 +2220,7 @@ class BosStrategy(Strategy):
                     zone_atr_multiplier = get_adaptive_zone_atr_multiplier(confidence) * zone_atr_tolerance_multiplier
                     zone_width = max(
                         atr_arr[i] * zone_atr_multiplier,
-                        entry * ENTRY_ZONE_TOLERANCE_PCT * zone_atr_tolerance_multiplier
+                        entry_next_open * ENTRY_ZONE_TOLERANCE_PCT * zone_atr_tolerance_multiplier
                     )
                     zone_size_at_entry = zone_width
                     zone_low = zone_level - zone_width
@@ -2273,7 +2273,7 @@ class BosStrategy(Strategy):
                 used_levels = self._entry_ladder_fills[signal_key]
                 for level_num, level_price in touched_levels:
                     if level_num not in used_levels:
-                        entry = open_arr[i+1] if i+1 < len(open_arr) else level_price
+                        entry_next_open = open_arr[i+1] if i+1 < len(open_arr) else level_price
                         entry_level = level_num
                         used_levels.add(level_num)
                         zone_touch_confirmed = True
@@ -2299,7 +2299,7 @@ class BosStrategy(Strategy):
                 ]
                 if available_levels:
                     nearest_level_num, nearest_price = min(available_levels, key=lambda lvl: abs(lvl[1] - close_arr[i]))
-                    entry = nearest_price
+                    entry_next_open = nearest_price
                     entry_level = nearest_level_num
                     used_levels.add(nearest_level_num)
                     zone_touch_confirmed = True
@@ -2320,7 +2320,7 @@ class BosStrategy(Strategy):
                     partial_hit = low_arr[i] <= partial_entry_anchor and high_arr[i] >= zone_low
 
                 if partial_hit:
-                    entry = partial_entry_anchor
+                    entry_next_open = partial_entry_anchor
                     entry_level = 2
                     zone_touch_confirmed = True
                     zone_entry_type = "partial"
@@ -2332,7 +2332,7 @@ class BosStrategy(Strategy):
                 and momentum_ratio > 0.65
                 and adx > 32
             ):
-                entry = open_arr[i+1] if i+1 < len(open_arr) else close_arr[i]
+                entry_next_open = open_arr[i+1] if i+1 < len(open_arr) else close_arr[i]
                 entry_level = None
                 entry_mode = "momentum"
                 zone_touch_confirmed = True
@@ -2368,14 +2368,14 @@ class BosStrategy(Strategy):
         # Проверка, что уровни имеют смысл
         if direction == "LONG":
             if sl >= entry_next_open:
-                return self._reject("rejected_price_condition", symbol, i, f"LONG validation failed: sl {sl:.4f} >= entry {entry:.4f}")
+                return self._reject("rejected_price_condition", symbol, i, f"LONG validation failed: sl {sl:.4f} >= entry_next_open {entry:.4f}")
             if tp is not None and tp <= entry_next_open:
-                return self._reject("rejected_price_condition", symbol, i, f"LONG validation failed: tp {tp:.4f} <= entry {entry:.4f}")
+                return self._reject("rejected_price_condition", symbol, i, f"LONG validation failed: tp {tp:.4f} <= entry_next_open {entry:.4f}")
         else:
             if sl <= entry_next_open:
-                return self._reject("rejected_price_condition", symbol, i, f"SHORT validation failed: sl {sl:.4f} <= entry {entry:.4f}")
+                return self._reject("rejected_price_condition", symbol, i, f"SHORT validation failed: sl {sl:.4f} <= entry_next_open {entry:.4f}")
             if tp is not None and tp >= entry_next_open:
-                return self._reject("rejected_price_condition", symbol, i, f"SHORT validation failed: tp {tp:.4f} >= entry {entry:.4f}")
+                return self._reject("rejected_price_condition", symbol, i, f"SHORT validation failed: tp {tp:.4f} >= entry_next_open {entry:.4f}")
 
         # ===== РАСЧЁТ RR + финальная коррекция SL =====
 
@@ -2409,7 +2409,7 @@ class BosStrategy(Strategy):
         if signal_type == "BOS":
             rr = None
         else:
-            rr = calculate_rr(entry, tp, sl, direction)
+            rr = calculate_rr(entry_next_open, tp, sl, direction)
 
             if rr is not None and rr_filter_required:
                 if rr < MIN_RR or rr > MAX_RR:
@@ -2460,7 +2460,7 @@ class BosStrategy(Strategy):
             'entry_level': entry_level,
             'zone_size_at_entry': round(zone_size_at_entry, 6) if zone_size_at_entry is not None else None,
             'tp': float(np.nan_to_num(round(tp, 4), nan=0.0, posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT)) if tp is not None else None,
-            'sl': float(np.nan_to_num(round(sl, 4), nan=entry, posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT)) if sl is not None else float(entry),
+            'sl': float(np.nan_to_num(round(sl, 4), nan=entry_next_open, posinf=SAFE_FLOAT_LIMIT, neginf=-SAFE_FLOAT_LIMIT)) if sl is not None else float(entry),
             'rr': round(rr, 2) if rr is not None else None,
             'regime': regime,
             'adx': round(adx, 4),
@@ -3593,6 +3593,16 @@ def run_backtest(return_trades: bool = False):
     if return_trades:
         return trades_df.to_dict("records")
 
+    if not trades_df.empty:
+        initial_risks = [t.get("initial_risk", 0) for t in all_trades if t.get("initial_risk", 0) > 0]
+        if initial_risks:
+            print("\n📊 СТАТИСТИКА INITIAL_RISK:")
+            print(f"  Минимальный: {min(initial_risks):.6f}")
+            print(f"  Максимальный: {max(initial_risks):.2f}")
+            print(f"  Средний: {sum(initial_risks)/len(initial_risks):.2f}")
+            print(f"  Медиана: {sorted(initial_risks)[len(initial_risks)//2]:.2f}")
+            print(f"  Сделок с риском < 0.01: {sum(1 for r in initial_risks if r < 0.01)}")
+
     return trades_df, equity_df, stats
 
 class BosAnalytics:
@@ -3690,15 +3700,6 @@ if __name__ == "__main__":
     print("\n📊 BOS FVG EDGE")
     print("-"*30)
     print(analytics.bos_fvg_edge())
-
-    initial_risks = [t.get("initial_risk", 0) for t in all_trades if t.get("initial_risk", 0) > 0]
-    if initial_risks:
-        print("\n📊 СТАТИСТИКА INITIAL_RISK:")
-        print(f"  Минимальный: {min(initial_risks):.6f}")
-        print(f"  Максимальный: {max(initial_risks):.2f}")
-        print(f"  Средний: {sum(initial_risks)/len(initial_risks):.2f}")
-        print(f"  Медиана: {sorted(initial_risks)[len(initial_risks)//2]:.2f}")
-        print(f"  Сделок с риском < 0.01: {sum(1 for r in initial_risks if r < 0.01)}")
     
     analytics = BosAnalytics(trades_df)
     analytics.print_full_report()
