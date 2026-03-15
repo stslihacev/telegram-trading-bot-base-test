@@ -25,6 +25,9 @@ from analysis.correlation import calculate_correlation
 from utils.logger import logger
 from core.config import MIN_RR
 from core.config import MAX_RR
+from core.config import MIN_RISK_USDT
+
+EPSILON_INITIAL_RISK = 1e-9
 from utils.csv_logger import save_trade
 
 # Настройки
@@ -97,16 +100,18 @@ async def fetch_klines(symbol):
     return await loop.run_in_executor(None, lambda: exchange.fetch_ohlcv(symbol, TIMEFRAME, limit=LIMIT))
 
 def calculate_rr(entry, tp, sl, direction):
-    """Вычисляет соотношение риск/прибыль"""
-    if direction == 'LONG':
-        risk = entry - sl
-        reward = tp - entry
-    else:
-        risk = sl - entry
-        reward = entry - tp
-    if risk <= 0:
-        return 0
-    return round(reward / risk, 2)
+    """Вычисляет соотношение риск/прибыль с защитой микро-риска."""
+    if tp is None or sl is None or entry is None:
+        return 0.0
+    risk = float(abs(entry - sl))
+    reward = float(abs(tp - entry))
+    safe_risk = max(risk, EPSILON_INITIAL_RISK, float(MIN_RISK_USDT))
+    if safe_risk <= EPSILON_INITIAL_RISK:
+        return 0.0
+    rr = reward / safe_risk
+    if np.isnan(rr) or np.isinf(rr):
+        return 0.0
+    return round(float(rr), 2)
 
 class TradingEngine:
     def __init__(self):

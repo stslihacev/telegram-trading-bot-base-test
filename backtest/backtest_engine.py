@@ -134,6 +134,7 @@ MTF_FILTER_LOGIC = os.getenv("MTF_FILTER_LOGIC", "AND").upper()
 BACKTEST_VERBOSE = os.getenv("BACKTEST_VERBOSE", "0") == "1"
 USE_4H_TREND_CONFIRMATION = os.getenv("USE_4H_TREND_CONFIRMATION", "1") == "1"
 PARTIAL_TP_ENABLED = os.getenv("PARTIAL_TP_ENABLED", "1") == "1"
+ALLOW_STANDALONE_MTF_TRADES = os.getenv("ALLOW_STANDALONE_MTF_TRADES", "1") == "1"
 
 
 def get_adaptive_zone_atr_multiplier(confidence):
@@ -565,7 +566,9 @@ def select_mtf_entry_candle(candles_mtf, row, direction):
     if candles_mtf is None or candles_mtf.empty or direction not in {'LONG', 'SHORT'}:
         return None
 
-    ordered = candles_mtf.sort_index()
+    ordered = candles_mtf[candles_mtf.index <= row.name].sort_index()
+    if ordered.empty:
+        return None
     return ordered.iloc[0]
 
 def calculate_remaining_risk_budget(signal_positions, leader, capital):
@@ -1943,7 +1946,7 @@ class BosStrategy(Strategy):
             if arr_name in {"open", "close"} and (i + 1) >= len(arr_values):
                 return self._reject("rejected_other", symbol, i, f"no next candle for {arr_name}: i+1={i+1}, len={len(arr_values)}")
     
-        entry_next_open = open_arr[i + 1]
+        entry_next_open = open_arr[i]
         current_close = close_arr[i]
         plus_di = plus_di_arr[i]
         minus_di = minus_di_arr[i]
@@ -2397,6 +2400,7 @@ class BosStrategy(Strategy):
             if tp is None or sl is None:
                 return self._reject("rejected_entry_zone", symbol, i, "entry zone not reached: nearest levels missing")
         
+        passed_mtf = True
         if signal_type in ["BOS", "SWEEP"]:
             passed_mtf = self.check_mtf_filters(
                 symbol,
@@ -2407,7 +2411,7 @@ class BosStrategy(Strategy):
                 thresholds={"1h": self.filter_config["adx_min_1h"], "4h": self.filter_config["adx_min_4h"]},
                 logic=self.filter_config["logic"],
             )
-            if not passed_mtf:
+            if not passed_mtf and not ALLOW_STANDALONE_MTF_TRADES:
                 return self._reject("rejected_mtf_filter", symbol, i, "failed 1H/4H filter")
 
         # Проверка, что уровни имеют смысл
@@ -2465,21 +2469,21 @@ class BosStrategy(Strategy):
                     return self._reject("rejected_price_condition", symbol, i, f"RR filter failed: rr={rr:.2f}, range=[{MIN_RR},{MAX_RR}]")
 
         # ===== CONFIDENCE ФИЛЬТР =====
-        confidence_threshold = 2.3
+        confidence_threshold = 2.0
         if confidence < confidence_threshold:
             return self._reject("rejected_confidence", symbol, i, f"confidence {confidence:.2f} below threshold {confidence_threshold:.2f}")
 
         # Фильтр качества BOS
         if signal_type == "BOS":
-            bos_conf_threshold = 2.8
+            bos_conf_threshold = 2.4
             if confidence < bos_conf_threshold:
                 return self._reject("rejected_confidence", symbol, i, f"BOS confidence {confidence:.2f} below threshold {bos_conf_threshold:.2f}")
 
         # Убираем перегретый тренд
         if signal_type == "BOS":
             adx_value = adx
-            if adx_value < 22 or adx_value > 45:
-                return self._reject("rejected_price_condition", symbol, i, f"BOS ADX out of [22,45]: {adx_value:.2f}")
+            if adx_value < 18 or adx_value > 55:
+                return self._reject("rejected_price_condition", symbol, i, f"BOS ADX out of [18,55]: {adx_value:.2f}")
 
         plus_di = plus_di_arr[i]
         minus_di = minus_di_arr[i]
@@ -2493,10 +2497,10 @@ class BosStrategy(Strategy):
         if np.isnan(atr_mean):
             atr_mean = np.nanmean(atr_arr[max(0, i-50):i])
 
-        if atr < atr_mean * 0.6:  
-            return self._reject("rejected_price_condition", symbol, i, f"volatility too low: atr {atr:.6f} < atr_mean*0.6 {atr_mean * 0.6:.6f}")
-        if atr > atr_mean * 4:
-            return self._reject("rejected_price_condition", symbol, i, f"volatility too high: atr {atr:.6f} > atr_mean*4 {atr_mean * 4:.6f}")
+        if atr < atr_mean * 0.45:  
+            return self._reject("rejected_price_condition", symbol, i, f"volatility too low: atr {atr:.6f} < atr_mean*0.45 {atr_mean * 0.45:.6f}")
+        if atr > atr_mean * 5:
+            return self._reject("rejected_price_condition", symbol, i, f"volatility too high: atr {atr:.6f} > atr_mean*5 {atr_mean * 5:.6f}")
 
         # Поля для расширенного логирования трейдов
         fvg = has_fvg
@@ -2519,6 +2523,8 @@ class BosStrategy(Strategy):
             'confidence': confidence,
             'confidence_bucket': get_confidence_bucket(confidence)[0],
             'position_size_multiplier': get_confidence_bucket(confidence)[1],
+            'trade_type': 'aligned' if passed_mtf else 'standalone',
+            'tf': '1h',
             'bos': locals().get("bos"),
             'fvg': locals().get("fvg"),
             'liquidity_sweep': locals().get("liquidity_sweep", locals().get("sweep_type")),
@@ -3251,13 +3257,13 @@ def run_backtest(return_trades: bool = False):
             addon_pos.update(sizing)
             addon_pos['trade_risk'] = scale_trade_risk
             addon_pos['position_size'] = float(np.clip(scale_trade_risk / addon_stop_distance, 0.0, SAFE_FLOAT_LIMIT))
+            addon_pos['actual_size'] = float(np.clip(addon_pos['position_size'] * float(addon_pos.get('entry', 0.0)), 0.0, SAFE_FLOAT_LIMIT))
+            addon_pos['allocated_capital'] = addon_pos['actual_size']
+            addon_pos['capital_after_entry'] = float(np.clip(available_capital - addon_pos['actual_size'], 0.0, SAFE_FLOAT_LIMIT))
             addon_initial_risk = float(np.clip(addon_pos['position_size'] * addon_stop_distance, 0.0, SAFE_FLOAT_LIMIT))
             if addon_initial_risk > 0:
                 addon_initial_risk = max(addon_initial_risk, MIN_RISK_USDT)
             addon_pos['initial_risk'] = addon_initial_risk
-            addon_pos['actual_size'] = float(np.clip(addon_pos['position_size'] * float(addon_pos.get('entry', 0.0)), 0.0, SAFE_FLOAT_LIMIT))
-            addon_pos['allocated_capital'] = addon_pos['actual_size']
-            addon_pos['capital_after_entry'] = float(np.clip(available_capital - addon_pos['actual_size'], 0.0, SAFE_FLOAT_LIMIT))
 
             if addon_pos['position_size'] <= 0 or addon_pos['allocated_capital'] <= 0:
                 continue
@@ -3329,34 +3335,61 @@ def run_backtest(return_trades: bool = False):
 
             entry_data = signal
 
-            # ===== MTF ENTRY ALIGNMENT (1H signal -> 15M execution) =====
+            # ===== MTF ENTRY EXECUTION + TRADE TYPE =====
             mtf_tf, df_mtf = choose_mtf_dataset(symbol, all_data_15m, all_data_30m)
+            entry_data.setdefault('trade_type', 'aligned')
+            entry_data.setdefault('tf', '1h')
+            entry_data['trade_type'] = 'aligned' if entry_data.get('trade_type') != 'standalone' else 'standalone'
             mtf_signal_logs.append({
                 'time': current_time,
                 'symbol': symbol,
                 'direction': entry_data.get('direction'),
                 'signal_type': entry_data.get('signal_type'),
                 'selected_tf': mtf_tf or '1h',
+                'trade_type': entry_data.get('trade_type', 'aligned'),
                 'status': 'candidate',
             })
-            if df_mtf is not None and len(df_mtf) > 0 and {'high', 'low', 'close'}.issubset(df_mtf.columns):
+            if df_mtf is not None and len(df_mtf) > 0 and {'open', 'high', 'low', 'close'}.issubset(df_mtf.columns):
                 hour_start = current_time.floor('h')
                 hour_end = hour_start + pd.Timedelta(hours=1)
-                candles_mtf = df_mtf.loc[hour_start:hour_end]
+                candles_mtf = df_mtf[(df_mtf.index >= hour_start) & (df_mtf.index < hour_end)]
                 chosen_candle = select_mtf_entry_candle(candles_mtf, row, entry_data.get('direction'))
 
-                # FIX: ensure chosen_candle is a single row (Series)
                 if isinstance(chosen_candle, pd.DataFrame):
-                    if len(chosen_candle) > 0:
-                        chosen_candle = chosen_candle.iloc[0]
-                    else:
-                        chosen_candle = None
+                    chosen_candle = chosen_candle.iloc[0] if len(chosen_candle) > 0 else None
 
                 if chosen_candle is not None and hasattr(chosen_candle, "name"):
+                    aligned_ok = strategy.check_mtf_filters(
+                        symbol,
+                        idx_in_df,
+                        entry_data.get('direction'),
+                        df,
+                        all_data_4h.get(symbol),
+                        thresholds={"1h": strategy.filter_config["adx_min_1h"], "4h": strategy.filter_config["adx_min_4h"]},
+                        logic=strategy.filter_config["logic"],
+                    )
+                    if not aligned_ok:
+                        entry_data['trade_type'] = 'standalone'
+                    if not aligned_ok and not ALLOW_STANDALONE_MTF_TRADES:
+                        mtf_signal_logs.append({
+                            'time': current_time,
+                            'symbol': symbol,
+                            'direction': entry_data.get('direction'),
+                            'signal_type': entry_data.get('signal_type'),
+                            'selected_tf': mtf_tf or '1h',
+                            'trade_type': 'standalone',
+                            'status': 'blocked_standalone',
+                        })
+                        continue
                     if not is_mtf_confirmation_valid(df_mtf, chosen_candle.name, entry_data.get('direction')):
                         mtf_signal_logs.append({
-                            'time': current_time, 'symbol': symbol, 'direction': entry_data.get('direction'),
-                            'signal_type': entry_data.get('signal_type'), 'selected_tf': mtf_tf or '1h', 'status': 'mtf_confirmation_failed'
+                            'time': current_time,
+                            'symbol': symbol,
+                            'direction': entry_data.get('direction'),
+                            'signal_type': entry_data.get('signal_type'),
+                            'selected_tf': mtf_tf or '1h',
+                            'trade_type': entry_data.get('trade_type', 'aligned'),
+                            'status': 'mtf_confirmation_failed'
                         })
                         chosen_candle = None
                 else:
@@ -3367,6 +3400,7 @@ def run_backtest(return_trades: bool = False):
                     entry_price = float(np.nan_to_num(chosen_candle.get('open', entry_data.get('entry', 0.0)), nan=entry_data.get('entry', 0.0)))
                     entry_data['entry'] = round(entry_price, 4)
                     entry_data['timestamp'] = entry_time
+                    entry_data['tf'] = mtf_tf or '1h'
 
                     direction = entry_data.get('direction')
                     atr_for_recalc = float(np.nan_to_num(entry_data.get('atr', row.get('atr', 0.0) if hasattr(row, 'get') else 0.0), nan=0.0))
@@ -3387,12 +3421,17 @@ def run_backtest(return_trades: bool = False):
                     entry_data['rr'] = sanitize_r(calculate_rr(entry_data['entry'], entry_data['tp'], entry_data['sl'], direction))
                     entry_data['mtf_tf'] = mtf_tf
                     mtf_signal_logs.append({
-                        'time': entry_time, 'symbol': symbol, 'direction': entry_data.get('direction'),
-                        'signal_type': entry_data.get('signal_type'), 'selected_tf': mtf_tf, 'status': 'accepted',
+                        'time': entry_time,
+                        'symbol': symbol,
+                        'direction': entry_data.get('direction'),
+                        'signal_type': entry_data.get('signal_type'),
+                        'selected_tf': mtf_tf,
+                        'trade_type': entry_data.get('trade_type', 'aligned'),
+                        'status': 'accepted',
                         'entry': entry_price
                     })
                     if BACKTEST_VERBOSE:
-                        print(f"MTF entry aligned ({mtf_tf}) for {symbol} at {entry_time} price {entry_price}")
+                        print(f"MTF entry {entry_data.get('trade_type')} ({mtf_tf}) for {symbol} at {entry_time} price {entry_price}")
 
             # ===== ML + VOLUME FILTER + DYNAMIC CONFIDENCE =====
             coin = symbol
@@ -3439,7 +3478,7 @@ def run_backtest(return_trades: bool = False):
                 zero_volume = features["volume"] == 0
                 ml_ok = p_profit >= confidence_threshold
                 # Базовый ML/Volume фильтр
-                should_filter = (not ml_ok) or ((not zero_volume) and features["volume"] < avg_vol)
+                should_filter = (not ml_ok) or ((not zero_volume) and features["volume"] < (0.75 * avg_vol))
                 # Для SWEEP добавляем минимальный volume-порог
                 if entry_data.get("signal_type") == "SWEEP":
                     min_sweep_volume = max(0.0, 0.001 * float(np.nan_to_num(avg_vol, nan=0.0)))
@@ -3528,13 +3567,9 @@ def run_backtest(return_trades: bool = False):
             pos["bars_alive"] = 0
             pos["max_r"] = sanitize_r(0)
             stop_distance = abs(pos["entry"] - pos["sl"])
-            initial_risk_correct = pos["position_size"] * stop_distance
-
-            # Защита от микро-риска
-            if initial_risk_correct < MIN_RISK_USDT and initial_risk_correct > 0:
-                pos["position_size"] = MIN_RISK_USDT / stop_distance
-                initial_risk_correct = MIN_RISK_USDT
-                print(f"⚠️ Корректировка риска: увеличили до {MIN_RISK_USDT} USDT")
+            initial_risk_correct = float(np.clip(pos["position_size"] * stop_distance, 0.0, SAFE_FLOAT_LIMIT))
+            if initial_risk_correct > 0:
+                initial_risk_correct = max(initial_risk_correct, MIN_RISK_USDT)
 
             pos["initial_risk"] = initial_risk_correct
             pos["mfe_r"] = 0.0

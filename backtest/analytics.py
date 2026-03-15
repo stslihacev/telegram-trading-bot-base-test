@@ -35,7 +35,7 @@ class AdvancedAnalytics:
 
         grouped = (
             self.trades
-            .groupby(['regime', 'signal_type'])
+            .groupby(['regime', 'signal_type', 'trade_type', 'tf'], dropna=False)
             .agg(
                 trades=('pnl', 'count'),
                 wins=('pnl', lambda x: (x > 0).sum()),
@@ -52,7 +52,9 @@ class AdvancedAnalytics:
         for _, row in grouped.iterrows():
             subset = self.trades[
                 (self.trades['regime'] == row['regime']) &
-                (self.trades['signal_type'] == row['signal_type'])
+                (self.trades['signal_type'] == row['signal_type']) &
+                (self.trades.get('trade_type', pd.Series(index=self.trades.index, dtype=object)).fillna('aligned') == row['trade_type']) &
+                (self.trades.get('tf', pd.Series(index=self.trades.index, dtype=object)).fillna('1h') == row['tf'])
             ]
 
             gp = subset[subset['pnl'] > 0]['pnl'].sum()
