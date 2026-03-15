@@ -46,8 +46,12 @@ class TelegramTradingBot:
             pool_timeout=30.0         # 30 секунд на ожидание в пуле
         )
 
+        self.min_rr = float(os.getenv("MIN_SIGNAL_RR", "0.8"))
+        self.scan_interval_min = int(os.getenv("SCAN_INTERVAL_MIN", "5"))
+
         self.dispatcher = SignalDispatcher(dedup_minutes=60)
         self.scanner = MarketScanner()
+        self.scanner.strategy.min_rr = self.min_rr
         self.application: Application | None = None
 
     def ensure_user(self, chat_id: int) -> None:
@@ -87,7 +91,7 @@ class TelegramTradingBot:
         self.dispatcher.register_position(signal)
         from database.db import save_signal
 
-        save_signal(signal["symbol"], signal["direction"], signal["entry"], signal["tp"], signal["sl"])
+        save_signal(signal["symbol"], signal["signal_type"], signal["entry"], signal["tp"], signal["sl"])
         auto_users = state_manager.get_all_auto_users()
         if self.default_chat_id:
             auto_users.append(int(self.default_chat_id))
@@ -95,7 +99,9 @@ class TelegramTradingBot:
         if self.application and unique_users:
             await broadcast_signal(self.application.bot, unique_users, signal)
 
-    async def scan_loop(self, interval_sec: int = 60) -> None:
+    async def scan_loop(self, interval_sec: int | None = None) -> None:
+        if interval_sec is None:
+            interval_sec = max(60, self.scan_interval_min * 60)
         while True:
             try:
                 signals = await self.scanner.scan()

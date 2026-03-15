@@ -21,11 +21,11 @@ class SignalDispatcher:
 
     def __init__(self, dedup_minutes: int = 60):
         self.dedup_window = timedelta(minutes=dedup_minutes)
-        self._recent_signals: dict[tuple[str, str], datetime] = {}
+        self._recent_signals: dict[tuple[str, str, float], datetime] = {}
         self._open_positions: dict[str, Position] = {}
 
     def is_duplicate(self, signal: dict) -> bool:
-        key = (signal["symbol"], signal["direction"])
+        key = (signal["symbol"], signal["direction"], round(float(signal["entry"]), 8))
         now = datetime.utcnow()
         prev = self._recent_signals.get(key)
         if prev and now - prev < self.dedup_window:
