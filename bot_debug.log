@@ -1,0 +1,394 @@
+2026-03-16 00:21:26,357 - crypto_bot - INFO - 🐍 Запуск скрипта main.py
+2026-03-16 00:21:26,358 - crypto_bot - INFO - 🔥 Вход в основную функцию main()
+2026-03-16 00:21:26,358 - crypto_bot - INFO - ============================================================
+2026-03-16 00:21:26,358 - crypto_bot - INFO - 🚀 ЗАПУСК БОТА
+2026-03-16 00:21:26,359 - crypto_bot - INFO - ============================================================
+2026-03-16 00:21:26,359 - crypto_bot - INFO - 📁 Рабочая директория: C:\Users\user\Desktop\crypto_botV2
+2026-03-16 00:21:26,359 - crypto_bot - INFO - 🐍 Python версия: 3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]
+2026-03-16 00:21:26,360 - crypto_bot - INFO - 🧵 Активных потоков: 1
+2026-03-16 00:21:26,360 - crypto_bot - INFO - ✅ python-telegram-bot версия: 20.7
+2026-03-16 00:21:26,360 - crypto_bot - INFO - ✅ CCXT версия: 4.5.42
+2026-03-16 00:21:26,361 - crypto_bot - INFO - 📂 Проверка структуры проекта:
+2026-03-16 00:21:26,361 - crypto_bot - INFO -   ✅ Папка database/ найдена
+2026-03-16 00:21:26,361 - crypto_bot - INFO -   ✅ Папка tg_bot/ найдена
+2026-03-16 00:21:26,362 - crypto_bot - INFO -   ✅ Папка utils/ найдена
+2026-03-16 00:21:26,362 - crypto_bot - INFO -   ✅ Файл .env найден
+2026-03-16 00:21:26,369 - crypto_bot - INFO - 🔄 Инициализация базы данных...
+2026-03-16 00:21:26,370 - crypto_bot - INFO - ✅ База данных инициализирована успешно
+2026-03-16 00:21:26,370 - crypto_bot - INFO - 🔄 Создание экземпляра бота...
+2026-03-16 00:21:26,557 - crypto_bot - INFO - ✅ Экземпляр бота создан успешно
+2026-03-16 00:21:26,557 - crypto_bot - INFO - 🔄 Инициализация бота (загрузка токена, настройка)...
+2026-03-16 00:21:26,725 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-16 00:21:26,725 - crypto_bot - INFO - ✅ Бот инициализирован успешно
+2026-03-16 00:21:26,726 - crypto_bot - INFO - 🎯 Бот готов к работе, запускаем polling...
+2026-03-16 00:21:26,726 - crypto_bot - INFO - ⏳ Если бот зависнет, следующая строка (✅ Polling завершён) НЕ появится
+2026-03-16 00:21:26,726 - crypto_bot - INFO - 🔄 Запуск Telegram polling...
+2026-03-16 00:21:26,726 - crypto_bot - INFO - 📡 Бот начинает прослушивание обновлений (ожидание команд)...
+2026-03-16 00:21:56,792 - crypto_bot - ERROR - ❌ Ошибка в polling: Timed out
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_transports\default.py", line 66, in map_httpcore_exceptions
+    yield
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_transports\default.py", line 366, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection.py", line 101, in handle_async_request
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection.py", line 156, in _connect
+    stream = await stream.start_tls(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_backends\anyio.py", line 67, in start_tls
+    with map_exceptions(exc_map):
+  File "D:\Python 3.11\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectTimeout
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 268, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1530, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1617, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1645, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1682, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1719, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_transports\default.py", line 365, in handle_async_request
+    with map_httpcore_exceptions():
+  File "D:\Python 3.11\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_transports\default.py", line 83, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectTimeout
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 100, in run_polling_with_logging
+    bot.run_polling()
+  File "C:\Users\user\Desktop\crypto_botV2\tg_bot\bot.py", line 137, in run_polling
+    self.application.run_polling(drop_pending_updates=True)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 818, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1006, in __run
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 995, in __run
+    loop.run_until_complete(self.initialize())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 477, in initialize
+    await self.bot.initialize()
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_extbot.py", line 286, in initialize
+    await super().initialize()
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 735, in initialize
+    await self.get_me()
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_extbot.py", line 1697, in get_me
+    return await super().get_me(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 525, in decorator
+    result = await func(self, *args, **kwargs)  # skipcq: PYL-E1102
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 775, in get_me
+    result = await self._post(
+             ^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 613, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_extbot.py", line 340, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 641, in _do_post
+    return await request.post(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_baserequest.py", line 200, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_baserequest.py", line 340, in _request_wrapper
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_baserequest.py", line 330, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 285, in do_request
+    raise TimedOut from err
+telegram.error.TimedOut: Timed out
+2026-03-16 00:21:56,799 - crypto_bot - ERROR - 💥 КРИТИЧЕСКАЯ ОШИБКА основного цикла: Timed out
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_transports\default.py", line 66, in map_httpcore_exceptions
+    yield
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_transports\default.py", line 366, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection.py", line 101, in handle_async_request
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection.py", line 156, in _connect
+    stream = await stream.start_tls(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_backends\anyio.py", line 67, in start_tls
+    with map_exceptions(exc_map):
+  File "D:\Python 3.11\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectTimeout
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 268, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1530, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1617, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1645, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1682, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1719, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_transports\default.py", line 365, in handle_async_request
+    with map_httpcore_exceptions():
+  File "D:\Python 3.11\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_transports\default.py", line 83, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectTimeout
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 132, in <module>
+    main()
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 124, in main
+    run_polling_with_logging(bot)
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 100, in run_polling_with_logging
+    bot.run_polling()
+  File "C:\Users\user\Desktop\crypto_botV2\tg_bot\bot.py", line 137, in run_polling
+    self.application.run_polling(drop_pending_updates=True)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 818, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1006, in __run
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 995, in __run
+    loop.run_until_complete(self.initialize())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 477, in initialize
+    await self.bot.initialize()
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_extbot.py", line 286, in initialize
+    await super().initialize()
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 735, in initialize
+    await self.get_me()
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_extbot.py", line 1697, in get_me
+    return await super().get_me(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 525, in decorator
+    result = await func(self, *args, **kwargs)  # skipcq: PYL-E1102
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 775, in get_me
+    result = await self._post(
+             ^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 613, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_extbot.py", line 340, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 641, in _do_post
+    return await request.post(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_baserequest.py", line 200, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_baserequest.py", line 340, in _request_wrapper
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_baserequest.py", line 330, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 285, in do_request
+    raise TimedOut from err
+telegram.error.TimedOut: Timed out
+2026-03-16 00:21:56,801 - crypto_bot - ERROR - ❌ Бот аварийно завершил работу
+2026-03-16 00:21:56,802 - crypto_bot - INFO - 🏁 Завершение работы main.py
+2026-03-16 00:21:56,802 - crypto_bot - INFO - ⏰ Время остановки: 2026-03-16 00:21:56
+2026-03-16 00:23:12,819 - crypto_bot - INFO - 🐍 Запуск скрипта main.py
+2026-03-16 00:23:12,819 - crypto_bot - INFO - ==================================================
+2026-03-16 00:23:12,819 - crypto_bot - INFO - 🚀 ЗАПУСК БОТА
+2026-03-16 00:23:12,820 - crypto_bot - INFO - ==================================================
+2026-03-16 00:23:12,820 - crypto_bot - INFO - 📁 Рабочая директория: C:\Users\user\Desktop\crypto_botV2
+2026-03-16 00:23:12,820 - crypto_bot - INFO - 🔄 Инициализация базы данных...
+2026-03-16 00:23:12,821 - crypto_bot - INFO - ✅ База данных инициализирована
+2026-03-16 00:23:12,822 - crypto_bot - INFO - 🔄 Создание экземпляра бота...
+2026-03-16 00:23:13,000 - crypto_bot - INFO - ✅ Экземпляр бота создан
+2026-03-16 00:23:13,001 - crypto_bot - INFO - 🔄 Инициализация бота...
+2026-03-16 00:23:13,171 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-16 00:23:13,172 - crypto_bot - INFO - ✅ Бот инициализирован
+2026-03-16 00:23:13,172 - crypto_bot - INFO - 📡 Запуск Telegram polling...
+2026-03-16 00:23:13,172 - crypto_bot - INFO - ⏳ Ожидание команд... (если бот зависнет, следующая строка не появится)
+2026-03-16 00:23:43,284 - crypto_bot - ERROR - 💥 Критическая ошибка: Timed out
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_transports\default.py", line 66, in map_httpcore_exceptions
+    yield
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_transports\default.py", line 366, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection.py", line 101, in handle_async_request
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection.py", line 156, in _connect
+    stream = await stream.start_tls(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_backends\anyio.py", line 67, in start_tls
+    with map_exceptions(exc_map):
+  File "D:\Python 3.11\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectTimeout
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 268, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1530, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1617, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1645, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1682, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1719, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_transports\default.py", line 365, in handle_async_request
+    with map_httpcore_exceptions():
+  File "D:\Python 3.11\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_transports\default.py", line 83, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectTimeout
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 60, in <module>
+    main()
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 51, in main
+    bot.run_polling()
+  File "C:\Users\user\Desktop\crypto_botV2\tg_bot\bot.py", line 137, in run_polling
+    self.application.run_polling(drop_pending_updates=True)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 818, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1006, in __run
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 995, in __run
+    loop.run_until_complete(self.initialize())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 477, in initialize
+    await self.bot.initialize()
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_extbot.py", line 286, in initialize
+    await super().initialize()
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 735, in initialize
+    await self.get_me()
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_extbot.py", line 1697, in get_me
+    return await super().get_me(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 525, in decorator
+    result = await func(self, *args, **kwargs)  # skipcq: PYL-E1102
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 775, in get_me
+    result = await self._post(
+             ^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 613, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_extbot.py", line 340, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 641, in _do_post
+    return await request.post(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_baserequest.py", line 200, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_baserequest.py", line 340, in _request_wrapper
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_baserequest.py", line 330, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 285, in do_request
+    raise TimedOut from err
+telegram.error.TimedOut: Timed out
+2026-03-16 00:23:43,291 - crypto_bot - INFO - 🏁 Завершение работы
+2026-03-16 00:27:43,086 - crypto_bot - INFO - 🐍 Запуск скрипта main.py
+2026-03-16 00:27:43,087 - crypto_bot - INFO - ==================================================
+2026-03-16 00:27:43,087 - crypto_bot - INFO - 🚀 ЗАПУСК БОТА
+2026-03-16 00:27:43,087 - crypto_bot - INFO - ==================================================
+2026-03-16 00:27:43,087 - crypto_bot - INFO - 📁 Рабочая директория: C:\Users\user\Desktop\crypto_botV2
+2026-03-16 00:27:43,088 - crypto_bot - INFO - 🔄 Инициализация базы данных...
+2026-03-16 00:27:43,088 - crypto_bot - INFO - ✅ База данных инициализирована
+2026-03-16 00:27:43,089 - crypto_bot - INFO - 🔄 Создание экземпляра бота...
+2026-03-16 00:27:43,269 - crypto_bot - INFO - 🔄 MarketScanner инициализирован
+2026-03-16 00:27:43,269 - crypto_bot - INFO - ✅ Экземпляр бота создан
+2026-03-16 00:27:43,270 - crypto_bot - INFO - 🔄 Инициализация бота...
+2026-03-16 00:27:43,439 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-16 00:27:43,439 - crypto_bot - INFO - ✅ Бот инициализирован
+2026-03-16 00:27:43,440 - crypto_bot - INFO - 📡 Запуск Telegram polling...
+2026-03-16 00:27:43,440 - crypto_bot - INFO - ⏳ Ожидание команд... (если бот зависнет, следующая строка не появится)
+2026-03-16 00:28:12,002 - crypto_bot - INFO - ✅ Polling завершён (бот остановлен)
+2026-03-16 00:28:12,002 - crypto_bot - INFO - 🏁 Завершение работы

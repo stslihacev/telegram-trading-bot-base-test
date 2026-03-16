@@ -8,7 +8,7 @@ import pandas as pd
 
 from core.config import MIN_CHANGE_24H, MIN_VOLUME_24H, TOP_N
 from scanner.volume_scanner import get_top_usdt_pairs
-from telegram_bot.strategy_adapter import BacktestStrategyAdapter
+from services.strategy_adapter import BacktestStrategyAdapter
 from utils.logger import logger
 
 
