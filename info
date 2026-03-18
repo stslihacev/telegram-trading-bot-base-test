@@ -1,0 +1,334 @@
+Структурный отчёт по покрытию параметров и расхождениям backtest vs live
+Краткий вывод
+Сейчас в репозитории есть две разные live-ветки логики:
+
+Актуальная ветка, которую реально поднимает Telegram-бот:
+telegram_bot.bot -> scanner.market_scanner -> services.strategy_adapter -> backtest.backtest_engine. Она напрямую использует BosStrategy.generate_signal() из backtest-движка. 
+
+Старая/параллельная ветка: core/engine.py. Она использует analysis.confidence и analysis.levels, но не подключена к Telegram-боту, и логика в ней заметно отличается от backtest-стратегии. 
+
+Именно из-за этого у вас сейчас есть ощущение, что параметры “централизованы”, но на практике часть из них:
+
+применяется только в одной из веток,
+
+либо вообще не подключена,
+
+либо помечена как [BACKTEST ONLY], но всё равно может влиять на live через адаптер.
+
+✅ Parameters correctly applied in live scanning
+1) Базовые live-параметры сканера действительно подключены
+scanner/market_scanner.py использует централизованные TOP_N, SCAN_TIMEFRAME, SCAN_CANDLE_LIMIT, MIN_VOLUME_24H, MIN_CHANGE_24H. Это влияет на universe scan, таймфрейм и лимит свечей. 
+
+telegram_bot/bot.py использует MIN_SIGNAL_RR, SCAN_INTERVAL, SCAN_INTERVAL_MIN, TOP_N, а затем передаёт MIN_SIGNAL_RR в live-сканер через self.scanner.strategy.min_rr. 
+
+2) Multi-timeframe analysis (MTF) в актуальном live-пайплайне есть
+В адаптере live-сканер строит df_4h и передаёт его в BosStrategy.generate_signal(). 
+
+В backtest-движке MTF реально участвует:
+
+конфигурируется через MTF_FILTER_ADX_MIN_1H, MTF_FILTER_ADX_MIN_4H, MTF_FILTER_LOGIC,
+
+сохраняется в self.filter_config,
+
+проверяется через check_mtf_filters(),
+
+и при провале может резать сигнал, если ALLOW_STANDALONE_MTF_TRADES=False. 
+
+Итог: MTF в live есть, но через backtest-адаптер, а не через core.engine.py. 
+
+3) BOS detection в актуальном live-пайплайне есть
+Адаптер вызывает BosStrategy.generate_signal(), а внутри него структура определяется через liquidity_sweep() и detect_bos_fast(). 
+
+Дальше стратегия реально строит сценарии BOS/SWEEP, проверяет bias/regime и применяет BOS-фильтры. 
+
+Итог: BOS в live подключён корректно, но только в актуальной ветке через адаптер. 
+
+4) Momentum entries в актуальном live-пайплайне есть
+Backtest-стратегия хранит BOS-контекст и допускает momentum-entry, если выполнены:
+
+MOMENTUM_EXTENSION_ATR_MULTIPLIER,
+
+MOMENTUM_ENTRY_MIN_BODY_RATIO,
+
+MOMENTUM_ENTRY_MIN_ADX,
+
+окно MOMENTUM_ENTRY_CANDLES + MOMENTUM_ENTRY_MAX_EXTENSION. 
+
+Дополнительно внутри BOS-зоны есть ещё fallback momentum-entry по MOMENTUM_ENTRY_MIN_BODY_RATIO и MOMENTUM_ENTRY_MIN_ADX. 
+
+Итог: momentum entries в live есть, опять же через adapter -> backtest engine. 
+
+5) Volatility, RR и confidence filters в актуальном live-пайплайне есть
+В backtest-стратегии, которую использует live:
+
+confidence-фильтр: CONFIDENCE_THRESHOLD_BACKTEST, BOS_CONFIDENCE_THRESHOLD; 
+
+RR-фильтр: MIN_RR, MAX_RR; 
+
+volatility-фильтр: VOLATILITY_FILTER_MIN_ATR_RATIO, VOLATILITY_FILTER_MAX_ATR_RATIO. 
+
+Плюс на уровне universe scan live-сканер применяет 24h volume/change фильтры. 
+
+Итог: RR / confidence / volatility в live реально есть. 24h volume-фильтр тоже есть. 
+
+⚠️ Parameters only in backtest / potentially conflicting
+Ниже самое важное: ряд параметров в core/config.py помечены как [BACKTEST ONLY], но актуальный live-сканер всё равно заходит в backtest/backtest_engine.py через адаптер, значит они могут влиять на live, если заданы через env. 
+
+1) ENTRY_ZONE_TOLERANCE_PCT — потенциально влияет на live
+В конфиге он помечен как [BACKTEST ONLY]. 
+
+Но в backtest-движке он читается через os.getenv() и участвует в расчёте ширины BOS zone. Это напрямую влияет на допуск входа. F:backtest/backtest_engine.py†L145-L146】
+
+Вердикт: не за-gated для live. Если env выставлен, live-сканер будет использовать его. 
+
+2) MOMENTUM_ENTRY_MAX_EXTENSION — потенциально влияет на live
+В конфиге параметр отмечен как [BACKTEST ONLY]. 
+
+Но в backtest-движке он читается через env и участвует в live-compatible momentum window. 
+
+Вердикт: тоже не за-gated для live. Через адаптер влияет на live. 
+
+3) ENTRY_ZONE_ATR_MULTIPLIER, ENTRY_CONDITION_VARIANT, HTF_FILTER_VARIANT, ENTRY_CONFIRMATION_VARIANT, MOMENTUM_ENTRY_CANDLES
+Все они:
+
+помечены в core/config.py как backtest-only, 
+
+но в backtest/backtest_engine.py читаются через os.getenv() и участвуют в signal generation. 
+
+Вердикт: это не “безопасно отключённые live-параметры”, а скорее скрытые live-overrides через env.
+
+4) BACKTEST_VERBOSE — live не ломает, но gating неполный
+В конфиге — [BACKTEST ONLY]. 
+
+В движке читается через env и используется только для логов/progress bar. На качество сигнала не влияет. 
+
+Вердикт: для live-сигналов безопасен, но формально не отделён от live-кода.
+
+5) MAX_TRADE_BARS — не влияет на live signal generation
+В конфиге это backtest-only параметр длительности сделки. 
+
+В backtest-движке он применяется только при выходе из уже открытой simulated-позиции по timeout. 
+
+Вердикт: на live-сканирование сигналов не влияет.
+
+❌ Parameters missing or not connected to live scanning
+1) SWING_WINDOW не подключён к актуальному BOS/swing live-пайплайну
+В core/config.py заявлен централизованный SWING_WINDOW = 5. 
+
+analysis.levels.py действительно использует SWING_WINDOW для поиска swing high/low. 
+
+Но актуальный live-сканер через adapter/backtest path использует не analysis.levels.find_swing_*, а backtest.backtest_engine.calculate_swings(df, left=2, right=2), причём add_indicators() вызывает её без передачи SWING_WINDOW, т.е. остаётся жёсткий default 2. 
+
+Это один из главных багов централизации.
+Для BOS/swing-логики в актуальном live пути SWING_WINDOW из core/config.py фактически не работает. 
+
+2) analysis.confidence.py не подключён к актуальному live scanner path
+analysis.confidence.py использует централизованные веса и thresholds:
+
+CONFIDENCE_WEIGHT_*,
+
+CONFIDENCE_ADX_THRESHOLD,
+
+CONFIDENCE_RSI_*,
+
+CONFIDENCE_VOLUME_RATIO,
+
+CONFIDENCE_ATR_RATIO,
+
+CONFIDENCE_RANGE_PCT. 
+
+Но актуальный scanner path (market_scanner -> strategy_adapter -> backtest_engine) вообще не вызывает analysis.confidence.calculate_confidence(). Он уходит в backtest.backtest_engine.calculate_confidence_score(), где confidence считается отдельной, более простой логикой на 0–5 и даже содержит хардкод atr > atr_mean * 0.8. 
+
+Итог: параметры confidence из analysis/confidence.py не управляют актуальным live scanner path.
+
+3) core.engine.py не зеркалит backtest-стратегию
+core.engine.py:
+
+берёт направление просто по последнему изменению close (get_direction), 
+
+затем ставит TP/SL через get_nearest_levels(), 
+
+и фильтрует ATR/ADX/volume/confidence/RR. 
+
+Но там нет:
+
+BOS detection,
+
+MTF confirm,
+
+momentum entry logic,
+
+BOS zone logic,
+
+BOS ADX/DI gating.
+
+То есть core.engine.py — это отдельная упрощённая стратегия, а не live-копия backtest-пайплайна. 
+
+4) SWING_WINDOW, CORRELATION_THRESHOLD, CORRELATION_WINDOW импортируются в core.engine.py, но не используются
+core.engine.py импортирует SWING_WINDOW, CORRELATION_THRESHOLD, CORRELATION_WINDOW, а также calculate_correlation, но дальше в коде они не задействуются. 
+
+Итог: это либо dead config, либо следы старой логики.
+
+5) BTC_DROP_THRESHOLD и BTC_LOOKBACK_HOURS из config сейчас не подключены
+Параметры есть в конфиге, и даже комментарий говорит, что они “почти не задействованы”. 
+
+В рассмотренных live/backtest модулях их использования нет.
+Итог: сейчас это фактически dead config для сигналогенерации.
+
+6) Ряд backtest-констант из core/config.py не подключён к реальному backtest_engine
+В core/config.py есть:
+
+BACKTEST_DATA_DIR,
+
+BACKTEST_PROGRESS_FILE,
+
+BACKTEST_START_DATE_FULL,
+
+BACKTEST_START_DATE_TEST,
+
+BACKTEST_END_DATE,
+
+BACKTEST_COMMISSION,
+
+BACKTEST_FEE_RATE,
+
+BACKTEST_SLIPPAGE_RATE. 
+
+Но backtest/backtest_engine.py продолжает держать локальные литералы:
+
+DATA_DIR = "backtest/data",
+
+END_DATE = "2026-02-26",
+
+INITIAL_CAPITAL = 100,
+
+COMMISSION = 0.0005,
+
+FEE_RATE = 0.001,
+
+SLIPPAGE_RATE = 0.0004,
+
+PROGRESS_FILE = "backtest/progress.txt". 
+
+Итог: централизация конфига здесь неполная — значения существуют в core/config.py, но backtest engine их не берёт.
+
+🔧 Recommendations for ensuring the live scanner fully mirrors the backtest strategy
+1) Зафиксировать один “истинный” live pipeline
+Сейчас реальный бот использует MarketScanner + BacktestStrategyAdapter, а core.engine.py живёт отдельной жизнью. Это главный источник путаницы. 
+
+Рекомендация:
+
+либо официально объявить core.engine.py legacy и убрать его из критического пути,
+
+либо переписать его так, чтобы он вызывал тот же BacktestStrategyAdapter.
+
+2) Подключить SWING_WINDOW в backtest/live BOS logic
+Сейчас BOS-свинги считают left=2, right=2, а не SWING_WINDOW. 
+
+Рекомендация:
+заменить calculate_swings(df) на что-то вроде:
+
+calculate_swings(df, left=SWING_WINDOW, right=SWING_WINDOW),
+
+и импортировать SWING_WINDOW из core.config.
+
+Это критично, если вы хотите одинаковые swing-levels в backtest и live.
+
+3) Развести truly backtest-only флаги и live-compatible strategy flags
+Сейчас параметры вроде ENTRY_ZONE_TOLERANCE_PCT, HTF_FILTER_VARIANT, ENTRY_CONFIRMATION_VARIANT, MOMENTUM_ENTRY_MAX_EXTENSION помечены как backtest-only, но через env реально влияют на live. 
+
+Рекомендация:
+ввести явный режим, например:
+
+RUN_MODE = "live" | "backtest",
+
+и в live либо запрещать эти overrides,
+
+либо явно разрешать только те, которые действительно нужны live.
+
+4) Убрать хардкоды из backtest/backtest_engine.py и читать defaults из core/config.py
+Сейчас централизация неполная: часть параметров импортируется из core/config.py, а часть дублируется строковыми литералами. 
+
+Рекомендация:
+все такие строки заменить на:
+
+os.getenv("X", str(CONFIG_X)),
+
+где CONFIG_X импортируется из core.config.
+
+Иначе “централизация” будет только видимостью.
+
+5) Если нужен именно weighted confidence из analysis/confidence.py, его надо реально включить в active live path
+Сейчас активный live path использует calculate_confidence_score() из backtest engine, а не analysis.confidence.calculate_confidence(). 
+
+Рекомендация:
+выбрать одно из двух:
+
+либо считать analysis/confidence.py legacy и удалить лишние параметры,
+
+либо внедрить его в актуальный live/backtest pipeline, чтобы CONFIDENCE_WEIGHT_* и related thresholds реально влияли на сигналы.
+
+6) Очистить dead config и dead imports
+На текущий момент выглядят мёртвыми или не подключёнными:
+
+BTC_DROP_THRESHOLD,
+
+BTC_LOOKBACK_HOURS,
+
+CORRELATION_THRESHOLD,
+
+CORRELATION_WINDOW,
+
+SWING_WINDOW в core.engine.py,
+
+часть BACKTEST_* параметров, которые дублируются литералами. 
+
+Итог по 5 вашим пунктам
+1) Verify full parameter coverage
+Не пройдено полностью.
+Да, актуальный live scanner наследует много параметров из backtest через adapter, но:
+
+SWING_WINDOW не подключён к BOS swings,
+
+weighted confidence из analysis/confidence.py не используется в active live path,
+
+core.engine.py живёт по другой логике. 
+
+2) Check for backtest-only conflicts
+Есть конфликты.
+ENTRY_ZONE_TOLERANCE_PCT, MOMENTUM_ENTRY_MAX_EXTENSION и ряд соседних флагов могут влиять на live, потому что live вызывает backtest engine напрямую. BACKTEST_VERBOSE и MAX_TRADE_BARS на live signal generation не влияют. 
+
+3) Ensure full live coverage
+MTF — да. 
+
+Swing-level detection (SWING_WINDOW) — нет, не полностью. 
+
+BOS — да. 
+
+Momentum entries — да. 
+
+Volume / volatility / RR / confidence filters — частично:
+
+volatility / RR / confidence — да, в active path; 
+
+volume — только 24h universe filter в active path, а weighted/local volume scoring из analysis.confidence.py живёт в другой ветке. 
+
+4) Check for dead or unused parameters
+Да:
+
+BTC_DROP_THRESHOLD, BTC_LOOKBACK_HOURS; 
+
+CORRELATION_THRESHOLD, CORRELATION_WINDOW в core.engine.py фактически не используются; 
+
+часть BACKTEST_* параметров из config не подключена к реальному engine. 
+
+5) Report discrepancies
+Главные причины потенциальных missed signals / conflicting filters:
+
+бот использует adapter->backtest, а не core.engine; 
+
+SWING_WINDOW не управляет BOS swing detection; 
+
+часть “backtest-only” флагов на самом деле протекает в live через env; 
+
+weighted confidence/volume model из analysis.confidence.py не используется в active scanner path. 
