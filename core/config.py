@@ -27,8 +27,8 @@ ANALYSIS_DELAY = 300
 # Пауза между проходами цикла анализа в core.engine, в секундах.
 # Синхронизирована с live scan, чтобы не было конфликтов по частоте.
 
-SCAN_TIMEFRAME = "1h"
-# Базовый таймфрейм live-анализа и сканирования.
+SCAN_TIMEFRAME = "30m"
+# Базовый таймфрейм live-анализа и сканирования. 1h или 30m для более частых сигналов; можно оставить 1h и использовать MTF для разных таймфреймов
 
 SCAN_CANDLE_LIMIT = 220
 # Сколько свечей загружать для анализа.
@@ -41,7 +41,7 @@ LIVE_ADX_MIN = 23.0
 LIVE_VOLUME_MA_WINDOW = 20
 # Окно средней объёмной свечи для локального фильтра текущего объёма.
 
-CONFIDENCE_THRESHOLD = 2.0
+CONFIDENCE_THRESHOLD = 1.0
 # Минимальный общий confidence для live-сигнала.
 # Значение 2.0 лучше согласовано с логикой backtest-стратегии,
 # чем прежний слишком мягкий порог 1.0.
@@ -220,12 +220,12 @@ MOMENTUM_EXTENSION_ATR_MULTIPLIER = 0.5
 MODE_FILTER = "ALL"
 # Режим отбора рынка для стратегии: ALL / TREND / RANGE.
 
-ENABLE_BOS_IN_RANGE = False
-# Разрешать ли BOS-сигналы в range-режиме.
+ENABLE_BOS_IN_RANGE = True
+# Разрешать ли BOS-сигналы в range-режиме. True / False
 # Для live по умолчанию лучше держать False, чтобы не плодить спорные сигналы.
 
-ENABLE_SWEEP_IN_TREND = False
-# Разрешать ли sweep-сигналы в тренде.
+ENABLE_SWEEP_IN_TREND = True
+# Разрешать ли sweep-сигналы в тренде. True / False
 # Для live по умолчанию False: меньше конфликтов между mean-reversion и trend-following.
 
 SOFTER_CONFIDENCE_FILTER = False
