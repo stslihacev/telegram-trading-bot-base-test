@@ -4,6 +4,7 @@ import pandas as pd
 import ccxt
 from pybit.unified_trading import HTTP
 from datetime import datetime
+from core.config import BACKTEST_API_MIN_INTERVAL
 
 # ===== НАСТРОЙКИ =====
 TOP_N = 50                # сколько топ-монет скачивать
@@ -37,7 +38,9 @@ class GlobalRateLimiter:
         self._last_call = time.monotonic()
 
 
-RATE_LIMITER = GlobalRateLimiter(min_interval_s=float(os.getenv("BACKTEST_API_MIN_INTERVAL", "0.25")))
+RATE_LIMITER = GlobalRateLimiter(
+    min_interval_s=float(os.getenv("BACKTEST_API_MIN_INTERVAL", str(BACKTEST_API_MIN_INTERVAL)))
+)
 
 # Функция для получения списка топ-монет по объёму
 def get_top_symbols(limit=TOP_N):

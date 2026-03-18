@@ -33,7 +33,28 @@ from core.config import (
     ATR_TP_MULTIPLIER,
     MIN_RISK_USDT as CFG_MIN_RISK_USDT,
     MAX_POSITION_UNITS as CFG_MAX_POSITION_UNITS,
-    MAX_POSITION_VALUE as CFG_MAX_POSITION_VALUE
+    MAX_POSITION_VALUE as CFG_MAX_POSITION_VALUE,
+    MARKET_REGIME_ADX_THRESHOLD as CFG_MARKET_REGIME_ADX_THRESHOLD,
+    SWEEP_LOOKBACK as CFG_SWEEP_LOOKBACK,
+    CONFIRM_CANDLE_MIN_BODY_RATIO as CFG_CONFIRM_CANDLE_MIN_BODY_RATIO,
+    CONFIDENCE_THRESHOLD_BACKTEST as CFG_CONFIDENCE_THRESHOLD_BACKTEST,
+    BOS_CONFIDENCE_THRESHOLD as CFG_BOS_CONFIDENCE_THRESHOLD,
+    BOS_ADX_MIN as CFG_BOS_ADX_MIN,
+    BOS_ADX_BLOCKED_LOW as CFG_BOS_ADX_BLOCKED_LOW,
+    BOS_ADX_BLOCKED_HIGH as CFG_BOS_ADX_BLOCKED_HIGH,
+    BOS_ADX_ALLOWED_MIN as CFG_BOS_ADX_ALLOWED_MIN,
+    BOS_ADX_ALLOWED_MAX as CFG_BOS_ADX_ALLOWED_MAX,
+    RANGE_ADX_MAX as CFG_RANGE_ADX_MAX,
+    DI_DELTA as CFG_DI_DELTA,
+    BOS_ZONE_ATR_TOLERANCE_MULTIPLIER as CFG_BOS_ZONE_ATR_TOLERANCE_MULTIPLIER,
+    BOS_ZONE_EXPANSION_TOLERANCE as CFG_BOS_ZONE_EXPANSION_TOLERANCE,
+    BOS_MIN_ZONE_ATR_MULTIPLIER as CFG_BOS_MIN_ZONE_ATR_MULTIPLIER,
+    BOS_PARTIAL_ENTRY_RATIO as CFG_BOS_PARTIAL_ENTRY_RATIO,
+    MOMENTUM_ENTRY_MIN_BODY_RATIO as CFG_MOMENTUM_ENTRY_MIN_BODY_RATIO,
+    MOMENTUM_ENTRY_MIN_ADX as CFG_MOMENTUM_ENTRY_MIN_ADX,
+    MOMENTUM_EXTENSION_ATR_MULTIPLIER as CFG_MOMENTUM_EXTENSION_ATR_MULTIPLIER,
+    VOLATILITY_FILTER_MIN_ATR_RATIO as CFG_VOLATILITY_FILTER_MIN_ATR_RATIO,
+    VOLATILITY_FILTER_MAX_ATR_RATIO as CFG_VOLATILITY_FILTER_MAX_ATR_RATIO,
 )
 class Diagnostics:
     def __init__(self):
@@ -850,7 +871,7 @@ def get_market_regime(df, i):
 
     adx = df['adx'].iloc[i]
 
-    if adx >= 23:  # ADX N и выше = тренд
+    if adx >= CFG_MARKET_REGIME_ADX_THRESHOLD:  # ADX N и выше = тренд
         return "TREND"
     else:
         return "RANGE"
@@ -882,7 +903,7 @@ def detect_bos_fast(i, close_arr, high_arr, low_arr,
 
     return None
 
-def liquidity_sweep(df, i, lookback=20):
+def liquidity_sweep(df, i, lookback=CFG_SWEEP_LOOKBACK):
     if i < lookback + 1:
         return None
     recent_high = df['high'].iloc[i-lookback:i].max()
@@ -2055,9 +2076,9 @@ class BosStrategy(Strategy):
                 atr_now = float(np.nan_to_num(atr_arr[i], nan=0.0))
                 extension = (close_arr[i] - bos_level) if bos_ctx["direction"] == "LONG" else (bos_level - close_arr[i])
                 momentum_ready = (
-                    extension > (0.5 * atr_now)
-                    and adx > 25
-                    and body_ratio > 0.6
+                    extension > (CFG_MOMENTUM_EXTENSION_ATR_MULTIPLIER * atr_now)
+                    and adx > CFG_BOS_ADX_MIN
+                    and body_ratio > CFG_MOMENTUM_ENTRY_MIN_BODY_RATIO
                 )
                 if (
                     direction_matches_bias
@@ -2092,9 +2113,14 @@ class BosStrategy(Strategy):
         # ===== ADX ФИЛЬТР ТОЛЬКО ДЛЯ BOS =====
         if signal_type == "BOS":
             adx_value = adx
-            if adx_value < 25:
+            if adx_value < CFG_BOS_ADX_MIN:
                 diagnostics.bos_block_adx += 1
-                return self._reject("rejected_price_condition", symbol, i, f"BOS ADX below minimum: {adx_value:.2f} < 25")
+                return self._reject(
+                    "rejected_price_condition",
+                    symbol,
+                    i,
+                    f"BOS ADX below minimum: {adx_value:.2f} < {CFG_BOS_ADX_MIN}",
+                )
 
         # ===== ОПРЕДЕЛЯЕМ FVG =====
         has_fvg = detect_fvg(df, i, direction)
@@ -2130,15 +2156,20 @@ class BosStrategy(Strategy):
         # ===== ФИЛЬТР ЭКСТРЕМАЛЬНОГО ADX =====
         if signal_type == "BOS":
             adx_value = adx
-            if 24 < adx_value < 30:
-                return self._reject("rejected_price_condition", symbol, i, f"BOS ADX in blocked band: 24 < {adx_value:.2f} < 30")
+            if CFG_BOS_ADX_BLOCKED_LOW < adx_value < CFG_BOS_ADX_BLOCKED_HIGH:
+                return self._reject(
+                    "rejected_price_condition",
+                    symbol,
+                    i,
+                    f"BOS ADX in blocked band: {CFG_BOS_ADX_BLOCKED_LOW} < {adx_value:.2f} < {CFG_BOS_ADX_BLOCKED_HIGH}",
+                )
 
         # ===== ПОДТВЕРЖДАЮЩАЯ СВЕЧА =====
         candle_body = abs(close_arr[i] - open_arr[i])
         candle_range = high_arr[i] - low_arr[i]
 
         # Минимум 50% тела от диапазона
-        if candle_range == 0 or candle_body / candle_range < 0.5:
+        if candle_range == 0 or candle_body / candle_range < CFG_CONFIRM_CANDLE_MIN_BODY_RATIO:
             ratio = 0.0 if candle_range == 0 else candle_body / candle_range
             return self._reject("rejected_price_condition", symbol, i, f"confirm candle body too small: ratio={ratio:.3f}")
 
@@ -2148,7 +2179,7 @@ class BosStrategy(Strategy):
             if pd.isna(plus_di) or pd.isna(minus_di):
                 return self._reject("rejected_other", symbol, i, "DI data is NaN")
 
-            DI_DELTA = 5
+            DI_DELTA = CFG_DI_DELTA
 
             if direction == "LONG" and plus_di <= minus_di + DI_DELTA:
                 diagnostics.bos_block_di += 1
@@ -2159,10 +2190,15 @@ class BosStrategy(Strategy):
                 return self._reject("rejected_price_condition", symbol, i, f"SHORT DI condition failed: -DI {minus_di:.2f} <= +DI {plus_di:.2f} + {DI_DELTA}")
 
         elif regime == "RANGE":
-            if adx > 25:
+            if adx > CFG_RANGE_ADX_MAX:
                 if signal_type == "BOS":
                     diagnostics.bos_block_adx += 1
-                return self._reject("rejected_price_condition", symbol, i, f"RANGE mode ADX too high: {adx:.2f} > 25")
+                return self._reject(
+                    "rejected_price_condition",
+                    symbol,
+                    i,
+                    f"RANGE mode ADX too high: {adx:.2f} > {CFG_RANGE_ADX_MAX}",
+                )
 
         # =========================
         # BOS → структурная модель (FAST VERSION)
@@ -2182,8 +2218,8 @@ class BosStrategy(Strategy):
             partial_entry_anchor = None
 
             # More permissive BOS zone touch: wider ATR gate and explicit zone expansion.
-            zone_atr_tolerance_multiplier = 1.5
-            zone_expansion_tolerance = 0.5
+            zone_atr_tolerance_multiplier = CFG_BOS_ZONE_ATR_TOLERANCE_MULTIPLIER
+            zone_expansion_tolerance = CFG_BOS_ZONE_EXPANSION_TOLERANCE
 
             if direction == "LONG":
 
@@ -2214,7 +2250,7 @@ class BosStrategy(Strategy):
 
                     # PATCH: dynamic zone size
                     zone_span = abs(zone_high - zone_low)
-                    minimum_zone = atr_arr[i] * 0.15
+                    minimum_zone = atr_arr[i] * CFG_BOS_MIN_ZONE_ATR_MULTIPLIER
                     if zone_span < minimum_zone:
                         zone_mid = (zone_high + zone_low) / 2.0
                         half_zone = minimum_zone / 2.0
@@ -2224,7 +2260,7 @@ class BosStrategy(Strategy):
                     zone_size_at_entry = zone_span
 
                     # PATCH: zone tolerance
-                    zone_tolerance = zone_span * 0.4
+                    zone_tolerance = zone_span * CFG_BOS_PARTIAL_ENTRY_RATIO
                     partial_entry_anchor = zone_high - zone_tolerance
 
                     zone_touch_low, zone_touch_high = expand_zone_with_tolerance(
@@ -2282,7 +2318,7 @@ class BosStrategy(Strategy):
 
                     # PATCH: dynamic zone size
                     zone_span = abs(zone_high - zone_low)
-                    minimum_zone = atr_arr[i] * 0.15
+                    minimum_zone = atr_arr[i] * CFG_BOS_MIN_ZONE_ATR_MULTIPLIER
                     if zone_span < minimum_zone:
                         zone_mid = (zone_high + zone_low) / 2.0
                         half_zone = minimum_zone / 2.0
@@ -2292,7 +2328,7 @@ class BosStrategy(Strategy):
                     zone_size_at_entry = zone_span
 
                     # PATCH: zone tolerance
-                    zone_tolerance = zone_span * 0.4
+                    zone_tolerance = zone_span * CFG_BOS_PARTIAL_ENTRY_RATIO
                     partial_entry_anchor = zone_low + zone_tolerance
 
                     zone_touch_low, zone_touch_high = expand_zone_with_tolerance(
@@ -2383,8 +2419,8 @@ class BosStrategy(Strategy):
             momentum_ratio = candle_body / candle_range if candle_range > 0 else 0.0
             if (
                 not zone_touch_confirmed
-                and momentum_ratio > 0.65
-                and adx > 32
+                and momentum_ratio > CFG_MOMENTUM_ENTRY_MIN_BODY_RATIO
+                and adx > CFG_MOMENTUM_ENTRY_MIN_ADX
             ):
                 entry_next_open = open_arr[i+1] if i+1 < len(open_arr) else close_arr[i]
                 entry_level = None
@@ -2475,21 +2511,26 @@ class BosStrategy(Strategy):
                     return self._reject("rejected_price_condition", symbol, i, f"RR filter failed: rr={rr:.2f}, range=[{MIN_RR},{MAX_RR}]")
 
         # ===== CONFIDENCE ФИЛЬТР =====
-        confidence_threshold = 2.0
+        confidence_threshold = CFG_CONFIDENCE_THRESHOLD_BACKTEST
         if confidence < confidence_threshold:
             return self._reject("rejected_confidence", symbol, i, f"confidence {confidence:.2f} below threshold {confidence_threshold:.2f}")
 
         # Фильтр качества BOS
         if signal_type == "BOS":
-            bos_conf_threshold = 2.4
+            bos_conf_threshold = CFG_BOS_CONFIDENCE_THRESHOLD
             if confidence < bos_conf_threshold:
                 return self._reject("rejected_confidence", symbol, i, f"BOS confidence {confidence:.2f} below threshold {bos_conf_threshold:.2f}")
 
         # Убираем перегретый тренд
         if signal_type == "BOS":
             adx_value = adx
-            if adx_value < 18 or adx_value > 55:
-                return self._reject("rejected_price_condition", symbol, i, f"BOS ADX out of [18,55]: {adx_value:.2f}")
+            if adx_value < CFG_BOS_ADX_ALLOWED_MIN or adx_value > CFG_BOS_ADX_ALLOWED_MAX:
+                return self._reject(
+                    "rejected_price_condition",
+                    symbol,
+                    i,
+                    f"BOS ADX out of [{CFG_BOS_ADX_ALLOWED_MIN},{CFG_BOS_ADX_ALLOWED_MAX}]: {adx_value:.2f}",
+                )
 
         plus_di = plus_di_arr[i]
         minus_di = minus_di_arr[i]
@@ -2503,10 +2544,20 @@ class BosStrategy(Strategy):
         if np.isnan(atr_mean):
             atr_mean = np.nanmean(atr_arr[max(0, i-50):i])
 
-        if atr < atr_mean * 0.45:  
-            return self._reject("rejected_price_condition", symbol, i, f"volatility too low: atr {atr:.6f} < atr_mean*0.45 {atr_mean * 0.45:.6f}")
-        if atr > atr_mean * 5:
-            return self._reject("rejected_price_condition", symbol, i, f"volatility too high: atr {atr:.6f} > atr_mean*5 {atr_mean * 5:.6f}")
+        if atr < atr_mean * CFG_VOLATILITY_FILTER_MIN_ATR_RATIO:
+            return self._reject(
+                "rejected_price_condition",
+                symbol,
+                i,
+                f"volatility too low: atr {atr:.6f} < atr_mean*{CFG_VOLATILITY_FILTER_MIN_ATR_RATIO} {atr_mean * CFG_VOLATILITY_FILTER_MIN_ATR_RATIO:.6f}",
+            )
+        if atr > atr_mean * CFG_VOLATILITY_FILTER_MAX_ATR_RATIO:
+            return self._reject(
+                "rejected_price_condition",
+                symbol,
+                i,
+                f"volatility too high: atr {atr:.6f} > atr_mean*{CFG_VOLATILITY_FILTER_MAX_ATR_RATIO} {atr_mean * CFG_VOLATILITY_FILTER_MAX_ATR_RATIO:.6f}",
+            )
 
         # Поля для расширенного логирования трейдов
         fvg = has_fvg

@@ -6,7 +6,7 @@ import asyncio
 import ccxt
 import pandas as pd
 
-from core.config import MIN_CHANGE_24H, MIN_VOLUME_24H, TOP_N
+from core.config import MIN_CHANGE_24H, MIN_VOLUME_24H, SCAN_CANDLE_LIMIT, SCAN_TIMEFRAME, TOP_N
 from scanner.volume_scanner import get_top_usdt_pairs
 from services.strategy_adapter import BacktestStrategyAdapter
 from utils.logger import logger
@@ -15,7 +15,7 @@ from utils.logger import logger
 class MarketScanner:
     """Сканирует рынок, фильтрует пары и отдаёт сигналы стратегии."""
 
-    def __init__(self, timeframe: str = "1h", candle_limit: int = 220):
+    def __init__(self, timeframe: str = SCAN_TIMEFRAME, candle_limit: int = SCAN_CANDLE_LIMIT):
         self.timeframe = timeframe
         self.candle_limit = candle_limit
         self.strategy = BacktestStrategyAdapter()

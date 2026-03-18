@@ -12,8 +12,8 @@ from backtest.backtest_engine import (
     build_4h_frame,
     calculate_risk_based_position_size,
 )
+from core.config import BACKTEST_INITIAL_CAPITAL, MIN_SIGNAL_RR, RISK_PER_TRADE
 from utils.logger import logger
-from core.config import MIN_SIGNAL_RR
 
 class BacktestStrategyAdapter:
     """Использует backtest.BosStrategy.generate_signal напрямую на последней свече."""
@@ -96,7 +96,11 @@ class BacktestStrategyAdapter:
                 return None
 
             risk_snapshot = dict(signal)
-            calculate_risk_based_position_size(risk_snapshot, capital=100.0, risk_factor=0.01)
+            calculate_risk_based_position_size(
+                risk_snapshot,
+                capital=BACKTEST_INITIAL_CAPITAL,
+                risk_factor=RISK_PER_TRADE,
+            )
 
             return {
                 "symbol": signal["symbol"],

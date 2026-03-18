@@ -10,6 +10,8 @@ from core.config import (
     TOP_N,
     SCAN_INTERVAL,
     ANALYSIS_DELAY,
+    SCAN_TIMEFRAME,
+    SCAN_CANDLE_LIMIT,
     CONFIDENCE_THRESHOLD,
     SWING_WINDOW,
     LOOKBACK_LEVELS,
@@ -17,7 +19,9 @@ from core.config import (
     CORRELATION_WINDOW,
     MIN_VOLUME_24H,
     MIN_CHANGE_24H,
-    VOLATILITY_THRESHOLD
+    VOLATILITY_THRESHOLD,
+    LIVE_ADX_MIN,
+    LIVE_VOLUME_MA_WINDOW,
 )
 from analysis.confidence import calculate_confidence
 from analysis.levels import get_nearest_levels
@@ -31,8 +35,8 @@ EPSILON_INITIAL_RISK = 1e-9
 from utils.csv_logger import save_trade
 
 # Настройки
-TIMEFRAME = '1h'
-LIMIT = 60
+TIMEFRAME = SCAN_TIMEFRAME
+LIMIT = SCAN_CANDLE_LIMIT
 
 _exchange = None
 
@@ -178,13 +182,13 @@ class TradingEngine:
 
                         #    Фильтр ADX
                         adx_value = df['adx'].iloc[-1]
-                        if pd.isna(adx_value) or adx_value < 23:
+                        if pd.isna(adx_value) or adx_value < LIVE_ADX_MIN:
                             logger.info(f"{symbol} ❌ ADX слабый ({adx_value:.1f})")
                             continue
 
                         # Фильтр объёма (локальный)
                         current_volume = df['volume'].iloc[-1]
-                        avg_volume = df['volume'].rolling(20).mean().iloc[-1]
+                        avg_volume = df['volume'].rolling(LIVE_VOLUME_MA_WINDOW).mean().iloc[-1]
                         if current_volume <= avg_volume:
                             logger.info(f"{symbol} ❌ Объём ниже среднего")
                             continue

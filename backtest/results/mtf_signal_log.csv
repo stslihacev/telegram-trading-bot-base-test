@@ -156,8 +156,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2022-02-03 06:00:00,UNIUSDT,SHORT,BOS,1h,aligned,candidate,
 2022-02-03 09:00:00,LTCUSDT,SHORT,BOS,30m,aligned,candidate,
 2022-02-03 09:00:00,LTCUSDT,SHORT,BOS,30m,aligned,accepted,108.73
-2022-02-03 09:00:00,NEARUSDT,SHORT,BOS,30m,aligned,candidate,
-2022-02-03 09:00:00,NEARUSDT,SHORT,BOS,30m,aligned,accepted,10.886
 2022-02-03 10:00:00,ADAUSDT,SHORT,BOS,30m,standalone,candidate,
 2022-02-03 10:00:00,ADAUSDT,SHORT,BOS,30m,standalone,accepted,1.0225
 2022-02-03 10:00:00,AVAXUSDT,SHORT,BOS,30m,aligned,candidate,
@@ -218,7 +216,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2022-02-09 18:00:00,BCHUSDT,LONG,BOS,30m,aligned,accepted,342.35
 2022-02-09 19:00:00,BNBUSDT,LONG,BOS,30m,standalone,candidate,
 2022-02-09 19:00:00,BNBUSDT,LONG,BOS,30m,standalone,accepted,423.4
-2022-02-09 19:00:00,XRPUSDT,LONG,BOS,30m,aligned,candidate,
 2022-02-09 22:00:00,ETHUSDT,LONG,BOS,30m,aligned,candidate,
 2022-02-09 22:00:00,ETHUSDT,LONG,BOS,30m,aligned,accepted,3232.3
 2022-02-10 00:00:00,BTCUSDT,LONG,BOS,30m,aligned,candidate,
@@ -694,8 +691,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2022-03-04 14:00:00,BCHUSDT,SHORT,BOS,30m,aligned,accepted,304.6
 2022-03-04 14:00:00,FILUSDT,SHORT,BOS,15m,aligned,candidate,
 2022-03-04 14:00:00,FILUSDT,SHORT,BOS,15m,aligned,accepted,19.68
-2022-03-04 15:00:00,BCHUSDT,SHORT,BOS,30m,aligned,candidate,
-2022-03-04 15:00:00,BCHUSDT,SHORT,BOS,30m,aligned,accepted,303.3
 2022-03-04 16:00:00,BCHUSDT,SHORT,BOS,30m,aligned,candidate,
 2022-03-04 16:00:00,BCHUSDT,SHORT,BOS,30m,aligned,accepted,301.2
 2022-03-04 16:00:00,LINKUSDT,SHORT,BOS,30m,aligned,candidate,
@@ -945,8 +940,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2022-03-10 14:00:00,SOLUSDT,SHORT,BOS,30m,aligned,candidate,
 2022-03-10 14:00:00,XRPUSDT,SHORT,BOS,30m,aligned,candidate,
 2022-03-10 15:00:00,SOLUSDT,SHORT,BOS,30m,aligned,candidate,
-2022-03-10 23:00:00,ADAUSDT,SHORT,BOS,30m,aligned,candidate,
-2022-03-10 23:00:00,ADAUSDT,SHORT,BOS,30m,aligned,accepted,0.8094
 2022-03-11 02:00:00,ADAUSDT,SHORT,BOS,30m,standalone,candidate,
 2022-03-11 02:00:00,ADAUSDT,SHORT,BOS,30m,standalone,accepted,0.7927
 2022-03-11 02:00:00,BCHUSDT,SHORT,BOS,30m,aligned,candidate,
@@ -1058,8 +1051,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2022-03-18 11:00:00,HBARUSDT,SHORT,BOS,15m,aligned,candidate,
 2022-03-18 11:00:00,HBARUSDT,SHORT,BOS,15m,aligned,accepted,0.20015
 2022-03-18 12:00:00,ATOMUSDT,SHORT,BOS,1h,aligned,candidate,
-2022-03-18 16:00:00,AAVEUSDT,LONG,BOS,30m,aligned,candidate,
-2022-03-18 16:00:00,AAVEUSDT,LONG,BOS,30m,aligned,accepted,152.1
 2022-03-18 17:00:00,AAVEUSDT,LONG,BOS,30m,aligned,candidate,
 2022-03-18 17:00:00,AAVEUSDT,LONG,BOS,30m,aligned,accepted,159.5
 2022-03-18 19:00:00,AAVEUSDT,LONG,BOS,30m,aligned,candidate,
@@ -1113,7 +1104,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2022-03-19 07:00:00,NEARUSDT,LONG,BOS,30m,aligned,accepted,11.19
 2022-03-19 09:00:00,LINKUSDT,LONG,BOS,30m,aligned,candidate,
 2022-03-19 09:00:00,LINKUSDT,LONG,BOS,30m,aligned,accepted,14.963
-2022-03-19 10:00:00,AXSUSDT,LONG,BOS,1h,aligned,candidate,
 2022-03-19 12:00:00,BNBUSDT,LONG,BOS,30m,aligned,candidate,
 2022-03-19 12:00:00,BNBUSDT,LONG,BOS,30m,aligned,accepted,400.75
 2022-03-19 12:00:00,DOTUSDT,LONG,BOS,30m,aligned,candidate,
@@ -1153,8 +1143,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2022-03-20 06:00:00,ADAUSDT,LONG,BOS,30m,aligned,candidate,
 2022-03-20 06:00:00,ADAUSDT,LONG,BOS,30m,aligned,accepted,0.9065
 2022-03-21 02:00:00,ATOMUSDT,SHORT,BOS,1h,standalone,candidate,
-2022-03-21 06:00:00,BCHUSDT,LONG,BOS,30m,aligned,candidate,
-2022-03-21 06:00:00,BCHUSDT,LONG,BOS,30m,aligned,accepted,327.35
 2022-03-21 08:00:00,BCHUSDT,LONG,BOS,30m,aligned,candidate,
 2022-03-21 08:00:00,BCHUSDT,LONG,BOS,30m,aligned,accepted,331.55
 2022-03-21 13:00:00,NEARUSDT,LONG,BOS,30m,aligned,candidate,
@@ -1234,7 +1222,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2022-03-22 13:00:00,LTCUSDT,LONG,BOS,30m,aligned,accepted,121.93
 2022-03-22 13:00:00,XRPUSDT,LONG,BOS,30m,standalone,candidate,
 2022-03-22 13:00:00,XRPUSDT,LONG,BOS,1h,standalone,blocked_standalone_1h,
-2022-03-22 14:00:00,SOLUSDT,LONG,BOS,30m,aligned,candidate,
 2022-03-22 18:00:00,AXSUSDT,LONG,BOS,1h,standalone,candidate,
 2022-03-22 18:00:00,LTCUSDT,LONG,BOS,30m,aligned,candidate,
 2022-03-22 18:00:00,LTCUSDT,LONG,BOS,30m,aligned,accepted,123.2
@@ -1824,7 +1811,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2022-04-22 22:00:00,ETHUSDT,SHORT,BOS,30m,aligned,accepted,2963.65
 2022-04-22 23:00:00,AVAXUSDT,SHORT,BOS,30m,aligned,candidate,
 2022-04-22 23:00:00,AVAXUSDT,SHORT,BOS,30m,aligned,accepted,74.355
-2022-04-23 02:00:00,ATOMUSDT,SHORT,BOS,1h,aligned,candidate,
 2022-04-23 03:00:00,ATOMUSDT,SHORT,BOS,1h,aligned,candidate,
 2022-04-23 05:00:00,AAVEUSDT,SHORT,BOS,30m,aligned,candidate,
 2022-04-23 05:00:00,AAVEUSDT,SHORT,BOS,30m,aligned,accepted,175.8
@@ -2092,10 +2078,7 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2022-05-06 11:00:00,ETHUSDT,SHORT,BOS,30m,aligned,accepted,2687.6
 2022-05-06 11:00:00,LINKUSDT,SHORT,BOS,30m,aligned,candidate,
 2022-05-06 11:00:00,LINKUSDT,SHORT,BOS,30m,aligned,accepted,10.715
-2022-05-06 11:00:00,LTCUSDT,SHORT,BOS,30m,aligned,candidate,
-2022-05-06 11:00:00,LTCUSDT,SHORT,BOS,30m,aligned,accepted,96.11
 2022-05-06 11:00:00,SOLUSDT,SHORT,BOS,30m,aligned,candidate,
-2022-05-06 11:00:00,XRPUSDT,SHORT,BOS,30m,aligned,candidate,
 2022-05-06 13:00:00,AAVEUSDT,SHORT,BOS,30m,aligned,candidate,
 2022-05-06 13:00:00,AAVEUSDT,SHORT,BOS,30m,aligned,accepted,135.65
 2022-05-06 13:00:00,AVAXUSDT,SHORT,BOS,30m,aligned,candidate,
@@ -2276,8 +2259,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2022-05-18 07:00:00,BTCUSDT,SHORT,BOS,30m,aligned,accepted,29722.5
 2022-05-18 07:00:00,LINKUSDT,SHORT,BOS,30m,aligned,candidate,
 2022-05-18 07:00:00,LINKUSDT,SHORT,BOS,30m,aligned,accepted,7.428
-2022-05-18 12:00:00,LINKUSDT,SHORT,BOS,30m,aligned,candidate,
-2022-05-18 12:00:00,LINKUSDT,SHORT,BOS,30m,aligned,accepted,7.483
 2022-05-18 17:00:00,ADAUSDT,SHORT,BOS,30m,aligned,candidate,
 2022-05-18 17:00:00,ADAUSDT,SHORT,BOS,30m,aligned,accepted,0.5272
 2022-05-18 17:00:00,FILUSDT,SHORT,BOS,15m,standalone,candidate,
@@ -2761,7 +2742,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2022-06-23 00:00:00,UNIUSDT,LONG,BOS,1h,aligned,candidate,
 2022-06-23 11:00:00,UNIUSDT,LONG,BOS,1h,aligned,candidate,
 2022-06-23 21:00:00,UNIUSDT,LONG,BOS,1h,aligned,candidate,
-2022-06-24 07:00:00,UNIUSDT,LONG,BOS,1h,aligned,candidate,
 2022-06-24 20:00:00,SOLUSDT,LONG,BOS,30m,aligned,candidate,
 2022-06-24 21:00:00,SOLUSDT,LONG,BOS,30m,aligned,candidate,
 2022-06-24 22:00:00,SOLUSDT,LONG,BOS,30m,aligned,candidate,
@@ -2790,8 +2770,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2022-06-27 21:00:00,LINKUSDT,SHORT,BOS,30m,aligned,accepted,6.528
 2022-06-28 02:00:00,BTCUSDT,SHORT,BOS,30m,aligned,candidate,
 2022-06-28 02:00:00,BTCUSDT,SHORT,BOS,30m,aligned,accepted,20615.0
-2022-06-28 22:00:00,AAVEUSDT,SHORT,BOS,30m,aligned,candidate,
-2022-06-28 22:00:00,AAVEUSDT,SHORT,BOS,30m,aligned,accepted,61.9
 2022-06-28 23:00:00,AAVEUSDT,SHORT,BOS,30m,aligned,candidate,
 2022-06-28 23:00:00,AAVEUSDT,SHORT,BOS,30m,aligned,accepted,59.9
 2022-06-28 23:00:00,DOTUSDT,SHORT,BOS,30m,standalone,candidate,
@@ -2801,8 +2779,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2022-06-29 06:00:00,FILUSDT,SHORT,BOS,15m,aligned,accepted,5.5
 2022-06-29 08:00:00,FILUSDT,SHORT,BOS,15m,aligned,candidate,
 2022-06-29 08:00:00,FILUSDT,SHORT,BOS,15m,aligned,accepted,5.5
-2022-06-29 12:00:00,ADAUSDT,SHORT,BOS,30m,aligned,candidate,
-2022-06-29 12:00:00,ADAUSDT,SHORT,BOS,30m,aligned,accepted,0.4692
 2022-06-29 12:00:00,FILUSDT,SHORT,BOS,15m,aligned,candidate,
 2022-06-29 12:00:00,FILUSDT,SHORT,BOS,15m,aligned,accepted,5.46
 2022-06-29 14:00:00,AXSUSDT,SHORT,BOS,1h,aligned,candidate,
@@ -3910,8 +3886,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2022-08-22 06:00:00,NEARUSDT,SHORT,BOS,30m,aligned,accepted,4.196
 2022-08-22 07:00:00,LTCUSDT,SHORT,BOS,30m,aligned,candidate,
 2022-08-22 07:00:00,LTCUSDT,SHORT,BOS,30m,aligned,accepted,53.75
-2022-08-22 07:00:00,NEARUSDT,SHORT,BOS,30m,aligned,candidate,
-2022-08-22 07:00:00,NEARUSDT,SHORT,BOS,30m,aligned,accepted,4.119
 2022-08-22 07:00:00,SOLUSDT,SHORT,BOS,30m,aligned,candidate,
 2022-08-22 08:00:00,ETHUSDT,SHORT,BOS,30m,aligned,candidate,
 2022-08-22 08:00:00,ETHUSDT,SHORT,BOS,30m,aligned,accepted,1555.7
@@ -4302,7 +4276,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2022-09-15 03:00:00,BNBUSDT,SHORT,BOS,30m,aligned,candidate,
 2022-09-15 03:00:00,BNBUSDT,SHORT,BOS,30m,aligned,accepted,276.1
 2022-09-15 04:00:00,AVAXUSDT,SHORT,BOS,30m,aligned,candidate,
-2022-09-15 04:00:00,SOLUSDT,SHORT,BOS,30m,standalone,candidate,
 2022-09-15 05:00:00,AVAXUSDT,SHORT,BOS,30m,aligned,candidate,
 2022-09-15 05:00:00,BNBUSDT,SHORT,BOS,30m,aligned,candidate,
 2022-09-15 05:00:00,BNBUSDT,SHORT,BOS,30m,aligned,accepted,275.1
@@ -4322,10 +4295,10 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2022-09-15 13:00:00,HBARUSDT,SHORT,BOS,15m,aligned,accepted,0.0624
 2022-09-15 14:00:00,BCHUSDT,SHORT,SWEEP,30m,standalone,candidate,
 2022-09-15 14:00:00,BCHUSDT,SHORT,SWEEP,30m,standalone,accepted,120.7
-2022-09-15 14:00:00,DOTUSDT,SHORT,BOS,30m,aligned,candidate,
-2022-09-15 14:00:00,DOTUSDT,SHORT,BOS,30m,aligned,accepted,7.11
 2022-09-15 14:00:00,NEARUSDT,SHORT,BOS,30m,aligned,candidate,
 2022-09-15 14:00:00,NEARUSDT,SHORT,BOS,30m,aligned,accepted,4.354
+2022-09-15 15:00:00,DOTUSDT,SHORT,BOS,30m,aligned,candidate,
+2022-09-15 15:00:00,DOTUSDT,SHORT,BOS,30m,aligned,accepted,6.965
 2022-09-15 15:00:00,NEARUSDT,SHORT,BOS,30m,aligned,candidate,
 2022-09-15 15:00:00,NEARUSDT,SHORT,BOS,30m,aligned,accepted,4.246
 2022-09-15 21:00:00,ETHUSDT,SHORT,BOS,30m,aligned,candidate,
@@ -4491,8 +4464,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2022-09-29 08:00:00,NEARUSDT,SHORT,BOS,30m,aligned,accepted,3.545
 2022-09-29 17:00:00,AAVEUSDT,SHORT,BOS,30m,standalone,candidate,
 2022-09-29 17:00:00,AAVEUSDT,SHORT,BOS,30m,standalone,accepted,76.25
-2022-09-29 17:00:00,HBARUSDT,SHORT,BOS,15m,aligned,candidate,
-2022-09-29 17:00:00,HBARUSDT,SHORT,BOS,15m,aligned,accepted,0.05735
 2022-09-30 14:00:00,ADAUSDT,SHORT,BOS,30m,standalone,candidate,
 2022-09-30 14:00:00,ADAUSDT,SHORT,BOS,30m,standalone,accepted,0.434
 2022-09-30 18:00:00,BCHUSDT,LONG,BOS,30m,aligned,candidate,
@@ -4568,7 +4539,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2022-10-06 03:00:00,XRPUSDT,LONG,BOS,30m,aligned,candidate,
 2022-10-06 07:00:00,BNBUSDT,LONG,BOS,30m,aligned,candidate,
 2022-10-06 07:00:00,BNBUSDT,LONG,BOS,30m,aligned,accepted,293.8
-2022-10-06 11:00:00,SOLUSDT,LONG,BOS,30m,aligned,candidate,
 2022-10-06 18:00:00,ADAUSDT,SHORT,BOS,30m,aligned,candidate,
 2022-10-06 18:00:00,ADAUSDT,SHORT,BOS,30m,aligned,accepted,0.4296
 2022-10-06 20:00:00,DOTUSDT,SHORT,BOS,30m,standalone,candidate,
@@ -5211,8 +5181,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2022-11-06 02:00:00,XRPUSDT,LONG,SWEEP,1h,standalone,blocked_standalone_1h,
 2022-11-07 00:00:00,APTUSDT,SHORT,BOS,30m,aligned,candidate,
 2022-11-07 00:00:00,APTUSDT,SHORT,BOS,30m,aligned,accepted,7.305
-2022-11-07 04:00:00,APTUSDT,SHORT,BOS,30m,aligned,candidate,
-2022-11-07 04:00:00,APTUSDT,SHORT,BOS,30m,aligned,accepted,7.33
 2022-11-08 01:00:00,APTUSDT,SHORT,BOS,30m,aligned,candidate,
 2022-11-08 01:00:00,APTUSDT,SHORT,BOS,30m,aligned,accepted,6.885
 2022-11-08 03:00:00,APTUSDT,SHORT,BOS,30m,aligned,candidate,
@@ -5317,7 +5285,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2022-11-09 21:00:00,AXSUSDT,SHORT,BOS,1h,aligned,candidate,
 2022-11-09 21:00:00,LTCUSDT,SHORT,BOS,30m,aligned,candidate,
 2022-11-09 21:00:00,LTCUSDT,SHORT,BOS,30m,aligned,accepted,53.06
-2022-11-09 21:00:00,OPUSDT,SHORT,BOS,1h,aligned,candidate,
 2022-11-09 21:00:00,XRPUSDT,SHORT,BOS,30m,aligned,candidate,
 2022-11-09 23:00:00,ADAUSDT,SHORT,BOS,30m,aligned,candidate,
 2022-11-09 23:00:00,ADAUSDT,SHORT,BOS,30m,aligned,accepted,0.3149
@@ -5373,8 +5340,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2022-11-13 19:00:00,SOLUSDT,SHORT,BOS,30m,aligned,candidate,
 2022-11-13 20:00:00,ADAUSDT,SHORT,BOS,30m,aligned,candidate,
 2022-11-13 20:00:00,ADAUSDT,SHORT,BOS,30m,aligned,accepted,0.334
-2022-11-13 20:00:00,APTUSDT,SHORT,BOS,30m,aligned,candidate,
-2022-11-13 20:00:00,APTUSDT,SHORT,BOS,30m,aligned,accepted,4.345
 2022-11-13 20:00:00,OPUSDT,SHORT,BOS,1h,aligned,candidate,
 2022-11-13 20:00:00,UNIUSDT,SHORT,BOS,1h,standalone,candidate,
 2022-11-13 21:00:00,ADAUSDT,SHORT,BOS,30m,aligned,candidate,
@@ -5824,8 +5789,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2022-12-19 11:00:00,DOTUSDT,SHORT,BOS,30m,aligned,candidate,
 2022-12-19 11:00:00,DOTUSDT,SHORT,BOS,30m,aligned,accepted,4.63
 2022-12-19 11:00:00,XRPUSDT,SHORT,BOS,30m,aligned,candidate,
-2022-12-19 15:00:00,LTCUSDT,SHORT,BOS,30m,aligned,candidate,
-2022-12-19 15:00:00,LTCUSDT,SHORT,BOS,30m,aligned,accepted,63.41
 2022-12-19 18:00:00,HBARUSDT,SHORT,BOS,15m,aligned,candidate,
 2022-12-19 18:00:00,HBARUSDT,SHORT,BOS,15m,aligned,accepted,0.0424
 2022-12-20 03:00:00,AVAXUSDT,SHORT,BOS,30m,aligned,candidate,
@@ -5948,8 +5911,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2022-12-29 20:00:00,AXSUSDT,SHORT,BOS,1h,aligned,candidate,
 2022-12-29 21:00:00,ADAUSDT,SHORT,BOS,30m,aligned,candidate,
 2022-12-29 21:00:00,ADAUSDT,SHORT,BOS,30m,aligned,accepted,0.2422
-2022-12-29 21:00:00,APTUSDT,SHORT,BOS,30m,aligned,candidate,
-2022-12-29 21:00:00,APTUSDT,SHORT,BOS,30m,aligned,accepted,3.175
 2022-12-29 21:00:00,AVAXUSDT,SHORT,BOS,30m,aligned,candidate,
 2022-12-29 21:00:00,AXSUSDT,SHORT,BOS,1h,aligned,candidate,
 2022-12-29 21:00:00,LINKUSDT,SHORT,BOS,30m,aligned,candidate,
@@ -7521,8 +7482,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2023-03-17 10:00:00,DOTUSDT,LONG,BOS,30m,standalone,accepted,6.34
 2023-03-17 10:00:00,LINKUSDT,LONG,BOS,30m,standalone,candidate,
 2023-03-17 10:00:00,LINKUSDT,LONG,BOS,30m,standalone,accepted,6.95
-2023-03-17 11:00:00,BCHUSDT,LONG,BOS,30m,aligned,candidate,
-2023-03-17 11:00:00,BCHUSDT,LONG,BOS,30m,aligned,accepted,132.0
 2023-03-17 11:00:00,ETHUSDT,LONG,BOS,30m,standalone,candidate,
 2023-03-17 11:00:00,ETHUSDT,LONG,BOS,30m,standalone,accepted,1744.39
 2023-03-17 11:00:00,LINKUSDT,LONG,BOS,30m,standalone,candidate,
@@ -7806,8 +7765,8 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2023-04-05 20:00:00,ETHUSDT,LONG,BOS,30m,aligned,accepted,1907.88
 2023-04-06 04:00:00,HBARUSDT,SHORT,BOS,15m,aligned,candidate,
 2023-04-06 04:00:00,HBARUSDT,SHORT,BOS,15m,aligned,accepted,0.06613
-2023-04-06 07:00:00,HBARUSDT,SHORT,BOS,15m,aligned,candidate,
-2023-04-06 07:00:00,HBARUSDT,SHORT,BOS,15m,aligned,accepted,0.06614
+2023-04-06 08:00:00,HBARUSDT,SHORT,BOS,15m,aligned,candidate,
+2023-04-06 08:00:00,HBARUSDT,SHORT,BOS,15m,aligned,accepted,0.06511
 2023-04-06 14:00:00,HBARUSDT,SHORT,BOS,15m,aligned,candidate,
 2023-04-06 14:00:00,HBARUSDT,SHORT,BOS,15m,aligned,accepted,0.06519
 2023-04-06 22:00:00,AAVEUSDT,LONG,BOS,30m,aligned,candidate,
@@ -8458,7 +8417,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2023-05-11 13:00:00,BNBUSDT,SHORT,BOS,30m,aligned,accepted,311.15
 2023-05-11 14:00:00,AAVEUSDT,SHORT,BOS,30m,aligned,candidate,
 2023-05-11 14:00:00,AAVEUSDT,SHORT,BOS,30m,aligned,accepted,62.96
-2023-05-11 14:00:00,ARBUSDT,SHORT,BOS,30m,aligned,candidate,
 2023-05-11 14:00:00,AVAXUSDT,SHORT,BOS,30m,aligned,candidate,
 2023-05-11 14:00:00,BNBUSDT,SHORT,BOS,30m,aligned,candidate,
 2023-05-11 14:00:00,BNBUSDT,SHORT,BOS,30m,aligned,accepted,309.9
@@ -8627,8 +8585,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2023-05-21 21:00:00,ADAUSDT,SHORT,BOS,30m,aligned,candidate,
 2023-05-21 21:00:00,ADAUSDT,SHORT,BOS,30m,aligned,accepted,0.3588
 2023-05-21 21:00:00,ARBUSDT,SHORT,BOS,30m,aligned,candidate,
-2023-05-21 21:00:00,BNBUSDT,SHORT,BOS,30m,aligned,candidate,
-2023-05-21 21:00:00,BNBUSDT,SHORT,BOS,30m,aligned,accepted,308.05
 2023-05-21 22:00:00,ARBUSDT,SHORT,BOS,30m,aligned,candidate,
 2023-05-21 22:00:00,BNBUSDT,SHORT,BOS,30m,aligned,candidate,
 2023-05-21 22:00:00,BNBUSDT,SHORT,BOS,30m,aligned,accepted,306.65
@@ -8906,13 +8862,9 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2023-06-08 04:00:00,LTCUSDT,SHORT,BOS,30m,aligned,accepted,88.29
 2023-06-08 06:00:00,BCHUSDT,SHORT,BOS,30m,aligned,candidate,
 2023-06-08 06:00:00,BCHUSDT,SHORT,BOS,30m,aligned,accepted,110.65
-2023-06-08 09:00:00,LTCUSDT,SHORT,BOS,30m,aligned,candidate,
-2023-06-08 09:00:00,LTCUSDT,SHORT,BOS,30m,aligned,accepted,88.05
 2023-06-08 14:00:00,BCHUSDT,SHORT,SWEEP,30m,standalone,candidate,
 2023-06-08 14:00:00,BCHUSDT,SHORT,SWEEP,30m,standalone,accepted,112.0
 2023-06-08 16:00:00,ATOMUSDT,SHORT,BOS,1h,aligned,candidate,
-2023-06-08 16:00:00,DOTUSDT,SHORT,BOS,30m,aligned,candidate,
-2023-06-08 16:00:00,DOTUSDT,SHORT,BOS,30m,aligned,accepted,5.04
 2023-06-08 16:00:00,SOLUSDT,SHORT,BOS,30m,aligned,candidate,
 2023-06-08 21:00:00,SUIUSDT,SHORT,BOS,30m,aligned,candidate,
 2023-06-08 21:00:00,SUIUSDT,SHORT,BOS,30m,aligned,accepted,0.7379
@@ -9030,8 +8982,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2023-06-17 23:00:00,ETHUSDT,SHORT,BOS,30m,standalone,accepted,1729.57
 2023-06-18 00:00:00,ETHUSDT,SHORT,BOS,30m,standalone,candidate,
 2023-06-18 00:00:00,ETHUSDT,SHORT,BOS,30m,standalone,accepted,1726.82
-2023-06-18 00:00:00,LINKUSDT,SHORT,BOS,30m,standalone,candidate,
-2023-06-18 00:00:00,LINKUSDT,SHORT,BOS,30m,standalone,accepted,5.278
 2023-06-18 00:00:00,LTCUSDT,SHORT,BOS,30m,standalone,candidate,
 2023-06-18 00:00:00,LTCUSDT,SHORT,BOS,30m,standalone,accepted,76.81
 2023-06-18 01:00:00,HBARUSDT,SHORT,BOS,15m,standalone,candidate,
@@ -9238,8 +9188,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2023-07-02 21:00:00,AAVEUSDT,LONG,BOS,30m,aligned,accepted,69.35
 2023-07-02 22:00:00,AAVEUSDT,LONG,BOS,30m,aligned,candidate,
 2023-07-02 22:00:00,AAVEUSDT,LONG,BOS,30m,aligned,accepted,69.15
-2023-07-02 23:00:00,1000PEPEUSDT,LONG,BOS,30m,aligned,candidate,
-2023-07-02 23:00:00,1000PEPEUSDT,LONG,BOS,30m,aligned,accepted,0.0015852
 2023-07-03 01:00:00,DOGEUSDT,LONG,BOS,15m,aligned,candidate,
 2023-07-03 01:00:00,SOLUSDT,LONG,BOS,30m,standalone,candidate,
 2023-07-03 02:00:00,SOLUSDT,LONG,BOS,30m,standalone,candidate,
@@ -9269,8 +9217,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2023-07-05 11:00:00,HBARUSDT,SHORT,BOS,15m,aligned,candidate,
 2023-07-06 06:00:00,BTCUSDT,LONG,BOS,30m,aligned,candidate,
 2023-07-06 06:00:00,BTCUSDT,LONG,BOS,30m,aligned,accepted,30570.9
-2023-07-06 08:00:00,BTCUSDT,LONG,BOS,30m,aligned,candidate,
-2023-07-06 08:00:00,BTCUSDT,LONG,BOS,30m,aligned,accepted,30788.5
 2023-07-06 09:00:00,AAVEUSDT,LONG,BOS,30m,aligned,candidate,
 2023-07-06 09:00:00,AAVEUSDT,LONG,BOS,30m,aligned,accepted,77.74
 2023-07-06 09:00:00,BTCUSDT,LONG,BOS,30m,aligned,candidate,
@@ -9804,8 +9750,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2023-08-14 00:00:00,AAVEUSDT,SHORT,BOS,30m,standalone,candidate,
 2023-08-14 00:00:00,AAVEUSDT,SHORT,BOS,30m,standalone,accepted,65.6
 2023-08-14 00:00:00,AVAXUSDT,SHORT,BOS,30m,aligned,candidate,
-2023-08-14 00:00:00,BTCUSDT,SHORT,BOS,30m,standalone,candidate,
-2023-08-14 00:00:00,BTCUSDT,SHORT,BOS,30m,standalone,accepted,29301.3
 2023-08-14 05:00:00,AVAXUSDT,SHORT,BOS,30m,standalone,candidate,
 2023-08-14 06:00:00,ATOMUSDT,SHORT,BOS,1h,standalone,candidate,
 2023-08-14 06:00:00,AVAXUSDT,SHORT,BOS,30m,aligned,candidate,
@@ -9956,7 +9900,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2023-08-21 16:00:00,DOGEUSDT,SHORT,BOS,15m,aligned,candidate,
 2023-08-21 16:00:00,SOLUSDT,SHORT,BOS,30m,aligned,candidate,
 2023-08-21 16:00:00,UNIUSDT,SHORT,BOS,1h,aligned,candidate,
-2023-08-21 18:00:00,SOLUSDT,SHORT,BOS,30m,aligned,candidate,
 2023-08-21 20:00:00,OPUSDT,LONG,BOS,1h,aligned,candidate,
 2023-08-21 21:00:00,1000PEPEUSDT,SHORT,BOS,30m,aligned,candidate,
 2023-08-21 21:00:00,1000PEPEUSDT,SHORT,BOS,30m,aligned,accepted,0.0010929
@@ -9998,7 +9941,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2023-08-23 05:00:00,AXSUSDT,SHORT,BOS,1h,aligned,candidate,
 2023-08-24 13:00:00,FILUSDT,SHORT,BOS,15m,aligned,candidate,
 2023-08-24 13:00:00,FILUSDT,SHORT,BOS,15m,aligned,accepted,3.376
-2023-08-24 14:00:00,XRPUSDT,SHORT,BOS,30m,aligned,candidate,
 2023-08-24 15:00:00,SOLUSDT,SHORT,BOS,30m,aligned,candidate,
 2023-08-24 17:00:00,AAVEUSDT,SHORT,BOS,30m,standalone,candidate,
 2023-08-24 17:00:00,AAVEUSDT,SHORT,BOS,30m,standalone,accepted,57.06
@@ -10011,8 +9953,8 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2023-08-25 03:00:00,AVAXUSDT,SHORT,BOS,30m,aligned,candidate,
 2023-08-25 04:00:00,AVAXUSDT,SHORT,BOS,30m,aligned,candidate,
 2023-08-25 04:00:00,UNIUSDT,SHORT,BOS,1h,aligned,candidate,
-2023-08-25 04:00:00,XRPUSDT,SHORT,BOS,30m,aligned,candidate,
 2023-08-25 05:00:00,UNIUSDT,SHORT,BOS,1h,aligned,candidate,
+2023-08-25 08:00:00,XRPUSDT,SHORT,BOS,30m,aligned,candidate,
 2023-08-25 10:00:00,ARBUSDT,SHORT,BOS,30m,aligned,candidate,
 2023-08-25 11:00:00,ARBUSDT,SHORT,BOS,30m,aligned,candidate,
 2023-08-25 11:00:00,SOLUSDT,SHORT,BOS,30m,aligned,candidate,
@@ -10632,20 +10574,14 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2023-10-08 17:00:00,ARBUSDT,SHORT,BOS,30m,aligned,candidate,
 2023-10-08 18:00:00,ARBUSDT,SHORT,BOS,30m,aligned,candidate,
 2023-10-08 21:00:00,ARBUSDT,SHORT,BOS,30m,aligned,candidate,
-2023-10-08 22:00:00,DOTUSDT,SHORT,BOS,30m,standalone,candidate,
-2023-10-08 22:00:00,DOTUSDT,SHORT,BOS,30m,standalone,accepted,4.006
 2023-10-09 00:00:00,SUIUSDT,SHORT,BOS,30m,aligned,candidate,
 2023-10-09 00:00:00,SUIUSDT,SHORT,BOS,30m,aligned,accepted,0.43754
 2023-10-09 05:00:00,SUIUSDT,SHORT,BOS,30m,aligned,candidate,
 2023-10-09 05:00:00,SUIUSDT,SHORT,BOS,30m,aligned,accepted,0.43762
-2023-10-09 09:00:00,NEARUSDT,SHORT,BOS,30m,standalone,candidate,
-2023-10-09 09:00:00,NEARUSDT,SHORT,BOS,30m,standalone,accepted,1.071
 2023-10-09 10:00:00,APTUSDT,SHORT,BOS,30m,aligned,candidate,
 2023-10-09 10:00:00,APTUSDT,SHORT,BOS,30m,aligned,accepted,4.9705
 2023-10-09 10:00:00,FILUSDT,SHORT,BOS,15m,aligned,candidate,
 2023-10-09 10:00:00,FILUSDT,SHORT,BOS,15m,aligned,accepted,3.277
-2023-10-09 10:00:00,NEARUSDT,SHORT,BOS,30m,standalone,candidate,
-2023-10-09 10:00:00,NEARUSDT,SHORT,BOS,30m,standalone,accepted,1.046
 2023-10-09 11:00:00,APTUSDT,SHORT,BOS,30m,aligned,candidate,
 2023-10-09 11:00:00,APTUSDT,SHORT,BOS,30m,aligned,accepted,5.002
 2023-10-09 12:00:00,APTUSDT,SHORT,BOS,30m,aligned,candidate,
@@ -11565,10 +11501,10 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2023-11-26 12:00:00,AAVEUSDT,LONG,BOS,30m,aligned,accepted,101.62
 2023-11-27 03:00:00,BNBUSDT,SHORT,BOS,30m,aligned,candidate,
 2023-11-27 03:00:00,BNBUSDT,SHORT,BOS,30m,aligned,accepted,230.15
-2023-11-28 03:00:00,1000PEPEUSDT,SHORT,BOS,30m,aligned,candidate,
-2023-11-28 03:00:00,1000PEPEUSDT,SHORT,BOS,30m,aligned,accepted,0.0010851
 2023-11-28 03:00:00,BNBUSDT,SHORT,BOS,30m,aligned,candidate,
 2023-11-28 03:00:00,BNBUSDT,SHORT,BOS,30m,aligned,accepted,226.9
+2023-11-28 05:00:00,1000PEPEUSDT,SHORT,BOS,30m,aligned,candidate,
+2023-11-28 05:00:00,1000PEPEUSDT,SHORT,BOS,30m,aligned,accepted,0.0010636
 2023-11-28 05:00:00,ARBUSDT,SHORT,BOS,30m,aligned,candidate,
 2023-11-28 05:00:00,BNBUSDT,SHORT,BOS,30m,aligned,candidate,
 2023-11-28 05:00:00,BNBUSDT,SHORT,BOS,30m,aligned,accepted,225.65
@@ -11802,8 +11738,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2023-12-07 13:00:00,FILUSDT,LONG,BOS,15m,aligned,accepted,4.952
 2023-12-07 14:00:00,FILUSDT,LONG,BOS,15m,aligned,candidate,
 2023-12-07 14:00:00,FILUSDT,LONG,BOS,15m,aligned,accepted,4.921
-2023-12-07 16:00:00,1000PEPEUSDT,LONG,BOS,30m,aligned,candidate,
-2023-12-07 16:00:00,1000PEPEUSDT,LONG,BOS,30m,aligned,accepted,0.001513
 2023-12-07 16:00:00,FILUSDT,LONG,BOS,15m,aligned,candidate,
 2023-12-07 16:00:00,FILUSDT,LONG,BOS,15m,aligned,accepted,4.973
 2023-12-07 16:00:00,XRPUSDT,LONG,BOS,30m,aligned,candidate,
@@ -12145,8 +12079,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2023-12-24 21:00:00,FILUSDT,LONG,BOS,15m,aligned,accepted,5.665
 2023-12-25 12:00:00,ADAUSDT,LONG,BOS,30m,standalone,candidate,
 2023-12-25 12:00:00,ADAUSDT,LONG,BOS,30m,standalone,accepted,0.6073
-2023-12-25 12:00:00,APTUSDT,LONG,BOS,30m,aligned,candidate,
-2023-12-25 12:00:00,APTUSDT,LONG,BOS,30m,aligned,accepted,9.5565
 2023-12-25 13:00:00,ADAUSDT,LONG,BOS,30m,standalone,candidate,
 2023-12-25 13:00:00,ADAUSDT,LONG,BOS,30m,standalone,accepted,0.6149
 2023-12-25 13:00:00,APTUSDT,LONG,BOS,30m,aligned,candidate,
@@ -12348,7 +12280,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2024-01-07 07:00:00,DOTUSDT,SHORT,SWEEP,30m,standalone,accepted,7.263
 2024-01-07 08:00:00,ADAUSDT,SHORT,SWEEP,30m,standalone,candidate,
 2024-01-07 08:00:00,ADAUSDT,SHORT,SWEEP,30m,standalone,accepted,0.5269
-2024-01-07 11:00:00,AXSUSDT,SHORT,BOS,1h,aligned,candidate,
 2024-01-07 20:00:00,DOGEUSDT,SHORT,BOS,15m,aligned,candidate,
 2024-01-08 00:00:00,HBARUSDT,SHORT,BOS,15m,aligned,candidate,
 2024-01-08 00:00:00,LTCUSDT,SHORT,BOS,30m,aligned,candidate,
@@ -12437,8 +12368,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2024-01-14 10:00:00,LINKUSDT,LONG,BOS,30m,aligned,accepted,15.244
 2024-01-14 14:00:00,SOLUSDT,LONG,BOS,30m,aligned,candidate,
 2024-01-14 15:00:00,SOLUSDT,LONG,BOS,30m,aligned,candidate,
-2024-01-14 21:00:00,LINKUSDT,LONG,BOS,30m,standalone,candidate,
-2024-01-14 21:00:00,LINKUSDT,LONG,BOS,30m,standalone,accepted,15.004
 2024-01-15 02:00:00,AXLUSDT,SHORT,BOS,1h,standalone,candidate,
 2024-01-15 02:00:00,LINKUSDT,LONG,BOS,30m,standalone,candidate,
 2024-01-15 02:00:00,LINKUSDT,LONG,BOS,30m,standalone,accepted,15.41
@@ -12686,7 +12615,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2024-02-02 00:00:00,APTUSDT,LONG,BOS,30m,standalone,accepted,9.229
 2024-02-02 05:00:00,WIFUSDT,SHORT,BOS,30m,aligned,candidate,
 2024-02-02 05:00:00,WIFUSDT,SHORT,BOS,30m,aligned,accepted,0.2204
-2024-02-02 12:00:00,AVAXUSDT,LONG,BOS,30m,aligned,candidate,
 2024-02-02 15:00:00,1000PEPEUSDT,SHORT,SWEEP,30m,standalone,candidate,
 2024-02-02 15:00:00,1000PEPEUSDT,SHORT,SWEEP,30m,standalone,accepted,0.000925
 2024-02-02 15:00:00,SOLUSDT,LONG,BOS,30m,aligned,candidate,
@@ -13060,7 +12988,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2024-02-18 23:00:00,AXLUSDT,LONG,BOS,1h,aligned,candidate,
 2024-02-19 00:00:00,NEARUSDT,LONG,BOS,30m,aligned,candidate,
 2024-02-19 00:00:00,NEARUSDT,LONG,BOS,30m,aligned,accepted,3.526
-2024-02-19 01:00:00,AXLUSDT,LONG,BOS,1h,aligned,candidate,
 2024-02-19 01:00:00,NEARUSDT,LONG,BOS,30m,aligned,candidate,
 2024-02-19 01:00:00,NEARUSDT,LONG,BOS,30m,aligned,accepted,3.57
 2024-02-19 05:00:00,TAOUSDT,LONG,BOS,30m,aligned,candidate,
@@ -13150,8 +13077,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2024-02-23 19:00:00,AAVEUSDT,LONG,BOS,30m,aligned,accepted,95.72
 2024-02-23 20:00:00,AAVEUSDT,LONG,BOS,30m,aligned,candidate,
 2024-02-23 20:00:00,AAVEUSDT,LONG,BOS,30m,aligned,accepted,96.01
-2024-02-23 22:00:00,APTUSDT,SHORT,BOS,30m,aligned,candidate,
-2024-02-23 22:00:00,APTUSDT,SHORT,BOS,30m,aligned,accepted,9.206
 2024-02-23 22:00:00,AVAXUSDT,SHORT,BOS,30m,aligned,candidate,
 2024-02-23 22:00:00,LINKUSDT,SHORT,BOS,30m,aligned,candidate,
 2024-02-23 22:00:00,LINKUSDT,SHORT,BOS,30m,aligned,accepted,18.103
@@ -13354,9 +13279,7 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2024-03-05 04:00:00,ARBUSDT,LONG,BOS,30m,aligned,candidate,
 2024-03-05 04:00:00,LTCUSDT,LONG,BOS,30m,standalone,candidate,
 2024-03-05 04:00:00,LTCUSDT,LONG,BOS,30m,standalone,accepted,89.3
-2024-03-05 05:00:00,ARBUSDT,LONG,BOS,30m,aligned,candidate,
 2024-03-05 07:00:00,OPUSDT,LONG,BOS,1h,aligned,candidate,
-2024-03-05 08:00:00,ARBUSDT,LONG,BOS,30m,aligned,candidate,
 2024-03-05 08:00:00,OPUSDT,LONG,BOS,1h,aligned,candidate,
 2024-03-05 09:00:00,OPUSDT,LONG,BOS,1h,aligned,candidate,
 2024-03-05 11:00:00,ETHUSDT,LONG,BOS,30m,aligned,candidate,
@@ -13424,8 +13347,8 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2024-03-07 23:00:00,ARBUSDT,LONG,BOS,30m,standalone,candidate,
 2024-03-07 23:00:00,ETHUSDT,LONG,BOS,30m,standalone,candidate,
 2024-03-07 23:00:00,ETHUSDT,LONG,BOS,30m,standalone,accepted,3859.12
-2024-03-08 02:00:00,1000PEPEUSDT,LONG,BOS,30m,standalone,candidate,
-2024-03-08 02:00:00,1000PEPEUSDT,LONG,BOS,30m,standalone,accepted,0.0073442
+2024-03-08 03:00:00,1000PEPEUSDT,LONG,BOS,30m,standalone,candidate,
+2024-03-08 03:00:00,1000PEPEUSDT,LONG,BOS,30m,standalone,accepted,0.0079513
 2024-03-08 04:00:00,DOGEUSDT,LONG,BOS,15m,aligned,candidate,
 2024-03-08 10:00:00,WIFUSDT,LONG,BOS,30m,aligned,candidate,
 2024-03-08 10:00:00,WIFUSDT,LONG,BOS,30m,aligned,accepted,2.1661
@@ -13502,8 +13425,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2024-03-11 14:00:00,BTCUSDT,LONG,BOS,30m,aligned,accepted,71593.6
 2024-03-11 15:00:00,AAVEUSDT,LONG,BOS,30m,aligned,candidate,
 2024-03-11 15:00:00,AAVEUSDT,LONG,BOS,30m,aligned,accepted,135.11
-2024-03-11 15:00:00,ADAUSDT,LONG,BOS,30m,aligned,candidate,
-2024-03-11 15:00:00,ADAUSDT,LONG,BOS,30m,aligned,accepted,0.7354
 2024-03-11 15:00:00,APTUSDT,LONG,BOS,30m,aligned,candidate,
 2024-03-11 15:00:00,APTUSDT,LONG,BOS,30m,aligned,accepted,13.23
 2024-03-11 15:00:00,BCHUSDT,LONG,BOS,30m,standalone,candidate,
@@ -13743,8 +13664,8 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2024-03-19 09:00:00,ETHUSDT,SHORT,BOS,30m,aligned,candidate,
 2024-03-19 09:00:00,ETHUSDT,SHORT,BOS,30m,aligned,accepted,3241.24
 2024-03-19 09:00:00,UNIUSDT,SHORT,BOS,1h,aligned,candidate,
-2024-03-19 15:00:00,SUIUSDT,LONG,BOS,30m,standalone,candidate,
-2024-03-19 15:00:00,SUIUSDT,LONG,BOS,30m,standalone,accepted,1.6503
+2024-03-19 16:00:00,SUIUSDT,LONG,BOS,30m,aligned,candidate,
+2024-03-19 16:00:00,SUIUSDT,LONG,BOS,30m,aligned,accepted,1.7126
 2024-03-19 18:00:00,FILUSDT,SHORT,BOS,15m,aligned,candidate,
 2024-03-19 18:00:00,FILUSDT,SHORT,BOS,15m,aligned,accepted,8.511
 2024-03-19 18:00:00,LINKUSDT,SHORT,BOS,30m,aligned,candidate,
@@ -13829,7 +13750,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2024-03-25 05:00:00,SOLUSDT,LONG,BOS,30m,aligned,candidate,
 2024-03-25 06:00:00,BCHUSDT,LONG,BOS,30m,aligned,candidate,
 2024-03-25 06:00:00,BCHUSDT,LONG,BOS,30m,aligned,accepted,490.7
-2024-03-25 06:00:00,SOLUSDT,LONG,BOS,30m,aligned,candidate,
 2024-03-25 07:00:00,BCHUSDT,LONG,BOS,30m,aligned,candidate,
 2024-03-25 07:00:00,BCHUSDT,LONG,BOS,30m,aligned,accepted,487.3
 2024-03-25 07:00:00,SOLUSDT,LONG,BOS,30m,aligned,candidate,
@@ -14969,8 +14889,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2024-05-20 00:00:00,TAOUSDT,SHORT,BOS,30m,standalone,accepted,365.72
 2024-05-20 01:00:00,TAOUSDT,SHORT,BOS,30m,standalone,candidate,
 2024-05-20 01:00:00,TAOUSDT,SHORT,BOS,30m,standalone,accepted,366.33
-2024-05-20 07:00:00,TAOUSDT,SHORT,BOS,30m,standalone,candidate,
-2024-05-20 07:00:00,TAOUSDT,SHORT,BOS,30m,standalone,accepted,369.13
 2024-05-20 08:00:00,SOLUSDT,LONG,BOS,30m,aligned,candidate,
 2024-05-20 11:00:00,SOLUSDT,LONG,BOS,30m,aligned,candidate,
 2024-05-20 17:00:00,SOLUSDT,LONG,BOS,30m,aligned,candidate,
@@ -15144,9 +15062,9 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2024-05-28 04:00:00,BCHUSDT,SHORT,BOS,30m,aligned,accepted,468.3
 2024-05-28 04:00:00,FILUSDT,SHORT,BOS,15m,aligned,candidate,
 2024-05-28 04:00:00,FILUSDT,SHORT,BOS,15m,aligned,accepted,5.945
-2024-05-28 04:00:00,SUIUSDT,SHORT,BOS,30m,standalone,candidate,
-2024-05-28 04:00:00,SUIUSDT,SHORT,BOS,30m,standalone,accepted,1.0379
 2024-05-28 05:00:00,AVAXUSDT,SHORT,BOS,30m,aligned,candidate,
+2024-05-28 06:00:00,SUIUSDT,SHORT,BOS,30m,standalone,candidate,
+2024-05-28 06:00:00,SUIUSDT,SHORT,BOS,30m,standalone,accepted,1.0277
 2024-05-28 07:00:00,ADAUSDT,SHORT,BOS,30m,aligned,candidate,
 2024-05-28 07:00:00,ADAUSDT,SHORT,BOS,30m,aligned,accepted,0.4573
 2024-05-28 07:00:00,HBARUSDT,SHORT,BOS,15m,aligned,candidate,
@@ -15203,7 +15121,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2024-05-30 17:00:00,HBARUSDT,SHORT,BOS,1h,standalone,blocked_standalone_1h,
 2024-05-30 18:00:00,HBARUSDT,SHORT,BOS,15m,standalone,candidate,
 2024-05-30 18:00:00,HBARUSDT,SHORT,BOS,1h,standalone,blocked_standalone_1h,
-2024-05-30 18:00:00,UNIUSDT,LONG,BOS,1h,aligned,candidate,
 2024-05-30 23:00:00,ENAUSDT,LONG,BOS,30m,aligned,candidate,
 2024-05-30 23:00:00,ENAUSDT,LONG,BOS,30m,aligned,accepted,0.8654
 2024-05-31 05:00:00,WIFUSDT,LONG,SWEEP,30m,standalone,candidate,
@@ -15429,10 +15346,10 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2024-06-11 22:00:00,TAOUSDT,SHORT,BOS,30m,aligned,accepted,325.64
 2024-06-12 00:00:00,TAOUSDT,SHORT,BOS,30m,aligned,candidate,
 2024-06-12 00:00:00,TAOUSDT,SHORT,BOS,30m,aligned,accepted,325.53
-2024-06-12 00:00:00,WIFUSDT,SHORT,BOS,30m,aligned,candidate,
-2024-06-12 00:00:00,WIFUSDT,SHORT,BOS,30m,aligned,accepted,2.5435
 2024-06-12 01:00:00,TAOUSDT,SHORT,BOS,30m,aligned,candidate,
 2024-06-12 01:00:00,TAOUSDT,SHORT,BOS,30m,aligned,accepted,322.38
+2024-06-12 01:00:00,WIFUSDT,SHORT,BOS,30m,aligned,candidate,
+2024-06-12 01:00:00,WIFUSDT,SHORT,BOS,30m,aligned,accepted,2.5159
 2024-06-12 02:00:00,TAOUSDT,SHORT,BOS,30m,aligned,candidate,
 2024-06-12 02:00:00,TAOUSDT,SHORT,BOS,30m,aligned,accepted,317.11
 2024-06-12 03:00:00,SUIUSDT,SHORT,BOS,30m,aligned,candidate,
@@ -15493,12 +15410,13 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2024-06-13 12:00:00,BTCUSDT,SHORT,BOS,30m,aligned,accepted,67707.0
 2024-06-13 13:00:00,BTCUSDT,SHORT,BOS,30m,aligned,candidate,
 2024-06-13 13:00:00,BTCUSDT,SHORT,BOS,30m,aligned,accepted,67729.1
-2024-06-13 14:00:00,1000PEPEUSDT,SHORT,BOS,30m,standalone,candidate,
-2024-06-13 14:00:00,1000PEPEUSDT,SHORT,BOS,30m,standalone,accepted,0.0123289
 2024-06-13 14:00:00,BTCUSDT,SHORT,BOS,30m,aligned,candidate,
 2024-06-13 14:00:00,BTCUSDT,SHORT,BOS,30m,aligned,accepted,67576.1
 2024-06-13 15:00:00,AXSUSDT,SHORT,BOS,1h,aligned,candidate,
 2024-06-13 15:00:00,XRPUSDT,SHORT,BOS,30m,aligned,candidate,
+2024-06-13 16:00:00,AXSUSDT,SHORT,BOS,1h,aligned,candidate,
+2024-06-13 19:00:00,WIFUSDT,SHORT,BOS,30m,standalone,candidate,
+2024-06-13 19:00:00,WIFUSDT,SHORT,BOS,30m,standalone,accepted,2.468
 2024-06-14 00:00:00,APTUSDT,SHORT,BOS,30m,aligned,candidate,
 2024-06-14 00:00:00,APTUSDT,SHORT,BOS,30m,aligned,accepted,7.8875
 2024-06-14 00:00:00,AXLUSDT,SHORT,BOS,1h,aligned,candidate,
@@ -15895,8 +15813,8 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2024-07-02 08:00:00,ARBUSDT,SHORT,BOS,30m,aligned,candidate,
 2024-07-02 09:00:00,ENAUSDT,SHORT,BOS,30m,aligned,candidate,
 2024-07-02 09:00:00,ENAUSDT,SHORT,BOS,30m,aligned,accepted,0.5059
-2024-07-02 10:00:00,DOTUSDT,LONG,BOS,30m,aligned,candidate,
-2024-07-02 10:00:00,DOTUSDT,LONG,BOS,30m,aligned,accepted,6.348
+2024-07-02 11:00:00,DOTUSDT,LONG,BOS,30m,aligned,candidate,
+2024-07-02 11:00:00,DOTUSDT,LONG,BOS,30m,aligned,accepted,6.425
 2024-07-02 14:00:00,ADAUSDT,LONG,BOS,30m,aligned,candidate,
 2024-07-02 14:00:00,ADAUSDT,LONG,BOS,30m,aligned,accepted,0.415
 2024-07-02 14:00:00,DOTUSDT,LONG,BOS,30m,aligned,candidate,
@@ -16386,8 +16304,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2024-07-20 04:00:00,ETHUSDT,LONG,BOS,30m,aligned,accepted,3493.96
 2024-07-20 06:00:00,BCHUSDT,LONG,BOS,30m,standalone,candidate,
 2024-07-20 06:00:00,BCHUSDT,LONG,BOS,30m,standalone,accepted,391.1
-2024-07-20 07:00:00,BCHUSDT,LONG,BOS,30m,standalone,candidate,
-2024-07-20 07:00:00,BCHUSDT,LONG,BOS,30m,standalone,accepted,392.35
 2024-07-20 14:00:00,BCHUSDT,LONG,BOS,30m,standalone,candidate,
 2024-07-20 14:00:00,BCHUSDT,LONG,BOS,30m,standalone,accepted,390.65
 2024-07-20 14:00:00,FILUSDT,LONG,BOS,15m,aligned,candidate,
@@ -17832,8 +17748,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2024-09-19 00:00:00,XRPUSDT,LONG,BOS,1h,standalone,blocked_standalone_1h,
 2024-09-19 01:00:00,XRPUSDT,LONG,BOS,30m,standalone,candidate,
 2024-09-19 01:00:00,XRPUSDT,LONG,BOS,1h,standalone,blocked_standalone_1h,
-2024-09-19 02:00:00,BNBUSDT,LONG,BOS,30m,aligned,candidate,
-2024-09-19 02:00:00,BNBUSDT,LONG,BOS,30m,aligned,accepted,556.65
 2024-09-19 02:00:00,TAOUSDT,LONG,BOS,30m,aligned,candidate,
 2024-09-19 02:00:00,TAOUSDT,LONG,BOS,30m,aligned,accepted,342.9
 2024-09-19 02:00:00,XRPUSDT,LONG,BOS,30m,standalone,candidate,
@@ -18659,8 +18573,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2024-10-30 04:00:00,LINKUSDT,LONG,BOS,30m,aligned,accepted,12.008
 2024-10-30 06:00:00,LINKUSDT,LONG,BOS,30m,aligned,candidate,
 2024-10-30 06:00:00,LINKUSDT,LONG,BOS,30m,aligned,accepted,12.041
-2024-10-30 12:00:00,LINKUSDT,LONG,BOS,30m,aligned,candidate,
-2024-10-30 12:00:00,LINKUSDT,LONG,BOS,30m,aligned,accepted,11.965
 2024-10-30 12:00:00,XRPUSDT,SHORT,BOS,30m,aligned,candidate,
 2024-10-30 14:00:00,LINKUSDT,LONG,BOS,30m,aligned,candidate,
 2024-10-30 14:00:00,LINKUSDT,LONG,BOS,30m,aligned,accepted,12.155
@@ -19961,8 +19873,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2024-12-28 04:00:00,AXLUSDT,SHORT,BOS,1h,aligned,candidate,
 2024-12-28 04:00:00,ENAUSDT,SHORT,BOS,30m,aligned,candidate,
 2024-12-28 04:00:00,ENAUSDT,SHORT,BOS,30m,aligned,accepted,0.9015
-2024-12-28 04:00:00,VIRTUALUSDT,LONG,BOS,30m,aligned,candidate,
-2024-12-28 04:00:00,VIRTUALUSDT,LONG,BOS,30m,aligned,accepted,3.4796
 2024-12-28 04:00:00,WIFUSDT,SHORT,BOS,30m,aligned,candidate,
 2024-12-28 04:00:00,WIFUSDT,SHORT,BOS,30m,aligned,accepted,1.8181
 2024-12-28 05:00:00,AXLUSDT,SHORT,BOS,1h,aligned,candidate,
@@ -19971,8 +19881,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2024-12-28 12:00:00,ARBUSDT,SHORT,BOS,30m,aligned,candidate,
 2024-12-28 18:00:00,AAVEUSDT,LONG,BOS,30m,aligned,candidate,
 2024-12-28 18:00:00,AAVEUSDT,LONG,BOS,30m,aligned,accepted,335.24
-2024-12-28 19:00:00,AAVEUSDT,LONG,BOS,30m,aligned,candidate,
-2024-12-28 19:00:00,AAVEUSDT,LONG,BOS,30m,aligned,accepted,341.41
 2024-12-28 20:00:00,AAVEUSDT,LONG,BOS,30m,aligned,candidate,
 2024-12-28 20:00:00,AAVEUSDT,LONG,BOS,30m,aligned,accepted,343.05
 2024-12-28 21:00:00,AAVEUSDT,LONG,BOS,30m,aligned,candidate,
@@ -20016,8 +19924,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2024-12-31 03:00:00,NEARUSDT,SHORT,BOS,30m,aligned,candidate,
 2024-12-31 15:00:00,VIRTUALUSDT,LONG,BOS,30m,standalone,candidate,
 2024-12-31 15:00:00,VIRTUALUSDT,LONG,BOS,30m,standalone,accepted,3.8422
-2024-12-31 22:00:00,APTUSDT,SHORT,BOS,30m,aligned,candidate,
-2024-12-31 22:00:00,APTUSDT,SHORT,BOS,30m,aligned,accepted,8.747
 2024-12-31 22:00:00,AVAXUSDT,SHORT,BOS,30m,aligned,candidate,
 2024-12-31 22:00:00,BTCUSDT,SHORT,BOS,30m,aligned,candidate,
 2024-12-31 22:00:00,BTCUSDT,SHORT,BOS,30m,aligned,accepted,93856.6
@@ -20035,7 +19941,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2025-01-01 03:00:00,NEARUSDT,SHORT,BOS,30m,aligned,candidate,
 2025-01-01 04:00:00,ETHUSDT,SHORT,BOS,30m,standalone,candidate,
 2025-01-01 04:00:00,ETHUSDT,SHORT,BOS,30m,standalone,accepted,3353.01
-2025-01-01 04:00:00,SOLUSDT,SHORT,BOS,30m,standalone,candidate,
 2025-01-01 08:00:00,LINKUSDT,SHORT,BOS,30m,standalone,candidate,
 2025-01-01 08:00:00,LINKUSDT,SHORT,BOS,30m,standalone,accepted,19.971
 2025-01-01 09:00:00,BCHUSDT,SHORT,BOS,30m,aligned,candidate,
@@ -20101,8 +20006,8 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2025-01-07 13:00:00,HBARUSDT,LONG,BOS,15m,aligned,candidate,
 2025-01-07 19:00:00,HYPEUSDT,SHORT,BOS,30m,aligned,candidate,
 2025-01-07 23:00:00,HYPEUSDT,SHORT,BOS,30m,aligned,candidate,
-2025-01-08 03:00:00,FARTCOINUSDT,SHORT,BOS,30m,aligned,candidate,
-2025-01-08 03:00:00,FARTCOINUSDT,SHORT,BOS,30m,aligned,accepted,1.0797
+2025-01-08 04:00:00,FARTCOINUSDT,SHORT,BOS,30m,aligned,candidate,
+2025-01-08 04:00:00,FARTCOINUSDT,SHORT,BOS,30m,aligned,accepted,1.0405
 2025-01-08 13:00:00,AAVEUSDT,SHORT,BOS,30m,aligned,candidate,
 2025-01-08 13:00:00,AAVEUSDT,SHORT,BOS,30m,aligned,accepted,293.68
 2025-01-08 16:00:00,AAVEUSDT,SHORT,BOS,30m,aligned,candidate,
@@ -20661,7 +20566,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2025-02-02 06:00:00,AAVEUSDT,SHORT,BOS,30m,aligned,accepted,296.06
 2025-02-02 07:00:00,AAVEUSDT,SHORT,BOS,30m,aligned,candidate,
 2025-02-02 07:00:00,AAVEUSDT,SHORT,BOS,30m,aligned,accepted,293.82
-2025-02-02 07:00:00,HYPEUSDT,SHORT,BOS,30m,aligned,candidate,
 2025-02-02 10:00:00,ADAUSDT,SHORT,BOS,30m,aligned,candidate,
 2025-02-02 10:00:00,ADAUSDT,SHORT,BOS,30m,aligned,accepted,0.8948
 2025-02-02 10:00:00,BNBUSDT,SHORT,BOS,30m,standalone,candidate,
@@ -20834,8 +20738,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2025-02-12 00:00:00,FARTCOINUSDT,SHORT,BOS,30m,aligned,candidate,
 2025-02-12 00:00:00,FARTCOINUSDT,SHORT,BOS,30m,aligned,accepted,0.563
 2025-02-12 02:00:00,HYPEUSDT,SHORT,BOS,30m,standalone,candidate,
-2025-02-12 02:00:00,WIFUSDT,SHORT,BOS,30m,aligned,candidate,
-2025-02-12 02:00:00,WIFUSDT,SHORT,BOS,30m,aligned,accepted,0.6251
 2025-02-12 04:00:00,HBARUSDT,SHORT,BOS,15m,standalone,candidate,
 2025-02-12 04:00:00,HBARUSDT,SHORT,BOS,1h,standalone,blocked_standalone_1h,
 2025-02-12 04:00:00,LINKUSDT,SHORT,BOS,30m,standalone,candidate,
@@ -21336,7 +21238,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2025-03-09 15:00:00,FILUSDT,SHORT,BOS,15m,aligned,accepted,2.934
 2025-03-09 15:00:00,LINKUSDT,SHORT,BOS,30m,aligned,candidate,
 2025-03-09 15:00:00,NEARUSDT,SHORT,BOS,30m,aligned,candidate,
-2025-03-09 15:00:00,OPUSDT,SHORT,BOS,1h,aligned,candidate,
 2025-03-09 15:00:00,UNIUSDT,SHORT,BOS,1h,aligned,candidate,
 2025-03-09 20:00:00,AAVEUSDT,SHORT,BOS,30m,aligned,candidate,
 2025-03-09 20:00:00,AAVEUSDT,SHORT,BOS,30m,aligned,accepted,181.58
@@ -21433,8 +21334,8 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2025-03-14 06:00:00,AAVEUSDT,SHORT,BOS,30m,aligned,accepted,165.13
 2025-03-14 13:00:00,UNIUSDT,SHORT,SWEEP,1h,standalone,candidate,
 2025-03-15 05:00:00,LINKUSDT,SHORT,BOS,30m,standalone,candidate,
-2025-03-15 08:00:00,ARCUSDT,SHORT,BOS,15m,aligned,candidate,
-2025-03-15 08:00:00,ARCUSDT,SHORT,BOS,15m,aligned,accepted,0.05303
+2025-03-15 09:00:00,ARCUSDT,SHORT,BOS,15m,aligned,candidate,
+2025-03-15 09:00:00,ARCUSDT,SHORT,BOS,15m,aligned,accepted,0.05133
 2025-03-16 02:00:00,BCHUSDT,SHORT,BOS,30m,aligned,candidate,
 2025-03-16 02:00:00,BCHUSDT,SHORT,BOS,30m,aligned,accepted,337.6
 2025-03-16 10:00:00,BTCUSDT,SHORT,BOS,30m,aligned,candidate,
@@ -21848,8 +21749,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2025-04-04 01:00:00,BNBUSDT,SHORT,BOS,30m,standalone,accepted,591.5
 2025-04-04 11:00:00,ADAUSDT,SHORT,BOS,30m,aligned,candidate,
 2025-04-04 11:00:00,ADAUSDT,SHORT,BOS,30m,aligned,accepted,0.6407
-2025-04-04 11:00:00,BTCUSDT,SHORT,BOS,30m,aligned,candidate,
-2025-04-04 11:00:00,BTCUSDT,SHORT,BOS,30m,aligned,accepted,82543.7
 2025-04-04 11:00:00,LINKUSDT,SHORT,BOS,30m,aligned,candidate,
 2025-04-04 11:00:00,NEARUSDT,SHORT,BOS,30m,aligned,candidate,
 2025-04-04 11:00:00,VIRTUALUSDT,SHORT,BOS,30m,aligned,candidate,
@@ -22157,8 +22056,8 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2025-04-20 05:00:00,TAOUSDT,LONG,BOS,30m,aligned,accepted,297.76
 2025-04-20 12:00:00,XAUTUSDT,LONG,BOS,30m,aligned,candidate,
 2025-04-20 13:00:00,XAUTUSDT,LONG,BOS,30m,aligned,candidate,
-2025-04-20 23:00:00,FARTCOINUSDT,LONG,BOS,30m,aligned,candidate,
-2025-04-20 23:00:00,FARTCOINUSDT,LONG,BOS,30m,aligned,accepted,0.847
+2025-04-21 00:00:00,FARTCOINUSDT,LONG,BOS,30m,aligned,candidate,
+2025-04-21 00:00:00,FARTCOINUSDT,LONG,BOS,30m,aligned,accepted,0.8954
 2025-04-21 00:00:00,TAOUSDT,LONG,BOS,30m,aligned,candidate,
 2025-04-21 00:00:00,TAOUSDT,LONG,BOS,30m,aligned,accepted,315.23
 2025-04-21 01:00:00,XAUTUSDT,LONG,BOS,30m,aligned,candidate,
@@ -22780,7 +22679,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2025-05-16 22:00:00,HYPEUSDT,LONG,BOS,30m,aligned,candidate,
 2025-05-16 22:00:00,XAUTUSDT,SHORT,BOS,30m,aligned,candidate,
 2025-05-16 23:00:00,SIRENUSDT,LONG,BOS,1h,aligned,candidate,
-2025-05-17 04:00:00,SIRENUSDT,LONG,BOS,1h,aligned,candidate,
 2025-05-17 10:00:00,SIRENUSDT,LONG,BOS,1h,aligned,candidate,
 2025-05-17 20:00:00,APTUSDT,SHORT,BOS,30m,aligned,candidate,
 2025-05-17 20:00:00,APTUSDT,SHORT,BOS,30m,aligned,accepted,5.06
@@ -22932,8 +22830,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2025-05-25 22:00:00,BTCUSDT,LONG,BOS,30m,aligned,accepted,107422.0
 2025-05-25 23:00:00,BTCUSDT,LONG,BOS,30m,aligned,candidate,
 2025-05-25 23:00:00,BTCUSDT,LONG,BOS,30m,aligned,accepted,109143.8
-2025-05-25 23:00:00,ETHUSDT,LONG,BOS,30m,aligned,candidate,
-2025-05-25 23:00:00,ETHUSDT,LONG,BOS,30m,aligned,accepted,2548.05
 2025-05-26 00:00:00,ARBUSDT,LONG,BOS,30m,standalone,candidate,
 2025-05-26 00:00:00,BTCUSDT,LONG,BOS,30m,aligned,candidate,
 2025-05-26 00:00:00,BTCUSDT,LONG,BOS,30m,aligned,accepted,108976.2
@@ -23035,8 +22931,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2025-05-30 12:00:00,SUIUSDT,SHORT,BOS,30m,aligned,candidate,
 2025-05-30 12:00:00,SUIUSDT,SHORT,BOS,30m,aligned,accepted,3.4832
 2025-05-30 15:00:00,UNIUSDT,LONG,BOS,1h,standalone,candidate,
-2025-05-30 16:00:00,SUIUSDT,SHORT,BOS,30m,aligned,candidate,
-2025-05-30 16:00:00,SUIUSDT,SHORT,BOS,30m,aligned,accepted,3.4347
 2025-05-30 17:00:00,ARCUSDT,SHORT,BOS,15m,aligned,candidate,
 2025-05-30 17:00:00,ARCUSDT,SHORT,BOS,15m,aligned,accepted,0.04229
 2025-05-30 19:00:00,PIPPINUSDT,SHORT,BOS,15m,aligned,candidate,
@@ -23091,7 +22985,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2025-06-03 18:00:00,ETHUSDT,LONG,BOS,30m,aligned,candidate,
 2025-06-03 18:00:00,ETHUSDT,LONG,BOS,30m,aligned,accepted,2617.9
 2025-06-03 18:00:00,HYPEUSDT,LONG,BOS,30m,aligned,candidate,
-2025-06-03 18:00:00,SIRENUSDT,LONG,BOS,1h,aligned,candidate,
 2025-06-03 19:00:00,HYPEUSDT,LONG,BOS,30m,aligned,candidate,
 2025-06-03 19:00:00,TAOUSDT,SHORT,BOS,30m,aligned,candidate,
 2025-06-03 19:00:00,TAOUSDT,SHORT,BOS,30m,aligned,accepted,390.86
@@ -23110,7 +23003,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2025-06-04 01:00:00,ADAUSDT,SHORT,BOS,30m,standalone,accepted,0.6904
 2025-06-04 01:00:00,DOTUSDT,SHORT,SWEEP,30m,standalone,candidate,
 2025-06-04 01:00:00,DOTUSDT,SHORT,SWEEP,30m,standalone,accepted,4.16
-2025-06-04 03:00:00,SIRENUSDT,LONG,BOS,1h,aligned,candidate,
 2025-06-04 04:00:00,SIRENUSDT,LONG,BOS,1h,aligned,candidate,
 2025-06-04 08:00:00,UNIUSDT,LONG,BOS,1h,aligned,candidate,
 2025-06-04 10:00:00,ARCUSDT,SHORT,BOS,15m,aligned,candidate,
@@ -23160,8 +23052,14 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2025-06-05 16:00:00,LTCUSDT,SHORT,BOS,30m,aligned,candidate,
 2025-06-05 16:00:00,LTCUSDT,SHORT,BOS,30m,aligned,accepted,87.48
 2025-06-05 16:00:00,NEARUSDT,SHORT,BOS,30m,aligned,candidate,
-2025-06-05 16:00:00,PIPPINUSDT,SHORT,BOS,15m,aligned,candidate,
-2025-06-05 16:00:00,PIPPINUSDT,SHORT,BOS,15m,aligned,accepted,0.01787
+2025-06-05 17:00:00,AVAXUSDT,SHORT,BOS,30m,aligned,candidate,
+2025-06-05 17:00:00,LTCUSDT,SHORT,BOS,30m,aligned,candidate,
+2025-06-05 17:00:00,LTCUSDT,SHORT,BOS,30m,aligned,accepted,86.36
+2025-06-05 17:00:00,NEARUSDT,SHORT,BOS,30m,aligned,candidate,
+2025-06-05 17:00:00,PIPPINUSDT,SHORT,BOS,15m,aligned,candidate,
+2025-06-05 17:00:00,PIPPINUSDT,SHORT,BOS,15m,aligned,accepted,0.01754
+2025-06-05 17:00:00,TAOUSDT,SHORT,BOS,30m,aligned,candidate,
+2025-06-05 17:00:00,TAOUSDT,SHORT,BOS,30m,aligned,accepted,368.58
 2025-06-05 22:00:00,1000PEPEUSDT,SHORT,BOS,30m,aligned,candidate,
 2025-06-05 22:00:00,1000PEPEUSDT,SHORT,BOS,30m,aligned,accepted,0.010745
 2025-06-05 22:00:00,ADAUSDT,SHORT,BOS,30m,aligned,candidate,
@@ -23393,8 +23291,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2025-06-17 04:00:00,BCHUSDT,LONG,BOS,30m,aligned,accepted,480.3
 2025-06-17 04:00:00,TAOUSDT,SHORT,BOS,30m,standalone,candidate,
 2025-06-17 04:00:00,TAOUSDT,SHORT,BOS,30m,standalone,accepted,369.17
-2025-06-17 05:00:00,1000PEPEUSDT,SHORT,BOS,30m,standalone,candidate,
-2025-06-17 05:00:00,1000PEPEUSDT,SHORT,BOS,30m,standalone,accepted,0.010652
 2025-06-17 05:00:00,ARBUSDT,SHORT,BOS,30m,aligned,candidate,
 2025-06-17 05:00:00,SIRENUSDT,SHORT,BOS,1h,standalone,candidate,
 2025-06-17 05:00:00,TAOUSDT,SHORT,BOS,30m,standalone,candidate,
@@ -23406,6 +23302,8 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2025-06-17 06:00:00,WIFUSDT,SHORT,BOS,30m,aligned,accepted,0.8379
 2025-06-17 07:00:00,APTUSDT,SHORT,BOS,30m,aligned,candidate,
 2025-06-17 07:00:00,APTUSDT,SHORT,BOS,30m,aligned,accepted,4.637
+2025-06-17 08:00:00,1000PEPEUSDT,SHORT,BOS,30m,standalone,candidate,
+2025-06-17 08:00:00,1000PEPEUSDT,SHORT,BOS,30m,standalone,accepted,0.010578
 2025-06-17 08:00:00,ARBUSDT,SHORT,BOS,30m,aligned,candidate,
 2025-06-17 08:00:00,SIRENUSDT,SHORT,BOS,1h,standalone,candidate,
 2025-06-17 08:00:00,SUIUSDT,SHORT,BOS,30m,standalone,candidate,
@@ -24010,8 +23908,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2025-07-16 05:00:00,AXSUSDT,LONG,BOS,1h,standalone,candidate,
 2025-07-16 05:00:00,DOTUSDT,LONG,BOS,30m,standalone,candidate,
 2025-07-16 05:00:00,DOTUSDT,LONG,BOS,30m,standalone,accepted,4.0604
-2025-07-16 05:00:00,ENAUSDT,LONG,BOS,30m,aligned,candidate,
-2025-07-16 05:00:00,ENAUSDT,LONG,BOS,30m,aligned,accepted,0.3502
 2025-07-16 05:00:00,ETHUSDT,LONG,BOS,30m,aligned,candidate,
 2025-07-16 05:00:00,ETHUSDT,LONG,BOS,30m,aligned,accepted,3129.47
 2025-07-16 05:00:00,FILUSDT,LONG,BOS,15m,standalone,candidate,
@@ -24231,8 +24127,8 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2025-07-25 04:00:00,ARCUSDT,SHORT,BOS,15m,aligned,candidate,
 2025-07-25 04:00:00,ARCUSDT,SHORT,BOS,15m,aligned,accepted,0.02479
 2025-07-25 08:00:00,XAUTUSDT,SHORT,BOS,30m,aligned,candidate,
-2025-07-25 14:00:00,FARTCOINUSDT,SHORT,BOS,30m,aligned,candidate,
-2025-07-25 14:00:00,FARTCOINUSDT,SHORT,BOS,30m,aligned,accepted,1.3777
+2025-07-25 15:00:00,FARTCOINUSDT,SHORT,BOS,30m,aligned,candidate,
+2025-07-25 15:00:00,FARTCOINUSDT,SHORT,BOS,30m,aligned,accepted,1.3076
 2025-07-25 15:00:00,VIRTUALUSDT,SHORT,BOS,30m,aligned,candidate,
 2025-07-25 15:00:00,VIRTUALUSDT,SHORT,BOS,30m,aligned,accepted,1.4874
 2025-07-25 20:00:00,HBARUSDT,LONG,BOS,15m,aligned,candidate,
@@ -24245,7 +24141,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2025-07-26 19:00:00,AXSUSDT,LONG,BOS,1h,standalone,candidate,
 2025-07-26 19:00:00,ETHUSDT,LONG,BOS,30m,aligned,candidate,
 2025-07-26 19:00:00,ETHUSDT,LONG,BOS,30m,aligned,accepted,3740.63
-2025-07-26 19:00:00,NEARUSDT,LONG,BOS,30m,aligned,candidate,
 2025-07-26 21:00:00,ETHUSDT,LONG,BOS,30m,aligned,candidate,
 2025-07-26 21:00:00,ETHUSDT,LONG,BOS,30m,aligned,accepted,3745.39
 2025-07-26 22:00:00,NEARUSDT,LONG,BOS,30m,aligned,candidate,
@@ -24309,8 +24204,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2025-07-28 22:00:00,APTUSDT,SHORT,BOS,30m,aligned,accepted,4.66
 2025-07-28 22:00:00,PUMPFUNUSDT,SHORT,BOS,30m,aligned,candidate,
 2025-07-28 22:00:00,PUMPFUNUSDT,SHORT,BOS,30m,aligned,accepted,0.002397
-2025-07-29 08:00:00,HBARUSDT,LONG,BOS,15m,standalone,candidate,
-2025-07-29 08:00:00,HBARUSDT,LONG,BOS,1h,standalone,blocked_standalone_1h,
 2025-07-29 14:00:00,APTUSDT,SHORT,BOS,30m,aligned,candidate,
 2025-07-29 14:00:00,APTUSDT,SHORT,BOS,30m,aligned,accepted,4.68
 2025-07-29 15:00:00,FARTCOINUSDT,SHORT,BOS,30m,aligned,candidate,
@@ -24814,15 +24707,22 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2025-08-21 09:00:00,VIRTUALUSDT,SHORT,BOS,30m,aligned,accepted,1.2206
 2025-08-21 14:00:00,APTUSDT,SHORT,BOS,30m,aligned,candidate,
 2025-08-21 14:00:00,APTUSDT,SHORT,BOS,30m,aligned,accepted,4.406
-2025-08-21 14:00:00,WIFUSDT,SHORT,BOS,30m,aligned,candidate,
-2025-08-21 14:00:00,WIFUSDT,SHORT,BOS,30m,aligned,accepted,0.8513
 2025-08-21 14:00:00,XRPUSDT,SHORT,BOS,30m,aligned,candidate,
+2025-08-21 16:00:00,DOTUSDT,SHORT,BOS,30m,aligned,candidate,
+2025-08-21 16:00:00,DOTUSDT,SHORT,BOS,30m,aligned,accepted,3.7923
+2025-08-21 16:00:00,WIFUSDT,SHORT,BOS,30m,aligned,candidate,
+2025-08-21 16:00:00,WIFUSDT,SHORT,BOS,30m,aligned,accepted,0.8359
+2025-08-21 19:00:00,DOTUSDT,SHORT,BOS,30m,aligned,candidate,
+2025-08-21 19:00:00,DOTUSDT,SHORT,BOS,30m,aligned,accepted,3.8376
+2025-08-21 19:00:00,FILUSDT,SHORT,BOS,15m,aligned,candidate,
+2025-08-21 19:00:00,FILUSDT,SHORT,BOS,15m,aligned,accepted,2.41
 2025-08-21 19:00:00,WIFUSDT,SHORT,BOS,30m,aligned,candidate,
 2025-08-21 19:00:00,WIFUSDT,SHORT,BOS,30m,aligned,accepted,0.8531
 2025-08-21 22:00:00,ARBUSDT,LONG,BOS,30m,aligned,candidate,
+2025-08-21 23:00:00,FILUSDT,SHORT,BOS,15m,aligned,candidate,
+2025-08-21 23:00:00,FILUSDT,SHORT,BOS,15m,aligned,accepted,2.413
 2025-08-21 23:00:00,TAOUSDT,SHORT,BOS,30m,aligned,candidate,
 2025-08-21 23:00:00,TAOUSDT,SHORT,BOS,30m,aligned,accepted,338.65
-2025-08-22 01:00:00,AXSUSDT,SHORT,BOS,1h,aligned,candidate,
 2025-08-22 04:00:00,DOGEUSDT,SHORT,BOS,15m,aligned,candidate,
 2025-08-22 05:00:00,XRPUSDT,SHORT,BOS,30m,aligned,candidate,
 2025-08-22 07:00:00,PIPPINUSDT,LONG,BOS,15m,standalone,candidate,
@@ -25574,8 +25474,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2025-09-24 21:00:00,SIRENUSDT,LONG,BOS,1h,aligned,candidate,
 2025-09-25 01:00:00,XPLUSDT,LONG,BOS,30m,aligned,candidate,
 2025-09-25 01:00:00,XPLUSDT,LONG,BOS,30m,aligned,accepted,0.76
-2025-09-25 04:00:00,ENAUSDT,SHORT,BOS,30m,aligned,candidate,
-2025-09-25 04:00:00,ENAUSDT,SHORT,BOS,30m,aligned,accepted,0.5952
 2025-09-25 04:00:00,PUMPFUNUSDT,SHORT,BOS,30m,aligned,candidate,
 2025-09-25 04:00:00,PUMPFUNUSDT,SHORT,BOS,30m,aligned,accepted,0.005185
 2025-09-25 04:00:00,WIFUSDT,SHORT,BOS,30m,aligned,candidate,
@@ -25768,7 +25666,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2025-10-06 13:00:00,1000PEPEUSDT,LONG,BOS,30m,standalone,accepted,0.01
 2025-10-06 13:00:00,BTCUSDT,LONG,BOS,30m,aligned,candidate,
 2025-10-06 13:00:00,BTCUSDT,LONG,BOS,30m,aligned,accepted,124504.9
-2025-10-06 14:00:00,AVAXUSDT,LONG,BOS,30m,standalone,candidate,
 2025-10-06 14:00:00,BTCUSDT,LONG,BOS,30m,aligned,candidate,
 2025-10-06 14:00:00,BTCUSDT,LONG,BOS,30m,aligned,accepted,124980.0
 2025-10-06 14:00:00,ETHUSDT,LONG,BOS,30m,aligned,candidate,
@@ -27140,8 +27037,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2025-11-29 03:00:00,XAUTUSDT,LONG,BOS,30m,aligned,candidate,
 2025-11-29 04:00:00,XAUTUSDT,LONG,BOS,30m,aligned,candidate,
 2025-11-29 05:00:00,XAUTUSDT,LONG,BOS,30m,aligned,candidate,
-2025-11-29 07:00:00,DOTUSDT,SHORT,BOS,30m,standalone,candidate,
-2025-11-29 07:00:00,DOTUSDT,SHORT,BOS,30m,standalone,accepted,2.267
 2025-11-29 13:00:00,PIPPINUSDT,LONG,BOS,15m,aligned,candidate,
 2025-11-29 13:00:00,PIPPINUSDT,LONG,BOS,15m,aligned,accepted,0.09548
 2025-11-29 18:00:00,DOTUSDT,SHORT,BOS,30m,standalone,candidate,
@@ -29147,7 +29042,6 @@ time,symbol,direction,signal_type,selected_tf,trade_type,status,entry
 2026-02-22 02:00:00,ENAUSDT,SHORT,BOS,30m,aligned,candidate,
 2026-02-22 02:00:00,ENAUSDT,SHORT,BOS,30m,aligned,accepted,0.10652
 2026-02-22 08:00:00,OPUSDT,SHORT,BOS,1h,aligned,candidate,
-2026-02-22 10:00:00,POWERUSDT,LONG,BOS,1h,aligned,candidate,
 2026-02-22 12:00:00,AXLUSDT,SHORT,BOS,1h,aligned,candidate,
 2026-02-22 13:00:00,AXLUSDT,SHORT,BOS,1h,aligned,candidate,
 2026-02-22 13:00:00,AXSUSDT,SHORT,BOS,1h,aligned,candidate,

@@ -1,24 +1,39 @@
 import pandas as pd
 import numpy as np
 
+from core.config import (
+    CONFIDENCE_ADX_THRESHOLD,
+    CONFIDENCE_ATR_RATIO,
+    CONFIDENCE_RANGE_PCT,
+    CONFIDENCE_RSI_HIGH,
+    CONFIDENCE_RSI_LOW,
+    CONFIDENCE_VOLUME_RATIO,
+    CONFIDENCE_WEIGHT_CHART,
+    CONFIDENCE_WEIGHT_MOMENTUM,
+    CONFIDENCE_WEIGHT_PATTERNS,
+    CONFIDENCE_WEIGHT_TREND,
+    CONFIDENCE_WEIGHT_VOLATILITY,
+    CONFIDENCE_WEIGHT_VOLUME,
+)
+
 # Веса для каждой категории (сумма = 1)
 WEIGHTS = {
-    'trend': 0.25,
-    'momentum': 0.20,
-    'volume': 0.20,
-    'volatility': 0.15,
-    'patterns': 0.10,
-    'chart': 0.10
+    'trend': CONFIDENCE_WEIGHT_TREND,
+    'momentum': CONFIDENCE_WEIGHT_MOMENTUM,
+    'volume': CONFIDENCE_WEIGHT_VOLUME,
+    'volatility': CONFIDENCE_WEIGHT_VOLATILITY,
+    'patterns': CONFIDENCE_WEIGHT_PATTERNS,
+    'chart': CONFIDENCE_WEIGHT_CHART,
 }
 
 # Пороги для максимальных баллов
 THRESHOLDS = {
-    'adx': 25,          # ADX > 25 = сильный тренд
-    'rsi_low': 30,       # RSI < 30 = перепроданность
-    'rsi_high': 70,      # RSI > 70 = перекупленность
-    'volume_ratio': 1.5, # объём > среднего в 1.5 раза
-    'atr_ratio': 0.7,    # ATR сжатие < 70% от среднего
-    'range_pct': 0.03    # диапазон < 3% от цены
+    'adx': CONFIDENCE_ADX_THRESHOLD,
+    'rsi_low': CONFIDENCE_RSI_LOW,
+    'rsi_high': CONFIDENCE_RSI_HIGH,
+    'volume_ratio': CONFIDENCE_VOLUME_RATIO,
+    'atr_ratio': CONFIDENCE_ATR_RATIO,
+    'range_pct': CONFIDENCE_RANGE_PCT,
 }
 
 def calculate_trend_score(df):

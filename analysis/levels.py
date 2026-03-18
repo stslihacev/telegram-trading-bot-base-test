@@ -1,6 +1,8 @@
 import pandas as pd
 
-def find_swing_highs(df, window=5):
+from core.config import SWING_WINDOW
+
+def find_swing_highs(df, window=SWING_WINDOW):
     """
     Находит локальные максимумы.
     df - DataFrame с колонкой 'high'
@@ -17,7 +19,7 @@ def find_swing_highs(df, window=5):
             values.append(highs[i])
     return list(zip(positions, values))
 
-def find_swing_lows(df, window=5):
+def find_swing_lows(df, window=SWING_WINDOW):
     """
     Находит локальные минимумы.
     """

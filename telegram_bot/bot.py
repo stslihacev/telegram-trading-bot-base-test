@@ -14,7 +14,7 @@ from tkinter.scrolledtext import ScrolledText
 from dotenv import load_dotenv
 from telegram.ext import Application, CallbackQueryHandler, CommandHandler
 
-from core.config import MIN_SIGNAL_RR, SCAN_INTERVAL, TOP_N
+from core.config import MIN_SIGNAL_RR, SCAN_INTERVAL, SCAN_INTERVAL_MIN, TOP_N
 from core.state_manager import state_manager
 from execution.signal_dispatcher import SignalDispatcher
 from scanner.market_scanner import MarketScanner
@@ -72,7 +72,7 @@ class TelegramTradingBot:
             logger.warning("TELEGRAM_TOKEN не задан — бот запустится в режиме scanner + GUI без Telegram polling")
 
         self.min_rr = float(os.getenv("MIN_SIGNAL_RR", str(MIN_SIGNAL_RR)))
-        self.scan_interval_min = int(os.getenv("SCAN_INTERVAL_MIN", "5"))
+        self.scan_interval_min = int(os.getenv("SCAN_INTERVAL_MIN", str(SCAN_INTERVAL_MIN)))
 
         self.dispatcher = SignalDispatcher(dedup_minutes=60)
         self.scanner = MarketScanner()
