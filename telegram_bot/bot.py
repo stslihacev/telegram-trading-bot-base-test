@@ -38,14 +38,14 @@ class TelegramTradingBot:
         if not self.token:
             raise ValueError("TELEGRAM_TOKEN не задан в .env")
 
-        # 👇 СОЗДАЁМ КАСТОМНЫЙ REQUEST С БОЛЬШИМИ ТАЙМАУТАМИ
+        # 👇 Кастомный HTTPXRequest с увеличенными таймаутами
         from telegram.request import HTTPXRequest
         self.request = HTTPXRequest(
             connection_pool_size=10,
-            connect_timeout=30.0,   # 30 секунд на подключение
-            read_timeout=30.0,       # 30 секунд на чтение
-            write_timeout=30.0,       # 30 секунд на запись
-            pool_timeout=30.0         # 30 секунд на ожидание в пуле
+            connect_timeout=60.0,
+            read_timeout=60.0,
+            write_timeout=60.0,
+            pool_timeout=60.0
         )
 
         self.min_rr = float(os.getenv("MIN_SIGNAL_RR", str(MIN_SIGNAL_RR)))
@@ -54,6 +54,9 @@ class TelegramTradingBot:
         self.dispatcher = SignalDispatcher(dedup_minutes=60)
         self.scanner = MarketScanner()
         self.scanner.strategy.min_rr = self.min_rr
+
+        self.default_interval_sec = max(SCAN_INTERVAL, self.scan_interval_min * 60)
+
         self.application: Application | None = None
         self.scan_task: asyncio.Task | None = None
 
@@ -65,7 +68,7 @@ class TelegramTradingBot:
 
     def get_pairs(self) -> list[str]:
         try:
-            symbols = get_top_usdt_pairs(limit=30)
+            symbols = get_top_usdt_pairs(limit=50)
             return [s.split(":")[0].replace("/", "") for s in symbols]
         except Exception:
             return ["ADAUSDT", "BTCUSDT", "ETHUSDT", "SOLUSDT", "XRPUSDT"]
@@ -82,45 +85,84 @@ class TelegramTradingBot:
         return self.dispatcher.get_open_positions()
 
     def _register_handlers(self, app: Application) -> None:
+        logger.info("📦 Registering handlers...")
+
         app.bot_data["service"] = self
+
         app.add_handler(CommandHandler("start", start_command))
+        logger.info("✅ start handler registered")
+
         app.add_handler(CommandHandler("help", help_command))
+        logger.info("✅ help handler registered")
+
         app.add_handler(CommandHandler("pairs", pairs_command))
+        logger.info("✅ pairs handler registered")
+
         app.add_handler(CommandHandler("signal", signal_command))
+        logger.info("✅ signal handler registered")
+
         app.add_handler(CommandHandler("status", status_command))
+        logger.info("✅ status handler registered")
+
         app.add_handler(CallbackQueryHandler(callback_handler))
+        logger.info("✅ callback handler registered")
 
     async def broadcast_if_needed(self, signal: dict) -> None:
         if self.dispatcher.is_duplicate(signal):
             return
-        self.dispatcher.register_position(signal)
-        from database.db import save_signal
 
-        save_signal(signal["symbol"], signal["signal_type"], signal["entry"], signal["tp"], signal["sl"])
+        self.dispatcher.register_position(signal)
+
+        from database.db import save_signal
+        save_signal(
+            signal["symbol"],
+            signal["signal_type"],
+            signal["entry"],
+            signal["tp"],
+            signal["sl"]
+        )
+
         auto_users = state_manager.get_all_auto_users()
         if self.default_chat_id:
             auto_users.append(int(self.default_chat_id))
+
         unique_users = sorted(set(auto_users))
+
         if self.application and unique_users:
             await broadcast_signal(self.application.bot, unique_users, signal)
 
     async def scan_loop(self, interval_sec: int | None = None) -> None:
+        logger.info("🚀 SCAN LOOP STARTED")
+
+        scanner = self.scanner
+
         if interval_sec is None:
-            interval_sec = max(SCAN_INTERVAL, self.scan_interval_min * 60)
+            interval_sec = self.default_interval_sec
+
         interval_sec = max(60, int(interval_sec))
+
         while True:
             try:
+                logger.info("🔍 Starting market scan...")
+
                 signals = await asyncio.wait_for(
-                    self.scanner.scan(),
+                    scanner.scan(),
                     timeout=120,
                 )
+
+                logger.info(f"📊 Signals found: {len(signals)}")
+
                 for signal in signals:
+                    logger.info(
+                        f"📡 Signal: {signal.get('symbol')} | {signal.get('signal_type')}"
+                    )
                     await self.broadcast_if_needed(signal)
 
             except TimeoutError:
                 logger.warning("scan_loop timeout: scanner.scan exceeded 120s")
                 await asyncio.sleep(10)
                 continue
+
             except asyncio.CancelledError:
                 logger.info("scan_loop cancelled")
                 raise
@@ -129,6 +171,8 @@ class TelegramTradingBot:
                 logger.error("scan_loop error", exc_info=True)
                 await asyncio.sleep(10)
                 continue
+
+            logger.info(f"⏳ Sleeping for {interval_sec} seconds")
             await asyncio.sleep(interval_sec)
 
     def run_polling(self) -> None:
@@ -142,7 +186,8 @@ class TelegramTradingBot:
             await self.application.shutdown()
 
     async def _post_init(self, _app: Application) -> None:
-        self.scan_task = asyncio.create_task(self.scan_loop())
+        logger.info("⚙️ Post init: starting scan_loop task")
+        #self.scan_task = asyncio.create_task(self.scan_loop())
 
     async def _post_shutdown(self, _app: Application) -> None:
         if self.scan_task and not self.scan_task.done():
@@ -151,11 +196,17 @@ class TelegramTradingBot:
 
     def initialize(self) -> None:
         """Создаёт Telegram Application в текущем asyncio loop."""
-        self.application = Application.builder()\
-            .token(self.token)\
-            .request(self.request)\
-            .post_init(self._post_init)\
-            .post_shutdown(self._post_shutdown)\
+        logger.info("⚙️ Building Telegram Application...")
+
+        self.application = Application.builder() \
+            .token(self.token) \
+            .request(self.request) \
+            .post_init(self._post_init) \
+            .post_shutdown(self._post_shutdown) \
             .build()
+
         self._register_handlers(self.application)
+
+        logger.info(f"📊 Handlers count: {len(self.application.handlers)}")
+
         logger.info("✅ Telegram бот инициализирован")

@@ -57,21 +57,33 @@ class MarketScanner:
         """Возвращает список сигналов после фильтрации рынка и адаптера стратегии."""
         try:
             top_symbols = get_top_usdt_pairs(limit=TOP_N)
+            logger.info(f"📈 Top symbols fetched: {len(top_symbols)}")
+
             active_symbols = self._filter_active_symbols(top_symbols)
+            logger.info(f"🔥 Active symbols after filter: {len(active_symbols)}")
+
         except Exception as exc:
             logger.error(f"Ошибка получения списка монет: {exc}")
             return []
 
         signals: list[dict] = []
         for symbol in active_symbols:
+            logger.info(f"🔍 Scanning {symbol}")
             df = await self._fetch_ohlcv(symbol)
             if df is None:
+                logger.warning(f"⚠️ Could not fetch OHLCV for {symbol}")
                 continue
             if len(df) < 2:
+                logger.warning(f"⚠️ Not enough candles for {symbol}")
                 continue
+
             df = df.iloc[:-1].copy()
             clean_symbol = symbol.split(":")[0].replace("/", "")
             signal = self.strategy.generate_signal(clean_symbol, df)
             if signal:
+                logger.info(f"✅ Signal generated: {clean_symbol} | {signal.get('signal_type')}")
                 signals.append(signal)
+            else:
+                logger.info(f"❌ No signal: {clean_symbol}")
+        logger.info(f"📊 Total signals after scan: {len(signals)}")
         return signals

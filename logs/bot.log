@@ -3235,3 +3235,1522 @@ Traceback (most recent call last):
 telegram.error.TimedOut: Timed out
 2026-03-17 01:34:03,454 - crypto_bot - INFO - ✅ Telegram бот инициализирован
 2026-03-17 01:38:43,426 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 20:30:16,395 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 20:30:46,491 - crypto_bot - ERROR - Критическая ошибка основного цикла: Timed out
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_transports\default.py", line 66, in map_httpcore_exceptions
+    yield
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_transports\default.py", line 366, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection.py", line 101, in handle_async_request
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection.py", line 156, in _connect
+    stream = await stream.start_tls(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_backends\anyio.py", line 67, in start_tls
+    with map_exceptions(exc_map):
+  File "D:\Python 3.11\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectTimeout
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 268, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1530, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1617, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1645, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1682, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1719, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_transports\default.py", line 365, in handle_async_request
+    with map_httpcore_exceptions():
+  File "D:\Python 3.11\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_transports\default.py", line 83, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectTimeout
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 22, in <module>
+    main()
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 18, in main
+    bot.run_polling()
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 167, in run_polling
+    self.application.run_polling(drop_pending_updates=True)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 818, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1006, in __run
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 995, in __run
+    loop.run_until_complete(self.initialize())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 477, in initialize
+    await self.bot.initialize()
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_extbot.py", line 286, in initialize
+    await super().initialize()
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 735, in initialize
+    await self.get_me()
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_extbot.py", line 1697, in get_me
+    return await super().get_me(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 525, in decorator
+    result = await func(self, *args, **kwargs)  # skipcq: PYL-E1102
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 775, in get_me
+    result = await self._post(
+             ^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 613, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_extbot.py", line 340, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 641, in _do_post
+    return await request.post(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_baserequest.py", line 200, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_baserequest.py", line 340, in _request_wrapper
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_baserequest.py", line 330, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 285, in do_request
+    raise TimedOut from err
+telegram.error.TimedOut: Timed out
+2026-03-18 20:34:20,467 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 20:34:20,795 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 20:34:20,795 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-18 20:34:37,505 - crypto_bot - INFO - ⚙️ Post init: starting scan_loop task
+2026-03-18 20:34:37,505 - crypto_bot - INFO - 🚀 SCAN LOOP STARTED
+2026-03-18 20:34:37,505 - crypto_bot - INFO - 🔍 Starting market scan...
+2026-03-18 20:34:55,015 - crypto_bot - INFO - 📊 Signals found: 0
+2026-03-18 20:34:55,016 - crypto_bot - INFO - ⏳ Sleeping for 3600 seconds
+2026-03-18 20:35:55,926 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 20:35:56,314 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 20:35:56,314 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-18 20:35:56,315 - crypto_bot - ERROR - ❌ Polling crashed. Restarting in 5 seconds...
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1006, in __run
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 995, in __run
+    loop.run_until_complete(self.initialize())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 27, in main
+    bot.run_polling()
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 167, in run_polling
+    self.application.run_polling(drop_pending_updates=True)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 818, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1017, in __run
+    loop.run_until_complete(self.shutdown())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+2026-03-18 20:36:01,630 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 20:36:02,005 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 20:36:02,005 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-18 20:36:02,006 - crypto_bot - ERROR - ❌ Polling crashed. Restarting in 5 seconds...
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1006, in __run
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 995, in __run
+    loop.run_until_complete(self.initialize())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 27, in main
+    bot.run_polling()
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 167, in run_polling
+    self.application.run_polling(drop_pending_updates=True)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 818, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1017, in __run
+    loop.run_until_complete(self.shutdown())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+2026-03-18 20:41:40,200 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 20:41:40,567 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 20:41:40,567 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-18 20:42:10,668 - crypto_bot - ERROR - ❌ Polling crashed. Restarting in 5 seconds...
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_transports\default.py", line 66, in map_httpcore_exceptions
+    yield
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_transports\default.py", line 366, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection.py", line 101, in handle_async_request
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection.py", line 156, in _connect
+    stream = await stream.start_tls(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_backends\anyio.py", line 67, in start_tls
+    with map_exceptions(exc_map):
+  File "D:\Python 3.11\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectTimeout
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 268, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1530, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1617, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1645, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1682, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1719, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_transports\default.py", line 365, in handle_async_request
+    with map_httpcore_exceptions():
+  File "D:\Python 3.11\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_transports\default.py", line 83, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectTimeout
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 27, in main
+    bot.run_polling()
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 167, in run_polling
+    self.application.run_polling(drop_pending_updates=True)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 818, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1006, in __run
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 995, in __run
+    loop.run_until_complete(self.initialize())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 477, in initialize
+    await self.bot.initialize()
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_extbot.py", line 286, in initialize
+    await super().initialize()
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 735, in initialize
+    await self.get_me()
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_extbot.py", line 1697, in get_me
+    return await super().get_me(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 525, in decorator
+    result = await func(self, *args, **kwargs)  # skipcq: PYL-E1102
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 775, in get_me
+    result = await self._post(
+             ^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 613, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_extbot.py", line 340, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 641, in _do_post
+    return await request.post(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_baserequest.py", line 200, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_baserequest.py", line 340, in _request_wrapper
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_baserequest.py", line 330, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 285, in do_request
+    raise TimedOut from err
+telegram.error.TimedOut: Timed out
+2026-03-18 20:42:15,678 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 20:42:16,020 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 20:42:16,020 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-18 20:42:16,020 - crypto_bot - ERROR - ❌ Polling crashed. Restarting in 5 seconds...
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1006, in __run
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 995, in __run
+    loop.run_until_complete(self.initialize())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 27, in main
+    bot.run_polling()
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 167, in run_polling
+    self.application.run_polling(drop_pending_updates=True)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 818, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1017, in __run
+    loop.run_until_complete(self.shutdown())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+2026-03-18 20:42:21,036 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 20:42:21,366 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 20:42:21,366 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-18 20:42:21,380 - crypto_bot - ERROR - ❌ Polling crashed. Restarting in 5 seconds...
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1006, in __run
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 995, in __run
+    loop.run_until_complete(self.initialize())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 27, in main
+    bot.run_polling()
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 167, in run_polling
+    self.application.run_polling(drop_pending_updates=True)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 818, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1017, in __run
+    loop.run_until_complete(self.shutdown())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+2026-03-18 20:42:26,381 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 20:42:26,707 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 20:42:26,707 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-18 20:42:26,707 - crypto_bot - ERROR - ❌ Polling crashed. Restarting in 5 seconds...
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1006, in __run
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 995, in __run
+    loop.run_until_complete(self.initialize())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 27, in main
+    bot.run_polling()
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 167, in run_polling
+    self.application.run_polling(drop_pending_updates=True)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 818, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1017, in __run
+    loop.run_until_complete(self.shutdown())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+2026-03-18 20:42:31,716 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 20:42:32,060 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 20:42:32,060 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-18 20:42:32,061 - crypto_bot - ERROR - ❌ Polling crashed. Restarting in 5 seconds...
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1006, in __run
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 995, in __run
+    loop.run_until_complete(self.initialize())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 27, in main
+    bot.run_polling()
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 167, in run_polling
+    self.application.run_polling(drop_pending_updates=True)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 818, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1017, in __run
+    loop.run_until_complete(self.shutdown())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+2026-03-18 20:42:37,063 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 20:42:37,418 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 20:42:37,418 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-18 20:42:37,418 - crypto_bot - ERROR - ❌ Polling crashed. Restarting in 5 seconds...
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1006, in __run
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 995, in __run
+    loop.run_until_complete(self.initialize())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 27, in main
+    bot.run_polling()
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 167, in run_polling
+    self.application.run_polling(drop_pending_updates=True)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 818, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1017, in __run
+    loop.run_until_complete(self.shutdown())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+2026-03-18 20:52:40,146 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 20:52:40,331 - crypto_bot - INFO - ⚙️ Building Telegram Application...
+2026-03-18 20:52:40,508 - crypto_bot - INFO - 📦 Registering handlers...
+2026-03-18 20:52:40,508 - crypto_bot - INFO - ✅ start handler registered
+2026-03-18 20:52:40,508 - crypto_bot - INFO - ✅ help handler registered
+2026-03-18 20:52:40,508 - crypto_bot - INFO - ✅ pairs handler registered
+2026-03-18 20:52:40,508 - crypto_bot - INFO - ✅ signal handler registered
+2026-03-18 20:52:40,508 - crypto_bot - INFO - ✅ status handler registered
+2026-03-18 20:52:40,508 - crypto_bot - INFO - ✅ callback handler registered
+2026-03-18 20:52:40,508 - crypto_bot - INFO - 📊 Handlers count: 1
+2026-03-18 20:52:40,508 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 20:52:40,508 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-18 20:53:11,515 - crypto_bot - INFO - ⚙️ Post init: starting scan_loop task
+2026-03-18 20:53:11,515 - crypto_bot - INFO - 🚀 SCAN LOOP STARTED
+2026-03-18 20:53:11,515 - crypto_bot - INFO - 🔍 Starting market scan...
+2026-03-18 20:53:16,189 - crypto_bot - INFO - 📈 Top symbols fetched: 25
+2026-03-18 20:53:21,640 - crypto_bot - INFO - 🔥 Active symbols after filter: 23
+2026-03-18 20:53:21,640 - crypto_bot - INFO - 🔍 Scanning BTC/USDT:USDT
+2026-03-18 20:53:21,855 - crypto_bot - INFO - ❌ No signal: BTCUSDT
+2026-03-18 20:53:21,855 - crypto_bot - INFO - 🔍 Scanning ETH/USDT:USDT
+2026-03-18 20:53:22,070 - crypto_bot - INFO - ❌ No signal: ETHUSDT
+2026-03-18 20:53:22,070 - crypto_bot - INFO - 🔍 Scanning SOL/USDT:USDT
+2026-03-18 20:53:22,439 - crypto_bot - INFO - ❌ No signal: SOLUSDT
+2026-03-18 20:53:22,439 - crypto_bot - INFO - 🔍 Scanning XRP/USDT:USDT
+2026-03-18 20:53:22,668 - crypto_bot - INFO - ❌ No signal: XRPUSDT
+2026-03-18 20:53:22,668 - crypto_bot - INFO - 🔍 Scanning HYPE/USDT:USDT
+2026-03-18 20:53:22,891 - crypto_bot - INFO - ❌ No signal: HYPEUSDT
+2026-03-18 20:53:22,891 - crypto_bot - INFO - 🔍 Scanning DOGE/USDT:USDT
+2026-03-18 20:53:23,108 - crypto_bot - INFO - ❌ No signal: DOGEUSDT
+2026-03-18 20:53:23,108 - crypto_bot - INFO - 🔍 Scanning BARD/USDT:USDT
+2026-03-18 20:53:23,321 - crypto_bot - INFO - ❌ No signal: BARDUSDT
+2026-03-18 20:53:23,321 - crypto_bot - INFO - 🔍 Scanning 1000PEPE/USDT:USDT
+2026-03-18 20:53:23,531 - crypto_bot - INFO - ❌ No signal: 1000PEPEUSDT
+2026-03-18 20:53:23,531 - crypto_bot - INFO - 🔍 Scanning ZEC/USDT:USDT
+2026-03-18 20:53:23,755 - crypto_bot - INFO - ❌ No signal: ZECUSDT
+2026-03-18 20:53:23,755 - crypto_bot - INFO - 🔍 Scanning LYN/USDT:USDT
+2026-03-18 20:53:23,972 - crypto_bot - INFO - ❌ No signal: LYNUSDT
+2026-03-18 20:53:23,972 - crypto_bot - INFO - 🔍 Scanning PIPPIN/USDT:USDT
+2026-03-18 20:53:24,188 - crypto_bot - INFO - ❌ No signal: PIPPINUSDT
+2026-03-18 20:53:24,189 - crypto_bot - INFO - 🔍 Scanning TAO/USDT:USDT
+2026-03-18 20:53:24,396 - crypto_bot - INFO - ❌ No signal: TAOUSDT
+2026-03-18 20:53:24,396 - crypto_bot - INFO - 🔍 Scanning RIVER/USDT:USDT
+2026-03-18 20:53:24,619 - crypto_bot - INFO - ❌ No signal: RIVERUSDT
+2026-03-18 20:53:24,619 - crypto_bot - INFO - 🔍 Scanning ADA/USDT:USDT
+2026-03-18 20:53:24,837 - crypto_bot - INFO - ❌ No signal: ADAUSDT
+2026-03-18 20:53:24,837 - crypto_bot - INFO - 🔍 Scanning TRUMP/USDT:USDT
+2026-03-18 20:53:25,047 - crypto_bot - INFO - ❌ No signal: TRUMPUSDT
+2026-03-18 20:53:25,047 - crypto_bot - INFO - 🔍 Scanning ASTER/USDT:USDT
+2026-03-18 20:53:25,265 - crypto_bot - INFO - ❌ No signal: ASTERUSDT
+2026-03-18 20:53:25,265 - crypto_bot - INFO - 🔍 Scanning SUI/USDT:USDT
+2026-03-18 20:53:25,473 - crypto_bot - INFO - ❌ No signal: SUIUSDT
+2026-03-18 20:53:25,473 - crypto_bot - INFO - 🔍 Scanning ENJ/USDT:USDT
+2026-03-18 20:53:25,694 - crypto_bot - INFO - ❌ No signal: ENJUSDT
+2026-03-18 20:53:25,695 - crypto_bot - INFO - 🔍 Scanning BAN/USDT:USDT
+2026-03-18 20:53:25,910 - crypto_bot - INFO - ❌ No signal: BANUSDT
+2026-03-18 20:53:25,910 - crypto_bot - INFO - 🔍 Scanning NEAR/USDT:USDT
+2026-03-18 20:53:26,122 - crypto_bot - INFO - ❌ No signal: NEARUSDT
+2026-03-18 20:53:26,122 - crypto_bot - INFO - 🔍 Scanning 1000BONK/USDT:USDT
+2026-03-18 20:53:26,340 - crypto_bot - INFO - ❌ No signal: 1000BONKUSDT
+2026-03-18 20:53:26,340 - crypto_bot - INFO - 🔍 Scanning ANKR/USDT:USDT
+2026-03-18 20:53:26,554 - crypto_bot - INFO - ❌ No signal: ANKRUSDT
+2026-03-18 20:53:26,554 - crypto_bot - INFO - 🔍 Scanning LINK/USDT:USDT
+2026-03-18 20:53:26,770 - crypto_bot - INFO - ❌ No signal: LINKUSDT
+2026-03-18 20:53:26,771 - crypto_bot - INFO - 📊 Total signals after scan: 0
+2026-03-18 20:53:26,771 - crypto_bot - INFO - 📊 Signals found: 0
+2026-03-18 20:53:26,771 - crypto_bot - INFO - ⏳ Sleeping for 3600 seconds
+2026-03-18 20:56:57,522 - crypto_bot - INFO - 🛑 Остановка по KeyboardInterrupt
+2026-03-18 20:59:16,681 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 20:59:16,868 - crypto_bot - INFO - ⚙️ Building Telegram Application...
+2026-03-18 20:59:17,040 - crypto_bot - INFO - 📦 Registering handlers...
+2026-03-18 20:59:17,040 - crypto_bot - INFO - ✅ start handler registered
+2026-03-18 20:59:17,040 - crypto_bot - INFO - ✅ help handler registered
+2026-03-18 20:59:17,040 - crypto_bot - INFO - ✅ pairs handler registered
+2026-03-18 20:59:17,040 - crypto_bot - INFO - ✅ signal handler registered
+2026-03-18 20:59:17,040 - crypto_bot - INFO - ✅ status handler registered
+2026-03-18 20:59:17,040 - crypto_bot - INFO - ✅ callback handler registered
+2026-03-18 20:59:17,040 - crypto_bot - INFO - 📊 Handlers count: 1
+2026-03-18 20:59:17,040 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 20:59:17,040 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-18 20:59:47,146 - crypto_bot - ERROR - ❌ Polling crashed. Restarting in 5 seconds...
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_transports\default.py", line 66, in map_httpcore_exceptions
+    yield
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_transports\default.py", line 366, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection.py", line 101, in handle_async_request
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection.py", line 156, in _connect
+    stream = await stream.start_tls(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_backends\anyio.py", line 67, in start_tls
+    with map_exceptions(exc_map):
+  File "D:\Python 3.11\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectTimeout
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 268, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1530, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1617, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1645, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1682, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1719, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_transports\default.py", line 365, in handle_async_request
+    with map_httpcore_exceptions():
+  File "D:\Python 3.11\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_transports\default.py", line 83, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectTimeout
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 27, in main
+    bot.run_polling()
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 181, in run_polling
+    self.application.run_polling(drop_pending_updates=True)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 818, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1006, in __run
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 995, in __run
+    loop.run_until_complete(self.initialize())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 477, in initialize
+    await self.bot.initialize()
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_extbot.py", line 286, in initialize
+    await super().initialize()
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 735, in initialize
+    await self.get_me()
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_extbot.py", line 1697, in get_me
+    return await super().get_me(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 525, in decorator
+    result = await func(self, *args, **kwargs)  # skipcq: PYL-E1102
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 775, in get_me
+    result = await self._post(
+             ^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 613, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_extbot.py", line 340, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 641, in _do_post
+    return await request.post(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_baserequest.py", line 200, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_baserequest.py", line 340, in _request_wrapper
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_baserequest.py", line 330, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 285, in do_request
+    raise TimedOut from err
+telegram.error.TimedOut: Timed out
+2026-03-18 20:59:52,155 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 20:59:52,336 - crypto_bot - INFO - ⚙️ Building Telegram Application...
+2026-03-18 20:59:52,501 - crypto_bot - INFO - 📦 Registering handlers...
+2026-03-18 20:59:52,501 - crypto_bot - INFO - ✅ start handler registered
+2026-03-18 20:59:52,501 - crypto_bot - INFO - ✅ help handler registered
+2026-03-18 20:59:52,501 - crypto_bot - INFO - ✅ pairs handler registered
+2026-03-18 20:59:52,501 - crypto_bot - INFO - ✅ signal handler registered
+2026-03-18 20:59:52,501 - crypto_bot - INFO - ✅ status handler registered
+2026-03-18 20:59:52,501 - crypto_bot - INFO - ✅ callback handler registered
+2026-03-18 20:59:52,501 - crypto_bot - INFO - 📊 Handlers count: 1
+2026-03-18 20:59:52,501 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 20:59:52,501 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-18 20:59:52,501 - crypto_bot - ERROR - ❌ Polling crashed. Restarting in 5 seconds...
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1006, in __run
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 995, in __run
+    loop.run_until_complete(self.initialize())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 27, in main
+    bot.run_polling()
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 181, in run_polling
+    self.application.run_polling(drop_pending_updates=True)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 818, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1017, in __run
+    loop.run_until_complete(self.shutdown())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+2026-03-18 20:59:57,509 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 20:59:57,696 - crypto_bot - INFO - ⚙️ Building Telegram Application...
+2026-03-18 20:59:57,855 - crypto_bot - INFO - 📦 Registering handlers...
+2026-03-18 20:59:57,855 - crypto_bot - INFO - ✅ start handler registered
+2026-03-18 20:59:57,855 - crypto_bot - INFO - ✅ help handler registered
+2026-03-18 20:59:57,855 - crypto_bot - INFO - ✅ pairs handler registered
+2026-03-18 20:59:57,855 - crypto_bot - INFO - ✅ signal handler registered
+2026-03-18 20:59:57,855 - crypto_bot - INFO - ✅ status handler registered
+2026-03-18 20:59:57,855 - crypto_bot - INFO - ✅ callback handler registered
+2026-03-18 20:59:57,855 - crypto_bot - INFO - 📊 Handlers count: 1
+2026-03-18 20:59:57,855 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 20:59:57,868 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-18 20:59:57,868 - crypto_bot - ERROR - ❌ Polling crashed. Restarting in 5 seconds...
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1006, in __run
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 995, in __run
+    loop.run_until_complete(self.initialize())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 27, in main
+    bot.run_polling()
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 181, in run_polling
+    self.application.run_polling(drop_pending_updates=True)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 818, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1017, in __run
+    loop.run_until_complete(self.shutdown())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+2026-03-18 21:00:02,873 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 21:00:03,046 - crypto_bot - INFO - ⚙️ Building Telegram Application...
+2026-03-18 21:00:03,216 - crypto_bot - INFO - 📦 Registering handlers...
+2026-03-18 21:00:03,216 - crypto_bot - INFO - ✅ start handler registered
+2026-03-18 21:00:03,216 - crypto_bot - INFO - ✅ help handler registered
+2026-03-18 21:00:03,216 - crypto_bot - INFO - ✅ pairs handler registered
+2026-03-18 21:00:03,216 - crypto_bot - INFO - ✅ signal handler registered
+2026-03-18 21:00:03,216 - crypto_bot - INFO - ✅ status handler registered
+2026-03-18 21:00:03,216 - crypto_bot - INFO - ✅ callback handler registered
+2026-03-18 21:00:03,216 - crypto_bot - INFO - 📊 Handlers count: 1
+2026-03-18 21:00:03,216 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 21:00:03,216 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-18 21:00:03,216 - crypto_bot - ERROR - ❌ Polling crashed. Restarting in 5 seconds...
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1006, in __run
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 995, in __run
+    loop.run_until_complete(self.initialize())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 27, in main
+    bot.run_polling()
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 181, in run_polling
+    self.application.run_polling(drop_pending_updates=True)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 818, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1017, in __run
+    loop.run_until_complete(self.shutdown())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+2026-03-18 21:01:47,144 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 21:01:47,299 - crypto_bot - INFO - ⚙️ Building Telegram Application...
+2026-03-18 21:01:47,479 - crypto_bot - INFO - 📦 Registering handlers...
+2026-03-18 21:01:47,479 - crypto_bot - INFO - ✅ start handler registered
+2026-03-18 21:01:47,479 - crypto_bot - INFO - ✅ help handler registered
+2026-03-18 21:01:47,479 - crypto_bot - INFO - ✅ pairs handler registered
+2026-03-18 21:01:47,479 - crypto_bot - INFO - ✅ signal handler registered
+2026-03-18 21:01:47,479 - crypto_bot - INFO - ✅ status handler registered
+2026-03-18 21:01:47,479 - crypto_bot - INFO - ✅ callback handler registered
+2026-03-18 21:01:47,479 - crypto_bot - INFO - 📊 Handlers count: 1
+2026-03-18 21:01:47,479 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 21:01:47,479 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-18 21:02:47,549 - crypto_bot - ERROR - ❌ Polling crashed. Restarting in 5 seconds...
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_transports\default.py", line 66, in map_httpcore_exceptions
+    yield
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_transports\default.py", line 366, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection.py", line 101, in handle_async_request
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection.py", line 156, in _connect
+    stream = await stream.start_tls(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_backends\anyio.py", line 67, in start_tls
+    with map_exceptions(exc_map):
+  File "D:\Python 3.11\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectTimeout
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 268, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1530, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1617, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1645, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1682, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1719, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_transports\default.py", line 365, in handle_async_request
+    with map_httpcore_exceptions():
+  File "D:\Python 3.11\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_transports\default.py", line 83, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectTimeout
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 27, in main
+    bot.run_polling()
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 181, in run_polling
+    self.application.run_polling(drop_pending_updates=True)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 818, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1006, in __run
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 995, in __run
+    loop.run_until_complete(self.initialize())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 477, in initialize
+    await self.bot.initialize()
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_extbot.py", line 286, in initialize
+    await super().initialize()
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 735, in initialize
+    await self.get_me()
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_extbot.py", line 1697, in get_me
+    return await super().get_me(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 525, in decorator
+    result = await func(self, *args, **kwargs)  # skipcq: PYL-E1102
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 775, in get_me
+    result = await self._post(
+             ^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 613, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_extbot.py", line 340, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 641, in _do_post
+    return await request.post(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_baserequest.py", line 200, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_baserequest.py", line 340, in _request_wrapper
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_baserequest.py", line 330, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 285, in do_request
+    raise TimedOut from err
+telegram.error.TimedOut: Timed out
+2026-03-18 21:02:52,557 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 21:02:52,731 - crypto_bot - INFO - ⚙️ Building Telegram Application...
+2026-03-18 21:02:52,897 - crypto_bot - INFO - 📦 Registering handlers...
+2026-03-18 21:02:52,897 - crypto_bot - INFO - ✅ start handler registered
+2026-03-18 21:02:52,897 - crypto_bot - INFO - ✅ help handler registered
+2026-03-18 21:02:52,897 - crypto_bot - INFO - ✅ pairs handler registered
+2026-03-18 21:02:52,898 - crypto_bot - INFO - ✅ signal handler registered
+2026-03-18 21:02:52,898 - crypto_bot - INFO - ✅ status handler registered
+2026-03-18 21:02:52,898 - crypto_bot - INFO - ✅ callback handler registered
+2026-03-18 21:02:52,898 - crypto_bot - INFO - 📊 Handlers count: 1
+2026-03-18 21:02:52,898 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 21:02:52,899 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-18 21:02:52,899 - crypto_bot - ERROR - ❌ Polling crashed. Restarting in 5 seconds...
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1006, in __run
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 995, in __run
+    loop.run_until_complete(self.initialize())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 27, in main
+    bot.run_polling()
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 181, in run_polling
+    self.application.run_polling(drop_pending_updates=True)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 818, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1017, in __run
+    loop.run_until_complete(self.shutdown())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+2026-03-18 21:02:57,903 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 21:02:58,075 - crypto_bot - INFO - ⚙️ Building Telegram Application...
+2026-03-18 21:02:58,239 - crypto_bot - INFO - 📦 Registering handlers...
+2026-03-18 21:02:58,239 - crypto_bot - INFO - ✅ start handler registered
+2026-03-18 21:02:58,239 - crypto_bot - INFO - ✅ help handler registered
+2026-03-18 21:02:58,239 - crypto_bot - INFO - ✅ pairs handler registered
+2026-03-18 21:02:58,239 - crypto_bot - INFO - ✅ signal handler registered
+2026-03-18 21:02:58,239 - crypto_bot - INFO - ✅ status handler registered
+2026-03-18 21:02:58,239 - crypto_bot - INFO - ✅ callback handler registered
+2026-03-18 21:02:58,239 - crypto_bot - INFO - 📊 Handlers count: 1
+2026-03-18 21:02:58,239 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 21:02:58,239 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-18 21:02:58,239 - crypto_bot - ERROR - ❌ Polling crashed. Restarting in 5 seconds...
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1006, in __run
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 995, in __run
+    loop.run_until_complete(self.initialize())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 27, in main
+    bot.run_polling()
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 181, in run_polling
+    self.application.run_polling(drop_pending_updates=True)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 818, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1017, in __run
+    loop.run_until_complete(self.shutdown())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+2026-03-18 21:03:03,246 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 21:03:03,425 - crypto_bot - INFO - ⚙️ Building Telegram Application...
+2026-03-18 21:03:03,581 - crypto_bot - INFO - 📦 Registering handlers...
+2026-03-18 21:03:03,581 - crypto_bot - INFO - ✅ start handler registered
+2026-03-18 21:03:03,581 - crypto_bot - INFO - ✅ help handler registered
+2026-03-18 21:03:03,581 - crypto_bot - INFO - ✅ pairs handler registered
+2026-03-18 21:03:03,581 - crypto_bot - INFO - ✅ signal handler registered
+2026-03-18 21:03:03,581 - crypto_bot - INFO - ✅ status handler registered
+2026-03-18 21:03:03,581 - crypto_bot - INFO - ✅ callback handler registered
+2026-03-18 21:03:03,581 - crypto_bot - INFO - 📊 Handlers count: 1
+2026-03-18 21:03:03,581 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 21:03:03,581 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-18 21:03:03,581 - crypto_bot - ERROR - ❌ Polling crashed. Restarting in 5 seconds...
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1006, in __run
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 995, in __run
+    loop.run_until_complete(self.initialize())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 27, in main
+    bot.run_polling()
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 181, in run_polling
+    self.application.run_polling(drop_pending_updates=True)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 818, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1017, in __run
+    loop.run_until_complete(self.shutdown())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+2026-03-18 21:03:08,596 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 21:03:08,780 - crypto_bot - INFO - ⚙️ Building Telegram Application...
+2026-03-18 21:03:08,941 - crypto_bot - INFO - 📦 Registering handlers...
+2026-03-18 21:03:08,941 - crypto_bot - INFO - ✅ start handler registered
+2026-03-18 21:03:08,941 - crypto_bot - INFO - ✅ help handler registered
+2026-03-18 21:03:08,941 - crypto_bot - INFO - ✅ pairs handler registered
+2026-03-18 21:03:08,941 - crypto_bot - INFO - ✅ signal handler registered
+2026-03-18 21:03:08,941 - crypto_bot - INFO - ✅ status handler registered
+2026-03-18 21:03:08,941 - crypto_bot - INFO - ✅ callback handler registered
+2026-03-18 21:03:08,941 - crypto_bot - INFO - 📊 Handlers count: 1
+2026-03-18 21:03:08,941 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 21:03:08,941 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-18 21:03:08,941 - crypto_bot - ERROR - ❌ Polling crashed. Restarting in 5 seconds...
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1006, in __run
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 995, in __run
+    loop.run_until_complete(self.initialize())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 27, in main
+    bot.run_polling()
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 181, in run_polling
+    self.application.run_polling(drop_pending_updates=True)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 818, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1017, in __run
+    loop.run_until_complete(self.shutdown())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+2026-03-18 21:03:13,956 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 21:03:14,126 - crypto_bot - INFO - ⚙️ Building Telegram Application...
+2026-03-18 21:03:14,289 - crypto_bot - INFO - 📦 Registering handlers...
+2026-03-18 21:03:14,289 - crypto_bot - INFO - ✅ start handler registered
+2026-03-18 21:03:14,289 - crypto_bot - INFO - ✅ help handler registered
+2026-03-18 21:03:14,290 - crypto_bot - INFO - ✅ pairs handler registered
+2026-03-18 21:03:14,290 - crypto_bot - INFO - ✅ signal handler registered
+2026-03-18 21:03:14,290 - crypto_bot - INFO - ✅ status handler registered
+2026-03-18 21:03:14,290 - crypto_bot - INFO - ✅ callback handler registered
+2026-03-18 21:03:14,291 - crypto_bot - INFO - 📊 Handlers count: 1
+2026-03-18 21:03:14,291 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 21:03:14,291 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-18 21:03:14,291 - crypto_bot - ERROR - ❌ Polling crashed. Restarting in 5 seconds...
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1006, in __run
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 995, in __run
+    loop.run_until_complete(self.initialize())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 27, in main
+    bot.run_polling()
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 181, in run_polling
+    self.application.run_polling(drop_pending_updates=True)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 818, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1017, in __run
+    loop.run_until_complete(self.shutdown())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+2026-03-18 21:03:19,294 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 21:03:19,463 - crypto_bot - INFO - ⚙️ Building Telegram Application...
+2026-03-18 21:03:19,626 - crypto_bot - INFO - 📦 Registering handlers...
+2026-03-18 21:03:19,626 - crypto_bot - INFO - ✅ start handler registered
+2026-03-18 21:03:19,626 - crypto_bot - INFO - ✅ help handler registered
+2026-03-18 21:03:19,627 - crypto_bot - INFO - ✅ pairs handler registered
+2026-03-18 21:03:19,627 - crypto_bot - INFO - ✅ signal handler registered
+2026-03-18 21:03:19,627 - crypto_bot - INFO - ✅ status handler registered
+2026-03-18 21:03:19,627 - crypto_bot - INFO - ✅ callback handler registered
+2026-03-18 21:03:19,629 - crypto_bot - INFO - 📊 Handlers count: 1
+2026-03-18 21:03:19,629 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 21:03:19,629 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-18 21:03:19,629 - crypto_bot - ERROR - ❌ Polling crashed. Restarting in 5 seconds...
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1006, in __run
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 995, in __run
+    loop.run_until_complete(self.initialize())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 27, in main
+    bot.run_polling()
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 181, in run_polling
+    self.application.run_polling(drop_pending_updates=True)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 818, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1017, in __run
+    loop.run_until_complete(self.shutdown())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+2026-03-18 21:03:24,631 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 21:03:24,814 - crypto_bot - INFO - ⚙️ Building Telegram Application...
+2026-03-18 21:03:24,971 - crypto_bot - INFO - 📦 Registering handlers...
+2026-03-18 21:03:24,971 - crypto_bot - INFO - ✅ start handler registered
+2026-03-18 21:03:24,971 - crypto_bot - INFO - ✅ help handler registered
+2026-03-18 21:03:24,971 - crypto_bot - INFO - ✅ pairs handler registered
+2026-03-18 21:03:24,971 - crypto_bot - INFO - ✅ signal handler registered
+2026-03-18 21:03:24,971 - crypto_bot - INFO - ✅ status handler registered
+2026-03-18 21:03:24,971 - crypto_bot - INFO - ✅ callback handler registered
+2026-03-18 21:03:24,987 - crypto_bot - INFO - 📊 Handlers count: 1
+2026-03-18 21:03:24,987 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 21:03:24,989 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-18 21:03:24,989 - crypto_bot - ERROR - ❌ Polling crashed. Restarting in 5 seconds...
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1006, in __run
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 995, in __run
+    loop.run_until_complete(self.initialize())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 27, in main
+    bot.run_polling()
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 181, in run_polling
+    self.application.run_polling(drop_pending_updates=True)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 818, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1017, in __run
+    loop.run_until_complete(self.shutdown())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+2026-03-18 21:03:29,991 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 21:03:30,145 - crypto_bot - INFO - ⚙️ Building Telegram Application...
+2026-03-18 21:03:30,316 - crypto_bot - INFO - 📦 Registering handlers...
+2026-03-18 21:03:30,316 - crypto_bot - INFO - ✅ start handler registered
+2026-03-18 21:03:30,316 - crypto_bot - INFO - ✅ help handler registered
+2026-03-18 21:03:30,316 - crypto_bot - INFO - ✅ pairs handler registered
+2026-03-18 21:03:30,316 - crypto_bot - INFO - ✅ signal handler registered
+2026-03-18 21:03:30,332 - crypto_bot - INFO - ✅ status handler registered
+2026-03-18 21:03:30,332 - crypto_bot - INFO - ✅ callback handler registered
+2026-03-18 21:03:30,336 - crypto_bot - INFO - 📊 Handlers count: 1
+2026-03-18 21:03:30,336 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 21:03:30,336 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-18 21:03:30,336 - crypto_bot - ERROR - ❌ Polling crashed. Restarting in 5 seconds...
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1006, in __run
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 995, in __run
+    loop.run_until_complete(self.initialize())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 27, in main
+    bot.run_polling()
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 181, in run_polling
+    self.application.run_polling(drop_pending_updates=True)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 818, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1017, in __run
+    loop.run_until_complete(self.shutdown())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+2026-03-18 21:03:35,339 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 21:03:35,507 - crypto_bot - INFO - ⚙️ Building Telegram Application...
+2026-03-18 21:03:35,669 - crypto_bot - INFO - 📦 Registering handlers...
+2026-03-18 21:03:35,670 - crypto_bot - INFO - ✅ start handler registered
+2026-03-18 21:03:35,670 - crypto_bot - INFO - ✅ help handler registered
+2026-03-18 21:03:35,670 - crypto_bot - INFO - ✅ pairs handler registered
+2026-03-18 21:03:35,670 - crypto_bot - INFO - ✅ signal handler registered
+2026-03-18 21:03:35,671 - crypto_bot - INFO - ✅ status handler registered
+2026-03-18 21:03:35,671 - crypto_bot - INFO - ✅ callback handler registered
+2026-03-18 21:03:35,671 - crypto_bot - INFO - 📊 Handlers count: 1
+2026-03-18 21:03:35,671 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 21:03:35,672 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-18 21:03:35,672 - crypto_bot - ERROR - ❌ Polling crashed. Restarting in 5 seconds...
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1006, in __run
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 995, in __run
+    loop.run_until_complete(self.initialize())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 27, in main
+    bot.run_polling()
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 181, in run_polling
+    self.application.run_polling(drop_pending_updates=True)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 818, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1017, in __run
+    loop.run_until_complete(self.shutdown())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+2026-03-18 21:03:40,674 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 21:03:40,848 - crypto_bot - INFO - ⚙️ Building Telegram Application...
+2026-03-18 21:03:41,015 - crypto_bot - INFO - 📦 Registering handlers...
+2026-03-18 21:03:41,015 - crypto_bot - INFO - ✅ start handler registered
+2026-03-18 21:03:41,015 - crypto_bot - INFO - ✅ help handler registered
+2026-03-18 21:03:41,015 - crypto_bot - INFO - ✅ pairs handler registered
+2026-03-18 21:03:41,015 - crypto_bot - INFO - ✅ signal handler registered
+2026-03-18 21:03:41,015 - crypto_bot - INFO - ✅ status handler registered
+2026-03-18 21:03:41,015 - crypto_bot - INFO - ✅ callback handler registered
+2026-03-18 21:03:41,015 - crypto_bot - INFO - 📊 Handlers count: 1
+2026-03-18 21:03:41,015 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 21:03:41,015 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-18 21:03:41,015 - crypto_bot - ERROR - ❌ Polling crashed. Restarting in 5 seconds...
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1006, in __run
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 995, in __run
+    loop.run_until_complete(self.initialize())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 27, in main
+    bot.run_polling()
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 181, in run_polling
+    self.application.run_polling(drop_pending_updates=True)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 818, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1017, in __run
+    loop.run_until_complete(self.shutdown())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+2026-03-18 21:03:46,020 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 21:03:46,204 - crypto_bot - INFO - 🛑 Остановка по KeyboardInterrupt
+2026-03-18 21:27:59,035 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 21:27:59,207 - crypto_bot - INFO - ⚙️ Building Telegram Application...
+2026-03-18 21:27:59,370 - crypto_bot - INFO - 📦 Registering handlers...
+2026-03-18 21:27:59,370 - crypto_bot - INFO - ✅ start handler registered
+2026-03-18 21:27:59,370 - crypto_bot - INFO - ✅ help handler registered
+2026-03-18 21:27:59,370 - crypto_bot - INFO - ✅ pairs handler registered
+2026-03-18 21:27:59,370 - crypto_bot - INFO - ✅ signal handler registered
+2026-03-18 21:27:59,370 - crypto_bot - INFO - ✅ status handler registered
+2026-03-18 21:27:59,370 - crypto_bot - INFO - ✅ callback handler registered
+2026-03-18 21:27:59,370 - crypto_bot - INFO - 📊 Handlers count: 1
+2026-03-18 21:27:59,370 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 21:27:59,370 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-18 21:28:01,266 - crypto_bot - INFO - ⚙️ Post init: starting scan_loop task
+2026-03-18 21:28:13,537 - crypto_bot - INFO - 🔥 /start CALLED
+2026-03-18 21:30:57,194 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 21:30:57,368 - crypto_bot - INFO - ⚙️ Building Telegram Application...
+2026-03-18 21:30:57,537 - crypto_bot - INFO - 📦 Registering handlers...
+2026-03-18 21:30:57,537 - crypto_bot - INFO - ✅ start handler registered
+2026-03-18 21:30:57,537 - crypto_bot - INFO - ✅ help handler registered
+2026-03-18 21:30:57,537 - crypto_bot - INFO - ✅ pairs handler registered
+2026-03-18 21:30:57,537 - crypto_bot - INFO - ✅ signal handler registered
+2026-03-18 21:30:57,537 - crypto_bot - INFO - ✅ status handler registered
+2026-03-18 21:30:57,537 - crypto_bot - INFO - ✅ callback handler registered
+2026-03-18 21:30:57,537 - crypto_bot - INFO - 📊 Handlers count: 1
+2026-03-18 21:30:57,537 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 21:30:57,537 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-18 21:30:57,537 - crypto_bot - ERROR - ❌ Polling crashed. Restarting in 5 seconds...
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1006, in __run
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 995, in __run
+    loop.run_until_complete(self.initialize())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 27, in main
+    bot.run_polling()
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 181, in run_polling
+    self.application.run_polling(drop_pending_updates=True)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 818, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1017, in __run
+    loop.run_until_complete(self.shutdown())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+2026-03-18 21:31:02,547 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 21:31:02,729 - crypto_bot - INFO - ⚙️ Building Telegram Application...
+2026-03-18 21:31:02,907 - crypto_bot - INFO - 📦 Registering handlers...
+2026-03-18 21:31:02,907 - crypto_bot - INFO - ✅ start handler registered
+2026-03-18 21:31:02,907 - crypto_bot - INFO - ✅ help handler registered
+2026-03-18 21:31:02,907 - crypto_bot - INFO - ✅ pairs handler registered
+2026-03-18 21:31:02,907 - crypto_bot - INFO - ✅ signal handler registered
+2026-03-18 21:31:02,907 - crypto_bot - INFO - ✅ status handler registered
+2026-03-18 21:31:02,907 - crypto_bot - INFO - ✅ callback handler registered
+2026-03-18 21:31:02,907 - crypto_bot - INFO - 📊 Handlers count: 1
+2026-03-18 21:31:02,907 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 21:31:02,907 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-18 21:31:02,907 - crypto_bot - ERROR - ❌ Polling crashed. Restarting in 5 seconds...
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1006, in __run
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 995, in __run
+    loop.run_until_complete(self.initialize())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 27, in main
+    bot.run_polling()
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 181, in run_polling
+    self.application.run_polling(drop_pending_updates=True)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 818, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1017, in __run
+    loop.run_until_complete(self.shutdown())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+2026-03-18 21:31:07,912 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 21:31:08,092 - crypto_bot - INFO - ⚙️ Building Telegram Application...
+2026-03-18 21:31:08,262 - crypto_bot - INFO - 📦 Registering handlers...
+2026-03-18 21:31:08,262 - crypto_bot - INFO - ✅ start handler registered
+2026-03-18 21:31:08,262 - crypto_bot - INFO - ✅ help handler registered
+2026-03-18 21:31:08,262 - crypto_bot - INFO - ✅ pairs handler registered
+2026-03-18 21:31:08,262 - crypto_bot - INFO - ✅ signal handler registered
+2026-03-18 21:31:08,262 - crypto_bot - INFO - ✅ status handler registered
+2026-03-18 21:31:08,262 - crypto_bot - INFO - ✅ callback handler registered
+2026-03-18 21:31:08,262 - crypto_bot - INFO - 📊 Handlers count: 1
+2026-03-18 21:31:08,262 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 21:31:08,262 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-18 21:31:08,262 - crypto_bot - ERROR - ❌ Polling crashed. Restarting in 5 seconds...
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1006, in __run
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 995, in __run
+    loop.run_until_complete(self.initialize())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 27, in main
+    bot.run_polling()
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 181, in run_polling
+    self.application.run_polling(drop_pending_updates=True)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 818, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1017, in __run
+    loop.run_until_complete(self.shutdown())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+2026-03-18 21:31:13,267 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 21:31:13,449 - crypto_bot - INFO - ⚙️ Building Telegram Application...
+2026-03-18 21:31:13,617 - crypto_bot - INFO - 📦 Registering handlers...
+2026-03-18 21:31:13,617 - crypto_bot - INFO - ✅ start handler registered
+2026-03-18 21:31:13,617 - crypto_bot - INFO - ✅ help handler registered
+2026-03-18 21:31:13,617 - crypto_bot - INFO - ✅ pairs handler registered
+2026-03-18 21:31:13,617 - crypto_bot - INFO - ✅ signal handler registered
+2026-03-18 21:31:13,617 - crypto_bot - INFO - ✅ status handler registered
+2026-03-18 21:31:13,617 - crypto_bot - INFO - ✅ callback handler registered
+2026-03-18 21:31:13,617 - crypto_bot - INFO - 📊 Handlers count: 1
+2026-03-18 21:31:13,617 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 21:31:13,617 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-18 21:31:13,617 - crypto_bot - ERROR - ❌ Polling crashed. Restarting in 5 seconds...
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1006, in __run
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 995, in __run
+    loop.run_until_complete(self.initialize())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 27, in main
+    bot.run_polling()
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 181, in run_polling
+    self.application.run_polling(drop_pending_updates=True)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 818, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1017, in __run
+    loop.run_until_complete(self.shutdown())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+2026-03-18 21:31:18,624 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 21:31:18,818 - crypto_bot - INFO - ⚙️ Building Telegram Application...
+2026-03-18 21:31:18,995 - crypto_bot - INFO - 📦 Registering handlers...
+2026-03-18 21:31:18,995 - crypto_bot - INFO - ✅ start handler registered
+2026-03-18 21:31:18,996 - crypto_bot - INFO - ✅ help handler registered
+2026-03-18 21:31:18,996 - crypto_bot - INFO - ✅ pairs handler registered
+2026-03-18 21:31:18,996 - crypto_bot - INFO - ✅ signal handler registered
+2026-03-18 21:31:18,996 - crypto_bot - INFO - ✅ status handler registered
+2026-03-18 21:31:18,996 - crypto_bot - INFO - ✅ callback handler registered
+2026-03-18 21:31:18,997 - crypto_bot - INFO - 📊 Handlers count: 1
+2026-03-18 21:31:18,997 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 21:31:18,997 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-18 21:31:18,997 - crypto_bot - ERROR - ❌ Polling crashed. Restarting in 5 seconds...
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1006, in __run
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 995, in __run
+    loop.run_until_complete(self.initialize())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 27, in main
+    bot.run_polling()
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 181, in run_polling
+    self.application.run_polling(drop_pending_updates=True)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 818, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1017, in __run
+    loop.run_until_complete(self.shutdown())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed

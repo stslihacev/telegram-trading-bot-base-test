@@ -9,8 +9,19 @@ from telegram_bot.validators import is_valid_pair, normalize_pair
 
 
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    service = context.application.bot_data["service"]
+    from utils.logger import logger
+
+    logger.info("🔥 /start CALLED")
+
+    service = context.application.bot_data.get("service")
+
+    if not service:
+        logger.error("❌ service not found in bot_data")
+        await update.message.reply_text("Ошибка инициализации бота")
+        return
+
     service.ensure_user(update.effective_chat.id)
+
     await update.message.reply_text(
         "👋 Добро пожаловать!\nВыберите действие из меню:",
         reply_markup=main_menu(),

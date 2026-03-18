@@ -1,0 +1,21 @@
+[MOVE] tg_bot/bot.py → telegram_bot/bot.py
+[MOVE] tg_bot/handlers/* → telegram_bot/handlers/
+[MOVE] tg_bot/keyboards/menus.py → telegram_bot/keyboards/menus.py
+[MOVE] telegram_bot/strategy_adapter.py → services/strategy_adapter.py
+[UPDATE_IMPORTS] main.py: from tg_bot.bot import TelegramTradingBot → from telegram_bot.bot import TelegramTradingBot
+[UPDATE_IMPORTS] scanner/market_scanner.py: from telegram_bot.strategy_adapter import BacktestStrategyAdapter → from services.strategy_adapter import BacktestStrategyAdapter
+[ADD_SCAN_LOOP] telegram_bot/bot.py
+[REGISTER_HANDLER] telegram_bot/bot.py: start_command
+[REGISTER_HANDLER] telegram_bot/bot.py: help_command
+[REGISTER_HANDLER] telegram_bot/bot.py: pairs_command
+[REGISTER_HANDLER] telegram_bot/bot.py: signal_command
+[REGISTER_HANDLER] telegram_bot/bot.py: status_command
+[REGISTER_HANDLER] telegram_bot/bot.py: callback_handler
+[LEGACY_CANDIDATE] scanner.py
+[LEGACY_CANDIDATE] core/engine.py
+[LEGACY_CANDIDATE] tg_bot/keyboards.py
+[LEGACY_CANDIDATE] tg_bot/bot.py
+[LEGACY_CANDIDATE] tg_bot/handlers/callbacks.py
+[LEGACY_CANDIDATE] tg_bot/handlers/commands.py
+[LEGACY_CANDIDATE] tg_bot/handlers/signals.py
+[LEGACY_CANDIDATE] tg_bot/handlers/__init__.py

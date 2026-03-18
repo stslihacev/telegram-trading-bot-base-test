@@ -54,6 +54,7 @@ class TelegramTradingBot:
         self.dispatcher = SignalDispatcher(dedup_minutes=60)
         self.scanner = MarketScanner()
         self.scanner.strategy.min_rr = self.min_rr
+        self.default_interval_sec = max(SCAN_INTERVAL, self.scan_interval_min * 60)
         self.application: Application | None = None
         self.scan_task: asyncio.Task | None = None
 
@@ -105,13 +106,14 @@ class TelegramTradingBot:
             await broadcast_signal(self.application.bot, unique_users, signal)
 
     async def scan_loop(self, interval_sec: int | None = None) -> None:
+        scanner = self.scanner
         if interval_sec is None:
-            interval_sec = max(SCAN_INTERVAL, self.scan_interval_min * 60)
+            interval_sec = self.default_interval_sec
         interval_sec = max(60, int(interval_sec))
         while True:
             try:
                 signals = await asyncio.wait_for(
-                    self.scanner.scan(),
+                    scanner.scan(),
                     timeout=120,
                 )
                 for signal in signals:
@@ -157,5 +159,10 @@ class TelegramTradingBot:
             .post_init(self._post_init)\
             .post_shutdown(self._post_shutdown)\
             .build()
+
+        # Совместимость с конфигурацией, где post_init хранится как список callback'ов.
+        if isinstance(getattr(self.application, "post_init", None), list):
+            self.application.post_init.append(lambda app: asyncio.create_task(self.scan_loop()))
+            
         self._register_handlers(self.application)
         logger.info("✅ Telegram бот инициализирован")

@@ -2,25 +2,38 @@
 
 from __future__ import annotations
 
+import time
+import logging
+
 from database.db import init_db
 from telegram_bot.bot import TelegramTradingBot
 from utils.logger import logger
 
-import logging
-
 logging.basicConfig(level=logging.INFO)
 
+
 def main() -> None:
-    """Инициализация бота и запуск polling (scanner стартует в post_init)."""
+    """Инициализация бота и запуск polling (с автоперезапуском)."""
     init_db()
-    bot = TelegramTradingBot()
-    bot.initialize()
-    bot.run_polling()
+
+    while True:
+        try:
+            logger.info("🚀 Starting bot...")
+
+            bot = TelegramTradingBot()
+            bot.initialize()
+
+            logger.info("📡 Starting polling...")
+            bot.run_polling()
+
+        except KeyboardInterrupt:
+            logger.info("🛑 Остановка по KeyboardInterrupt")
+            break
+
+        except Exception:
+            logger.error("❌ Polling crashed. Restarting in 5 seconds...", exc_info=True)
+            time.sleep(5)
+
 
 if __name__ == "__main__":
-    try:
-        main()
-    except KeyboardInterrupt:
-        logger.info("Остановка по KeyboardInterrupt")
-    except Exception as exc:
-        logger.exception(f"Критическая ошибка основного цикла: {exc}")
+    main()
