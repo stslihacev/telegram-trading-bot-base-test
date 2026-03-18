@@ -57,10 +57,10 @@ class MarketScanner:
         """Возвращает список сигналов после фильтрации рынка и адаптера стратегии."""
         try:
             top_symbols = get_top_usdt_pairs(limit=TOP_N)
-            logger.info(f"📈 Top symbols fetched: {len(top_symbols)}")
+            logger.info(f"📈 Top-{TOP_N} symbols fetched: {len(top_symbols)}")
 
             active_symbols = self._filter_active_symbols(top_symbols)
-            logger.info(f"🔥 Active symbols after filter: {len(active_symbols)}")
+            logger.info(f"🔥 Active symbols after filter: {len(active_symbols)} / {len(top_symbols)}")
 
         except Exception as exc:
             logger.error(f"Ошибка получения списка монет: {exc}")

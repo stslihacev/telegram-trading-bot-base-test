@@ -3,13 +3,18 @@
 from __future__ import annotations
 
 import asyncio
+import logging
 import os
+import queue
+import threading
+import tkinter as tk
 from pathlib import Path
+from tkinter.scrolledtext import ScrolledText
 
 from dotenv import load_dotenv
 from telegram.ext import Application, CallbackQueryHandler, CommandHandler
 
-from core.config import MIN_SIGNAL_RR, SCAN_INTERVAL
+from core.config import MIN_SIGNAL_RR, SCAN_INTERVAL, TOP_N
 from core.state_manager import state_manager
 from execution.signal_dispatcher import SignalDispatcher
 from scanner.market_scanner import MarketScanner
@@ -23,10 +28,24 @@ from telegram_bot.handlers.commands import (
     status_command,
 )
 from telegram_bot.handlers.signals import broadcast_signal
-from utils.logger import logger
+from utils.logger import LOG_DIR, logger
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
+
+signals_logger = logging.getLogger("signals_logger")
+signals_logger.setLevel(logging.INFO)
+signals_logger.propagate = False
+
+if not any(
+    isinstance(handler, logging.FileHandler)
+    and Path(getattr(handler, "baseFilename", "")).name == "signals.log"
+    for handler in signals_logger.handlers
+):
+    signals_file_handler = logging.FileHandler(LOG_DIR / "signals.log", encoding="utf-8")
+    signals_file_handler.setLevel(logging.INFO)
+    signals_file_handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
+    signals_logger.addHandler(signals_file_handler)
 
 
 class TelegramTradingBot:
@@ -35,18 +54,22 @@ class TelegramTradingBot:
     def __init__(self):
         self.token = os.getenv("TELEGRAM_TOKEN", "")
         self.default_chat_id = os.getenv("TELEGRAM_CHAT_ID")
-        if not self.token:
-            raise ValueError("TELEGRAM_TOKEN не задан в .env")
+        self.telegram_enabled = bool(self.token)
 
         # 👇 Кастомный HTTPXRequest с увеличенными таймаутами
-        from telegram.request import HTTPXRequest
-        self.request = HTTPXRequest(
-            connection_pool_size=10,
-            connect_timeout=60.0,
-            read_timeout=60.0,
-            write_timeout=60.0,
-            pool_timeout=60.0
-        )
+        self.request = None
+        if self.telegram_enabled:
+            from telegram.request import HTTPXRequest
+
+            self.request = HTTPXRequest(
+                connection_pool_size=10,
+                connect_timeout=60.0,
+                read_timeout=60.0,
+                write_timeout=60.0,
+                pool_timeout=60.0
+            )
+        else:
+            logger.warning("TELEGRAM_TOKEN не задан — бот запустится в режиме scanner + GUI без Telegram polling")
 
         self.min_rr = float(os.getenv("MIN_SIGNAL_RR", str(MIN_SIGNAL_RR)))
         self.scan_interval_min = int(os.getenv("SCAN_INTERVAL_MIN", "5"))
@@ -59,6 +82,9 @@ class TelegramTradingBot:
 
         self.application: Application | None = None
         self.scan_task: asyncio.Task | None = None
+        self.signal_queue: queue.Queue[str] = queue.Queue()
+        self.gui_thread: threading.Thread | None = None
+        self.gui_started = False
 
     def ensure_user(self, chat_id: int) -> None:
         state_manager.init_user(chat_id)
@@ -68,7 +94,8 @@ class TelegramTradingBot:
 
     def get_pairs(self) -> list[str]:
         try:
-            symbols = get_top_usdt_pairs(limit=50)
+            symbols = get_top_usdt_pairs(limit=TOP_N)
+            logger.info(f"📈 get_pairs fetched top-{TOP_N} symbols: {len(symbols)}")
             return [s.split(":")[0].replace("/", "") for s in symbols]
         except Exception:
             return ["ADAUSDT", "BTCUSDT", "ETHUSDT", "SOLUSDT", "XRPUSDT"]
@@ -83,6 +110,47 @@ class TelegramTradingBot:
 
     def get_open_positions(self) -> list[dict]:
         return self.dispatcher.get_open_positions()
+
+    def _start_signal_gui(self) -> None:
+        if self.gui_started:
+            return
+
+        self.gui_started = True
+
+        def run_gui() -> None:
+            try:
+                root = tk.Tk()
+                root.title("TelegramTradingBot Signals")
+                root.geometry("720x420")
+
+                text_widget = ScrolledText(root, wrap=tk.WORD, state=tk.DISABLED)
+                text_widget.pack(fill=tk.BOTH, expand=True, padx=12, pady=12)
+
+                def poll_queue() -> None:
+                    try:
+                        while True:
+                            signal_message = self.signal_queue.get_nowait()
+                            text_widget.configure(state=tk.NORMAL)
+                            text_widget.insert(tk.END, f"{signal_message}\n")
+                            text_widget.see(tk.END)
+                            text_widget.configure(state=tk.DISABLED)
+                    except queue.Empty:
+                        pass
+                    finally:
+                        root.after(500, poll_queue)
+
+                poll_queue()
+                root.mainloop()
+            except Exception:
+                logger.error("Signal GUI crashed", exc_info=True)
+
+        self.gui_thread = threading.Thread(
+            target=run_gui,
+            name="signals-gui",
+            daemon=True,
+        )
+        self.gui_thread.start()
+        logger.info("🖥️ Signal GUI thread started")
 
     def _register_handlers(self, app: Application) -> None:
         logger.info("📦 Registering handlers...")
@@ -143,7 +211,7 @@ class TelegramTradingBot:
 
         while True:
             try:
-                logger.info("🔍 Starting market scan...")
+                logger.info(f"🔍 Starting market scan for top-{TOP_N} symbols...")
 
                 signals = await asyncio.wait_for(
                     scanner.scan(),
@@ -153,10 +221,10 @@ class TelegramTradingBot:
                 logger.info(f"📊 Signals found: {len(signals)}")
 
                 for signal in signals:
-                    logger.info(
-                        f"📡 Signal: {signal.get('symbol')} | {signal.get('signal_type')}"
-                    )
-                    await self.broadcast_if_needed(signal)
+                    logger.info(f"📡 Signal found: {signal}")
+                    signals_logger.info(signal)
+                    self.signal_queue.put(str(signal))
+                    # await self.broadcast_if_needed(signal)  # временно отключено до повторного включения Telegram/Discord
 
             except TimeoutError:
                 logger.warning("scan_loop timeout: scanner.scan exceeded 120s")
@@ -177,6 +245,10 @@ class TelegramTradingBot:
 
     def run_polling(self) -> None:
         if self.application is None:
+            if not self.telegram_enabled:
+                logger.info("📡 Telegram polling disabled, running standalone scan loop")
+                asyncio.run(self.scan_loop())
+                return
             raise RuntimeError("Application not initialized")
         self.application.run_polling(drop_pending_updates=True)
 
@@ -187,7 +259,7 @@ class TelegramTradingBot:
 
     async def _post_init(self, _app: Application) -> None:
         logger.info("⚙️ Post init: starting scan_loop task")
-        #self.scan_task = asyncio.create_task(self.scan_loop())
+        self.scan_task = asyncio.create_task(self.scan_loop())
 
     async def _post_shutdown(self, _app: Application) -> None:
         if self.scan_task and not self.scan_task.done():
@@ -195,7 +267,12 @@ class TelegramTradingBot:
             await asyncio.gather(self.scan_task, return_exceptions=True)
 
     def initialize(self) -> None:
-        """Создаёт Telegram Application в текущем asyncio loop."""
+        """Создаёт Telegram Application в текущем asyncio loop и поднимает GUI для сигналов."""
+        self._start_signal_gui()
+
+        if not self.telegram_enabled:
+            logger.info("✅ Telegram отключён: инициализированы scanner + GUI режим")
+            return
         logger.info("⚙️ Building Telegram Application...")
 
         self.application = Application.builder() \

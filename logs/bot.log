@@ -4754,3 +4754,595 @@ Traceback (most recent call last):
   File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
     raise RuntimeError('Event loop is closed')
 RuntimeError: Event loop is closed
+2026-03-18 21:47:21,118 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 21:47:21,294 - crypto_bot - INFO - ⚙️ Building Telegram Application...
+2026-03-18 21:47:21,452 - crypto_bot - INFO - 📦 Registering handlers...
+2026-03-18 21:47:21,452 - crypto_bot - INFO - ✅ start handler registered
+2026-03-18 21:47:21,452 - crypto_bot - INFO - ✅ help handler registered
+2026-03-18 21:47:21,452 - crypto_bot - INFO - ✅ pairs handler registered
+2026-03-18 21:47:21,452 - crypto_bot - INFO - ✅ signal handler registered
+2026-03-18 21:47:21,452 - crypto_bot - INFO - ✅ status handler registered
+2026-03-18 21:47:21,452 - crypto_bot - INFO - ✅ callback handler registered
+2026-03-18 21:47:21,452 - crypto_bot - INFO - 📊 Handlers count: 1
+2026-03-18 21:47:21,452 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 21:47:21,452 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-18 21:47:24,066 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 21:47:24,253 - crypto_bot - INFO - ⚙️ Building Telegram Application...
+2026-03-18 21:47:24,420 - crypto_bot - INFO - 📦 Registering handlers...
+2026-03-18 21:47:24,420 - crypto_bot - INFO - ✅ start handler registered
+2026-03-18 21:47:24,420 - crypto_bot - INFO - ✅ help handler registered
+2026-03-18 21:47:24,420 - crypto_bot - INFO - ✅ pairs handler registered
+2026-03-18 21:47:24,420 - crypto_bot - INFO - ✅ signal handler registered
+2026-03-18 21:47:24,420 - crypto_bot - INFO - ✅ status handler registered
+2026-03-18 21:47:24,420 - crypto_bot - INFO - ✅ callback handler registered
+2026-03-18 21:47:24,420 - crypto_bot - INFO - 📊 Handlers count: 1
+2026-03-18 21:47:24,420 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 21:47:24,420 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-18 21:47:24,420 - crypto_bot - ERROR - ❌ Polling crashed. Restarting in 5 seconds...
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1006, in __run
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 995, in __run
+    loop.run_until_complete(self.initialize())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 27, in main
+    bot.run_polling()
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 181, in run_polling
+    self.application.run_polling(drop_pending_updates=True)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 818, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1017, in __run
+    loop.run_until_complete(self.shutdown())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+2026-03-18 21:49:52,293 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 21:49:52,473 - crypto_bot - INFO - ⚙️ Building Telegram Application...
+2026-03-18 21:49:52,635 - crypto_bot - INFO - 📦 Registering handlers...
+2026-03-18 21:49:52,635 - crypto_bot - INFO - ✅ start handler registered
+2026-03-18 21:49:52,635 - crypto_bot - INFO - ✅ help handler registered
+2026-03-18 21:49:52,635 - crypto_bot - INFO - ✅ pairs handler registered
+2026-03-18 21:49:52,635 - crypto_bot - INFO - ✅ signal handler registered
+2026-03-18 21:49:52,635 - crypto_bot - INFO - ✅ status handler registered
+2026-03-18 21:49:52,635 - crypto_bot - INFO - ✅ callback handler registered
+2026-03-18 21:49:52,635 - crypto_bot - INFO - 📊 Handlers count: 1
+2026-03-18 21:49:52,635 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 21:49:52,635 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-18 21:50:18,744 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 21:50:18,915 - crypto_bot - INFO - ⚙️ Building Telegram Application...
+2026-03-18 21:50:19,090 - crypto_bot - INFO - 📦 Registering handlers...
+2026-03-18 21:50:19,090 - crypto_bot - INFO - ✅ start handler registered
+2026-03-18 21:50:19,090 - crypto_bot - INFO - ✅ help handler registered
+2026-03-18 21:50:19,090 - crypto_bot - INFO - ✅ pairs handler registered
+2026-03-18 21:50:19,090 - crypto_bot - INFO - ✅ signal handler registered
+2026-03-18 21:50:19,091 - crypto_bot - INFO - ✅ status handler registered
+2026-03-18 21:50:19,091 - crypto_bot - INFO - ✅ callback handler registered
+2026-03-18 21:50:19,091 - crypto_bot - INFO - 📊 Handlers count: 1
+2026-03-18 21:50:19,091 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 21:50:19,091 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-18 21:50:19,092 - crypto_bot - ERROR - ❌ Polling crashed. Restarting in 5 seconds...
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1006, in __run
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 995, in __run
+    loop.run_until_complete(self.initialize())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 27, in main
+    bot.run_polling()
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 181, in run_polling
+    self.application.run_polling(drop_pending_updates=True)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 818, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1017, in __run
+    loop.run_until_complete(self.shutdown())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+2026-03-18 21:59:14,351 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 21:59:15,018 - crypto_bot - INFO - 🖥️ Signal GUI thread started
+2026-03-18 21:59:15,018 - crypto_bot - INFO - ⚙️ Building Telegram Application...
+2026-03-18 21:59:15,206 - crypto_bot - INFO - 📦 Registering handlers...
+2026-03-18 21:59:15,206 - crypto_bot - INFO - ✅ start handler registered
+2026-03-18 21:59:15,206 - crypto_bot - INFO - ✅ help handler registered
+2026-03-18 21:59:15,206 - crypto_bot - INFO - ✅ pairs handler registered
+2026-03-18 21:59:15,206 - crypto_bot - INFO - ✅ signal handler registered
+2026-03-18 21:59:15,206 - crypto_bot - INFO - ✅ status handler registered
+2026-03-18 21:59:15,206 - crypto_bot - INFO - ✅ callback handler registered
+2026-03-18 21:59:15,206 - crypto_bot - INFO - 📊 Handlers count: 1
+2026-03-18 21:59:15,206 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 21:59:15,206 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-18 21:59:31,969 - crypto_bot - INFO - ⚙️ Post init: starting scan_loop task
+2026-03-18 21:59:31,969 - crypto_bot - INFO - 🚀 SCAN LOOP STARTED
+2026-03-18 21:59:31,969 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-18 21:59:37,178 - crypto_bot - INFO - 📈 Top-50 symbols fetched: 50
+2026-03-18 21:59:43,379 - crypto_bot - INFO - 🔥 Active symbols after filter: 48 / 50
+2026-03-18 21:59:43,380 - crypto_bot - INFO - 🔍 Scanning BTC/USDT:USDT
+2026-03-18 21:59:43,590 - crypto_bot - INFO - ❌ No signal: BTCUSDT
+2026-03-18 21:59:43,590 - crypto_bot - INFO - 🔍 Scanning ETH/USDT:USDT
+2026-03-18 21:59:43,806 - crypto_bot - INFO - ❌ No signal: ETHUSDT
+2026-03-18 21:59:43,806 - crypto_bot - INFO - 🔍 Scanning SOL/USDT:USDT
+2026-03-18 21:59:44,178 - crypto_bot - INFO - ❌ No signal: SOLUSDT
+2026-03-18 21:59:44,178 - crypto_bot - INFO - 🔍 Scanning HYPE/USDT:USDT
+2026-03-18 21:59:44,555 - crypto_bot - INFO - ❌ No signal: HYPEUSDT
+2026-03-18 21:59:44,555 - crypto_bot - INFO - 🔍 Scanning XRP/USDT:USDT
+2026-03-18 21:59:44,780 - crypto_bot - INFO - ❌ No signal: XRPUSDT
+2026-03-18 21:59:44,780 - crypto_bot - INFO - 🔍 Scanning DOGE/USDT:USDT
+2026-03-18 21:59:44,980 - crypto_bot - INFO - ❌ No signal: DOGEUSDT
+2026-03-18 21:59:44,980 - crypto_bot - INFO - 🔍 Scanning BARD/USDT:USDT
+2026-03-18 21:59:45,363 - crypto_bot - INFO - ❌ No signal: BARDUSDT
+2026-03-18 21:59:45,363 - crypto_bot - INFO - 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-18 21:59:45,741 - crypto_bot - INFO - ❌ No signal: FARTCOINUSDT
+2026-03-18 21:59:45,741 - crypto_bot - INFO - 🔍 Scanning 1000PEPE/USDT:USDT
+2026-03-18 21:59:45,956 - crypto_bot - INFO - ❌ No signal: 1000PEPEUSDT
+2026-03-18 21:59:45,956 - crypto_bot - INFO - 🔍 Scanning ZEC/USDT:USDT
+2026-03-18 21:59:46,167 - crypto_bot - INFO - ❌ No signal: ZECUSDT
+2026-03-18 21:59:46,167 - crypto_bot - INFO - 🔍 Scanning XAUT/USDT:USDT
+2026-03-18 21:59:46,380 - crypto_bot - INFO - ❌ No signal: XAUTUSDT
+2026-03-18 21:59:46,380 - crypto_bot - INFO - 🔍 Scanning LYN/USDT:USDT
+2026-03-18 21:59:46,604 - crypto_bot - INFO - ❌ No signal: LYNUSDT
+2026-03-18 21:59:46,604 - crypto_bot - INFO - 🔍 Scanning RIVER/USDT:USDT
+2026-03-18 21:59:46,971 - crypto_bot - INFO - ❌ No signal: RIVERUSDT
+2026-03-18 21:59:46,971 - crypto_bot - INFO - 🔍 Scanning PIPPIN/USDT:USDT
+2026-03-18 21:59:47,193 - crypto_bot - INFO - ❌ No signal: PIPPINUSDT
+2026-03-18 21:59:47,193 - crypto_bot - INFO - 🔍 Scanning TAO/USDT:USDT
+2026-03-18 21:59:47,399 - crypto_bot - INFO - ❌ No signal: TAOUSDT
+2026-03-18 21:59:47,399 - crypto_bot - INFO - 🔍 Scanning ADA/USDT:USDT
+2026-03-18 21:59:47,656 - crypto_bot - INFO - ❌ No signal: ADAUSDT
+2026-03-18 21:59:47,656 - crypto_bot - INFO - 🔍 Scanning TRUMP/USDT:USDT
+2026-03-18 21:59:48,370 - crypto_bot - INFO - ❌ No signal: TRUMPUSDT
+2026-03-18 21:59:48,370 - crypto_bot - INFO - 🔍 Scanning SUI/USDT:USDT
+2026-03-18 21:59:48,754 - crypto_bot - INFO - ❌ No signal: SUIUSDT
+2026-03-18 21:59:48,754 - crypto_bot - INFO - 🔍 Scanning ASTER/USDT:USDT
+2026-03-18 21:59:49,465 - crypto_bot - INFO - ❌ No signal: ASTERUSDT
+2026-03-18 21:59:49,465 - crypto_bot - INFO - 🔍 Scanning ENJ/USDT:USDT
+2026-03-18 21:59:49,674 - crypto_bot - INFO - ❌ No signal: ENJUSDT
+2026-03-18 21:59:49,674 - crypto_bot - INFO - 🔍 Scanning BAN/USDT:USDT
+2026-03-18 21:59:50,374 - crypto_bot - INFO - ❌ No signal: BANUSDT
+2026-03-18 21:59:50,374 - crypto_bot - INFO - 🔍 Scanning NEAR/USDT:USDT
+2026-03-18 21:59:50,755 - crypto_bot - INFO - ❌ No signal: NEARUSDT
+2026-03-18 21:59:50,755 - crypto_bot - INFO - 🔍 Scanning 1000BONK/USDT:USDT
+2026-03-18 21:59:51,453 - crypto_bot - INFO - ❌ No signal: 1000BONKUSDT
+2026-03-18 21:59:51,467 - crypto_bot - INFO - 🔍 Scanning LINK/USDT:USDT
+2026-03-18 21:59:51,680 - crypto_bot - INFO - ❌ No signal: LINKUSDT
+2026-03-18 21:59:51,680 - crypto_bot - INFO - 🔍 Scanning ANKR/USDT:USDT
+2026-03-18 21:59:52,049 - crypto_bot - INFO - ❌ No signal: ANKRUSDT
+2026-03-18 21:59:52,049 - crypto_bot - INFO - 🔍 Scanning BNB/USDT:USDT
+2026-03-18 21:59:52,264 - crypto_bot - INFO - ❌ No signal: BNBUSDT
+2026-03-18 21:59:52,264 - crypto_bot - INFO - 🔍 Scanning SIREN/USDT:USDT
+2026-03-18 21:59:52,476 - crypto_bot - INFO - ❌ No signal: SIRENUSDT
+2026-03-18 21:59:52,476 - crypto_bot - INFO - 🔍 Scanning MNT/USDT:USDT
+2026-03-18 21:59:52,692 - crypto_bot - INFO - ❌ No signal: MNTUSDT
+2026-03-18 21:59:52,692 - crypto_bot - INFO - 🔍 Scanning AAVE/USDT:USDT
+2026-03-18 21:59:52,904 - crypto_bot - INFO - ❌ No signal: AAVEUSDT
+2026-03-18 21:59:52,904 - crypto_bot - INFO - 🔍 Scanning WIF/USDT:USDT
+2026-03-18 21:59:53,121 - crypto_bot - INFO - ❌ No signal: WIFUSDT
+2026-03-18 21:59:53,121 - crypto_bot - INFO - 🔍 Scanning ENA/USDT:USDT
+2026-03-18 21:59:53,334 - crypto_bot - INFO - ❌ No signal: ENAUSDT
+2026-03-18 21:59:53,334 - crypto_bot - INFO - 🔍 Scanning AVAX/USDT:USDT
+2026-03-18 21:59:53,550 - crypto_bot - INFO - ❌ No signal: AVAXUSDT
+2026-03-18 21:59:53,550 - crypto_bot - INFO - 🔍 Scanning DOT/USDT:USDT
+2026-03-18 21:59:53,921 - crypto_bot - INFO - ❌ No signal: DOTUSDT
+2026-03-18 21:59:53,921 - crypto_bot - INFO - 🔍 Scanning LTC/USDT:USDT
+2026-03-18 21:59:54,145 - crypto_bot - INFO - ❌ No signal: LTCUSDT
+2026-03-18 21:59:54,145 - crypto_bot - INFO - 🔍 Scanning XAG/USDT:USDT
+2026-03-18 21:59:54,358 - crypto_bot - INFO - ❌ No signal: XAGUSDT
+2026-03-18 21:59:54,359 - crypto_bot - INFO - 🔍 Scanning ROBO/USDT:USDT
+2026-03-18 21:59:55,063 - crypto_bot - INFO - ❌ No signal: ROBOUSDT
+2026-03-18 21:59:55,063 - crypto_bot - INFO - 🔍 Scanning PENGU/USDT:USDT
+2026-03-18 21:59:55,278 - crypto_bot - INFO - ❌ No signal: PENGUUSDT
+2026-03-18 21:59:55,278 - crypto_bot - INFO - 🔍 Scanning VIRTUAL/USDT:USDT
+2026-03-18 21:59:55,650 - crypto_bot - INFO - ❌ No signal: VIRTUALUSDT
+2026-03-18 21:59:55,650 - crypto_bot - INFO - 🔍 Scanning XPL/USDT:USDT
+2026-03-18 21:59:55,855 - crypto_bot - INFO - ❌ No signal: XPLUSDT
+2026-03-18 21:59:55,855 - crypto_bot - INFO - 🔍 Scanning IP/USDT:USDT
+2026-03-18 21:59:56,076 - crypto_bot - INFO - ❌ No signal: IPUSDT
+2026-03-18 21:59:56,076 - crypto_bot - INFO - 🔍 Scanning KITE/USDT:USDT
+2026-03-18 21:59:56,292 - crypto_bot - INFO - ❌ No signal: KITEUSDT
+2026-03-18 21:59:56,292 - crypto_bot - INFO - 🔍 Scanning KAS/USDT:USDT
+2026-03-18 21:59:56,508 - crypto_bot - INFO - ❌ No signal: KASUSDT
+2026-03-18 21:59:56,508 - crypto_bot - INFO - 🔍 Scanning HBAR/USDT:USDT
+2026-03-18 21:59:56,722 - crypto_bot - INFO - ❌ No signal: HBARUSDT
+2026-03-18 21:59:56,722 - crypto_bot - INFO - 🔍 Scanning POLYX/USDT:USDT
+2026-03-18 21:59:56,935 - crypto_bot - INFO - ❌ No signal: POLYXUSDT
+2026-03-18 21:59:56,935 - crypto_bot - INFO - 🔍 Scanning VANRY/USDT:USDT
+2026-03-18 21:59:57,309 - crypto_bot - INFO - ❌ No signal: VANRYUSDT
+2026-03-18 21:59:57,309 - crypto_bot - INFO - 🔍 Scanning AXS/USDT:USDT
+2026-03-18 21:59:58,010 - crypto_bot - INFO - ❌ No signal: AXSUSDT
+2026-03-18 21:59:58,010 - crypto_bot - INFO - 🔍 Scanning GALA/USDT:USDT
+2026-03-18 21:59:58,226 - crypto_bot - INFO - ❌ No signal: GALAUSDT
+2026-03-18 21:59:58,226 - crypto_bot - INFO - 🔍 Scanning UNI/USDT:USDT
+2026-03-18 21:59:58,444 - crypto_bot - INFO - ❌ No signal: UNIUSDT
+2026-03-18 21:59:58,444 - crypto_bot - INFO - 📊 Total signals after scan: 0
+2026-03-18 21:59:58,444 - crypto_bot - INFO - 📊 Signals found: 0
+2026-03-18 21:59:58,444 - crypto_bot - INFO - ⏳ Sleeping for 3600 seconds
+2026-03-18 22:03:57,803 - crypto_bot - INFO - 🛑 Остановка по KeyboardInterrupt
+2026-03-18 22:07:03,848 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 22:07:04,080 - crypto_bot - INFO - 🖥️ Signal GUI thread started
+2026-03-18 22:07:04,080 - crypto_bot - INFO - ⚙️ Building Telegram Application...
+2026-03-18 22:07:04,276 - crypto_bot - INFO - 📦 Registering handlers...
+2026-03-18 22:07:04,276 - crypto_bot - INFO - ✅ start handler registered
+2026-03-18 22:07:04,277 - crypto_bot - INFO - ✅ help handler registered
+2026-03-18 22:07:04,277 - crypto_bot - INFO - ✅ pairs handler registered
+2026-03-18 22:07:04,277 - crypto_bot - INFO - ✅ signal handler registered
+2026-03-18 22:07:04,277 - crypto_bot - INFO - ✅ status handler registered
+2026-03-18 22:07:04,277 - crypto_bot - INFO - ✅ callback handler registered
+2026-03-18 22:07:04,277 - crypto_bot - INFO - 📊 Handlers count: 1
+2026-03-18 22:07:04,278 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 22:07:04,278 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-18 22:08:04,344 - crypto_bot - ERROR - ❌ Polling crashed. Restarting in 5 seconds...
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_transports\default.py", line 66, in map_httpcore_exceptions
+    yield
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_transports\default.py", line 366, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection.py", line 101, in handle_async_request
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_async\connection.py", line 156, in _connect
+    stream = await stream.start_tls(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_backends\anyio.py", line 67, in start_tls
+    with map_exceptions(exc_map):
+  File "D:\Python 3.11\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectTimeout
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 268, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1530, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1617, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1645, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1682, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_client.py", line 1719, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_transports\default.py", line 365, in handle_async_request
+    with map_httpcore_exceptions():
+  File "D:\Python 3.11\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\httpx\_transports\default.py", line 83, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectTimeout
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 27, in main
+    bot.run_polling()
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 253, in run_polling
+    self.application.run_polling(drop_pending_updates=True)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 818, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1006, in __run
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 995, in __run
+    loop.run_until_complete(self.initialize())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 477, in initialize
+    await self.bot.initialize()
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_extbot.py", line 286, in initialize
+    await super().initialize()
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 735, in initialize
+    await self.get_me()
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_extbot.py", line 1697, in get_me
+    return await super().get_me(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 525, in decorator
+    result = await func(self, *args, **kwargs)  # skipcq: PYL-E1102
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 775, in get_me
+    result = await self._post(
+             ^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 613, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_extbot.py", line 340, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\_bot.py", line 641, in _do_post
+    return await request.post(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_baserequest.py", line 200, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_baserequest.py", line 340, in _request_wrapper
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_baserequest.py", line 330, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 285, in do_request
+    raise TimedOut from err
+telegram.error.TimedOut: Timed out
+2026-03-18 22:08:09,354 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 22:08:09,542 - crypto_bot - INFO - 🖥️ Signal GUI thread started
+2026-03-18 22:08:09,542 - crypto_bot - INFO - ⚙️ Building Telegram Application...
+2026-03-18 22:08:09,729 - crypto_bot - INFO - 📦 Registering handlers...
+2026-03-18 22:08:09,729 - crypto_bot - INFO - ✅ start handler registered
+2026-03-18 22:08:09,729 - crypto_bot - INFO - ✅ help handler registered
+2026-03-18 22:08:09,729 - crypto_bot - INFO - ✅ pairs handler registered
+2026-03-18 22:08:09,729 - crypto_bot - INFO - ✅ signal handler registered
+2026-03-18 22:08:09,729 - crypto_bot - INFO - ✅ status handler registered
+2026-03-18 22:08:09,729 - crypto_bot - INFO - ✅ callback handler registered
+2026-03-18 22:08:09,729 - crypto_bot - INFO - 📊 Handlers count: 1
+2026-03-18 22:08:09,729 - crypto_bot - INFO - ✅ Telegram бот инициализирован
+2026-03-18 22:08:09,729 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-18 22:08:09,729 - crypto_bot - ERROR - ❌ Polling crashed. Restarting in 5 seconds...
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1006, in __run
+    raise exc
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 995, in __run
+    loop.run_until_complete(self.initialize())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 27, in main
+    bot.run_polling()
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 253, in run_polling
+    self.application.run_polling(drop_pending_updates=True)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 818, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\telegram\ext\_application.py", line 1017, in __run
+    loop.run_until_complete(self.shutdown())
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 629, in run_until_complete
+    self._check_closed()
+  File "D:\Python 3.11\Lib\asyncio\base_events.py", line 520, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+2026-03-18 22:11:14,492 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-18 22:11:14,492 - crypto_bot - WARNING - TELEGRAM_TOKEN не задан — бот запустится в режиме scanner + GUI без Telegram polling
+2026-03-18 22:11:14,521 - crypto_bot - INFO - 🖥️ Signal GUI thread started
+2026-03-18 22:11:14,521 - crypto_bot - INFO - ✅ Telegram отключён: инициализированы scanner + GUI режим
+2026-03-18 22:11:14,521 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-18 22:11:14,521 - crypto_bot - INFO - 📡 Telegram polling disabled, running standalone scan loop
+2026-03-18 22:11:14,530 - crypto_bot - INFO - 🚀 SCAN LOOP STARTED
+2026-03-18 22:11:14,530 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-18 22:11:19,863 - crypto_bot - INFO - 📈 Top-50 symbols fetched: 50
+2026-03-18 22:11:28,148 - crypto_bot - INFO - 🔥 Active symbols after filter: 46 / 50
+2026-03-18 22:11:28,148 - crypto_bot - INFO - 🔍 Scanning BTC/USDT:USDT
+2026-03-18 22:11:28,367 - crypto_bot - INFO - ❌ No signal: BTCUSDT
+2026-03-18 22:11:28,368 - crypto_bot - INFO - 🔍 Scanning ETH/USDT:USDT
+2026-03-18 22:11:28,731 - crypto_bot - INFO - ❌ No signal: ETHUSDT
+2026-03-18 22:11:28,731 - crypto_bot - INFO - 🔍 Scanning SOL/USDT:USDT
+2026-03-18 22:11:28,954 - crypto_bot - INFO - ❌ No signal: SOLUSDT
+2026-03-18 22:11:28,954 - crypto_bot - INFO - 🔍 Scanning HYPE/USDT:USDT
+2026-03-18 22:11:29,347 - crypto_bot - INFO - ❌ No signal: HYPEUSDT
+2026-03-18 22:11:29,347 - crypto_bot - INFO - 🔍 Scanning XRP/USDT:USDT
+2026-03-18 22:11:29,555 - crypto_bot - INFO - ❌ No signal: XRPUSDT
+2026-03-18 22:11:29,555 - crypto_bot - INFO - 🔍 Scanning DOGE/USDT:USDT
+2026-03-18 22:11:29,942 - crypto_bot - INFO - ❌ No signal: DOGEUSDT
+2026-03-18 22:11:29,942 - crypto_bot - INFO - 🔍 Scanning BARD/USDT:USDT
+2026-03-18 22:11:30,159 - crypto_bot - INFO - ❌ No signal: BARDUSDT
+2026-03-18 22:11:30,159 - crypto_bot - INFO - 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-18 22:11:30,374 - crypto_bot - INFO - ❌ No signal: FARTCOINUSDT
+2026-03-18 22:11:30,374 - crypto_bot - INFO - 🔍 Scanning 1000PEPE/USDT:USDT
+2026-03-18 22:11:30,588 - crypto_bot - INFO - ❌ No signal: 1000PEPEUSDT
+2026-03-18 22:11:30,588 - crypto_bot - INFO - 🔍 Scanning XAUT/USDT:USDT
+2026-03-18 22:11:30,797 - crypto_bot - INFO - ❌ No signal: XAUTUSDT
+2026-03-18 22:11:30,797 - crypto_bot - INFO - 🔍 Scanning ZEC/USDT:USDT
+2026-03-18 22:11:31,026 - crypto_bot - INFO - ❌ No signal: ZECUSDT
+2026-03-18 22:11:31,026 - crypto_bot - INFO - 🔍 Scanning LYN/USDT:USDT
+2026-03-18 22:11:31,415 - crypto_bot - INFO - ❌ No signal: LYNUSDT
+2026-03-18 22:11:31,415 - crypto_bot - INFO - 🔍 Scanning RIVER/USDT:USDT
+2026-03-18 22:11:31,784 - crypto_bot - INFO - ❌ No signal: RIVERUSDT
+2026-03-18 22:11:31,784 - crypto_bot - INFO - 🔍 Scanning PIPPIN/USDT:USDT
+2026-03-18 22:11:32,168 - crypto_bot - INFO - ❌ No signal: PIPPINUSDT
+2026-03-18 22:11:32,168 - crypto_bot - INFO - 🔍 Scanning TAO/USDT:USDT
+2026-03-18 22:11:32,386 - crypto_bot - INFO - ❌ No signal: TAOUSDT
+2026-03-18 22:11:32,386 - crypto_bot - INFO - 🔍 Scanning ADA/USDT:USDT
+2026-03-18 22:11:32,609 - crypto_bot - INFO - ❌ No signal: ADAUSDT
+2026-03-18 22:11:32,609 - crypto_bot - INFO - 🔍 Scanning TRUMP/USDT:USDT
+2026-03-18 22:11:32,821 - crypto_bot - INFO - ❌ No signal: TRUMPUSDT
+2026-03-18 22:11:32,821 - crypto_bot - INFO - 🔍 Scanning SUI/USDT:USDT
+2026-03-18 22:11:33,029 - crypto_bot - INFO - ❌ No signal: SUIUSDT
+2026-03-18 22:11:33,029 - crypto_bot - INFO - 🔍 Scanning ASTER/USDT:USDT
+2026-03-18 22:11:33,257 - crypto_bot - INFO - ❌ No signal: ASTERUSDT
+2026-03-18 22:11:33,257 - crypto_bot - INFO - 🔍 Scanning ENJ/USDT:USDT
+2026-03-18 22:11:33,473 - crypto_bot - INFO - ❌ No signal: ENJUSDT
+2026-03-18 22:11:33,473 - crypto_bot - INFO - 🔍 Scanning BAN/USDT:USDT
+2026-03-18 22:11:33,739 - crypto_bot - INFO - ❌ No signal: BANUSDT
+2026-03-18 22:11:33,739 - crypto_bot - INFO - 🔍 Scanning NEAR/USDT:USDT
+2026-03-18 22:11:33,953 - crypto_bot - INFO - ❌ No signal: NEARUSDT
+2026-03-18 22:11:33,953 - crypto_bot - INFO - 🔍 Scanning 1000BONK/USDT:USDT
+2026-03-18 22:11:34,172 - crypto_bot - INFO - ❌ No signal: 1000BONKUSDT
+2026-03-18 22:11:34,172 - crypto_bot - INFO - 🔍 Scanning ANKR/USDT:USDT
+2026-03-18 22:11:34,388 - crypto_bot - INFO - ❌ No signal: ANKRUSDT
+2026-03-18 22:11:34,388 - crypto_bot - INFO - 🔍 Scanning LINK/USDT:USDT
+2026-03-18 22:11:34,601 - crypto_bot - INFO - ❌ No signal: LINKUSDT
+2026-03-18 22:11:34,601 - crypto_bot - INFO - 🔍 Scanning BNB/USDT:USDT
+2026-03-18 22:11:34,818 - crypto_bot - INFO - ❌ No signal: BNBUSDT
+2026-03-18 22:11:34,818 - crypto_bot - INFO - 🔍 Scanning SIREN/USDT:USDT
+2026-03-18 22:11:35,034 - crypto_bot - INFO - ❌ No signal: SIRENUSDT
+2026-03-18 22:11:35,034 - crypto_bot - INFO - 🔍 Scanning MNT/USDT:USDT
+2026-03-18 22:11:35,252 - crypto_bot - INFO - ❌ No signal: MNTUSDT
+2026-03-18 22:11:35,252 - crypto_bot - INFO - 🔍 Scanning AAVE/USDT:USDT
+2026-03-18 22:11:35,468 - crypto_bot - INFO - ❌ No signal: AAVEUSDT
+2026-03-18 22:11:35,468 - crypto_bot - INFO - 🔍 Scanning ENA/USDT:USDT
+2026-03-18 22:11:35,692 - crypto_bot - INFO - ❌ No signal: ENAUSDT
+2026-03-18 22:11:35,692 - crypto_bot - INFO - 🔍 Scanning WIF/USDT:USDT
+2026-03-18 22:11:35,941 - crypto_bot - INFO - ❌ No signal: WIFUSDT
+2026-03-18 22:11:35,941 - crypto_bot - INFO - 🔍 Scanning AVAX/USDT:USDT
+2026-03-18 22:11:36,159 - crypto_bot - INFO - ❌ No signal: AVAXUSDT
+2026-03-18 22:11:36,159 - crypto_bot - INFO - 🔍 Scanning DOT/USDT:USDT
+2026-03-18 22:11:36,383 - crypto_bot - INFO - ❌ No signal: DOTUSDT
+2026-03-18 22:11:36,383 - crypto_bot - INFO - 🔍 Scanning LTC/USDT:USDT
+2026-03-18 22:11:36,748 - crypto_bot - INFO - ❌ No signal: LTCUSDT
+2026-03-18 22:11:36,748 - crypto_bot - INFO - 🔍 Scanning XAG/USDT:USDT
+2026-03-18 22:11:36,978 - crypto_bot - INFO - ❌ No signal: XAGUSDT
+2026-03-18 22:11:36,978 - crypto_bot - INFO - 🔍 Scanning ROBO/USDT:USDT
+2026-03-18 22:11:37,186 - crypto_bot - INFO - ❌ No signal: ROBOUSDT
+2026-03-18 22:11:37,186 - crypto_bot - INFO - 🔍 Scanning PENGU/USDT:USDT
+2026-03-18 22:11:37,413 - crypto_bot - INFO - ❌ No signal: PENGUUSDT
+2026-03-18 22:11:37,413 - crypto_bot - INFO - 🔍 Scanning VIRTUAL/USDT:USDT
+2026-03-18 22:11:37,626 - crypto_bot - INFO - ❌ No signal: VIRTUALUSDT
+2026-03-18 22:11:37,626 - crypto_bot - INFO - 🔍 Scanning XPL/USDT:USDT
+2026-03-18 22:11:37,841 - crypto_bot - INFO - ❌ No signal: XPLUSDT
+2026-03-18 22:11:37,841 - crypto_bot - INFO - 🔍 Scanning KAS/USDT:USDT
+2026-03-18 22:11:38,070 - crypto_bot - INFO - ❌ No signal: KASUSDT
+2026-03-18 22:11:38,071 - crypto_bot - INFO - 🔍 Scanning HBAR/USDT:USDT
+2026-03-18 22:11:38,361 - crypto_bot - INFO - ❌ No signal: HBARUSDT
+2026-03-18 22:11:38,361 - crypto_bot - INFO - 🔍 Scanning POLYX/USDT:USDT
+2026-03-18 22:11:38,587 - crypto_bot - INFO - ❌ No signal: POLYXUSDT
+2026-03-18 22:11:38,587 - crypto_bot - INFO - 🔍 Scanning GALA/USDT:USDT
+2026-03-18 22:11:38,893 - crypto_bot - INFO - ❌ No signal: GALAUSDT
+2026-03-18 22:11:38,893 - crypto_bot - INFO - 🔍 Scanning ENSO/USDT:USDT
+2026-03-18 22:11:39,111 - crypto_bot - INFO - ❌ No signal: ENSOUSDT
+2026-03-18 22:11:39,111 - crypto_bot - INFO - 🔍 Scanning AXS/USDT:USDT
+2026-03-18 22:11:39,320 - crypto_bot - INFO - ❌ No signal: AXSUSDT
+2026-03-18 22:11:39,320 - crypto_bot - INFO - 🔍 Scanning VANRY/USDT:USDT
+2026-03-18 22:11:39,543 - crypto_bot - INFO - ❌ No signal: VANRYUSDT
+2026-03-18 22:11:39,543 - crypto_bot - INFO - 📊 Total signals after scan: 0
+2026-03-18 22:11:39,543 - crypto_bot - INFO - 📊 Signals found: 0
+2026-03-18 22:11:39,543 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
+2026-03-18 22:16:39,555 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-18 22:16:40,259 - crypto_bot - INFO - 📈 Top-50 symbols fetched: 50
+2026-03-18 22:16:40,974 - crypto_bot - INFO - 🔥 Active symbols after filter: 46 / 50
+2026-03-18 22:16:40,974 - crypto_bot - INFO - 🔍 Scanning BTC/USDT:USDT
+2026-03-18 22:16:41,184 - crypto_bot - INFO - ❌ No signal: BTCUSDT
+2026-03-18 22:16:41,184 - crypto_bot - INFO - 🔍 Scanning ETH/USDT:USDT
+2026-03-18 22:16:41,382 - crypto_bot - INFO - ❌ No signal: ETHUSDT
+2026-03-18 22:16:41,382 - crypto_bot - INFO - 🔍 Scanning SOL/USDT:USDT
+2026-03-18 22:16:41,596 - crypto_bot - INFO - ❌ No signal: SOLUSDT
+2026-03-18 22:16:41,596 - crypto_bot - INFO - 🔍 Scanning HYPE/USDT:USDT
+2026-03-18 22:16:41,803 - crypto_bot - INFO - ❌ No signal: HYPEUSDT
+2026-03-18 22:16:41,803 - crypto_bot - INFO - 🔍 Scanning XRP/USDT:USDT
+2026-03-18 22:16:42,013 - crypto_bot - INFO - ❌ No signal: XRPUSDT
+2026-03-18 22:16:42,013 - crypto_bot - INFO - 🔍 Scanning DOGE/USDT:USDT
+2026-03-18 22:16:42,217 - crypto_bot - INFO - ❌ No signal: DOGEUSDT
+2026-03-18 22:16:42,217 - crypto_bot - INFO - 🔍 Scanning BARD/USDT:USDT
+2026-03-18 22:16:42,438 - crypto_bot - INFO - ❌ No signal: BARDUSDT
+2026-03-18 22:16:42,438 - crypto_bot - INFO - 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-18 22:16:42,666 - crypto_bot - INFO - ❌ No signal: FARTCOINUSDT
+2026-03-18 22:16:42,666 - crypto_bot - INFO - 🔍 Scanning 1000PEPE/USDT:USDT
+2026-03-18 22:16:42,875 - crypto_bot - INFO - ❌ No signal: 1000PEPEUSDT
+2026-03-18 22:16:42,875 - crypto_bot - INFO - 🔍 Scanning XAUT/USDT:USDT
+2026-03-18 22:16:43,098 - crypto_bot - INFO - ❌ No signal: XAUTUSDT
+2026-03-18 22:16:43,098 - crypto_bot - INFO - 🔍 Scanning ZEC/USDT:USDT
+2026-03-18 22:16:43,307 - crypto_bot - INFO - ❌ No signal: ZECUSDT
+2026-03-18 22:16:43,307 - crypto_bot - INFO - 🔍 Scanning LYN/USDT:USDT
+2026-03-18 22:16:43,507 - crypto_bot - INFO - ❌ No signal: LYNUSDT
+2026-03-18 22:16:43,507 - crypto_bot - INFO - 🔍 Scanning PIPPIN/USDT:USDT
+2026-03-18 22:16:43,718 - crypto_bot - INFO - ❌ No signal: PIPPINUSDT
+2026-03-18 22:16:43,718 - crypto_bot - INFO - 🔍 Scanning RIVER/USDT:USDT
+2026-03-18 22:16:43,922 - crypto_bot - INFO - ❌ No signal: RIVERUSDT
+2026-03-18 22:16:43,922 - crypto_bot - INFO - 🔍 Scanning TAO/USDT:USDT
+2026-03-18 22:16:44,123 - crypto_bot - INFO - ❌ No signal: TAOUSDT
+2026-03-18 22:16:44,123 - crypto_bot - INFO - 🔍 Scanning ADA/USDT:USDT
+2026-03-18 22:16:44,345 - crypto_bot - INFO - ❌ No signal: ADAUSDT
+2026-03-18 22:16:44,345 - crypto_bot - INFO - 🔍 Scanning TRUMP/USDT:USDT
+2026-03-18 22:16:44,567 - crypto_bot - INFO - ❌ No signal: TRUMPUSDT
+2026-03-18 22:16:44,567 - crypto_bot - INFO - 🔍 Scanning SUI/USDT:USDT
+2026-03-18 22:16:44,783 - crypto_bot - INFO - ❌ No signal: SUIUSDT
+2026-03-18 22:16:44,783 - crypto_bot - INFO - 🔍 Scanning ASTER/USDT:USDT
+2026-03-18 22:16:45,002 - crypto_bot - INFO - ❌ No signal: ASTERUSDT
+2026-03-18 22:16:45,002 - crypto_bot - INFO - 🔍 Scanning ENJ/USDT:USDT
+2026-03-18 22:16:45,206 - crypto_bot - INFO - ❌ No signal: ENJUSDT
+2026-03-18 22:16:45,206 - crypto_bot - INFO - 🔍 Scanning BAN/USDT:USDT
+2026-03-18 22:16:45,455 - crypto_bot - INFO - ❌ No signal: BANUSDT
+2026-03-18 22:16:45,455 - crypto_bot - INFO - 🔍 Scanning NEAR/USDT:USDT
+2026-03-18 22:16:45,675 - crypto_bot - INFO - ❌ No signal: NEARUSDT
+2026-03-18 22:16:45,675 - crypto_bot - INFO - 🔍 Scanning 1000BONK/USDT:USDT
+2026-03-18 22:16:45,912 - crypto_bot - INFO - ❌ No signal: 1000BONKUSDT
+2026-03-18 22:16:45,913 - crypto_bot - INFO - 🔍 Scanning ANKR/USDT:USDT
+2026-03-18 22:16:46,124 - crypto_bot - INFO - ❌ No signal: ANKRUSDT
+2026-03-18 22:16:46,124 - crypto_bot - INFO - 🔍 Scanning LINK/USDT:USDT
+2026-03-18 22:16:46,337 - crypto_bot - INFO - ❌ No signal: LINKUSDT
+2026-03-18 22:16:46,337 - crypto_bot - INFO - 🔍 Scanning BNB/USDT:USDT
+2026-03-18 22:16:46,559 - crypto_bot - INFO - ❌ No signal: BNBUSDT
+2026-03-18 22:16:46,560 - crypto_bot - INFO - 🔍 Scanning SIREN/USDT:USDT
+2026-03-18 22:16:46,768 - crypto_bot - INFO - ❌ No signal: SIRENUSDT
+2026-03-18 22:16:46,769 - crypto_bot - INFO - 🔍 Scanning MNT/USDT:USDT
+2026-03-18 22:16:46,992 - crypto_bot - INFO - ❌ No signal: MNTUSDT
+2026-03-18 22:16:46,992 - crypto_bot - INFO - 🔍 Scanning AAVE/USDT:USDT
+2026-03-18 22:16:47,196 - crypto_bot - INFO - ❌ No signal: AAVEUSDT
+2026-03-18 22:16:47,196 - crypto_bot - INFO - 🔍 Scanning ENA/USDT:USDT
+2026-03-18 22:16:47,399 - crypto_bot - INFO - ❌ No signal: ENAUSDT
+2026-03-18 22:16:47,399 - crypto_bot - INFO - 🔍 Scanning WIF/USDT:USDT
+2026-03-18 22:16:47,627 - crypto_bot - INFO - ❌ No signal: WIFUSDT
+2026-03-18 22:16:47,627 - crypto_bot - INFO - 🔍 Scanning AVAX/USDT:USDT
+2026-03-18 22:16:47,836 - crypto_bot - INFO - ❌ No signal: AVAXUSDT
+2026-03-18 22:16:47,836 - crypto_bot - INFO - 🔍 Scanning DOT/USDT:USDT
+2026-03-18 22:16:48,048 - crypto_bot - INFO - ❌ No signal: DOTUSDT
+2026-03-18 22:16:48,048 - crypto_bot - INFO - 🔍 Scanning LTC/USDT:USDT
+2026-03-18 22:16:48,269 - crypto_bot - INFO - ❌ No signal: LTCUSDT
+2026-03-18 22:16:48,269 - crypto_bot - INFO - 🔍 Scanning XAG/USDT:USDT
+2026-03-18 22:16:48,485 - crypto_bot - INFO - ❌ No signal: XAGUSDT
+2026-03-18 22:16:48,485 - crypto_bot - INFO - 🔍 Scanning ROBO/USDT:USDT
+2026-03-18 22:16:48,694 - crypto_bot - INFO - ❌ No signal: ROBOUSDT
+2026-03-18 22:16:48,694 - crypto_bot - INFO - 🔍 Scanning PENGU/USDT:USDT
+2026-03-18 22:16:48,929 - crypto_bot - INFO - ❌ No signal: PENGUUSDT
+2026-03-18 22:16:48,929 - crypto_bot - INFO - 🔍 Scanning VIRTUAL/USDT:USDT
+2026-03-18 22:16:49,151 - crypto_bot - INFO - ❌ No signal: VIRTUALUSDT
+2026-03-18 22:16:49,151 - crypto_bot - INFO - 🔍 Scanning XPL/USDT:USDT
+2026-03-18 22:16:49,365 - crypto_bot - INFO - ❌ No signal: XPLUSDT
+2026-03-18 22:16:49,365 - crypto_bot - INFO - 🔍 Scanning KAS/USDT:USDT
+2026-03-18 22:16:49,578 - crypto_bot - INFO - ❌ No signal: KASUSDT
+2026-03-18 22:16:49,578 - crypto_bot - INFO - 🔍 Scanning HBAR/USDT:USDT
+2026-03-18 22:16:49,795 - crypto_bot - INFO - ❌ No signal: HBARUSDT
+2026-03-18 22:16:49,795 - crypto_bot - INFO - 🔍 Scanning POLYX/USDT:USDT
+2026-03-18 22:16:50,002 - crypto_bot - INFO - ❌ No signal: POLYXUSDT
+2026-03-18 22:16:50,003 - crypto_bot - INFO - 🔍 Scanning GALA/USDT:USDT
+2026-03-18 22:16:50,218 - crypto_bot - INFO - ❌ No signal: GALAUSDT
+2026-03-18 22:16:50,218 - crypto_bot - INFO - 🔍 Scanning ENSO/USDT:USDT
+2026-03-18 22:16:50,419 - crypto_bot - INFO - ❌ No signal: ENSOUSDT
+2026-03-18 22:16:50,419 - crypto_bot - INFO - 🔍 Scanning AXS/USDT:USDT
+2026-03-18 22:16:50,663 - crypto_bot - INFO - ❌ No signal: AXSUSDT
+2026-03-18 22:16:50,663 - crypto_bot - INFO - 🔍 Scanning UNI/USDT:USDT
+2026-03-18 22:16:50,877 - crypto_bot - INFO - ❌ No signal: UNIUSDT
+2026-03-18 22:16:50,877 - crypto_bot - INFO - 📊 Total signals after scan: 0
+2026-03-18 22:16:50,877 - crypto_bot - INFO - 📊 Signals found: 0
+2026-03-18 22:16:50,877 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
+2026-03-18 22:21:32,989 - crypto_bot - INFO - 🛑 Остановка по KeyboardInterrupt
