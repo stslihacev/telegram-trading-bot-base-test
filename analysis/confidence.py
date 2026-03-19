@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 
 from core.config import (
+    CONFIDENCE_THRESHOLD,
     CONFIDENCE_ADX_THRESHOLD,
     CONFIDENCE_ATR_RATIO,
     CONFIDENCE_RANGE_PCT,
@@ -14,7 +15,9 @@ from core.config import (
     CONFIDENCE_WEIGHT_TREND,
     CONFIDENCE_WEIGHT_VOLATILITY,
     CONFIDENCE_WEIGHT_VOLUME,
+    DEBUG_MODE,
 )
+from core.debug import debug_stage, reject
 
 # Веса для каждой категории (сумма = 1)
 WEIGHTS = {
@@ -180,7 +183,7 @@ def calculate_chart_score(df):
 
     return min(score, 10), reasons
 
-def calculate_confidence(df):
+def calculate_confidence(df, symbol=None):
     """
     Главная функция: возвращает общий балл (0–100) и детали.
     """
@@ -224,8 +227,18 @@ def calculate_confidence(df):
     reasons['chart'] = r
     total += s * WEIGHTS['chart']
 
-    return {
+    result = {
         'total': round(total, 1),
         'scores': scores,
         'reasons': reasons
     }
+    if DEBUG_MODE and symbol is not None:
+        debug_stage("CONFIDENCE", symbol, f"score={result['total']}, parts={result['scores']}")
+        if result['total'] < CONFIDENCE_THRESHOLD:
+            reject(
+                symbol,
+                "CONFIDENCE",
+                "low score",
+                extra={"score": result['total'], "threshold": CONFIDENCE_THRESHOLD},
+            )
+    return result

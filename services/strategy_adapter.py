@@ -12,7 +12,8 @@ from backtest.backtest_engine import (
     build_4h_frame,
     calculate_risk_based_position_size,
 )
-from core.config import BACKTEST_INITIAL_CAPITAL, MIN_SIGNAL_RR, RISK_PER_TRADE
+from core.config import BACKTEST_INITIAL_CAPITAL, DEBUG_MODE, MIN_SIGNAL_RR, RISK_PER_TRADE
+from core.debug import debug_stage, reject
 from utils.logger import logger
 
 class BacktestStrategyAdapter:
@@ -76,6 +77,8 @@ class BacktestStrategyAdapter:
             df_4h = build_4h_frame(df)
             i = len(df) - 1
 
+            if DEBUG_MODE:
+                debug_stage("STRATEGY", symbol, f"prepared candles={len(df)}")
             signal = self.strategy.generate_signal(
                 symbol=symbol,
                 i=i,
@@ -86,13 +89,34 @@ class BacktestStrategyAdapter:
                 df_4h=df_4h,
             )
             if not signal:
+                if DEBUG_MODE:
+                    reject(symbol, "STRATEGY", "no entry conditions met")
                 return None
+
+            if DEBUG_MODE:
+                debug_stage(
+                    "STRATEGY",
+                    symbol,
+                    "signal detected "
+                    f"| type={signal.get('signal_type')} "
+                    f"| BOS={signal.get('signal_type') == 'BOS'} "
+                    f"| SWEEP={signal.get('signal_type') == 'SWEEP'}",
+                )
 
             entry = float(signal["entry"])
             tp = float(signal["tp"])
             sl = float(signal["sl"])
             rr = self._calculate_rr(entry=entry, tp=tp, sl=sl)
+            if DEBUG_MODE:
+                debug_stage("RR", symbol, f"rr={rr:.4f}, min_rr={self.min_rr:.4f}")
             if rr < self.min_rr:
+                if DEBUG_MODE:
+                    reject(
+                        symbol,
+                        "RR",
+                        "RR below MIN_SIGNAL_RR",
+                        extra={"rr": round(rr, 4), "threshold": self.min_rr},
+                    )
                 return None
 
             risk_snapshot = dict(signal)

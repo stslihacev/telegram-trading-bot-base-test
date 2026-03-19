@@ -14,7 +14,8 @@ from tkinter.scrolledtext import ScrolledText
 from dotenv import load_dotenv
 from telegram.ext import Application, CallbackQueryHandler, CommandHandler
 
-from core.config import MIN_SIGNAL_RR, SCAN_INTERVAL, SCAN_INTERVAL_MIN, TOP_N
+from core.config import DEBUG_MODE, MIN_SIGNAL_RR, SCAN_INTERVAL, SCAN_INTERVAL_MIN, TOP_N
+from core.debug import success
 from core.state_manager import state_manager
 from execution.signal_dispatcher import SignalDispatcher
 from scanner.market_scanner import MarketScanner
@@ -197,6 +198,11 @@ class TelegramTradingBot:
         unique_users = sorted(set(auto_users))
 
         if self.application and unique_users:
+            if DEBUG_MODE:
+                success(
+                    signal.get("symbol"),
+                    f"telegram broadcast | users={len(unique_users)} | type={signal.get('signal_type')}",
+                )
             await broadcast_signal(self.application.bot, unique_users, signal)
 
     async def scan_loop(self, interval_sec: int | None = None) -> None:

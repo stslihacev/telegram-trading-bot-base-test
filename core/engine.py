@@ -13,6 +13,7 @@ from core.config import (
     SCAN_TIMEFRAME,
     SCAN_CANDLE_LIMIT,
     CONFIDENCE_THRESHOLD,
+    DEBUG_MODE,
     SWING_WINDOW,
     LOOKBACK_LEVELS,
     CORRELATION_THRESHOLD,
@@ -26,6 +27,7 @@ from core.config import (
 from analysis.confidence import calculate_confidence
 from analysis.levels import get_nearest_levels
 from analysis.correlation import calculate_correlation
+from core.debug import debug_stage, reject, success
 from utils.logger import logger
 from core.config import MIN_RR
 from core.config import MAX_RR
@@ -151,6 +153,29 @@ class TradingEngine:
                     volume = ticker.get("quoteVolume", 0)
                     change = abs(ticker.get("percentage", 0))
 
+                    clean_symbol = symbol.split(':')[0].replace('/', '')
+                    if DEBUG_MODE and volume < MIN_VOLUME_24H:
+                        reject(
+                            clean_symbol,
+                            "SCAN",
+                            "MIN_VOLUME_24H",
+                            extra={"volume": round(float(volume or 0), 2), "threshold": MIN_VOLUME_24H},
+                        )
+                    if DEBUG_MODE and volume >= MIN_VOLUME_24H and change < MIN_CHANGE_24H:
+                        reject(
+                            clean_symbol,
+                            "SCAN",
+                            "MIN_CHANGE_24H",
+                            extra={"change": round(float(change or 0), 4), "threshold": MIN_CHANGE_24H},
+                        )
+                    if volume >= MIN_VOLUME_24H and change >= MIN_CHANGE_24H:
+                        if DEBUG_MODE:
+                            debug_stage(
+                                "SCAN",
+                                clean_symbol,
+                                f"filters passed | volume={float(volume or 0):.2f}, change={float(change or 0):.4f}",
+                            )
+
                     if volume >= MIN_VOLUME_24H and change >= MIN_CHANGE_24H:
                         active_symbols.append(symbol)
 
@@ -159,6 +184,7 @@ class TradingEngine:
                 # 3️⃣ Глубокий анализ только активных
                 for symbol in active_symbols:
                     try:
+                        clean_symbol = symbol.split(':')[0].replace('/', '')
                         ohlcv = await fetch_klines(symbol)
                         await asyncio.sleep(random.uniform(0.5, 1.0))
 
@@ -177,6 +203,13 @@ class TradingEngine:
                         price = df['close'].iloc[-1]
 
                         if atr / price < VOLATILITY_THRESHOLD:
+                            if DEBUG_MODE:
+                                reject(
+                                    clean_symbol,
+                                    "SCAN",
+                                    "VOLATILITY_THRESHOLD",
+                                    extra={"atr_ratio": round(float(atr / price), 6), "threshold": VOLATILITY_THRESHOLD},
+                                )
                             logger.info(f"{symbol} | ATR/price = {atr/price:.4f} < {VOLATILITY_THRESHOLD}, пропускаем")
                             continue
 
@@ -194,7 +227,7 @@ class TradingEngine:
                             continue
 
                         # 5️⃣ Confidence
-                        conf = calculate_confidence(df)
+                        conf = calculate_confidence(df, symbol=clean_symbol)
                         logger.info(f"{symbol} | Confidence details: {conf['scores']}")
                         logger.info(f"{symbol} | Confidence reasons: {conf['reasons']}")
                         logger.debug(f"{symbol} | Confidence: {conf['total']}")
@@ -237,13 +270,21 @@ class TradingEngine:
                         if rr > MAX_RR:
                             logger.info(f"{symbol} | RR {rr} > {MAX_RR}, пропускаем (слишком далёкий TP)")
                             continue
+                        if DEBUG_MODE:
+                            debug_stage("RR", clean_symbol, f"rr={rr}, max_rr={MAX_RR}, min_rr={MIN_RR}")
                         logger.debug(f"{symbol} | RR: {rr}")
                         if rr < MIN_RR:
+                            if DEBUG_MODE:
+                                reject(
+                                    clean_symbol,
+                                    "RR",
+                                    "RR below MIN_RR",
+                                    extra={"rr": rr, "threshold": MIN_RR},
+                                )
                             logger.info(f"{symbol} | RR {rr} < {MIN_RR}, пропускаем")
                             continue
 
                         # 🔟 Сохраняем сигнал
-                        clean_symbol = symbol.split(':')[0].replace('/', '')
 
                         save_signal(
                             symbol=clean_symbol,
@@ -272,6 +313,9 @@ class TradingEngine:
                             'confidence': round(conf['total'], 2)
                         }
                         save_trade(signal_data)
+
+                        if DEBUG_MODE:
+                            success(clean_symbol, f"ready to send | side={direction} | rr=1:{rr}")
 
                         await send_signal(msg)
 

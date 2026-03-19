@@ -6,7 +6,15 @@ import asyncio
 import ccxt
 import pandas as pd
 
-from core.config import MIN_CHANGE_24H, MIN_VOLUME_24H, SCAN_CANDLE_LIMIT, SCAN_TIMEFRAME, TOP_N
+from core.config import (
+    DEBUG_MODE,
+    MIN_CHANGE_24H,
+    MIN_VOLUME_24H,
+    SCAN_CANDLE_LIMIT,
+    SCAN_TIMEFRAME,
+    TOP_N,
+)
+from core.debug import debug_stage, reject
 from scanner.volume_scanner import get_top_usdt_pairs
 from services.strategy_adapter import BacktestStrategyAdapter
 from utils.logger import logger
@@ -49,7 +57,28 @@ class MarketScanner:
                 continue
             volume = ticker.get("quoteVolume", 0) or 0
             change = abs(ticker.get("percentage", 0) or 0)
+            clean_symbol = symbol.split(":")[0].replace("/", "")
+            if DEBUG_MODE and volume < MIN_VOLUME_24H:
+                reject(
+                    clean_symbol,
+                    "SCAN",
+                    "MIN_VOLUME_24H",
+                    extra={"volume": round(volume, 2), "threshold": MIN_VOLUME_24H},
+                )
+            if DEBUG_MODE and volume >= MIN_VOLUME_24H and change < MIN_CHANGE_24H:
+                reject(
+                    clean_symbol,
+                    "SCAN",
+                    "MIN_CHANGE_24H",
+                    extra={"change": round(change, 4), "threshold": MIN_CHANGE_24H},
+                )
             if volume >= MIN_VOLUME_24H and change >= MIN_CHANGE_24H:
+                if DEBUG_MODE:
+                    debug_stage(
+                        "SCAN",
+                        clean_symbol,
+                        f"filters passed | volume={volume:.2f}, change={change:.4f}",
+                    )
                 active.append(symbol)
         return active
 
@@ -79,6 +108,8 @@ class MarketScanner:
 
             df = df.iloc[:-1].copy()
             clean_symbol = symbol.split(":")[0].replace("/", "")
+            if DEBUG_MODE:
+                debug_stage("STRATEGY", clean_symbol, "calling strategy adapter")
             signal = self.strategy.generate_signal(clean_symbol, df)
             if signal:
                 logger.info(f"✅ Signal generated: {clean_symbol} | {signal.get('signal_type')}")
