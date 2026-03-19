@@ -7141,3 +7141,939 @@ RuntimeError: Event loop is closed
 2026-03-19 20:24:25,142 - crypto_bot - INFO - 📊 Signals found: 0
 2026-03-19 20:24:25,142 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
 2026-03-19 20:25:00,581 - crypto_bot - INFO - 🛑 Остановка по KeyboardInterrupt
+2026-03-19 20:33:50,538 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-19 20:33:50,538 - crypto_bot - WARNING - TELEGRAM_TOKEN не задан — бот запустится в режиме scanner + GUI без Telegram polling
+2026-03-19 20:33:50,576 - crypto_bot - INFO - 🖥️ Signal GUI thread started
+2026-03-19 20:33:50,576 - crypto_bot - INFO - ✅ Telegram отключён: инициализированы scanner + GUI режим
+2026-03-19 20:33:50,576 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-19 20:33:50,576 - crypto_bot - INFO - 📡 Telegram polling disabled, running standalone scan loop
+2026-03-19 20:33:50,576 - crypto_bot - INFO - 🚀 SCAN LOOP STARTED
+2026-03-19 20:33:50,576 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-19 20:33:54,411 - crypto_bot - INFO - 📈 Top-50 symbols fetched: 50
+2026-03-19 20:33:58,000 - crypto_bot - INFO - 🔥 Active symbols after filter: 42 / 50
+2026-03-19 20:33:58,000 - crypto_bot - INFO - 🔍 Scanning BTC/USDT:USDT
+2026-03-19 20:33:58,240 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для BTCUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:33:58,243 - crypto_bot - INFO - ❌ No signal: BTCUSDT
+2026-03-19 20:33:58,243 - crypto_bot - INFO - 🔍 Scanning ETH/USDT:USDT
+2026-03-19 20:33:58,482 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для ETHUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:33:58,482 - crypto_bot - INFO - ❌ No signal: ETHUSDT
+2026-03-19 20:33:58,483 - crypto_bot - INFO - 🔍 Scanning SOL/USDT:USDT
+2026-03-19 20:33:58,705 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для SOLUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:33:58,718 - crypto_bot - INFO - ❌ No signal: SOLUSDT
+2026-03-19 20:33:58,718 - crypto_bot - INFO - 🔍 Scanning XRP/USDT:USDT
+2026-03-19 20:33:58,961 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для XRPUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:33:58,961 - crypto_bot - INFO - ❌ No signal: XRPUSDT
+2026-03-19 20:33:58,961 - crypto_bot - INFO - 🔍 Scanning HYPE/USDT:USDT
+2026-03-19 20:33:59,200 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для HYPEUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:33:59,200 - crypto_bot - INFO - ❌ No signal: HYPEUSDT
+2026-03-19 20:33:59,200 - crypto_bot - INFO - 🔍 Scanning XAUT/USDT:USDT
+2026-03-19 20:33:59,471 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для XAUTUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:33:59,471 - crypto_bot - INFO - ❌ No signal: XAUTUSDT
+2026-03-19 20:33:59,471 - crypto_bot - INFO - 🔍 Scanning DOGE/USDT:USDT
+2026-03-19 20:33:59,707 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для DOGEUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:33:59,708 - crypto_bot - INFO - ❌ No signal: DOGEUSDT
+2026-03-19 20:33:59,708 - crypto_bot - INFO - 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-19 20:33:59,941 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для FARTCOINUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:33:59,941 - crypto_bot - INFO - ❌ No signal: FARTCOINUSDT
+2026-03-19 20:33:59,941 - crypto_bot - INFO - 🔍 Scanning LYN/USDT:USDT
+2026-03-19 20:34:00,171 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для LYNUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:34:00,181 - crypto_bot - INFO - ❌ No signal: LYNUSDT
+2026-03-19 20:34:00,181 - crypto_bot - INFO - 🔍 Scanning 1000PEPE/USDT:USDT
+2026-03-19 20:34:00,431 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для 1000PEPEUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:34:00,432 - crypto_bot - INFO - ❌ No signal: 1000PEPEUSDT
+2026-03-19 20:34:00,432 - crypto_bot - INFO - 🔍 Scanning BARD/USDT:USDT
+2026-03-19 20:34:00,670 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для BARDUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:34:00,671 - crypto_bot - INFO - ❌ No signal: BARDUSDT
+2026-03-19 20:34:00,671 - crypto_bot - INFO - 🔍 Scanning TAO/USDT:USDT
+2026-03-19 20:34:00,912 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для TAOUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:34:00,912 - crypto_bot - INFO - ❌ No signal: TAOUSDT
+2026-03-19 20:34:00,912 - crypto_bot - INFO - 🔍 Scanning PIPPIN/USDT:USDT
+2026-03-19 20:34:01,161 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для PIPPINUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:34:01,163 - crypto_bot - INFO - ❌ No signal: PIPPINUSDT
+2026-03-19 20:34:01,163 - crypto_bot - INFO - 🔍 Scanning ZEC/USDT:USDT
+2026-03-19 20:34:01,454 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для ZECUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:34:01,456 - crypto_bot - INFO - ❌ No signal: ZECUSDT
+2026-03-19 20:34:01,456 - crypto_bot - INFO - 🔍 Scanning XAG/USDT:USDT
+2026-03-19 20:34:01,725 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для XAGUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:34:01,726 - crypto_bot - INFO - ❌ No signal: XAGUSDT
+2026-03-19 20:34:01,726 - crypto_bot - INFO - 🔍 Scanning ADA/USDT:USDT
+2026-03-19 20:34:01,966 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для ADAUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:34:01,967 - crypto_bot - INFO - ❌ No signal: ADAUSDT
+2026-03-19 20:34:01,967 - crypto_bot - INFO - 🔍 Scanning SUI/USDT:USDT
+2026-03-19 20:34:02,210 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для SUIUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:34:02,210 - crypto_bot - INFO - ❌ No signal: SUIUSDT
+2026-03-19 20:34:02,210 - crypto_bot - INFO - 🔍 Scanning SAHARA/USDT:USDT
+2026-03-19 20:34:02,502 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для SAHARAUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:34:02,502 - crypto_bot - INFO - ❌ No signal: SAHARAUSDT
+2026-03-19 20:34:02,502 - crypto_bot - INFO - 🔍 Scanning PAXG/USDT:USDT
+2026-03-19 20:34:02,740 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для PAXGUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:34:02,741 - crypto_bot - INFO - ❌ No signal: PAXGUSDT
+2026-03-19 20:34:02,741 - crypto_bot - INFO - 🔍 Scanning XAU/USDT:USDT
+2026-03-19 20:34:02,997 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для XAUUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:34:03,012 - crypto_bot - INFO - ❌ No signal: XAUUSDT
+2026-03-19 20:34:03,012 - crypto_bot - INFO - 🔍 Scanning LINK/USDT:USDT
+2026-03-19 20:34:03,272 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для LINKUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:34:03,273 - crypto_bot - INFO - ❌ No signal: LINKUSDT
+2026-03-19 20:34:03,273 - crypto_bot - INFO - 🔍 Scanning SIREN/USDT:USDT
+2026-03-19 20:34:03,516 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для SIRENUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:34:03,517 - crypto_bot - INFO - ❌ No signal: SIRENUSDT
+2026-03-19 20:34:03,517 - crypto_bot - INFO - 🔍 Scanning TRUMP/USDT:USDT
+2026-03-19 20:34:03,756 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для TRUMPUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:34:03,756 - crypto_bot - INFO - ❌ No signal: TRUMPUSDT
+2026-03-19 20:34:03,756 - crypto_bot - INFO - 🔍 Scanning BNB/USDT:USDT
+2026-03-19 20:34:04,017 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для BNBUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:34:04,019 - crypto_bot - INFO - ❌ No signal: BNBUSDT
+2026-03-19 20:34:04,019 - crypto_bot - INFO - 🔍 Scanning NEAR/USDT:USDT
+2026-03-19 20:34:04,259 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для NEARUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:34:04,260 - crypto_bot - INFO - ❌ No signal: NEARUSDT
+2026-03-19 20:34:04,260 - crypto_bot - INFO - 🔍 Scanning WLD/USDT:USDT
+2026-03-19 20:34:04,498 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для WLDUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:34:04,501 - crypto_bot - INFO - ❌ No signal: WLDUSDT
+2026-03-19 20:34:04,501 - crypto_bot - INFO - 🔍 Scanning AAVE/USDT:USDT
+2026-03-19 20:34:04,741 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для AAVEUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:34:04,741 - crypto_bot - INFO - ❌ No signal: AAVEUSDT
+2026-03-19 20:34:04,741 - crypto_bot - INFO - 🔍 Scanning XAN/USDT:USDT
+2026-03-19 20:34:05,160 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для XANUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:34:05,160 - crypto_bot - INFO - ❌ No signal: XANUSDT
+2026-03-19 20:34:05,160 - crypto_bot - INFO - 🔍 Scanning PIXEL/USDT:USDT
+2026-03-19 20:34:05,397 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для PIXELUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:34:05,397 - crypto_bot - INFO - ❌ No signal: PIXELUSDT
+2026-03-19 20:34:05,397 - crypto_bot - INFO - 🔍 Scanning ETHFI/USDT:USDT
+2026-03-19 20:34:05,643 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для ETHFIUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:34:05,644 - crypto_bot - INFO - ❌ No signal: ETHFIUSDT
+2026-03-19 20:34:05,644 - crypto_bot - INFO - 🔍 Scanning ENA/USDT:USDT
+2026-03-19 20:34:06,050 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для ENAUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:34:06,064 - crypto_bot - INFO - ❌ No signal: ENAUSDT
+2026-03-19 20:34:06,064 - crypto_bot - INFO - 🔍 Scanning WIF/USDT:USDT
+2026-03-19 20:34:06,308 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для WIFUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:34:06,308 - crypto_bot - INFO - ❌ No signal: WIFUSDT
+2026-03-19 20:34:06,308 - crypto_bot - INFO - 🔍 Scanning BAN/USDT:USDT
+2026-03-19 20:34:06,556 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для BANUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:34:06,557 - crypto_bot - INFO - ❌ No signal: BANUSDT
+2026-03-19 20:34:06,557 - crypto_bot - INFO - 🔍 Scanning DOT/USDT:USDT
+2026-03-19 20:34:06,794 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для DOTUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:34:06,794 - crypto_bot - INFO - ❌ No signal: DOTUSDT
+2026-03-19 20:34:06,794 - crypto_bot - INFO - 🔍 Scanning AVAX/USDT:USDT
+2026-03-19 20:34:07,034 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для AVAXUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:34:07,040 - crypto_bot - INFO - ❌ No signal: AVAXUSDT
+2026-03-19 20:34:07,041 - crypto_bot - INFO - 🔍 Scanning VIRTUAL/USDT:USDT
+2026-03-19 20:34:07,261 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для VIRTUALUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:34:07,276 - crypto_bot - INFO - ❌ No signal: VIRTUALUSDT
+2026-03-19 20:34:07,277 - crypto_bot - INFO - 🔍 Scanning LTC/USDT:USDT
+2026-03-19 20:34:07,508 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для LTCUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:34:07,508 - crypto_bot - INFO - ❌ No signal: LTCUSDT
+2026-03-19 20:34:07,508 - crypto_bot - INFO - 🔍 Scanning PUMPFUN/USDT:USDT
+2026-03-19 20:34:07,755 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для PUMPFUNUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:34:07,755 - crypto_bot - INFO - ❌ No signal: PUMPFUNUSDT
+2026-03-19 20:34:07,755 - crypto_bot - INFO - 🔍 Scanning KITE/USDT:USDT
+2026-03-19 20:34:08,006 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для KITEUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:34:08,007 - crypto_bot - INFO - ❌ No signal: KITEUSDT
+2026-03-19 20:34:08,007 - crypto_bot - INFO - 🔍 Scanning GALA/USDT:USDT
+2026-03-19 20:34:08,249 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для GALAUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:34:08,249 - crypto_bot - INFO - ❌ No signal: GALAUSDT
+2026-03-19 20:34:08,249 - crypto_bot - INFO - 🔍 Scanning UAI/USDT:USDT
+2026-03-19 20:34:08,675 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для UAIUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:34:08,675 - crypto_bot - INFO - ❌ No signal: UAIUSDT
+2026-03-19 20:34:08,675 - crypto_bot - INFO - 🔍 Scanning XPL/USDT:USDT
+2026-03-19 20:34:08,915 - crypto_bot - ERROR - Ошибка адаптера backtest-стратегии для XPLUSDT: No module named 'core.trace'
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\services\strategy_adapter.py", line 86, in generate_signal
+    from core.trace import TraceContext  # убедись, что импорт есть
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'core.trace'
+2026-03-19 20:34:08,916 - crypto_bot - INFO - ❌ No signal: XPLUSDT
+2026-03-19 20:34:08,916 - crypto_bot - INFO - 📊 Total signals after scan: 0
+2026-03-19 20:34:08,917 - crypto_bot - INFO - 📊 Signals found: 0
+2026-03-19 20:34:08,917 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
+2026-03-19 20:34:11,858 - crypto_bot - INFO - 🛑 Остановка по KeyboardInterrupt
+2026-03-19 20:36:19,864 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-19 20:36:19,864 - crypto_bot - WARNING - TELEGRAM_TOKEN не задан — бот запустится в режиме scanner + GUI без Telegram polling
+2026-03-19 20:36:19,908 - crypto_bot - INFO - 🖥️ Signal GUI thread started
+2026-03-19 20:36:19,908 - crypto_bot - INFO - ✅ Telegram отключён: инициализированы scanner + GUI режим
+2026-03-19 20:36:19,908 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-19 20:36:19,908 - crypto_bot - INFO - 📡 Telegram polling disabled, running standalone scan loop
+2026-03-19 20:36:19,908 - crypto_bot - INFO - 🚀 SCAN LOOP STARTED
+2026-03-19 20:36:19,908 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-19 20:36:24,426 - crypto_bot - INFO - 📈 Top-50 symbols fetched: 50
+2026-03-19 20:36:31,063 - crypto_bot - INFO - 🔥 Active symbols after filter: 42 / 50
+2026-03-19 20:36:31,063 - crypto_bot - INFO - 🔍 Scanning BTC/USDT:USDT
+2026-03-19 20:36:31,324 - crypto_bot - INFO - ❌ No signal: BTCUSDT
+2026-03-19 20:36:31,324 - crypto_bot - INFO - 🔍 Scanning ETH/USDT:USDT
+2026-03-19 20:36:31,732 - crypto_bot - INFO - ❌ No signal: ETHUSDT
+2026-03-19 20:36:31,734 - crypto_bot - INFO - 🔍 Scanning SOL/USDT:USDT
+2026-03-19 20:36:31,989 - crypto_bot - INFO - ❌ No signal: SOLUSDT
+2026-03-19 20:36:31,989 - crypto_bot - INFO - 🔍 Scanning XRP/USDT:USDT
+2026-03-19 20:36:32,220 - crypto_bot - INFO - ❌ No signal: XRPUSDT
+2026-03-19 20:36:32,223 - crypto_bot - INFO - 🔍 Scanning HYPE/USDT:USDT
+2026-03-19 20:36:32,621 - crypto_bot - INFO - ❌ No signal: HYPEUSDT
+2026-03-19 20:36:32,622 - crypto_bot - INFO - 🔍 Scanning XAUT/USDT:USDT
+2026-03-19 20:36:32,856 - crypto_bot - INFO - ❌ No signal: XAUTUSDT
+2026-03-19 20:36:32,861 - crypto_bot - INFO - 🔍 Scanning DOGE/USDT:USDT
+2026-03-19 20:36:33,099 - crypto_bot - INFO - ❌ No signal: DOGEUSDT
+2026-03-19 20:36:33,099 - crypto_bot - INFO - 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-19 20:36:33,349 - crypto_bot - INFO - ❌ No signal: FARTCOINUSDT
+2026-03-19 20:36:33,349 - crypto_bot - INFO - 🔍 Scanning LYN/USDT:USDT
+2026-03-19 20:36:33,592 - crypto_bot - INFO - ❌ No signal: LYNUSDT
+2026-03-19 20:36:33,592 - crypto_bot - INFO - 🔍 Scanning 1000PEPE/USDT:USDT
+2026-03-19 20:36:33,831 - crypto_bot - INFO - ❌ No signal: 1000PEPEUSDT
+2026-03-19 20:36:33,831 - crypto_bot - INFO - 🔍 Scanning BARD/USDT:USDT
+2026-03-19 20:36:34,065 - crypto_bot - INFO - ❌ No signal: BARDUSDT
+2026-03-19 20:36:34,065 - crypto_bot - INFO - 🔍 Scanning TAO/USDT:USDT
+2026-03-19 20:36:34,315 - crypto_bot - INFO - ❌ No signal: TAOUSDT
+2026-03-19 20:36:34,316 - crypto_bot - INFO - 🔍 Scanning PIPPIN/USDT:USDT
+2026-03-19 20:36:34,551 - crypto_bot - INFO - ❌ No signal: PIPPINUSDT
+2026-03-19 20:36:34,551 - crypto_bot - INFO - 🔍 Scanning ZEC/USDT:USDT
+2026-03-19 20:36:34,791 - crypto_bot - INFO - ❌ No signal: ZECUSDT
+2026-03-19 20:36:34,791 - crypto_bot - INFO - 🔍 Scanning XAG/USDT:USDT
+2026-03-19 20:36:35,031 - crypto_bot - INFO - ❌ No signal: XAGUSDT
+2026-03-19 20:36:35,031 - crypto_bot - INFO - 🔍 Scanning ADA/USDT:USDT
+2026-03-19 20:36:35,268 - crypto_bot - INFO - ❌ No signal: ADAUSDT
+2026-03-19 20:36:35,269 - crypto_bot - INFO - 🔍 Scanning SUI/USDT:USDT
+2026-03-19 20:36:35,503 - crypto_bot - INFO - ❌ No signal: SUIUSDT
+2026-03-19 20:36:35,504 - crypto_bot - INFO - 🔍 Scanning SAHARA/USDT:USDT
+2026-03-19 20:36:35,746 - crypto_bot - INFO - ❌ No signal: SAHARAUSDT
+2026-03-19 20:36:35,746 - crypto_bot - INFO - 🔍 Scanning PAXG/USDT:USDT
+2026-03-19 20:36:36,324 - crypto_bot - INFO - ❌ No signal: PAXGUSDT
+2026-03-19 20:36:36,324 - crypto_bot - INFO - 🔍 Scanning XAU/USDT:USDT
+2026-03-19 20:36:36,565 - crypto_bot - INFO - ❌ No signal: XAUUSDT
+2026-03-19 20:36:36,565 - crypto_bot - INFO - 🔍 Scanning LINK/USDT:USDT
+2026-03-19 20:36:36,823 - crypto_bot - INFO - ❌ No signal: LINKUSDT
+2026-03-19 20:36:36,823 - crypto_bot - INFO - 🔍 Scanning SIREN/USDT:USDT
+2026-03-19 20:36:37,055 - crypto_bot - INFO - ❌ No signal: SIRENUSDT
+2026-03-19 20:36:37,055 - crypto_bot - INFO - 🔍 Scanning TRUMP/USDT:USDT
+2026-03-19 20:36:37,293 - crypto_bot - INFO - ❌ No signal: TRUMPUSDT
+2026-03-19 20:36:37,296 - crypto_bot - INFO - 🔍 Scanning BNB/USDT:USDT
+2026-03-19 20:36:37,539 - crypto_bot - INFO - ❌ No signal: BNBUSDT
+2026-03-19 20:36:37,539 - crypto_bot - INFO - 🔍 Scanning NEAR/USDT:USDT
+2026-03-19 20:36:37,779 - crypto_bot - INFO - ❌ No signal: NEARUSDT
+2026-03-19 20:36:37,779 - crypto_bot - INFO - 🔍 Scanning WLD/USDT:USDT
+2026-03-19 20:36:38,023 - crypto_bot - INFO - ❌ No signal: WLDUSDT
+2026-03-19 20:36:38,023 - crypto_bot - INFO - 🔍 Scanning AAVE/USDT:USDT
+2026-03-19 20:36:38,467 - crypto_bot - INFO - ❌ No signal: AAVEUSDT
+2026-03-19 20:36:38,467 - crypto_bot - INFO - 🔍 Scanning XAN/USDT:USDT
+2026-03-19 20:36:38,702 - crypto_bot - INFO - ❌ No signal: XANUSDT
+2026-03-19 20:36:38,703 - crypto_bot - INFO - 🔍 Scanning PIXEL/USDT:USDT
+2026-03-19 20:36:38,955 - crypto_bot - INFO - ❌ No signal: PIXELUSDT
+2026-03-19 20:36:38,955 - crypto_bot - INFO - 🔍 Scanning ETHFI/USDT:USDT
+2026-03-19 20:36:39,189 - crypto_bot - INFO - ❌ No signal: ETHFIUSDT
+2026-03-19 20:36:39,189 - crypto_bot - INFO - 🔍 Scanning ENA/USDT:USDT
+2026-03-19 20:36:39,915 - crypto_bot - INFO - ❌ No signal: ENAUSDT
+2026-03-19 20:36:39,916 - crypto_bot - INFO - 🔍 Scanning WIF/USDT:USDT
+2026-03-19 20:36:40,638 - crypto_bot - INFO - ❌ No signal: WIFUSDT
+2026-03-19 20:36:40,638 - crypto_bot - INFO - 🔍 Scanning BAN/USDT:USDT
+2026-03-19 20:36:41,371 - crypto_bot - INFO - ❌ No signal: BANUSDT
+2026-03-19 20:36:41,371 - crypto_bot - INFO - 🔍 Scanning DOT/USDT:USDT
+2026-03-19 20:36:41,766 - crypto_bot - INFO - ❌ No signal: DOTUSDT
+2026-03-19 20:36:41,769 - crypto_bot - INFO - 🔍 Scanning AVAX/USDT:USDT
+2026-03-19 20:36:42,003 - crypto_bot - INFO - ❌ No signal: AVAXUSDT
+2026-03-19 20:36:42,003 - crypto_bot - INFO - 🔍 Scanning VIRTUAL/USDT:USDT
+2026-03-19 20:36:42,232 - crypto_bot - INFO - ❌ No signal: VIRTUALUSDT
+2026-03-19 20:36:42,232 - crypto_bot - INFO - 🔍 Scanning LTC/USDT:USDT
+2026-03-19 20:36:42,660 - crypto_bot - INFO - ❌ No signal: LTCUSDT
+2026-03-19 20:36:42,660 - crypto_bot - INFO - 🔍 Scanning PUMPFUN/USDT:USDT
+2026-03-19 20:36:43,063 - crypto_bot - INFO - ❌ No signal: PUMPFUNUSDT
+2026-03-19 20:36:43,064 - crypto_bot - INFO - 🔍 Scanning KITE/USDT:USDT
+2026-03-19 20:36:43,302 - crypto_bot - INFO - ❌ No signal: KITEUSDT
+2026-03-19 20:36:43,302 - crypto_bot - INFO - 🔍 Scanning GALA/USDT:USDT
+2026-03-19 20:36:43,533 - crypto_bot - INFO - ❌ No signal: GALAUSDT
+2026-03-19 20:36:43,533 - crypto_bot - INFO - 🔍 Scanning UAI/USDT:USDT
+2026-03-19 20:36:43,766 - crypto_bot - INFO - ❌ No signal: UAIUSDT
+2026-03-19 20:36:43,766 - crypto_bot - INFO - 🔍 Scanning XPL/USDT:USDT
+2026-03-19 20:36:44,167 - crypto_bot - INFO - ❌ No signal: XPLUSDT
+2026-03-19 20:36:44,167 - crypto_bot - INFO - 📊 Total signals after scan: 0
+2026-03-19 20:36:44,167 - crypto_bot - INFO - 📊 Signals found: 0
+2026-03-19 20:36:44,168 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
+2026-03-19 20:38:31,136 - crypto_bot - INFO - 🛑 Остановка по KeyboardInterrupt
+2026-03-19 21:07:07,167 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-19 21:07:07,167 - crypto_bot - WARNING - TELEGRAM_TOKEN не задан — бот запустится в режиме scanner + GUI без Telegram polling
+2026-03-19 21:07:07,167 - crypto_bot - INFO - [MAIN] scanner initialized | mode=MAIN | timeframe=1h | candle_limit=300 | execution_tfs=4h, 1h, 30m, 15m
+2026-03-19 21:07:07,200 - crypto_bot - INFO - 🖥️ Signal GUI thread started
+2026-03-19 21:07:07,200 - crypto_bot - INFO - ✅ Telegram отключён: инициализированы scanner + GUI режим
+2026-03-19 21:07:07,200 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-19 21:07:07,200 - crypto_bot - INFO - 📡 Telegram polling disabled, running standalone scan loop
+2026-03-19 21:07:07,200 - crypto_bot - INFO - 🚀 SCAN LOOP STARTED
+2026-03-19 21:07:07,200 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-19 21:07:12,077 - crypto_bot - INFO - 📈 Top-50 symbols fetched: 50
+2026-03-19 21:07:19,049 - crypto_bot - INFO - 🔥 Active symbols after filter: 42 / 50
+2026-03-19 21:07:19,049 - crypto_bot - INFO - 🔍 Scanning BTC/USDT:USDT
+2026-03-19 21:07:19,272 - crypto_bot - INFO - ❌ No signal: BTCUSDT
+2026-03-19 21:07:19,272 - crypto_bot - INFO - 🔍 Scanning ETH/USDT:USDT
+2026-03-19 21:07:19,472 - crypto_bot - INFO - ❌ No signal: ETHUSDT
+2026-03-19 21:07:19,472 - crypto_bot - INFO - 🔍 Scanning SOL/USDT:USDT
+2026-03-19 21:07:19,856 - crypto_bot - INFO - ❌ No signal: SOLUSDT
+2026-03-19 21:07:19,856 - crypto_bot - INFO - 🔍 Scanning XRP/USDT:USDT
+2026-03-19 21:07:20,062 - crypto_bot - INFO - ❌ No signal: XRPUSDT
+2026-03-19 21:07:20,062 - crypto_bot - INFO - 🔍 Scanning HYPE/USDT:USDT
+2026-03-19 21:07:20,269 - crypto_bot - INFO - ❌ No signal: HYPEUSDT
+2026-03-19 21:07:20,269 - crypto_bot - INFO - 🔍 Scanning XAUT/USDT:USDT
+2026-03-19 21:07:20,978 - crypto_bot - INFO - ❌ No signal: XAUTUSDT
+2026-03-19 21:07:20,978 - crypto_bot - INFO - 🔍 Scanning DOGE/USDT:USDT
+2026-03-19 21:07:21,353 - crypto_bot - INFO - ❌ No signal: DOGEUSDT
+2026-03-19 21:07:21,353 - crypto_bot - INFO - 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-19 21:07:21,728 - crypto_bot - INFO - ❌ No signal: FARTCOINUSDT
+2026-03-19 21:07:21,728 - crypto_bot - INFO - 🔍 Scanning LYN/USDT:USDT
+2026-03-19 21:07:21,942 - crypto_bot - INFO - ❌ No signal: LYNUSDT
+2026-03-19 21:07:21,942 - crypto_bot - INFO - 🔍 Scanning RIVER/USDT:USDT
+2026-03-19 21:07:22,505 - crypto_bot - INFO - ❌ No signal: RIVERUSDT
+2026-03-19 21:07:22,505 - crypto_bot - INFO - 🔍 Scanning 1000PEPE/USDT:USDT
+2026-03-19 21:07:22,867 - crypto_bot - INFO - ❌ No signal: 1000PEPEUSDT
+2026-03-19 21:07:22,867 - crypto_bot - INFO - 🔍 Scanning TAO/USDT:USDT
+2026-03-19 21:07:23,079 - crypto_bot - INFO - ❌ No signal: TAOUSDT
+2026-03-19 21:07:23,079 - crypto_bot - INFO - 🔍 Scanning PIPPIN/USDT:USDT
+2026-03-19 21:07:23,298 - crypto_bot - INFO - ❌ No signal: PIPPINUSDT
+2026-03-19 21:07:23,298 - crypto_bot - INFO - 🔍 Scanning ZEC/USDT:USDT
+2026-03-19 21:07:23,685 - crypto_bot - INFO - ❌ No signal: ZECUSDT
+2026-03-19 21:07:23,685 - crypto_bot - INFO - 🔍 Scanning XAG/USDT:USDT
+2026-03-19 21:07:23,899 - crypto_bot - INFO - ❌ No signal: XAGUSDT
+2026-03-19 21:07:23,899 - crypto_bot - INFO - 🔍 Scanning ADA/USDT:USDT
+2026-03-19 21:07:24,601 - crypto_bot - INFO - ❌ No signal: ADAUSDT
+2026-03-19 21:07:24,601 - crypto_bot - INFO - 🔍 Scanning SAHARA/USDT:USDT
+2026-03-19 21:07:24,827 - crypto_bot - INFO - ❌ No signal: SAHARAUSDT
+2026-03-19 21:07:24,827 - crypto_bot - INFO - 🔍 Scanning SUI/USDT:USDT
+2026-03-19 21:07:25,203 - crypto_bot - INFO - ❌ No signal: SUIUSDT
+2026-03-19 21:07:25,203 - crypto_bot - INFO - 🔍 Scanning PAXG/USDT:USDT
+2026-03-19 21:07:25,432 - crypto_bot - INFO - ❌ No signal: PAXGUSDT
+2026-03-19 21:07:25,432 - crypto_bot - INFO - 🔍 Scanning XAU/USDT:USDT
+2026-03-19 21:07:25,652 - crypto_bot - INFO - ❌ No signal: XAUUSDT
+2026-03-19 21:07:25,652 - crypto_bot - INFO - 🔍 Scanning LINK/USDT:USDT
+2026-03-19 21:07:26,041 - crypto_bot - INFO - ❌ No signal: LINKUSDT
+2026-03-19 21:07:26,041 - crypto_bot - INFO - 🔍 Scanning SIREN/USDT:USDT
+2026-03-19 21:07:26,735 - crypto_bot - INFO - ❌ No signal: SIRENUSDT
+2026-03-19 21:07:26,735 - crypto_bot - INFO - 🔍 Scanning TRUMP/USDT:USDT
+2026-03-19 21:07:26,950 - crypto_bot - INFO - ❌ No signal: TRUMPUSDT
+2026-03-19 21:07:26,950 - crypto_bot - INFO - 🔍 Scanning NEAR/USDT:USDT
+2026-03-19 21:07:27,165 - crypto_bot - INFO - ❌ No signal: NEARUSDT
+2026-03-19 21:07:27,167 - crypto_bot - INFO - 🔍 Scanning WLD/USDT:USDT
+2026-03-19 21:07:27,382 - crypto_bot - INFO - ❌ No signal: WLDUSDT
+2026-03-19 21:07:27,383 - crypto_bot - INFO - 🔍 Scanning BNB/USDT:USDT
+2026-03-19 21:07:27,580 - crypto_bot - INFO - ❌ No signal: BNBUSDT
+2026-03-19 21:07:27,580 - crypto_bot - INFO - 🔍 Scanning AAVE/USDT:USDT
+2026-03-19 21:07:27,962 - crypto_bot - INFO - ❌ No signal: AAVEUSDT
+2026-03-19 21:07:27,962 - crypto_bot - INFO - 🔍 Scanning XAN/USDT:USDT
+2026-03-19 21:07:28,181 - crypto_bot - INFO - ❌ No signal: XANUSDT
+2026-03-19 21:07:28,181 - crypto_bot - INFO - 🔍 Scanning ETHFI/USDT:USDT
+2026-03-19 21:07:28,394 - crypto_bot - INFO - ❌ No signal: ETHFIUSDT
+2026-03-19 21:07:28,395 - crypto_bot - INFO - 🔍 Scanning PIXEL/USDT:USDT
+2026-03-19 21:07:28,775 - crypto_bot - INFO - ❌ No signal: PIXELUSDT
+2026-03-19 21:07:28,775 - crypto_bot - INFO - 🔍 Scanning ENA/USDT:USDT
+2026-03-19 21:07:28,989 - crypto_bot - INFO - ❌ No signal: ENAUSDT
+2026-03-19 21:07:28,989 - crypto_bot - INFO - 🔍 Scanning BAN/USDT:USDT
+2026-03-19 21:07:29,197 - crypto_bot - INFO - ❌ No signal: BANUSDT
+2026-03-19 21:07:29,197 - crypto_bot - INFO - 🔍 Scanning ASTER/USDT:USDT
+2026-03-19 21:07:29,406 - crypto_bot - INFO - ❌ No signal: ASTERUSDT
+2026-03-19 21:07:29,406 - crypto_bot - INFO - 🔍 Scanning WIF/USDT:USDT
+2026-03-19 21:07:29,795 - crypto_bot - INFO - ❌ No signal: WIFUSDT
+2026-03-19 21:07:29,795 - crypto_bot - INFO - 🔍 Scanning DOT/USDT:USDT
+2026-03-19 21:07:30,002 - crypto_bot - INFO - ❌ No signal: DOTUSDT
+2026-03-19 21:07:30,002 - crypto_bot - INFO - 🔍 Scanning AVAX/USDT:USDT
+2026-03-19 21:07:30,390 - crypto_bot - INFO - ❌ No signal: AVAXUSDT
+2026-03-19 21:07:30,390 - crypto_bot - INFO - 🔍 Scanning VIRTUAL/USDT:USDT
+2026-03-19 21:07:30,618 - crypto_bot - INFO - ❌ No signal: VIRTUALUSDT
+2026-03-19 21:07:30,618 - crypto_bot - INFO - 🔍 Scanning UAI/USDT:USDT
+2026-03-19 21:07:31,326 - crypto_bot - INFO - ❌ No signal: UAIUSDT
+2026-03-19 21:07:31,326 - crypto_bot - INFO - 🔍 Scanning PUMPFUN/USDT:USDT
+2026-03-19 21:07:31,588 - crypto_bot - INFO - ❌ No signal: PUMPFUNUSDT
+2026-03-19 21:07:31,589 - crypto_bot - INFO - 🔍 Scanning LTC/USDT:USDT
+2026-03-19 21:07:31,798 - crypto_bot - INFO - ❌ No signal: LTCUSDT
+2026-03-19 21:07:31,798 - crypto_bot - INFO - 🔍 Scanning GALA/USDT:USDT
+2026-03-19 21:07:32,004 - crypto_bot - INFO - ❌ No signal: GALAUSDT
+2026-03-19 21:07:32,004 - crypto_bot - INFO - 🔍 Scanning XPL/USDT:USDT
+2026-03-19 21:07:32,228 - crypto_bot - INFO - ❌ No signal: XPLUSDT
+2026-03-19 21:07:32,228 - crypto_bot - INFO - 📊 Total signals after scan: 0
+2026-03-19 21:07:32,228 - crypto_bot - INFO - 📊 Signals found: 0
+2026-03-19 21:07:32,228 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
+2026-03-19 21:07:35,065 - crypto_bot - INFO - 🛑 Остановка по KeyboardInterrupt
+2026-03-19 21:07:42,089 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-19 21:07:42,089 - crypto_bot - WARNING - TELEGRAM_TOKEN не задан — бот запустится в режиме scanner + GUI без Telegram polling
+2026-03-19 21:07:42,093 - crypto_bot - INFO - [SCALP] scanner initialized | mode=SCALPING | timeframe=30m | candle_limit=120 | execution_tfs=30m, 15m
+2026-03-19 21:07:42,126 - crypto_bot - INFO - 🖥️ Signal GUI thread started
+2026-03-19 21:07:42,127 - crypto_bot - INFO - ✅ Telegram отключён: инициализированы scanner + GUI режим
+2026-03-19 21:07:42,128 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-19 21:07:42,128 - crypto_bot - INFO - 📡 Telegram polling disabled, running standalone scan loop
+2026-03-19 21:07:42,129 - crypto_bot - INFO - 🚀 SCAN LOOP STARTED
+2026-03-19 21:07:42,129 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-19 21:07:46,100 - crypto_bot - INFO - [SCALP] 📈 Top-50 symbols fetched: 50
+2026-03-19 21:07:50,535 - crypto_bot - INFO - [SCALP] 🔥 Active symbols after filter: 43 / 50
+2026-03-19 21:07:50,535 - crypto_bot - INFO - [SCALP] 🔍 Scanning BTC/USDT:USDT
+2026-03-19 21:07:50,749 - crypto_bot - INFO - [SCALP] ❌ No signal: BTCUSDT
+2026-03-19 21:07:50,749 - crypto_bot - INFO - [SCALP] 🔍 Scanning ETH/USDT:USDT
+2026-03-19 21:07:50,956 - crypto_bot - INFO - [SCALP] ❌ No signal: ETHUSDT
+2026-03-19 21:07:50,956 - crypto_bot - INFO - [SCALP] 🔍 Scanning SOL/USDT:USDT
+2026-03-19 21:07:51,173 - crypto_bot - INFO - [SCALP] ❌ No signal: SOLUSDT
+2026-03-19 21:07:51,173 - crypto_bot - INFO - [SCALP] 🔍 Scanning XRP/USDT:USDT
+2026-03-19 21:07:51,378 - crypto_bot - INFO - [SCALP] ❌ No signal: XRPUSDT
+2026-03-19 21:07:51,378 - crypto_bot - INFO - [SCALP] 🔍 Scanning HYPE/USDT:USDT
+2026-03-19 21:07:51,596 - crypto_bot - INFO - [SCALP] ❌ No signal: HYPEUSDT
+2026-03-19 21:07:51,596 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAUT/USDT:USDT
+2026-03-19 21:07:51,809 - crypto_bot - INFO - [SCALP] ❌ No signal: XAUTUSDT
+2026-03-19 21:07:51,809 - crypto_bot - INFO - [SCALP] 🔍 Scanning DOGE/USDT:USDT
+2026-03-19 21:07:52,021 - crypto_bot - INFO - [SCALP] ❌ No signal: DOGEUSDT
+2026-03-19 21:07:52,022 - crypto_bot - INFO - [SCALP] 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-19 21:07:52,224 - crypto_bot - INFO - [SCALP] ❌ No signal: FARTCOINUSDT
+2026-03-19 21:07:52,224 - crypto_bot - INFO - [SCALP] 🔍 Scanning LYN/USDT:USDT
+2026-03-19 21:07:52,443 - crypto_bot - INFO - [SCALP] ❌ No signal: LYNUSDT
+2026-03-19 21:07:52,443 - crypto_bot - INFO - [SCALP] 🔍 Scanning RIVER/USDT:USDT
+2026-03-19 21:07:52,646 - crypto_bot - INFO - [SCALP] ❌ No signal: RIVERUSDT
+2026-03-19 21:07:52,646 - crypto_bot - INFO - [SCALP] 🔍 Scanning 1000PEPE/USDT:USDT
+2026-03-19 21:07:52,864 - crypto_bot - INFO - [SCALP] ❌ No signal: 1000PEPEUSDT
+2026-03-19 21:07:52,864 - crypto_bot - INFO - [SCALP] 🔍 Scanning TAO/USDT:USDT
+2026-03-19 21:07:53,077 - crypto_bot - INFO - [SCALP] ❌ No signal: TAOUSDT
+2026-03-19 21:07:53,077 - crypto_bot - INFO - [SCALP] 🔍 Scanning PIPPIN/USDT:USDT
+2026-03-19 21:07:53,289 - crypto_bot - INFO - [SCALP] ❌ No signal: PIPPINUSDT
+2026-03-19 21:07:53,290 - crypto_bot - INFO - [SCALP] 🔍 Scanning ZEC/USDT:USDT
+2026-03-19 21:07:53,489 - crypto_bot - INFO - [SCALP] ❌ No signal: ZECUSDT
+2026-03-19 21:07:53,489 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAG/USDT:USDT
+2026-03-19 21:07:53,718 - crypto_bot - INFO - [SCALP] ❌ No signal: XAGUSDT
+2026-03-19 21:07:53,718 - crypto_bot - INFO - [SCALP] 🔍 Scanning ADA/USDT:USDT
+2026-03-19 21:07:53,932 - crypto_bot - INFO - [SCALP] ❌ No signal: ADAUSDT
+2026-03-19 21:07:53,932 - crypto_bot - INFO - [SCALP] 🔍 Scanning SAHARA/USDT:USDT
+2026-03-19 21:07:54,153 - crypto_bot - INFO - [SCALP] ❌ No signal: SAHARAUSDT
+2026-03-19 21:07:54,153 - crypto_bot - INFO - [SCALP] 🔍 Scanning SUI/USDT:USDT
+2026-03-19 21:07:54,365 - crypto_bot - INFO - [SCALP] ❌ No signal: SUIUSDT
+2026-03-19 21:07:54,365 - crypto_bot - INFO - [SCALP] 🔍 Scanning PAXG/USDT:USDT
+2026-03-19 21:07:54,573 - crypto_bot - INFO - [SCALP] ❌ No signal: PAXGUSDT
+2026-03-19 21:07:54,573 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAU/USDT:USDT
+2026-03-19 21:07:54,787 - crypto_bot - INFO - [SCALP] ❌ No signal: XAUUSDT
+2026-03-19 21:07:54,787 - crypto_bot - INFO - [SCALP] 🔍 Scanning LINK/USDT:USDT
+2026-03-19 21:07:54,997 - crypto_bot - INFO - [SCALP] ❌ No signal: LINKUSDT
+2026-03-19 21:07:54,997 - crypto_bot - INFO - [SCALP] 🔍 Scanning SIREN/USDT:USDT
+2026-03-19 21:07:55,198 - crypto_bot - INFO - [SCALP] ❌ No signal: SIRENUSDT
+2026-03-19 21:07:55,198 - crypto_bot - INFO - [SCALP] 🔍 Scanning TRUMP/USDT:USDT
+2026-03-19 21:07:55,417 - crypto_bot - INFO - [SCALP] ❌ No signal: TRUMPUSDT
+2026-03-19 21:07:55,417 - crypto_bot - INFO - [SCALP] 🔍 Scanning NEAR/USDT:USDT
+2026-03-19 21:07:55,638 - crypto_bot - INFO - [SCALP] ❌ No signal: NEARUSDT
+2026-03-19 21:07:55,638 - crypto_bot - INFO - [SCALP] 🔍 Scanning WLD/USDT:USDT
+2026-03-19 21:07:55,847 - crypto_bot - INFO - [SCALP] ❌ No signal: WLDUSDT
+2026-03-19 21:07:55,847 - crypto_bot - INFO - [SCALP] 🔍 Scanning BNB/USDT:USDT
+2026-03-19 21:07:56,060 - crypto_bot - INFO - [SCALP] ❌ No signal: BNBUSDT
+2026-03-19 21:07:56,061 - crypto_bot - INFO - [SCALP] 🔍 Scanning AAVE/USDT:USDT
+2026-03-19 21:07:56,274 - crypto_bot - INFO - [SCALP] ❌ No signal: AAVEUSDT
+2026-03-19 21:07:56,274 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAN/USDT:USDT
+2026-03-19 21:07:56,500 - crypto_bot - INFO - [SCALP] ❌ No signal: XANUSDT
+2026-03-19 21:07:56,500 - crypto_bot - INFO - [SCALP] 🔍 Scanning ETHFI/USDT:USDT
+2026-03-19 21:07:56,713 - crypto_bot - INFO - [SCALP] ❌ No signal: ETHFIUSDT
+2026-03-19 21:07:56,713 - crypto_bot - INFO - [SCALP] 🔍 Scanning PIXEL/USDT:USDT
+2026-03-19 21:07:56,924 - crypto_bot - INFO - [SCALP] ❌ No signal: PIXELUSDT
+2026-03-19 21:07:56,924 - crypto_bot - INFO - [SCALP] 🔍 Scanning ENA/USDT:USDT
+2026-03-19 21:07:57,137 - crypto_bot - INFO - [SCALP] ❌ No signal: ENAUSDT
+2026-03-19 21:07:57,138 - crypto_bot - INFO - [SCALP] 🔍 Scanning BAN/USDT:USDT
+2026-03-19 21:07:57,351 - crypto_bot - INFO - [SCALP] ❌ No signal: BANUSDT
+2026-03-19 21:07:57,351 - crypto_bot - INFO - [SCALP] 🔍 Scanning ASTER/USDT:USDT
+2026-03-19 21:07:57,552 - crypto_bot - INFO - [SCALP] ❌ No signal: ASTERUSDT
+2026-03-19 21:07:57,552 - crypto_bot - INFO - [SCALP] 🔍 Scanning WIF/USDT:USDT
+2026-03-19 21:07:58,092 - crypto_bot - INFO - [SCALP] ❌ No signal: WIFUSDT
+2026-03-19 21:07:58,092 - crypto_bot - INFO - [SCALP] 🔍 Scanning DOT/USDT:USDT
+2026-03-19 21:07:58,298 - crypto_bot - INFO - [SCALP] ❌ No signal: DOTUSDT
+2026-03-19 21:07:58,298 - crypto_bot - INFO - [SCALP] 🔍 Scanning AVAX/USDT:USDT
+2026-03-19 21:07:58,837 - crypto_bot - INFO - [SCALP] ❌ No signal: AVAXUSDT
+2026-03-19 21:07:58,837 - crypto_bot - INFO - [SCALP] 🔍 Scanning VIRTUAL/USDT:USDT
+2026-03-19 21:07:59,052 - crypto_bot - INFO - [SCALP] ❌ No signal: VIRTUALUSDT
+2026-03-19 21:07:59,052 - crypto_bot - INFO - [SCALP] 🔍 Scanning UAI/USDT:USDT
+2026-03-19 21:07:59,262 - crypto_bot - INFO - [SCALP] ❌ No signal: UAIUSDT
+2026-03-19 21:07:59,262 - crypto_bot - INFO - [SCALP] 🔍 Scanning PUMPFUN/USDT:USDT
+2026-03-19 21:07:59,466 - crypto_bot - INFO - [SCALP] ❌ No signal: PUMPFUNUSDT
+2026-03-19 21:07:59,466 - crypto_bot - INFO - [SCALP] 🔍 Scanning LTC/USDT:USDT
+2026-03-19 21:07:59,686 - crypto_bot - INFO - [SCALP] ❌ No signal: LTCUSDT
+2026-03-19 21:07:59,686 - crypto_bot - INFO - [SCALP] 🔍 Scanning KITE/USDT:USDT
+2026-03-19 21:07:59,899 - crypto_bot - INFO - [SCALP] ❌ No signal: KITEUSDT
+2026-03-19 21:07:59,899 - crypto_bot - INFO - [SCALP] 🔍 Scanning GALA/USDT:USDT
+2026-03-19 21:08:00,111 - crypto_bot - INFO - [SCALP] ❌ No signal: GALAUSDT
+2026-03-19 21:08:00,111 - crypto_bot - INFO - [SCALP] 🔍 Scanning XPL/USDT:USDT
+2026-03-19 21:08:00,310 - crypto_bot - INFO - [SCALP] ❌ No signal: XPLUSDT
+2026-03-19 21:08:00,310 - crypto_bot - INFO - [SCALP] 📊 Total signals after scan: 0
+2026-03-19 21:08:00,310 - crypto_bot - INFO - 📊 Signals found: 0
+2026-03-19 21:08:00,310 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
+2026-03-19 21:12:19,893 - crypto_bot - INFO - 🛑 Остановка по KeyboardInterrupt
+2026-03-19 21:12:22,584 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-19 21:12:22,584 - crypto_bot - WARNING - TELEGRAM_TOKEN не задан — бот запустится в режиме scanner + GUI без Telegram polling
+2026-03-19 21:12:22,600 - crypto_bot - INFO - [SCALP] scanner initialized | mode=SCALPING | timeframe=30m | candle_limit=120 | execution_tfs=30m, 15m
+2026-03-19 21:12:22,629 - crypto_bot - INFO - 🖥️ Signal GUI thread started
+2026-03-19 21:12:22,630 - crypto_bot - INFO - ✅ Telegram отключён: инициализированы scanner + GUI режим
+2026-03-19 21:12:22,630 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-19 21:12:22,630 - crypto_bot - INFO - 📡 Telegram polling disabled, running standalone scan loop
+2026-03-19 21:12:22,631 - crypto_bot - INFO - 🚀 SCAN LOOP STARTED
+2026-03-19 21:12:22,631 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-19 21:12:27,193 - crypto_bot - INFO - [SCALP] 📈 Top-50 symbols fetched: 50
+2026-03-19 21:12:31,651 - crypto_bot - INFO - [SCALP] 🔥 Active symbols after filter: 44 / 50
+2026-03-19 21:12:31,651 - crypto_bot - INFO - [SCALP] 🔍 Scanning BTC/USDT:USDT
+2026-03-19 21:12:31,887 - crypto_bot - INFO - [SCALP] ❌ No signal: BTCUSDT
+2026-03-19 21:12:31,887 - crypto_bot - INFO - [SCALP] 🔍 Scanning ETH/USDT:USDT
+2026-03-19 21:12:32,125 - crypto_bot - INFO - [SCALP] ❌ No signal: ETHUSDT
+2026-03-19 21:12:32,125 - crypto_bot - INFO - [SCALP] 🔍 Scanning SOL/USDT:USDT
+2026-03-19 21:12:32,347 - crypto_bot - INFO - [SCALP] ❌ No signal: SOLUSDT
+2026-03-19 21:12:32,347 - crypto_bot - INFO - [SCALP] 🔍 Scanning XRP/USDT:USDT
+2026-03-19 21:12:32,904 - crypto_bot - INFO - [SCALP] ❌ No signal: XRPUSDT
+2026-03-19 21:12:32,904 - crypto_bot - INFO - [SCALP] 🔍 Scanning HYPE/USDT:USDT
+2026-03-19 21:12:33,321 - crypto_bot - INFO - [SCALP] ❌ No signal: HYPEUSDT
+2026-03-19 21:12:33,321 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAUT/USDT:USDT
+2026-03-19 21:12:33,523 - crypto_bot - INFO - [SCALP] ❌ No signal: XAUTUSDT
+2026-03-19 21:12:33,523 - crypto_bot - INFO - [SCALP] 🔍 Scanning DOGE/USDT:USDT
+2026-03-19 21:12:33,805 - crypto_bot - INFO - [SCALP] ❌ No signal: DOGEUSDT
+2026-03-19 21:12:33,805 - crypto_bot - INFO - [SCALP] 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-19 21:12:34,030 - crypto_bot - INFO - [SCALP] ❌ No signal: FARTCOINUSDT
+2026-03-19 21:12:34,030 - crypto_bot - INFO - [SCALP] 🔍 Scanning LYN/USDT:USDT
+2026-03-19 21:12:34,558 - crypto_bot - INFO - [SCALP] ❌ No signal: LYNUSDT
+2026-03-19 21:12:34,558 - crypto_bot - INFO - [SCALP] 🔍 Scanning RIVER/USDT:USDT
+2026-03-19 21:12:34,893 - crypto_bot - INFO - [SCALP] ❌ No signal: RIVERUSDT
+2026-03-19 21:12:34,893 - crypto_bot - INFO - [SCALP] 🔍 Scanning 1000PEPE/USDT:USDT
+2026-03-19 21:12:35,103 - crypto_bot - INFO - [SCALP] ❌ No signal: 1000PEPEUSDT
+2026-03-19 21:12:35,103 - crypto_bot - INFO - [SCALP] 🔍 Scanning TAO/USDT:USDT
+2026-03-19 21:12:35,323 - crypto_bot - INFO - [SCALP] ❌ No signal: TAOUSDT
+2026-03-19 21:12:35,323 - crypto_bot - INFO - [SCALP] 🔍 Scanning PIPPIN/USDT:USDT
+2026-03-19 21:12:35,552 - crypto_bot - INFO - [SCALP] ❌ No signal: PIPPINUSDT
+2026-03-19 21:12:35,553 - crypto_bot - INFO - [SCALP] 🔍 Scanning ZEC/USDT:USDT
+2026-03-19 21:12:35,776 - crypto_bot - INFO - [SCALP] ❌ No signal: ZECUSDT
+2026-03-19 21:12:35,776 - crypto_bot - INFO - [SCALP] 🔍 Scanning BARD/USDT:USDT
+2026-03-19 21:12:35,991 - crypto_bot - INFO - [SCALP] ❌ No signal: BARDUSDT
+2026-03-19 21:12:35,991 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAG/USDT:USDT
+2026-03-19 21:12:36,224 - crypto_bot - INFO - [SCALP] ❌ No signal: XAGUSDT
+2026-03-19 21:12:36,224 - crypto_bot - INFO - [SCALP] 🔍 Scanning ADA/USDT:USDT
+2026-03-19 21:12:36,783 - crypto_bot - INFO - [SCALP] ❌ No signal: ADAUSDT
+2026-03-19 21:12:36,783 - crypto_bot - INFO - [SCALP] 🔍 Scanning SAHARA/USDT:USDT
+2026-03-19 21:12:37,499 - crypto_bot - INFO - [SCALP] ❌ No signal: SAHARAUSDT
+2026-03-19 21:12:37,499 - crypto_bot - INFO - [SCALP] 🔍 Scanning SUI/USDT:USDT
+2026-03-19 21:12:37,742 - crypto_bot - INFO - [SCALP] ❌ No signal: SUIUSDT
+2026-03-19 21:12:37,742 - crypto_bot - INFO - [SCALP] 🔍 Scanning PAXG/USDT:USDT
+2026-03-19 21:12:37,969 - crypto_bot - INFO - [SCALP] ❌ No signal: PAXGUSDT
+2026-03-19 21:12:37,969 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAU/USDT:USDT
+2026-03-19 21:12:38,212 - crypto_bot - INFO - [SCALP] ❌ No signal: XAUUSDT
+2026-03-19 21:12:38,212 - crypto_bot - INFO - [SCALP] 🔍 Scanning LINK/USDT:USDT
+2026-03-19 21:12:38,428 - crypto_bot - INFO - [SCALP] ❌ No signal: LINKUSDT
+2026-03-19 21:12:38,444 - crypto_bot - INFO - [SCALP] 🔍 Scanning SIREN/USDT:USDT
+2026-03-19 21:12:38,668 - crypto_bot - INFO - [SCALP] ❌ No signal: SIRENUSDT
+2026-03-19 21:12:38,669 - crypto_bot - INFO - [SCALP] 🔍 Scanning TRUMP/USDT:USDT
+2026-03-19 21:12:38,888 - crypto_bot - INFO - [SCALP] ❌ No signal: TRUMPUSDT
+2026-03-19 21:12:38,888 - crypto_bot - INFO - [SCALP] 🔍 Scanning NEAR/USDT:USDT
+2026-03-19 21:12:39,111 - crypto_bot - INFO - [SCALP] ❌ No signal: NEARUSDT
+2026-03-19 21:12:39,112 - crypto_bot - INFO - [SCALP] 🔍 Scanning WLD/USDT:USDT
+2026-03-19 21:12:39,798 - crypto_bot - INFO - [SCALP] ❌ No signal: WLDUSDT
+2026-03-19 21:12:39,798 - crypto_bot - INFO - [SCALP] 🔍 Scanning BNB/USDT:USDT
+2026-03-19 21:12:40,025 - crypto_bot - INFO - [SCALP] ❌ No signal: BNBUSDT
+2026-03-19 21:12:40,025 - crypto_bot - INFO - [SCALP] 🔍 Scanning AAVE/USDT:USDT
+2026-03-19 21:12:40,253 - crypto_bot - INFO - [SCALP] ❌ No signal: AAVEUSDT
+2026-03-19 21:12:40,253 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAN/USDT:USDT
+2026-03-19 21:12:40,484 - crypto_bot - INFO - [SCALP] ❌ No signal: XANUSDT
+2026-03-19 21:12:40,484 - crypto_bot - INFO - [SCALP] 🔍 Scanning ETHFI/USDT:USDT
+2026-03-19 21:12:40,704 - crypto_bot - INFO - [SCALP] ❌ No signal: ETHFIUSDT
+2026-03-19 21:12:40,704 - crypto_bot - INFO - [SCALP] 🔍 Scanning PIXEL/USDT:USDT
+2026-03-19 21:12:40,932 - crypto_bot - INFO - [SCALP] ❌ No signal: PIXELUSDT
+2026-03-19 21:12:40,932 - crypto_bot - INFO - [SCALP] 🔍 Scanning ENA/USDT:USDT
+2026-03-19 21:12:41,144 - crypto_bot - INFO - [SCALP] ❌ No signal: ENAUSDT
+2026-03-19 21:12:41,144 - crypto_bot - INFO - [SCALP] 🔍 Scanning BAN/USDT:USDT
+2026-03-19 21:12:41,374 - crypto_bot - INFO - [SCALP] ❌ No signal: BANUSDT
+2026-03-19 21:12:41,374 - crypto_bot - INFO - [SCALP] 🔍 Scanning ASTER/USDT:USDT
+2026-03-19 21:12:41,585 - crypto_bot - INFO - [SCALP] ❌ No signal: ASTERUSDT
+2026-03-19 21:12:41,585 - crypto_bot - INFO - [SCALP] 🔍 Scanning WIF/USDT:USDT
+2026-03-19 21:12:41,812 - crypto_bot - INFO - [SCALP] ❌ No signal: WIFUSDT
+2026-03-19 21:12:41,812 - crypto_bot - INFO - [SCALP] 🔍 Scanning DOT/USDT:USDT
+2026-03-19 21:12:42,371 - crypto_bot - INFO - [SCALP] ❌ No signal: DOTUSDT
+2026-03-19 21:12:42,372 - crypto_bot - INFO - [SCALP] 🔍 Scanning AVAX/USDT:USDT
+2026-03-19 21:12:42,907 - crypto_bot - INFO - [SCALP] ❌ No signal: AVAXUSDT
+2026-03-19 21:12:42,907 - crypto_bot - INFO - [SCALP] 🔍 Scanning VIRTUAL/USDT:USDT
+2026-03-19 21:12:43,132 - crypto_bot - INFO - [SCALP] ❌ No signal: VIRTUALUSDT
+2026-03-19 21:12:43,132 - crypto_bot - INFO - [SCALP] 🔍 Scanning UAI/USDT:USDT
+2026-03-19 21:12:43,357 - crypto_bot - INFO - [SCALP] ❌ No signal: UAIUSDT
+2026-03-19 21:12:43,357 - crypto_bot - INFO - [SCALP] 🔍 Scanning PUMPFUN/USDT:USDT
+2026-03-19 21:12:43,912 - crypto_bot - INFO - [SCALP] ❌ No signal: PUMPFUNUSDT
+2026-03-19 21:12:43,912 - crypto_bot - INFO - [SCALP] 🔍 Scanning LTC/USDT:USDT
+2026-03-19 21:12:44,139 - crypto_bot - INFO - [SCALP] ❌ No signal: LTCUSDT
+2026-03-19 21:12:44,139 - crypto_bot - INFO - [SCALP] 🔍 Scanning KITE/USDT:USDT
+2026-03-19 21:12:44,362 - crypto_bot - INFO - [SCALP] ❌ No signal: KITEUSDT
+2026-03-19 21:12:44,362 - crypto_bot - INFO - [SCALP] 🔍 Scanning GALA/USDT:USDT
+2026-03-19 21:12:44,685 - crypto_bot - INFO - [SCALP] ❌ No signal: GALAUSDT
+2026-03-19 21:12:44,685 - crypto_bot - INFO - [SCALP] 🔍 Scanning XPL/USDT:USDT
+2026-03-19 21:12:44,908 - crypto_bot - INFO - [SCALP] ❌ No signal: XPLUSDT
+2026-03-19 21:12:44,908 - crypto_bot - INFO - [SCALP] 📊 Total signals after scan: 0
+2026-03-19 21:12:44,908 - crypto_bot - INFO - 📊 Signals found: 0
+2026-03-19 21:12:44,908 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
+2026-03-19 21:14:08,233 - crypto_bot - INFO - 🛑 Остановка по KeyboardInterrupt
+2026-03-19 21:14:54,859 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-19 21:14:54,859 - crypto_bot - WARNING - TELEGRAM_TOKEN не задан — бот запустится в режиме scanner + GUI без Telegram polling
+2026-03-19 21:14:54,859 - crypto_bot - INFO - [SCALP] scanner initialized | mode=SCALPING | timeframe=30m | candle_limit=120 | execution_tfs=30m, 15m
+2026-03-19 21:14:54,896 - crypto_bot - INFO - 🖥️ Signal GUI thread started
+2026-03-19 21:14:54,896 - crypto_bot - INFO - ✅ Telegram отключён: инициализированы scanner + GUI режим
+2026-03-19 21:14:54,897 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-19 21:14:54,897 - crypto_bot - INFO - 📡 Telegram polling disabled, running standalone scan loop
+2026-03-19 21:14:54,898 - crypto_bot - INFO - 🚀 SCAN LOOP STARTED
+2026-03-19 21:14:54,898 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-19 21:14:58,596 - crypto_bot - INFO - [SCALP] 📈 Top-50 symbols fetched: 50
+2026-03-19 21:15:02,881 - crypto_bot - INFO - [SCALP] 🔥 Active symbols after filter: 48 / 50
+2026-03-19 21:15:02,881 - crypto_bot - INFO - [SCALP] 🔍 Scanning BTC/USDT:USDT
+2026-03-19 21:15:03,130 - crypto_bot - INFO - [SCALP] ❌ No signal: BTCUSDT
+2026-03-19 21:15:03,130 - crypto_bot - INFO - [SCALP] 🔍 Scanning ETH/USDT:USDT
+2026-03-19 21:15:03,379 - crypto_bot - INFO - [SCALP] ❌ No signal: ETHUSDT
+2026-03-19 21:15:03,379 - crypto_bot - INFO - [SCALP] 🔍 Scanning SOL/USDT:USDT
+2026-03-19 21:15:03,613 - crypto_bot - INFO - [SCALP] ❌ No signal: SOLUSDT
+2026-03-19 21:15:03,613 - crypto_bot - INFO - [SCALP] 🔍 Scanning XRP/USDT:USDT
+2026-03-19 21:15:03,856 - crypto_bot - INFO - [SCALP] ❌ No signal: XRPUSDT
+2026-03-19 21:15:03,856 - crypto_bot - INFO - [SCALP] 🔍 Scanning HYPE/USDT:USDT
+2026-03-19 21:15:04,096 - crypto_bot - INFO - [SCALP] ❌ No signal: HYPEUSDT
+2026-03-19 21:15:04,096 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAUT/USDT:USDT
+2026-03-19 21:15:04,320 - crypto_bot - INFO - [SCALP] ❌ No signal: XAUTUSDT
+2026-03-19 21:15:04,320 - crypto_bot - INFO - [SCALP] 🔍 Scanning DOGE/USDT:USDT
+2026-03-19 21:15:04,560 - crypto_bot - ERROR - scan_loop error
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\scanner\market_scanner.py", line 39, in _fetch_ohlcv
+    data = await loop.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Python 3.11\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\scanner\market_scanner.py", line 41, in <lambda>
+    lambda: self.exchange.fetch_ohlcv(symbol, self.timeframe, limit=self.candle_limit),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\ccxt\bybit.py", line 2630, in fetch_ohlcv
+    response = self.publicGetV5MarketKline(self.extend(request, params))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\ccxt\base\types.py", line 35, in unbound_method
+    return _self.request(self.path, self.api, self.method, params, config=self.config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\ccxt\base\exchange.py", line 5313, in request
+    return self.fetch2(path, api, method, params, headers, body, config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\ccxt\base\exchange.py", line 5307, in fetch2
+    raise e
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\ccxt\base\exchange.py", line 5297, in fetch2
+    return self.fetch(request['url'], request['method'], request['headers'], request['body'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\ccxt\base\exchange.py", line 735, in fetch
+    self.handle_errors(http_status_code, http_status_text, url, method, headers, http_response, json_response, request_headers, request_body)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\ccxt\bybit.py", line 9290, in handle_errors
+    self.throw_exactly_matched_exception(self.exceptions['exact'], errorCode, feedback)
+  File "C:\Users\user\Desktop\crypto_botV2\venv\Lib\site-packages\ccxt\base\exchange.py", line 5714, in throw_exactly_matched_exception
+    raise exact[string](message)
+ccxt.base.errors.RateLimitExceeded: bybit {"retCode":10006,"retMsg":"Too many visits. Exceeded the API Rate Limit.","result":{},"retExtInfo":{},"time":1773944104753}
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 223, in scan_loop
+    signals = await asyncio.wait_for(
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Python 3.11\Lib\asyncio\tasks.py", line 489, in wait_for
+    return fut.result()
+           ^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\scanner\market_scanner.py", line 107, in scan
+    df = await self._fetch_ohlcv(symbol)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\scanner\market_scanner.py", line 44, in _fetch_ohlcv
+    llogger.warning(f"{self.log_prefix} {symbol} | ошибка загрузки свечей: {exc}".strip())
+    ^^^^^^^
+NameError: name 'llogger' is not defined
+2026-03-19 21:15:10,970 - crypto_bot - INFO - 🛑 Остановка по KeyboardInterrupt
+2026-03-19 21:15:30,543 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-19 21:15:30,543 - crypto_bot - WARNING - TELEGRAM_TOKEN не задан — бот запустится в режиме scanner + GUI без Telegram polling
+2026-03-19 21:15:30,543 - crypto_bot - INFO - [SCALP] scanner initialized | mode=SCALPING | timeframe=30m | candle_limit=120 | execution_tfs=30m, 15m
+2026-03-19 21:15:30,588 - crypto_bot - INFO - 🖥️ Signal GUI thread started
+2026-03-19 21:15:30,589 - crypto_bot - INFO - ✅ Telegram отключён: инициализированы scanner + GUI режим
+2026-03-19 21:15:30,589 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-19 21:15:30,589 - crypto_bot - INFO - 📡 Telegram polling disabled, running standalone scan loop
+2026-03-19 21:15:30,590 - crypto_bot - INFO - 🚀 SCAN LOOP STARTED
+2026-03-19 21:15:30,591 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-19 21:15:34,481 - crypto_bot - INFO - [SCALP] 📈 Top-50 symbols fetched: 50
+2026-03-19 21:15:38,263 - crypto_bot - INFO - [SCALP] 🔥 Active symbols after filter: 48 / 50
+2026-03-19 21:15:38,263 - crypto_bot - INFO - [SCALP] 🔍 Scanning BTC/USDT:USDT
+2026-03-19 21:15:38,494 - crypto_bot - INFO - [SCALP] ❌ No signal: BTCUSDT
+2026-03-19 21:15:38,494 - crypto_bot - INFO - [SCALP] 🔍 Scanning ETH/USDT:USDT
+2026-03-19 21:15:38,716 - crypto_bot - INFO - [SCALP] ❌ No signal: ETHUSDT
+2026-03-19 21:15:38,716 - crypto_bot - INFO - [SCALP] 🔍 Scanning SOL/USDT:USDT
+2026-03-19 21:15:38,942 - crypto_bot - INFO - [SCALP] ❌ No signal: SOLUSDT
+2026-03-19 21:15:38,942 - crypto_bot - INFO - [SCALP] 🔍 Scanning XRP/USDT:USDT
+2026-03-19 21:15:39,166 - crypto_bot - INFO - [SCALP] ❌ No signal: XRPUSDT
+2026-03-19 21:15:39,166 - crypto_bot - INFO - [SCALP] 🔍 Scanning HYPE/USDT:USDT
+2026-03-19 21:15:39,381 - crypto_bot - INFO - [SCALP] ❌ No signal: HYPEUSDT
+2026-03-19 21:15:39,381 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAUT/USDT:USDT
+2026-03-19 21:15:39,599 - crypto_bot - INFO - [SCALP] ❌ No signal: XAUTUSDT
+2026-03-19 21:15:39,599 - crypto_bot - INFO - [SCALP] 🔍 Scanning DOGE/USDT:USDT
+2026-03-19 21:15:39,832 - crypto_bot - INFO - [SCALP] ❌ No signal: DOGEUSDT
+2026-03-19 21:15:39,832 - crypto_bot - INFO - [SCALP] 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-19 21:15:40,051 - crypto_bot - INFO - [SCALP] ❌ No signal: FARTCOINUSDT
+2026-03-19 21:15:40,051 - crypto_bot - INFO - [SCALP] 🔍 Scanning LYN/USDT:USDT
+2026-03-19 21:15:40,263 - crypto_bot - INFO - [SCALP] ❌ No signal: LYNUSDT
+2026-03-19 21:15:40,263 - crypto_bot - INFO - [SCALP] 🔍 Scanning RIVER/USDT:USDT
+2026-03-19 21:15:40,493 - crypto_bot - INFO - [SCALP] ❌ No signal: RIVERUSDT
+2026-03-19 21:15:40,493 - crypto_bot - INFO - [SCALP] 🔍 Scanning 1000PEPE/USDT:USDT
+2026-03-19 21:15:40,703 - crypto_bot - INFO - [SCALP] ❌ No signal: 1000PEPEUSDT
+2026-03-19 21:15:40,703 - crypto_bot - INFO - [SCALP] 🔍 Scanning TAO/USDT:USDT
+2026-03-19 21:15:40,937 - crypto_bot - INFO - [SCALP] ❌ No signal: TAOUSDT
+2026-03-19 21:15:40,937 - crypto_bot - INFO - [SCALP] 🔍 Scanning PIPPIN/USDT:USDT
+2026-03-19 21:15:41,178 - crypto_bot - INFO - [SCALP] ❌ No signal: PIPPINUSDT
+2026-03-19 21:15:41,179 - crypto_bot - INFO - [SCALP] 🔍 Scanning ZEC/USDT:USDT
+2026-03-19 21:15:41,713 - crypto_bot - INFO - [SCALP] ❌ No signal: ZECUSDT
+2026-03-19 21:15:41,714 - crypto_bot - INFO - [SCALP] 🔍 Scanning BARD/USDT:USDT
+2026-03-19 21:15:41,937 - crypto_bot - INFO - [SCALP] ❌ No signal: BARDUSDT
+2026-03-19 21:15:41,937 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAG/USDT:USDT
+2026-03-19 21:15:42,160 - crypto_bot - INFO - [SCALP] ❌ No signal: XAGUSDT
+2026-03-19 21:15:42,160 - crypto_bot - INFO - [SCALP] 🔍 Scanning ADA/USDT:USDT
+2026-03-19 21:15:42,391 - crypto_bot - INFO - [SCALP] ❌ No signal: ADAUSDT
+2026-03-19 21:15:42,391 - crypto_bot - INFO - [SCALP] 🔍 Scanning SAHARA/USDT:USDT
+2026-03-19 21:15:42,606 - crypto_bot - INFO - [SCALP] ❌ No signal: SAHARAUSDT
+2026-03-19 21:15:42,606 - crypto_bot - INFO - [SCALP] 🔍 Scanning SUI/USDT:USDT
+2026-03-19 21:15:42,833 - crypto_bot - INFO - [SCALP] ❌ No signal: SUIUSDT
+2026-03-19 21:15:42,833 - crypto_bot - INFO - [SCALP] 🔍 Scanning PAXG/USDT:USDT
+2026-03-19 21:15:43,048 - crypto_bot - INFO - [SCALP] ❌ No signal: PAXGUSDT
+2026-03-19 21:15:43,048 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAU/USDT:USDT
+2026-03-19 21:15:43,291 - crypto_bot - INFO - [SCALP] ❌ No signal: XAUUSDT
+2026-03-19 21:15:43,291 - crypto_bot - INFO - [SCALP] 🔍 Scanning LINK/USDT:USDT
+2026-03-19 21:15:43,512 - crypto_bot - INFO - [SCALP] ❌ No signal: LINKUSDT
+2026-03-19 21:15:43,512 - crypto_bot - INFO - [SCALP] 🔍 Scanning SIREN/USDT:USDT
+2026-03-19 21:15:43,722 - crypto_bot - INFO - [SCALP] ❌ No signal: SIRENUSDT
+2026-03-19 21:15:43,722 - crypto_bot - INFO - [SCALP] 🔍 Scanning TRUMP/USDT:USDT
+2026-03-19 21:15:43,953 - crypto_bot - INFO - [SCALP] ❌ No signal: TRUMPUSDT
+2026-03-19 21:15:43,953 - crypto_bot - INFO - [SCALP] 🔍 Scanning NEAR/USDT:USDT
+2026-03-19 21:15:44,494 - crypto_bot - INFO - [SCALP] ❌ No signal: NEARUSDT
+2026-03-19 21:15:44,494 - crypto_bot - INFO - [SCALP] 🔍 Scanning WLD/USDT:USDT
+2026-03-19 21:15:44,709 - crypto_bot - INFO - [SCALP] ❌ No signal: WLDUSDT
+2026-03-19 21:15:44,709 - crypto_bot - INFO - [SCALP] 🔍 Scanning BNB/USDT:USDT
+2026-03-19 21:15:44,938 - crypto_bot - INFO - [SCALP] ❌ No signal: BNBUSDT
+2026-03-19 21:15:44,938 - crypto_bot - INFO - [SCALP] 🔍 Scanning AAVE/USDT:USDT
+2026-03-19 21:15:45,160 - crypto_bot - INFO - [SCALP] ❌ No signal: AAVEUSDT
+2026-03-19 21:15:45,160 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAN/USDT:USDT
+2026-03-19 21:15:45,368 - crypto_bot - INFO - [SCALP] ❌ No signal: XANUSDT
+2026-03-19 21:15:45,378 - crypto_bot - INFO - [SCALP] 🔍 Scanning ETHFI/USDT:USDT
+2026-03-19 21:15:45,933 - crypto_bot - INFO - [SCALP] ❌ No signal: ETHFIUSDT
+2026-03-19 21:15:45,933 - crypto_bot - INFO - [SCALP] 🔍 Scanning PIXEL/USDT:USDT
+2026-03-19 21:15:46,153 - crypto_bot - INFO - [SCALP] ❌ No signal: PIXELUSDT
+2026-03-19 21:15:46,166 - crypto_bot - INFO - [SCALP] 🔍 Scanning BAN/USDT:USDT
+2026-03-19 21:15:46,390 - crypto_bot - INFO - [SCALP] ❌ No signal: BANUSDT
+2026-03-19 21:15:46,390 - crypto_bot - INFO - [SCALP] 🔍 Scanning ENA/USDT:USDT
+2026-03-19 21:15:46,611 - crypto_bot - INFO - [SCALP] ❌ No signal: ENAUSDT
+2026-03-19 21:15:46,613 - crypto_bot - INFO - [SCALP] 🔍 Scanning WIF/USDT:USDT
+2026-03-19 21:15:46,834 - crypto_bot - INFO - [SCALP] ❌ No signal: WIFUSDT
+2026-03-19 21:15:46,835 - crypto_bot - INFO - [SCALP] 🔍 Scanning ASTER/USDT:USDT
+2026-03-19 21:15:47,052 - crypto_bot - INFO - [SCALP] ❌ No signal: ASTERUSDT
+2026-03-19 21:15:47,052 - crypto_bot - INFO - [SCALP] 🔍 Scanning DOT/USDT:USDT
+2026-03-19 21:15:47,260 - crypto_bot - INFO - [SCALP] ❌ No signal: DOTUSDT
+2026-03-19 21:15:47,260 - crypto_bot - INFO - [SCALP] 🔍 Scanning AVAX/USDT:USDT
+2026-03-19 21:15:47,490 - crypto_bot - INFO - [SCALP] ❌ No signal: AVAXUSDT
+2026-03-19 21:15:47,490 - crypto_bot - INFO - [SCALP] 🔍 Scanning VIRTUAL/USDT:USDT
+2026-03-19 21:15:47,701 - crypto_bot - INFO - [SCALP] ❌ No signal: VIRTUALUSDT
+2026-03-19 21:15:47,701 - crypto_bot - INFO - [SCALP] 🔍 Scanning UAI/USDT:USDT
+2026-03-19 21:15:47,927 - crypto_bot - INFO - [SCALP] ❌ No signal: UAIUSDT
+2026-03-19 21:15:47,927 - crypto_bot - INFO - [SCALP] 🔍 Scanning PUMPFUN/USDT:USDT
+2026-03-19 21:15:48,156 - crypto_bot - INFO - [SCALP] ❌ No signal: PUMPFUNUSDT
+2026-03-19 21:15:48,156 - crypto_bot - INFO - [SCALP] 🔍 Scanning LTC/USDT:USDT
+2026-03-19 21:15:48,375 - crypto_bot - INFO - [SCALP] ❌ No signal: LTCUSDT
+2026-03-19 21:15:48,375 - crypto_bot - INFO - [SCALP] 🔍 Scanning KITE/USDT:USDT
+2026-03-19 21:15:48,683 - crypto_bot - INFO - [SCALP] ❌ No signal: KITEUSDT
+2026-03-19 21:15:48,683 - crypto_bot - INFO - [SCALP] 🔍 Scanning GALA/USDT:USDT
+2026-03-19 21:15:48,914 - crypto_bot - INFO - [SCALP] ❌ No signal: GALAUSDT
+2026-03-19 21:15:48,914 - crypto_bot - INFO - [SCALP] 🔍 Scanning XPL/USDT:USDT
+2026-03-19 21:15:49,232 - crypto_bot - INFO - [SCALP] ❌ No signal: XPLUSDT
+2026-03-19 21:15:49,232 - crypto_bot - INFO - [SCALP] 🔍 Scanning HBAR/USDT:USDT
+2026-03-19 21:15:49,443 - crypto_bot - INFO - [SCALP] ❌ No signal: HBARUSDT
+2026-03-19 21:15:49,443 - crypto_bot - INFO - [SCALP] 🔍 Scanning APT/USDT:USDT
+2026-03-19 21:15:49,666 - crypto_bot - INFO - [SCALP] ❌ No signal: APTUSDT
+2026-03-19 21:15:49,666 - crypto_bot - INFO - [SCALP] 🔍 Scanning TRIA/USDT:USDT
+2026-03-19 21:15:49,865 - crypto_bot - INFO - [SCALP] ❌ No signal: TRIAUSDT
+2026-03-19 21:15:49,881 - crypto_bot - INFO - [SCALP] 🔍 Scanning PENGU/USDT:USDT
+2026-03-19 21:15:50,098 - crypto_bot - INFO - [SCALP] ❌ No signal: PENGUUSDT
+2026-03-19 21:15:50,098 - crypto_bot - INFO - [SCALP] 📊 Total signals after scan: 0
+2026-03-19 21:15:50,099 - crypto_bot - INFO - 📊 Signals found: 0
+2026-03-19 21:15:50,099 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
+2026-03-19 21:16:04,467 - crypto_bot - INFO - 🛑 Остановка по KeyboardInterrupt

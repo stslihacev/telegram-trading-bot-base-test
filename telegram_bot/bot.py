@@ -199,9 +199,10 @@ class TelegramTradingBot:
 
         if self.application and unique_users:
             if DEBUG_MODE:
+                signal_prefix = signal.get("label_prefix", "")
                 success(
                     signal.get("symbol"),
-                    f"telegram broadcast | users={len(unique_users)} | type={signal.get('signal_type')}",
+                    f"{signal_prefix} telegram broadcast | users={len(unique_users)} | type={signal.get('signal_type')}".strip(),
                 )
             await broadcast_signal(self.application.bot, unique_users, signal)
 
@@ -227,7 +228,8 @@ class TelegramTradingBot:
                 logger.info(f"📊 Signals found: {len(signals)}")
 
                 for signal in signals:
-                    logger.info(f"📡 Signal found: {signal}")
+                    signal_prefix = signal.get('label_prefix', '')
+                    logger.info(f"{signal_prefix} 📡 Signal found: {signal}".strip())
                     signals_logger.info(signal)
                     self.signal_queue.put(str(signal))
                     # await self.broadcast_if_needed(signal)  # временно отключено до повторного включения Telegram/Discord

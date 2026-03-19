@@ -3,8 +3,16 @@
 
 def format_signal(signal: dict) -> str:
     """Красивый формат карточки сигнала."""
+    label_prefix = str(signal.get("label_prefix", "") or "").strip()
+    title = f"{label_prefix} Новый сигнал".strip()
+    mode_line = ""
+    if signal.get("live_mode") == "SCALPING":
+        mode_line = (
+            f"Режим: <b>{signal['live_mode']}</b> | TF: <b>{signal.get('tf', 'N/A')}</b> | "
+            f"MTF: <b>{', '.join(signal.get('execution_timeframes', ()))}</b>\n"
+        )
     return (
-        "📢 <b>Новый сигнал</b>\n"
+        f"📢 <b>{title}</b>\n"
         f"Пара: <b>{signal['symbol']}</b>\n"
         f"Тип: <b>{signal['signal_type']}</b>\n"
         f"Направление: <b>{signal['direction']}</b>\n"
@@ -13,8 +21,9 @@ def format_signal(signal: dict) -> str:
         f"SL: <code>{signal['sl']:.6f}</code>\n"
         f"RR: <b>1:{signal['rr']:.2f}</b>\n"
         f"Confidence: <b>{signal['confidence']}/5</b>\n"
-        f"Regime: <b>{signal.get('regime', 'N/A')}</b>"
-    )
+        f"Regime: <b>{signal.get('regime', 'N/A')}</b>\n"
+        f"{mode_line}"
+    ).rstrip()
 
 
 def format_status(open_positions: list[dict]) -> str:

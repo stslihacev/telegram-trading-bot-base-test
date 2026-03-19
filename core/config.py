@@ -12,6 +12,13 @@ TOP_N = 50
 # Сколько самых ликвидных USDT perpetual-пар брать в первичный universe scan.
 # Для live-сканирования 40 даёт хороший баланс: широкий охват без лишнего шума.
 
+# ============================================================
+# Live mode selection
+# ============================================================
+LIVE_MODE = "SCALPING"
+# OPTIONS: "MAIN", "SCALPING".
+# MAIN сохраняет текущую live-логику без изменений.
+# SCALPING включает отдельный набор параметров для более коротких сетапов.
 
 # ============================================================
 # Scan / Analysis
@@ -46,7 +53,7 @@ CONFIDENCE_THRESHOLD = 1.0
 # Значение 2.0 лучше согласовано с логикой backtest-стратегии,
 # чем прежний слишком мягкий порог 1.0.
 
-DEBUG_MODE = True
+DEBUG_MODE = False
 # Глобальный флаг трассировки live-сигналов. При False debug-вызовы должны
 # оставаться выключенными и не менять торговое поведение.
 
@@ -70,6 +77,29 @@ SWING_WINDOW = 5
 LOOKBACK_LEVELS = 30
 # Сколько последних свечей учитывать при поиске TP/SL-уровней по структуре.
 
+# ============================================================
+# Отдельные live-настройки для режима скальпинга.
+MTF_EXECUTION_TIMEFRAMES_SCALPING = ("30m", "15m")
+# Сначала 30m как базовый контекст, затем 15m как уточнение входа.
+
+SWING_WINDOW_SCALPING = 3
+# Более короткое окно swing-структуры для быстрых локальных импульсов.
+
+LOOKBACK_LEVELS_SCALPING = 15
+# Более короткий structural lookback, чтобы TP/SL не тянулись слишком далеко. было 20
+
+SCAN_CANDLE_LIMIT_SCALPING = 120
+# Достаточно истории для intraday-скальпинга без лишней задержки загрузки.
+
+CONFIDENCE_THRESHOLD_SCALPING = 0.5
+# Скальпинг допускает чуть более ранние сигналы, но дальше усиливается RR/MTF-фильтрами. ,было 0.8
+
+MIN_SIGNAL_RR_SCALPING = 1.0
+# Минимальный RR для live-скальпинга.
+
+MAX_RR_SCALPING = 2.0
+# Верхняя граница RR для скальпинга: отсеивает слишком дальние TP для коротких движений.
+# ==============================================================
 
 # ============================================================
 # Correlation
@@ -406,3 +436,51 @@ MAX_POSITION_UNITS = 1_000_000
 
 MAX_POSITION_VALUE = 1_000_000
 # Максимальная долларовая стоимость позиции.
+
+SCALPING_SIGNAL_PREFIX = "[SCALP]"
+# Отдельная метка для логов и Telegram-сообщений в режиме скальпинга.
+
+
+def get_live_mode() -> str:
+    """Возвращает нормализованный live-режим."""
+    mode = str(LIVE_MODE or "MAIN").upper()
+    return mode if mode in {"MAIN", "SCALPING"} else "MAIN"
+
+
+def is_scalping_mode() -> bool:
+    """True, если активирован отдельный live-режим скальпинга."""
+    return get_live_mode() == "SCALPING"
+
+
+def get_live_runtime_settings() -> dict:
+    """Единая точка выбора live-параметров MAIN/SCALPING."""
+    mode = get_live_mode()
+    if mode == "SCALPING":
+        execution_timeframes = tuple(MTF_EXECUTION_TIMEFRAMES_SCALPING)
+        return {
+            "mode": mode,
+            "is_scalping": True,
+            "scan_timeframe": execution_timeframes[0],
+            "execution_timeframes": execution_timeframes,
+            "swing_window": SWING_WINDOW_SCALPING,
+            "lookback_levels": LOOKBACK_LEVELS_SCALPING,
+            "scan_candle_limit": SCAN_CANDLE_LIMIT_SCALPING,
+            "confidence_threshold": CONFIDENCE_THRESHOLD_SCALPING,
+            "min_signal_rr": MIN_SIGNAL_RR_SCALPING,
+            "max_rr": MAX_RR_SCALPING,
+            "signal_prefix": SCALPING_SIGNAL_PREFIX,
+        }
+
+    return {
+        "mode": mode,
+        "is_scalping": False,
+        "scan_timeframe": SCAN_TIMEFRAME,
+        "execution_timeframes": tuple(MTF_EXECUTION_TIMEFRAMES),
+        "swing_window": SWING_WINDOW,
+        "lookback_levels": LOOKBACK_LEVELS,
+        "scan_candle_limit": SCAN_CANDLE_LIMIT,
+        "confidence_threshold": CONFIDENCE_THRESHOLD,
+        "min_signal_rr": MIN_SIGNAL_RR,
+        "max_rr": MAX_RR,
+        "signal_prefix": "",
+    }

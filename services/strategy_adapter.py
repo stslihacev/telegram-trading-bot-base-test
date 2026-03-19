@@ -2,8 +2,14 @@
 
 from __future__ import annotations
 
+from contextlib import contextmanager
+
 import numpy as np
 import pandas as pd
+
+import analysis.levels as analysis_levels
+import backtest.backtest_engine as backtest_engine
+import core.config as config
 
 from backtest.backtest_engine import (
     BosStrategy,
@@ -12,24 +18,78 @@ from backtest.backtest_engine import (
     build_4h_frame,
     calculate_risk_based_position_size,
 )
-from core.config import BACKTEST_INITIAL_CAPITAL, DEBUG_MODE, MIN_SIGNAL_RR, RISK_PER_TRADE
 from core.debug import debug_stage, reject
 from utils.logger import logger
 
 class BacktestStrategyAdapter:
     """Использует backtest.BosStrategy.generate_signal напрямую на последней свече."""
 
-    def __init__(self, min_rr: float = MIN_SIGNAL_RR):
+    def __init__(self, min_rr: float | None = None):
         self.strategy = BosStrategy()
         self.diagnostics = Diagnostics()
-        self.min_rr = float(min_rr)
+        runtime = config.get_live_runtime_settings()
+        self.min_rr = float(runtime["min_signal_rr"] if min_rr is None else min_rr)
+        self.max_rr = float(runtime["max_rr"])
 
     @staticmethod
-    def _prepare_frame(candles: pd.DataFrame) -> pd.DataFrame:
+    def _runtime_settings() -> dict:
+        return config.get_live_runtime_settings()
+
+    @staticmethod
+    @contextmanager
+    def _apply_runtime_overrides(runtime: dict):
+        if not runtime.get("is_scalping"):
+            yield
+            return
+
+        bos_confidence_threshold = max(
+            float(runtime["confidence_threshold"]) + 0.35,
+            float(runtime["confidence_threshold"]),
+        )
+        original_values = {
+            "MTF_EXECUTION_TIMEFRAMES": backtest_engine.MTF_EXECUTION_TIMEFRAMES,
+            "LOOKBACK_LEVELS": backtest_engine.LOOKBACK_LEVELS,
+            "MIN_RR": backtest_engine.MIN_RR,
+            "MAX_RR": backtest_engine.MAX_RR,
+            "CFG_CONFIDENCE_THRESHOLD_BACKTEST": backtest_engine.CFG_CONFIDENCE_THRESHOLD_BACKTEST,
+            "CFG_BOS_CONFIDENCE_THRESHOLD": backtest_engine.CFG_BOS_CONFIDENCE_THRESHOLD,
+            "swing_high_defaults": analysis_levels.find_swing_highs.__defaults__,
+            "swing_low_defaults": analysis_levels.find_swing_lows.__defaults__,
+        }
+
+        backtest_engine.MTF_EXECUTION_TIMEFRAMES = tuple(runtime["execution_timeframes"])
+        backtest_engine.LOOKBACK_LEVELS = int(runtime["lookback_levels"])
+        backtest_engine.MIN_RR = float(runtime["min_signal_rr"])
+        backtest_engine.MAX_RR = float(runtime["max_rr"])
+        backtest_engine.CFG_CONFIDENCE_THRESHOLD_BACKTEST = float(runtime["confidence_threshold"])
+        backtest_engine.CFG_BOS_CONFIDENCE_THRESHOLD = bos_confidence_threshold
+        analysis_levels.find_swing_highs.__defaults__ = (int(runtime["swing_window"]),)
+        analysis_levels.find_swing_lows.__defaults__ = (int(runtime["swing_window"]),)
+
+        try:
+            yield
+        finally:
+            backtest_engine.MTF_EXECUTION_TIMEFRAMES = original_values["MTF_EXECUTION_TIMEFRAMES"]
+            backtest_engine.LOOKBACK_LEVELS = original_values["LOOKBACK_LEVELS"]
+            backtest_engine.MIN_RR = original_values["MIN_RR"]
+            backtest_engine.MAX_RR = original_values["MAX_RR"]
+            backtest_engine.CFG_CONFIDENCE_THRESHOLD_BACKTEST = original_values["CFG_CONFIDENCE_THRESHOLD_BACKTEST"]
+            backtest_engine.CFG_BOS_CONFIDENCE_THRESHOLD = original_values["CFG_BOS_CONFIDENCE_THRESHOLD"]
+            analysis_levels.find_swing_highs.__defaults__ = original_values["swing_high_defaults"]
+            analysis_levels.find_swing_lows.__defaults__ = original_values["swing_low_defaults"]
+
+    @staticmethod
+    def _prepare_frame(candles: pd.DataFrame, runtime: dict) -> pd.DataFrame:
         df = candles.copy()
         df["timestamp"] = pd.to_datetime(df["timestamp"], utc=True)
         df = df.sort_values("timestamp").set_index("timestamp")
         df = add_indicators(df)
+        if runtime.get("is_scalping"):
+            df = backtest_engine.calculate_swings(
+                df,
+                left=int(runtime["swing_window"]),
+                right=int(runtime["swing_window"]),
+            )
         df["atr_mean_50"] = df["atr"].rolling(50).mean()
         if not df.index.is_unique:
             df = df[~df.index.duplicated(keep="first")]
@@ -67,81 +127,112 @@ class BacktestStrategyAdapter:
 
     def generate_signal(self, symbol: str, candles: pd.DataFrame) -> dict | None:
         """Генерирует сигнал в telegram-формате только если backtest-логика даёт сделку."""
-        if candles is None or len(candles) < 220:
+        runtime = self._runtime_settings()
+        min_candles = int(runtime["scan_candle_limit"])
+        if runtime.get("is_scalping"):
+            self.min_rr = float(runtime["min_signal_rr"])
+        self.max_rr = float(runtime["max_rr"])
+        if candles is None or len(candles) < min_candles:
             return None
 
         try:
-            df = self._prepare_frame(candles)
-            arrays = self._build_arrays(df)
-            swing_indices = self._build_swing_indices(df)
-            df_4h = build_4h_frame(df)
-            i = len(df) - 1
+            with self._apply_runtime_overrides(runtime):
+                df = self._prepare_frame(candles, runtime)
+                arrays = self._build_arrays(df)
+                swing_indices = self._build_swing_indices(df)
+                df_4h = build_4h_frame(df)
+                i = len(df) - 1
 
-            if DEBUG_MODE:
-                debug_stage("STRATEGY", symbol, f"prepared candles={len(df)}")
-            signal = self.strategy.generate_signal(
-                symbol=symbol,
-                i=i,
-                df=df,
-                arrays=arrays,
-                swing_indices=swing_indices,
-                diagnostics=self.diagnostics,
-                df_4h=df_4h,
-            )
-            if not signal:
-                if DEBUG_MODE:
-                    reject(symbol, "STRATEGY", "no entry conditions met")
-                return None
-
-            if DEBUG_MODE:
-                debug_stage(
-                    "STRATEGY",
-                    symbol,
-                    "signal detected "
-                    f"| type={signal.get('signal_type')} "
-                    f"| BOS={signal.get('signal_type') == 'BOS'} "
-                    f"| SWEEP={signal.get('signal_type') == 'SWEEP'}",
+                if config.DEBUG_MODE:
+                    debug_stage(
+                        "STRATEGY",
+                        symbol,
+                        f"prepared candles={len(df)} mode={runtime['mode']} tf={runtime['scan_timeframe']}",
+                    )
+                signal = self.strategy.generate_signal(
+                    symbol=symbol,
+                    i=i,
+                    df=df,
+                    arrays=arrays,
+                    swing_indices=swing_indices,
+                    diagnostics=self.diagnostics,
+                    df_4h=df_4h,
                 )
 
-            entry = float(signal["entry"])
-            tp = float(signal["tp"])
-            sl = float(signal["sl"])
-            rr = self._calculate_rr(entry=entry, tp=tp, sl=sl)
-            if DEBUG_MODE:
-                debug_stage("RR", symbol, f"rr={rr:.4f}, min_rr={self.min_rr:.4f}")
-            if rr < self.min_rr:
-                if DEBUG_MODE:
-                    reject(
+                if not signal:
+                    if config.DEBUG_MODE:
+                        reject(symbol, "STRATEGY", "no entry conditions met")
+                    return None
+
+                if config.DEBUG_MODE:
+                    debug_stage(
+                        "STRATEGY",
                         symbol,
-                        "RR",
-                        "RR below MIN_SIGNAL_RR",
-                        extra={"rr": round(rr, 4), "threshold": self.min_rr},
+                        "signal detected "
+                        f"| type={signal.get('signal_type')} "
+                        f"| BOS={signal.get('signal_type') == 'BOS'} "
+                        f"| SWEEP={signal.get('signal_type') == 'SWEEP'} "
+                        f"| live_mode={runtime['mode']}",
                     )
-                return None
 
-            risk_snapshot = dict(signal)
-            calculate_risk_based_position_size(
-                risk_snapshot,
-                capital=BACKTEST_INITIAL_CAPITAL,
-                risk_factor=RISK_PER_TRADE,
-            )
+                entry = float(signal["entry"])
+                tp = float(signal["tp"])
+                sl = float(signal["sl"])
+                rr = self._calculate_rr(entry=entry, tp=tp, sl=sl)
+                rr_min = float(self.min_rr)
+                rr_max = float(self.max_rr)
+                if config.DEBUG_MODE:
+                    debug_stage("RR", symbol, f"rr={rr:.4f}, min_rr={rr_min:.4f}, max_rr={rr_max:.4f}")
+                if rr < rr_min:
+                    if config.DEBUG_MODE:
+                        reject(
+                            symbol,
+                            "RR",
+                            "RR below live minimum",
+                            extra={"rr": round(rr, 4), "threshold": rr_min},
+                        )
+                    return None
+                if runtime.get("is_scalping") and rr > rr_max:
+                    if config.DEBUG_MODE:
+                        reject(
+                            symbol,
+                            "RR",
+                            "RR above scalping maximum",
+                            extra={"rr": round(rr, 4), "threshold": rr_max},
+                        )
+                    return None
 
-            return {
-                "symbol": signal["symbol"],
-                "signal_type": signal["signal_type"],
-                "direction": signal["direction"],
-                "entry": entry,
-                "tp": tp,
-                "sl": sl,
-                "rr": rr,
-                "confidence": float(signal.get("confidence", 0.0)),
-                "regime": signal.get("regime", "N/A"),
-                "timestamp": str(df.index[i]),
-                "tf": signal.get("tf", "1h"),
-                "trade_type": signal.get("trade_type", "aligned"),
-                "position_size": float(risk_snapshot.get("position_size", 0.0)),
-                "trade_risk": float(risk_snapshot.get("trade_risk", 0.0)),
-            }
+                risk_snapshot = dict(signal)
+                calculate_risk_based_position_size(
+                    risk_snapshot,
+                    capital=config.BACKTEST_INITIAL_CAPITAL,
+                    risk_factor=config.RISK_PER_TRADE,
+                )
+
+                signal_tf = signal.get("tf") or runtime["scan_timeframe"]
+                if runtime.get("is_scalping") and str(signal_tf).lower() == "1h":
+                    signal_tf = runtime["scan_timeframe"]
+
+                return {
+                    "symbol": signal["symbol"],
+                    "signal_type": signal["signal_type"],
+                    "direction": signal["direction"],
+                    "entry": entry,
+                    "tp": tp,
+                    "sl": sl,
+                    "rr": rr,
+                    "confidence": float(signal.get("confidence", 0.0)),
+                    "regime": signal.get("regime", "N/A"),
+                    "timestamp": str(df.index[i]),
+                    "tf": signal_tf,
+                    "trade_type": signal.get("trade_type", "aligned"),
+                    "position_size": float(risk_snapshot.get("position_size", 0.0)),
+                    "trade_risk": float(risk_snapshot.get("trade_risk", 0.0)),
+                    "live_mode": runtime["mode"],
+                    "label_prefix": runtime["signal_prefix"],
+                    "execution_timeframes": tuple(runtime["execution_timeframes"]),
+                }
+
         except Exception as exc:
             logger.exception("Ошибка адаптера backtest-стратегии для %s: %s", symbol, exc)
             return None
