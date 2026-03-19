@@ -5,6 +5,7 @@ from __future__ import annotations
 import asyncio
 import ccxt
 import pandas as pd
+from datetime import datetime, timezone
 
 import core.config as config
 from core.debug import debug_stage, reject
@@ -24,6 +25,7 @@ class MarketScanner:
         self.log_prefix = runtime["signal_prefix"]
         self.strategy = build_live_strategy()
         self.exchange = ccxt.bybit({"enableRateLimit": True, "options": {"defaultType": "swap"}})
+        self._forced_test_signal_sent = False
         logger.info(
             "%s scanner initialized | mode=%s | timeframe=%s | candle_limit=%s | execution_tfs=%s",
             self.log_prefix or "[MAIN]",
@@ -49,7 +51,46 @@ class MarketScanner:
 
         df = pd.DataFrame(data, columns=["timestamp", "open", "high", "low", "close", "volume"])
         df["timestamp"] = pd.to_datetime(df["timestamp"], unit="ms", utc=True)
+        if config.DEBUG_MODE and config.DEBUG_LOG_LIVE_DATA_FLOW:
+            logger.info(
+                "%s %s | ohlcv source=bybit:%s | tf=%s | candles=%s | last_ts=%s",
+                self.log_prefix,
+                symbol,
+                getattr(self.exchange, "id", "unknown"),
+                self.timeframe,
+                len(df),
+                df["timestamp"].iloc[-1].isoformat() if len(df) else "n/a",
+            )
         return df
+
+    def _build_forced_test_signal(self, symbol: str, df: pd.DataFrame) -> dict | None:
+        if df is None or df.empty:
+            return None
+        last = df.iloc[-1]
+        price = float(last.get("close", 0.0) or 0.0)
+        if price <= 0:
+            return None
+        return {
+            "symbol": symbol,
+            "signal_type": f"{self.runtime['mode']}_TEST",
+            "direction": "LONG",
+            "entry": price,
+            "tp": round(price * 1.01, 8),
+            "sl": round(price * 0.99, 8),
+            "rr": 1.0,
+            "confidence": 0.0,
+            "regime": "DEBUG",
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "tf": self.timeframe,
+            "trade_type": "signal_only",
+            "position_size": 0.0,
+            "trade_risk": 0.0,
+            "live_mode": self.runtime["mode"],
+            "label_prefix": "[DEBUG]",
+            "execution_timeframes": tuple(self.runtime["execution_timeframes"]),
+            "signal_only": True,
+            "alert_text": f"[DEBUG] Forced live test signal for {symbol}",
+        }
 
     def _filter_active_symbols(self, symbols: list[str]) -> list[str]:
         """Сохраняет существующую логику фильтра по объёму и % изменения."""
@@ -123,5 +164,25 @@ class MarketScanner:
                 signals.append(signal)
             else:
                 logger.info(f"{self.log_prefix} ❌ No signal: {clean_symbol}".strip())
+        
+        if (
+            not signals
+            and config.DEBUG_FORCE_LIVE_TEST_SIGNAL
+            and not self._forced_test_signal_sent
+            and active_symbols
+        ):
+            fallback_symbol = active_symbols[0]
+            fallback_df = await self._fetch_ohlcv(fallback_symbol)
+            clean_symbol = fallback_symbol.split(":")[0].replace("/", "")
+            forced_signal = self._build_forced_test_signal(clean_symbol, fallback_df) if fallback_df is not None else None
+            if forced_signal:
+                logger.warning(
+                    "%s 🧪 Forced test signal enabled (DEBUG_FORCE_LIVE_TEST_SIGNAL=True): %s",
+                    self.log_prefix,
+                    clean_symbol,
+                )
+                signals.append(forced_signal)
+                self._forced_test_signal_sent = True
+
         logger.info(f"{self.log_prefix} 📊 Total signals after scan: {len(signals)}".strip())
         return signals
