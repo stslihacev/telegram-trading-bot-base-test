@@ -19,6 +19,7 @@ from backtest.backtest_engine import (
     calculate_risk_based_position_size,
 )
 from core.debug import debug_stage, reject
+from services.light_mode_strategy import LightModeStrategy
 from utils.logger import logger
 
 class BacktestStrategyAdapter:
@@ -236,3 +237,10 @@ class BacktestStrategyAdapter:
         except Exception as exc:
             logger.exception("Ошибка адаптера backtest-стратегии для %s: %s", symbol, exc)
             return None
+
+def build_live_strategy(min_rr: float | None = None):
+    """Возвращает стратегию для активного live-режима без изменения MAIN/SCALPING."""
+    runtime = config.get_live_runtime_settings()
+    if runtime.get("is_light"):
+        return LightModeStrategy()
+    return BacktestStrategyAdapter(min_rr=min_rr)

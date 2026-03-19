@@ -15,10 +15,11 @@ TOP_N = 50
 # ============================================================
 # Live mode selection
 # ============================================================
-LIVE_MODE = "SCALPING"
-# OPTIONS: "MAIN", "SCALPING".
+LIVE_MODE = "LIGHT"
+# OPTIONS: "MAIN", "SCALPING", "LIGHT".
 # MAIN сохраняет текущую live-логику без изменений.
 # SCALPING включает отдельный набор параметров для более коротких сетапов.
+# LIGHT — отдельный signal-only режим для спокойного / бокового рынка.
 
 # ============================================================
 # Scan / Analysis
@@ -100,6 +101,82 @@ MIN_SIGNAL_RR_SCALPING = 1.0
 MAX_RR_SCALPING = 2.0
 # Верхняя граница RR для скальпинга: отсеивает слишком дальние TP для коротких движений.
 # ==============================================================
+
+
+# ============================================================
+# Отдельные live-настройки для режима LIGHT (signal-only).
+# ============================================================
+SCAN_TIMEFRAME_LIGHT = "30m"
+# Более частый TF для спокойного рынка; можно вернуть "1h", если нужен темп MAIN.
+
+MTF_EXECUTION_TIMEFRAMES_LIGHT = ("30m", "1h")
+# В LIGHT режиме используем только для отображения контекста в alert.
+
+SCAN_CANDLE_LIMIT_LIGHT = 220
+# Истории достаточно для EMA/SMA, RSI, MACD и объёмных фильтров.
+
+SCAN_INTERVAL_LIGHT = 180
+# Более частое сканирование для флэта/выходных. При желании можно поставить 300, как в MAIN.
+
+CONFIDENCE_THRESHOLD_LIGHT = 0.0
+# В LIGHT режиме confidence backtest-движка не используется, оставлено для унификации runtime config.
+
+MIN_SIGNAL_RR_LIGHT = 1.0
+# Сигналы only; RR нужен лишь для построения TP/SL карточки сигнала.
+
+MAX_RR_LIGHT = 2.5
+# Ограничиваем слишком дальние цели в спокойном рынке.
+
+LIGHT_SIGNAL_PREFIX = "[LIGHT]"
+# Метка для логов и Telegram-сообщений LIGHT режима.
+
+LIGHT_SIGNAL_ONLY = True
+# LIGHT режим не выставляет ордера и используется только для alert/notifications.
+
+LIGHT_EMA_CROSS_ENABLED = True
+LIGHT_EMA_SHORT_PERIOD = 9
+LIGHT_EMA_LONG_PERIOD = 21
+# Пересечение быстрых EMA для раннего направления импульса.
+
+LIGHT_SMA_TREND_FILTER_ENABLED = True
+LIGHT_SMA_SHORT_PERIOD = 20
+LIGHT_SMA_LONG_PERIOD = 50
+# SMA используется как дополнительный trend-фильтр, не заменяя EMA-cross.
+
+LIGHT_RSI_ENABLED = True
+LIGHT_RSI_PERIOD = 14
+LIGHT_RSI_OVERSOLD = 35
+LIGHT_RSI_OVERBOUGHT = 65
+# Порог можно расширять/сужать под более редкие или частые сигналы.
+
+LIGHT_MACD_ENABLED = True
+LIGHT_MACD_FAST = 12
+LIGHT_MACD_SLOW = 26
+LIGHT_MACD_SIGNAL = 9
+# Проверяем положение MACD относительно сигнальной линии.
+
+LIGHT_MIN_BODY_FILTER_ENABLED = True
+LIGHT_MIN_BODY_PCT = 0.0025
+# Минимальный импульс свечи: тело свечи должно быть > 0.25% от цены.
+
+LIGHT_VOLUME_FILTER_ENABLED = True
+LIGHT_VOLUME_THRESHOLD = 0.0
+# Абсолютный порог объёма свечи. 0 = отключить абсолютный минимум, сохранив ratio-фильтр.
+
+LIGHT_VOLUME_RATIO_FILTER_ENABLED = True
+LIGHT_VOLUME_RATIO_THRESHOLD = 1.1
+LIGHT_VOLUME_MA_PERIOD = 20
+# Текущий объём свечи должен быть >= среднего * ratio.
+
+LIGHT_SIGNAL_PROBABILITY_ENABLED = False
+LIGHT_SIGNAL_PROBABILITY = 1.0
+# Вероятностный gate: 1.0 = пропускать все сигналы; 0.35 = ~35% сигналов.
+
+LIGHT_ATR_PERIOD = 14
+LIGHT_SL_ATR_MULTIPLIER = 1.2
+LIGHT_TP_ATR_MULTIPLIER = 1.8
+# ATR-множители для расчёта signal-only TP/SL.
+
 
 # ============================================================
 # Correlation
@@ -263,11 +340,11 @@ MOMENTUM_EXTENSION_ATR_MULTIPLIER = 0.5
 MODE_FILTER = "ALL"
 # Режим отбора рынка для стратегии: ALL / TREND / RANGE.
 
-ENABLE_BOS_IN_RANGE = True
+ENABLE_BOS_IN_RANGE = False
 # Разрешать ли BOS-сигналы в range-режиме. True / False
 # Для live по умолчанию лучше держать False, чтобы не плодить спорные сигналы.
 
-ENABLE_SWEEP_IN_TREND = True
+ENABLE_SWEEP_IN_TREND = False
 # Разрешать ли sweep-сигналы в тренде. True / False
 # Для live по умолчанию False: меньше конфликтов между mean-reversion и trend-following.
 
@@ -444,7 +521,7 @@ SCALPING_SIGNAL_PREFIX = "[SCALP]"
 def get_live_mode() -> str:
     """Возвращает нормализованный live-режим."""
     mode = str(LIVE_MODE or "MAIN").upper()
-    return mode if mode in {"MAIN", "SCALPING"} else "MAIN"
+    return mode if mode in {"MAIN", "SCALPING", "LIGHT"} else "MAIN"
 
 
 def is_scalping_mode() -> bool:
@@ -453,14 +530,17 @@ def is_scalping_mode() -> bool:
 
 
 def get_live_runtime_settings() -> dict:
-    """Единая точка выбора live-параметров MAIN/SCALPING."""
+    """Единая точка выбора live-параметров MAIN/SCALPING/LIGHT."""
     mode = get_live_mode()
     if mode == "SCALPING":
         execution_timeframes = tuple(MTF_EXECUTION_TIMEFRAMES_SCALPING)
         return {
             "mode": mode,
             "is_scalping": True,
+            "is_light": False,
+            "signal_only": False,
             "scan_timeframe": execution_timeframes[0],
+            "scan_interval": SCAN_INTERVAL,
             "execution_timeframes": execution_timeframes,
             "swing_window": SWING_WINDOW_SCALPING,
             "lookback_levels": LOOKBACK_LEVELS_SCALPING,
@@ -471,10 +551,32 @@ def get_live_runtime_settings() -> dict:
             "signal_prefix": SCALPING_SIGNAL_PREFIX,
         }
 
+    if mode == "LIGHT":
+        execution_timeframes = tuple(MTF_EXECUTION_TIMEFRAMES_LIGHT)
+        return {
+            "mode": mode,
+            "is_scalping": False,
+            "is_light": True,
+            "signal_only": LIGHT_SIGNAL_ONLY,
+            "scan_timeframe": SCAN_TIMEFRAME_LIGHT,
+            "scan_interval": SCAN_INTERVAL_LIGHT,
+            "execution_timeframes": execution_timeframes,
+            "swing_window": SWING_WINDOW,
+            "lookback_levels": LOOKBACK_LEVELS,
+            "scan_candle_limit": SCAN_CANDLE_LIMIT_LIGHT,
+            "confidence_threshold": CONFIDENCE_THRESHOLD_LIGHT,
+            "min_signal_rr": MIN_SIGNAL_RR_LIGHT,
+            "max_rr": MAX_RR_LIGHT,
+            "signal_prefix": LIGHT_SIGNAL_PREFIX,
+        }
+
     return {
         "mode": mode,
         "is_scalping": False,
+        "is_light": False,
+        "signal_only": False,
         "scan_timeframe": SCAN_TIMEFRAME,
+        "scan_interval": SCAN_INTERVAL,
         "execution_timeframes": tuple(MTF_EXECUTION_TIMEFRAMES),
         "swing_window": SWING_WINDOW,
         "lookback_levels": LOOKBACK_LEVELS,

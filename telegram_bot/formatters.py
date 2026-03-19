@@ -6,11 +6,16 @@ def format_signal(signal: dict) -> str:
     label_prefix = str(signal.get("label_prefix", "") or "").strip()
     title = f"{label_prefix} Новый сигнал".strip()
     mode_line = ""
-    if signal.get("live_mode") == "SCALPING":
+    live_mode = signal.get("live_mode")
+    if live_mode in {"SCALPING", "LIGHT"}:
         mode_line = (
-            f"Режим: <b>{signal['live_mode']}</b> | TF: <b>{signal.get('tf', 'N/A')}</b> | "
+            f"Режим: <b>{live_mode}</b> | TF: <b>{signal.get('tf', 'N/A')}</b> | "
             f"MTF: <b>{', '.join(signal.get('execution_timeframes', ()))}</b>\n"
         )
+    alert_line = ""
+    if signal.get("signal_only") or signal.get("alert_text"):
+        alert_text = signal.get("alert_text", "Signal-only alert")
+        alert_line = f"Alert: <b>{alert_text}</b>\n"
     return (
         f"📢 <b>{title}</b>\n"
         f"Пара: <b>{signal['symbol']}</b>\n"
@@ -23,6 +28,7 @@ def format_signal(signal: dict) -> str:
         f"Confidence: <b>{signal['confidence']}/5</b>\n"
         f"Regime: <b>{signal.get('regime', 'N/A')}</b>\n"
         f"{mode_line}"
+        f"{alert_line}"
     ).rstrip()
 
 

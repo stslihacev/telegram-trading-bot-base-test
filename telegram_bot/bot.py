@@ -14,7 +14,7 @@ from tkinter.scrolledtext import ScrolledText
 from dotenv import load_dotenv
 from telegram.ext import Application, CallbackQueryHandler, CommandHandler
 
-from core.config import DEBUG_MODE, MIN_SIGNAL_RR, SCAN_INTERVAL, SCAN_INTERVAL_MIN, TOP_N
+from core.config import DEBUG_MODE, MIN_SIGNAL_RR, SCAN_INTERVAL, SCAN_INTERVAL_MIN, TOP_N, get_live_runtime_settings
 from core.debug import success
 from core.state_manager import state_manager
 from execution.signal_dispatcher import SignalDispatcher
@@ -73,13 +73,17 @@ class TelegramTradingBot:
             logger.warning("TELEGRAM_TOKEN не задан — бот запустится в режиме scanner + GUI без Telegram polling")
 
         self.min_rr = float(os.getenv("MIN_SIGNAL_RR", str(MIN_SIGNAL_RR)))
-        self.scan_interval_min = int(os.getenv("SCAN_INTERVAL_MIN", str(SCAN_INTERVAL_MIN)))
 
         self.dispatcher = SignalDispatcher(dedup_minutes=60)
+        self.runtime = get_live_runtime_settings()
+        runtime_interval = int(self.runtime.get("scan_interval", SCAN_INTERVAL))
+        default_scan_interval_min = max(1, (runtime_interval + 59) // 60)
+        self.scan_interval_min = int(os.getenv("SCAN_INTERVAL_MIN", str(default_scan_interval_min or SCAN_INTERVAL_MIN)))
         self.scanner = MarketScanner()
-        self.scanner.strategy.min_rr = self.min_rr
+        if hasattr(self.scanner.strategy, "min_rr"):
+            self.scanner.strategy.min_rr = self.min_rr
 
-        self.default_interval_sec = max(SCAN_INTERVAL, self.scan_interval_min * 60)
+        self.default_interval_sec = max(runtime_interval, self.scan_interval_min * 60)
 
         self.application: Application | None = None
         self.scan_task: asyncio.Task | None = None
@@ -180,7 +184,8 @@ class TelegramTradingBot:
         if self.dispatcher.is_duplicate(signal):
             return
 
-        self.dispatcher.register_position(signal)
+        if not signal.get("signal_only"):
+            self.dispatcher.register_position(signal)
 
         from database.db import save_signal
         save_signal(

@@ -9,7 +9,7 @@ import pandas as pd
 import core.config as config
 from core.debug import debug_stage, reject
 from scanner.volume_scanner import get_top_usdt_pairs
-from services.strategy_adapter import BacktestStrategyAdapter
+from services.strategy_adapter import build_live_strategy
 from utils.logger import logger
 
 
@@ -22,7 +22,7 @@ class MarketScanner:
         self.timeframe = timeframe or runtime["scan_timeframe"]
         self.candle_limit = int(candle_limit or runtime["scan_candle_limit"])
         self.log_prefix = runtime["signal_prefix"]
-        self.strategy = BacktestStrategyAdapter()
+        self.strategy = build_live_strategy()
         self.exchange = ccxt.bybit({"enableRateLimit": True, "options": {"defaultType": "swap"}})
         logger.info(
             "%s scanner initialized | mode=%s | timeframe=%s | candle_limit=%s | execution_tfs=%s",
@@ -41,7 +41,7 @@ class MarketScanner:
                 lambda: self.exchange.fetch_ohlcv(symbol, self.timeframe, limit=self.candle_limit),
             )
         except Exception as exc:
-            llogger.warning(f"{self.log_prefix} {symbol} | ошибка загрузки свечей: {exc}".strip())
+            logger.warning(f"{self.log_prefix} {symbol} | ошибка загрузки свечей: {exc}".strip())
             return None
 
         if not data:

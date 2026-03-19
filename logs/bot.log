@@ -8077,3 +8077,1047 @@ NameError: name 'llogger' is not defined
 2026-03-19 21:15:50,099 - crypto_bot - INFO - 📊 Signals found: 0
 2026-03-19 21:15:50,099 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
 2026-03-19 21:16:04,467 - crypto_bot - INFO - 🛑 Остановка по KeyboardInterrupt
+2026-03-19 21:16:53,151 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-19 21:16:53,151 - crypto_bot - WARNING - TELEGRAM_TOKEN не задан — бот запустится в режиме scanner + GUI без Telegram polling
+2026-03-19 21:16:53,161 - crypto_bot - INFO - [SCALP] scanner initialized | mode=SCALPING | timeframe=30m | candle_limit=120 | execution_tfs=30m, 15m
+2026-03-19 21:16:53,191 - crypto_bot - INFO - 🖥️ Signal GUI thread started
+2026-03-19 21:16:53,191 - crypto_bot - INFO - ✅ Telegram отключён: инициализированы scanner + GUI режим
+2026-03-19 21:16:53,191 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-19 21:16:53,191 - crypto_bot - INFO - 📡 Telegram polling disabled, running standalone scan loop
+2026-03-19 21:16:53,191 - crypto_bot - INFO - 🚀 SCAN LOOP STARTED
+2026-03-19 21:16:53,191 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-19 21:16:57,832 - crypto_bot - INFO - [SCALP] 📈 Top-50 symbols fetched: 50
+2026-03-19 21:17:03,296 - crypto_bot - INFO - [SCALP] 🔥 Active symbols after filter: 43 / 50
+2026-03-19 21:17:03,296 - crypto_bot - INFO - [SCALP] 🔍 Scanning BTC/USDT:USDT
+2026-03-19 21:17:03,527 - crypto_bot - INFO - [SCALP] ❌ No signal: BTCUSDT
+2026-03-19 21:17:03,528 - crypto_bot - INFO - [SCALP] 🔍 Scanning ETH/USDT:USDT
+2026-03-19 21:17:03,746 - crypto_bot - INFO - [SCALP] ❌ No signal: ETHUSDT
+2026-03-19 21:17:03,747 - crypto_bot - INFO - [SCALP] 🔍 Scanning SOL/USDT:USDT
+2026-03-19 21:17:03,962 - crypto_bot - INFO - [SCALP] ❌ No signal: SOLUSDT
+2026-03-19 21:17:03,963 - crypto_bot - INFO - [SCALP] 🔍 Scanning XRP/USDT:USDT
+2026-03-19 21:17:04,183 - crypto_bot - INFO - [SCALP] ❌ No signal: XRPUSDT
+2026-03-19 21:17:04,183 - crypto_bot - INFO - [SCALP] 🔍 Scanning HYPE/USDT:USDT
+2026-03-19 21:17:04,397 - crypto_bot - INFO - [SCALP] ❌ No signal: HYPEUSDT
+2026-03-19 21:17:04,397 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAUT/USDT:USDT
+2026-03-19 21:17:04,613 - crypto_bot - INFO - [SCALP] ❌ No signal: XAUTUSDT
+2026-03-19 21:17:04,613 - crypto_bot - INFO - [SCALP] 🔍 Scanning DOGE/USDT:USDT
+2026-03-19 21:17:04,840 - crypto_bot - INFO - [SCALP] ❌ No signal: DOGEUSDT
+2026-03-19 21:17:04,841 - crypto_bot - INFO - [SCALP] 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-19 21:17:05,056 - crypto_bot - INFO - [SCALP] ❌ No signal: FARTCOINUSDT
+2026-03-19 21:17:05,056 - crypto_bot - INFO - [SCALP] 🔍 Scanning LYN/USDT:USDT
+2026-03-19 21:17:05,271 - crypto_bot - INFO - [SCALP] ❌ No signal: LYNUSDT
+2026-03-19 21:17:05,271 - crypto_bot - INFO - [SCALP] 🔍 Scanning RIVER/USDT:USDT
+2026-03-19 21:17:05,503 - crypto_bot - INFO - [SCALP] ❌ No signal: RIVERUSDT
+2026-03-19 21:17:05,504 - crypto_bot - INFO - [SCALP] 🔍 Scanning 1000PEPE/USDT:USDT
+2026-03-19 21:17:05,711 - crypto_bot - INFO - [SCALP] ❌ No signal: 1000PEPEUSDT
+2026-03-19 21:17:05,711 - crypto_bot - INFO - [SCALP] 🔍 Scanning TAO/USDT:USDT
+2026-03-19 21:17:05,931 - crypto_bot - INFO - [SCALP] ❌ No signal: TAOUSDT
+2026-03-19 21:17:05,931 - crypto_bot - INFO - [SCALP] 🔍 Scanning ZEC/USDT:USDT
+2026-03-19 21:17:06,150 - crypto_bot - INFO - [SCALP] ❌ No signal: ZECUSDT
+2026-03-19 21:17:06,150 - crypto_bot - INFO - [SCALP] 🔍 Scanning BARD/USDT:USDT
+2026-03-19 21:17:06,364 - crypto_bot - INFO - [SCALP] ❌ No signal: BARDUSDT
+2026-03-19 21:17:06,365 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAG/USDT:USDT
+2026-03-19 21:17:06,569 - crypto_bot - INFO - [SCALP] ❌ No signal: XAGUSDT
+2026-03-19 21:17:06,569 - crypto_bot - INFO - [SCALP] 🔍 Scanning ADA/USDT:USDT
+2026-03-19 21:17:06,790 - crypto_bot - INFO - [SCALP] ❌ No signal: ADAUSDT
+2026-03-19 21:17:06,790 - crypto_bot - INFO - [SCALP] 🔍 Scanning SAHARA/USDT:USDT
+2026-03-19 21:17:07,016 - crypto_bot - INFO - [SCALP] ❌ No signal: SAHARAUSDT
+2026-03-19 21:17:07,017 - crypto_bot - INFO - [SCALP] 🔍 Scanning SUI/USDT:USDT
+2026-03-19 21:17:07,225 - crypto_bot - INFO - [SCALP] ❌ No signal: SUIUSDT
+2026-03-19 21:17:07,225 - crypto_bot - INFO - [SCALP] 🔍 Scanning PAXG/USDT:USDT
+2026-03-19 21:17:07,451 - crypto_bot - INFO - [SCALP] ❌ No signal: PAXGUSDT
+2026-03-19 21:17:07,451 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAU/USDT:USDT
+2026-03-19 21:17:07,667 - crypto_bot - INFO - [SCALP] ❌ No signal: XAUUSDT
+2026-03-19 21:17:07,669 - crypto_bot - INFO - [SCALP] 🔍 Scanning LINK/USDT:USDT
+2026-03-19 21:17:07,889 - crypto_bot - INFO - [SCALP] ❌ No signal: LINKUSDT
+2026-03-19 21:17:07,890 - crypto_bot - INFO - [SCALP] 🔍 Scanning SIREN/USDT:USDT
+2026-03-19 21:17:08,104 - crypto_bot - INFO - [SCALP] ❌ No signal: SIRENUSDT
+2026-03-19 21:17:08,104 - crypto_bot - INFO - [SCALP] 🔍 Scanning TRUMP/USDT:USDT
+2026-03-19 21:17:08,309 - crypto_bot - INFO - [SCALP] ❌ No signal: TRUMPUSDT
+2026-03-19 21:17:08,309 - crypto_bot - INFO - [SCALP] 🔍 Scanning NEAR/USDT:USDT
+2026-03-19 21:17:08,527 - crypto_bot - INFO - [SCALP] ❌ No signal: NEARUSDT
+2026-03-19 21:17:08,527 - crypto_bot - INFO - [SCALP] 🔍 Scanning WLD/USDT:USDT
+2026-03-19 21:17:08,747 - crypto_bot - INFO - [SCALP] ❌ No signal: WLDUSDT
+2026-03-19 21:17:08,747 - crypto_bot - INFO - [SCALP] 🔍 Scanning BNB/USDT:USDT
+2026-03-19 21:17:08,992 - crypto_bot - INFO - [SCALP] ❌ No signal: BNBUSDT
+2026-03-19 21:17:08,992 - crypto_bot - INFO - [SCALP] 🔍 Scanning AAVE/USDT:USDT
+2026-03-19 21:17:09,208 - crypto_bot - INFO - [SCALP] ❌ No signal: AAVEUSDT
+2026-03-19 21:17:09,208 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAN/USDT:USDT
+2026-03-19 21:17:09,423 - crypto_bot - INFO - [SCALP] ❌ No signal: XANUSDT
+2026-03-19 21:17:09,423 - crypto_bot - INFO - [SCALP] 🔍 Scanning ETHFI/USDT:USDT
+2026-03-19 21:17:09,653 - crypto_bot - INFO - [SCALP] ❌ No signal: ETHFIUSDT
+2026-03-19 21:17:09,654 - crypto_bot - INFO - [SCALP] 🔍 Scanning PIXEL/USDT:USDT
+2026-03-19 21:17:09,871 - crypto_bot - INFO - [SCALP] ❌ No signal: PIXELUSDT
+2026-03-19 21:17:09,871 - crypto_bot - INFO - [SCALP] 🔍 Scanning BAN/USDT:USDT
+2026-03-19 21:17:10,089 - crypto_bot - INFO - [SCALP] ❌ No signal: BANUSDT
+2026-03-19 21:17:10,090 - crypto_bot - INFO - [SCALP] 🔍 Scanning ENA/USDT:USDT
+2026-03-19 21:17:10,307 - crypto_bot - INFO - [SCALP] ❌ No signal: ENAUSDT
+2026-03-19 21:17:10,307 - crypto_bot - INFO - [SCALP] 🔍 Scanning WIF/USDT:USDT
+2026-03-19 21:17:10,538 - crypto_bot - INFO - [SCALP] ❌ No signal: WIFUSDT
+2026-03-19 21:17:10,539 - crypto_bot - INFO - [SCALP] 🔍 Scanning ASTER/USDT:USDT
+2026-03-19 21:17:10,753 - crypto_bot - INFO - [SCALP] ❌ No signal: ASTERUSDT
+2026-03-19 21:17:10,753 - crypto_bot - INFO - [SCALP] 🔍 Scanning DOT/USDT:USDT
+2026-03-19 21:17:10,971 - crypto_bot - INFO - [SCALP] ❌ No signal: DOTUSDT
+2026-03-19 21:17:10,972 - crypto_bot - INFO - [SCALP] 🔍 Scanning AVAX/USDT:USDT
+2026-03-19 21:17:11,186 - crypto_bot - INFO - [SCALP] ❌ No signal: AVAXUSDT
+2026-03-19 21:17:11,186 - crypto_bot - INFO - [SCALP] 🔍 Scanning VIRTUAL/USDT:USDT
+2026-03-19 21:17:11,402 - crypto_bot - INFO - [SCALP] ❌ No signal: VIRTUALUSDT
+2026-03-19 21:17:11,403 - crypto_bot - INFO - [SCALP] 🔍 Scanning UAI/USDT:USDT
+2026-03-19 21:17:11,618 - crypto_bot - INFO - [SCALP] ❌ No signal: UAIUSDT
+2026-03-19 21:17:11,618 - crypto_bot - INFO - [SCALP] 🔍 Scanning PUMPFUN/USDT:USDT
+2026-03-19 21:17:11,829 - crypto_bot - INFO - [SCALP] ❌ No signal: PUMPFUNUSDT
+2026-03-19 21:17:11,829 - crypto_bot - INFO - [SCALP] 🔍 Scanning LTC/USDT:USDT
+2026-03-19 21:17:12,049 - crypto_bot - INFO - [SCALP] ❌ No signal: LTCUSDT
+2026-03-19 21:17:12,049 - crypto_bot - INFO - [SCALP] 🔍 Scanning KITE/USDT:USDT
+2026-03-19 21:17:12,264 - crypto_bot - INFO - [SCALP] ❌ No signal: KITEUSDT
+2026-03-19 21:17:12,264 - crypto_bot - INFO - [SCALP] 🔍 Scanning GALA/USDT:USDT
+2026-03-19 21:17:12,480 - crypto_bot - INFO - [SCALP] ❌ No signal: GALAUSDT
+2026-03-19 21:17:12,480 - crypto_bot - INFO - [SCALP] 🔍 Scanning XPL/USDT:USDT
+2026-03-19 21:17:12,695 - crypto_bot - INFO - [SCALP] ❌ No signal: XPLUSDT
+2026-03-19 21:17:12,695 - crypto_bot - INFO - [SCALP] 📊 Total signals after scan: 0
+2026-03-19 21:17:12,695 - crypto_bot - INFO - 📊 Signals found: 0
+2026-03-19 21:17:12,696 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
+2026-03-19 21:22:12,713 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-19 21:22:13,542 - crypto_bot - INFO - [SCALP] 📈 Top-50 symbols fetched: 50
+2026-03-19 21:22:14,296 - crypto_bot - INFO - [SCALP] 🔥 Active symbols after filter: 43 / 50
+2026-03-19 21:22:14,297 - crypto_bot - INFO - [SCALP] 🔍 Scanning BTC/USDT:USDT
+2026-03-19 21:22:14,514 - crypto_bot - INFO - [SCALP] ❌ No signal: BTCUSDT
+2026-03-19 21:22:14,515 - crypto_bot - INFO - [SCALP] 🔍 Scanning ETH/USDT:USDT
+2026-03-19 21:22:14,734 - crypto_bot - INFO - [SCALP] ❌ No signal: ETHUSDT
+2026-03-19 21:22:14,734 - crypto_bot - INFO - [SCALP] 🔍 Scanning SOL/USDT:USDT
+2026-03-19 21:22:14,952 - crypto_bot - INFO - [SCALP] ❌ No signal: SOLUSDT
+2026-03-19 21:22:14,952 - crypto_bot - INFO - [SCALP] 🔍 Scanning XRP/USDT:USDT
+2026-03-19 21:22:15,167 - crypto_bot - INFO - [SCALP] ❌ No signal: XRPUSDT
+2026-03-19 21:22:15,167 - crypto_bot - INFO - [SCALP] 🔍 Scanning HYPE/USDT:USDT
+2026-03-19 21:22:15,390 - crypto_bot - INFO - [SCALP] ❌ No signal: HYPEUSDT
+2026-03-19 21:22:15,390 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAUT/USDT:USDT
+2026-03-19 21:22:15,611 - crypto_bot - INFO - [SCALP] ❌ No signal: XAUTUSDT
+2026-03-19 21:22:15,611 - crypto_bot - INFO - [SCALP] 🔍 Scanning DOGE/USDT:USDT
+2026-03-19 21:22:15,828 - crypto_bot - INFO - [SCALP] ❌ No signal: DOGEUSDT
+2026-03-19 21:22:15,828 - crypto_bot - INFO - [SCALP] 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-19 21:22:16,043 - crypto_bot - INFO - [SCALP] ❌ No signal: FARTCOINUSDT
+2026-03-19 21:22:16,043 - crypto_bot - INFO - [SCALP] 🔍 Scanning LYN/USDT:USDT
+2026-03-19 21:22:16,259 - crypto_bot - INFO - [SCALP] ❌ No signal: LYNUSDT
+2026-03-19 21:22:16,259 - crypto_bot - INFO - [SCALP] 🔍 Scanning 1000PEPE/USDT:USDT
+2026-03-19 21:22:16,479 - crypto_bot - INFO - [SCALP] ❌ No signal: 1000PEPEUSDT
+2026-03-19 21:22:16,479 - crypto_bot - INFO - [SCALP] 🔍 Scanning TAO/USDT:USDT
+2026-03-19 21:22:16,694 - crypto_bot - INFO - [SCALP] ❌ No signal: TAOUSDT
+2026-03-19 21:22:16,694 - crypto_bot - INFO - [SCALP] 🔍 Scanning ZEC/USDT:USDT
+2026-03-19 21:22:16,925 - crypto_bot - INFO - [SCALP] ❌ No signal: ZECUSDT
+2026-03-19 21:22:16,926 - crypto_bot - INFO - [SCALP] 🔍 Scanning BARD/USDT:USDT
+2026-03-19 21:22:17,143 - crypto_bot - INFO - [SCALP] ❌ No signal: BARDUSDT
+2026-03-19 21:22:17,143 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAG/USDT:USDT
+2026-03-19 21:22:17,351 - crypto_bot - INFO - [SCALP] ❌ No signal: XAGUSDT
+2026-03-19 21:22:17,351 - crypto_bot - INFO - [SCALP] 🔍 Scanning ADA/USDT:USDT
+2026-03-19 21:22:17,580 - crypto_bot - INFO - [SCALP] ❌ No signal: ADAUSDT
+2026-03-19 21:22:17,580 - crypto_bot - INFO - [SCALP] 🔍 Scanning SAHARA/USDT:USDT
+2026-03-19 21:22:17,854 - crypto_bot - INFO - [SCALP] ❌ No signal: SAHARAUSDT
+2026-03-19 21:22:17,854 - crypto_bot - INFO - [SCALP] 🔍 Scanning SUI/USDT:USDT
+2026-03-19 21:22:18,098 - crypto_bot - INFO - [SCALP] ❌ No signal: SUIUSDT
+2026-03-19 21:22:18,098 - crypto_bot - INFO - [SCALP] 🔍 Scanning ENJ/USDT:USDT
+2026-03-19 21:22:18,317 - crypto_bot - INFO - [SCALP] ❌ No signal: ENJUSDT
+2026-03-19 21:22:18,317 - crypto_bot - INFO - [SCALP] 🔍 Scanning PAXG/USDT:USDT
+2026-03-19 21:22:18,542 - crypto_bot - INFO - [SCALP] ❌ No signal: PAXGUSDT
+2026-03-19 21:22:18,542 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAU/USDT:USDT
+2026-03-19 21:22:18,779 - crypto_bot - INFO - [SCALP] ❌ No signal: XAUUSDT
+2026-03-19 21:22:18,779 - crypto_bot - INFO - [SCALP] 🔍 Scanning LINK/USDT:USDT
+2026-03-19 21:22:18,996 - crypto_bot - INFO - [SCALP] ❌ No signal: LINKUSDT
+2026-03-19 21:22:18,996 - crypto_bot - INFO - [SCALP] 🔍 Scanning SIREN/USDT:USDT
+2026-03-19 21:22:19,213 - crypto_bot - INFO - [SCALP] ❌ No signal: SIRENUSDT
+2026-03-19 21:22:19,213 - crypto_bot - INFO - [SCALP] 🔍 Scanning TRUMP/USDT:USDT
+2026-03-19 21:22:19,431 - crypto_bot - INFO - [SCALP] ❌ No signal: TRUMPUSDT
+2026-03-19 21:22:19,432 - crypto_bot - INFO - [SCALP] 🔍 Scanning WLD/USDT:USDT
+2026-03-19 21:22:19,649 - crypto_bot - INFO - [SCALP] ❌ No signal: WLDUSDT
+2026-03-19 21:22:19,649 - crypto_bot - INFO - [SCALP] 🔍 Scanning NEAR/USDT:USDT
+2026-03-19 21:22:19,855 - crypto_bot - INFO - [SCALP] ❌ No signal: NEARUSDT
+2026-03-19 21:22:19,855 - crypto_bot - INFO - [SCALP] 🔍 Scanning BNB/USDT:USDT
+2026-03-19 21:22:20,091 - crypto_bot - INFO - [SCALP] ❌ No signal: BNBUSDT
+2026-03-19 21:22:20,091 - crypto_bot - INFO - [SCALP] 🔍 Scanning AAVE/USDT:USDT
+2026-03-19 21:22:20,308 - crypto_bot - INFO - [SCALP] ❌ No signal: AAVEUSDT
+2026-03-19 21:22:20,308 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAN/USDT:USDT
+2026-03-19 21:22:20,525 - crypto_bot - INFO - [SCALP] ❌ No signal: XANUSDT
+2026-03-19 21:22:20,526 - crypto_bot - INFO - [SCALP] 🔍 Scanning ETHFI/USDT:USDT
+2026-03-19 21:22:20,743 - crypto_bot - INFO - [SCALP] ❌ No signal: ETHFIUSDT
+2026-03-19 21:22:20,743 - crypto_bot - INFO - [SCALP] 🔍 Scanning PIXEL/USDT:USDT
+2026-03-19 21:22:20,963 - crypto_bot - INFO - [SCALP] ❌ No signal: PIXELUSDT
+2026-03-19 21:22:20,963 - crypto_bot - INFO - [SCALP] 🔍 Scanning BAN/USDT:USDT
+2026-03-19 21:22:21,196 - crypto_bot - INFO - [SCALP] ❌ No signal: BANUSDT
+2026-03-19 21:22:21,197 - crypto_bot - INFO - [SCALP] 🔍 Scanning ENA/USDT:USDT
+2026-03-19 21:22:21,415 - crypto_bot - INFO - [SCALP] ❌ No signal: ENAUSDT
+2026-03-19 21:22:21,416 - crypto_bot - INFO - [SCALP] 🔍 Scanning WIF/USDT:USDT
+2026-03-19 21:22:21,634 - crypto_bot - INFO - [SCALP] ❌ No signal: WIFUSDT
+2026-03-19 21:22:21,634 - crypto_bot - INFO - [SCALP] 🔍 Scanning ASTER/USDT:USDT
+2026-03-19 21:22:21,851 - crypto_bot - INFO - [SCALP] ❌ No signal: ASTERUSDT
+2026-03-19 21:22:21,851 - crypto_bot - INFO - [SCALP] 🔍 Scanning DOT/USDT:USDT
+2026-03-19 21:22:22,064 - crypto_bot - INFO - [SCALP] ❌ No signal: DOTUSDT
+2026-03-19 21:22:22,064 - crypto_bot - INFO - [SCALP] 🔍 Scanning VIRTUAL/USDT:USDT
+2026-03-19 21:22:22,286 - crypto_bot - INFO - [SCALP] ❌ No signal: VIRTUALUSDT
+2026-03-19 21:22:22,287 - crypto_bot - INFO - [SCALP] 🔍 Scanning AVAX/USDT:USDT
+2026-03-19 21:22:22,505 - crypto_bot - INFO - [SCALP] ❌ No signal: AVAXUSDT
+2026-03-19 21:22:22,505 - crypto_bot - INFO - [SCALP] 🔍 Scanning UAI/USDT:USDT
+2026-03-19 21:22:22,722 - crypto_bot - INFO - [SCALP] ❌ No signal: UAIUSDT
+2026-03-19 21:22:22,723 - crypto_bot - INFO - [SCALP] 🔍 Scanning PUMPFUN/USDT:USDT
+2026-03-19 21:22:22,941 - crypto_bot - INFO - [SCALP] ❌ No signal: PUMPFUNUSDT
+2026-03-19 21:22:22,941 - crypto_bot - INFO - [SCALP] 🔍 Scanning LTC/USDT:USDT
+2026-03-19 21:22:23,157 - crypto_bot - INFO - [SCALP] ❌ No signal: LTCUSDT
+2026-03-19 21:22:23,157 - crypto_bot - INFO - [SCALP] 🔍 Scanning KITE/USDT:USDT
+2026-03-19 21:22:23,373 - crypto_bot - INFO - [SCALP] ❌ No signal: KITEUSDT
+2026-03-19 21:22:23,373 - crypto_bot - INFO - [SCALP] 🔍 Scanning GALA/USDT:USDT
+2026-03-19 21:22:23,591 - crypto_bot - INFO - [SCALP] ❌ No signal: GALAUSDT
+2026-03-19 21:22:23,591 - crypto_bot - INFO - [SCALP] 🔍 Scanning XPL/USDT:USDT
+2026-03-19 21:22:23,809 - crypto_bot - INFO - [SCALP] ❌ No signal: XPLUSDT
+2026-03-19 21:22:23,809 - crypto_bot - INFO - [SCALP] 📊 Total signals after scan: 0
+2026-03-19 21:22:23,810 - crypto_bot - INFO - 📊 Signals found: 0
+2026-03-19 21:22:23,810 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
+2026-03-19 21:27:23,825 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-19 21:27:24,686 - crypto_bot - INFO - [SCALP] 📈 Top-50 symbols fetched: 50
+2026-03-19 21:27:25,406 - crypto_bot - INFO - [SCALP] 🔥 Active symbols after filter: 44 / 50
+2026-03-19 21:27:25,407 - crypto_bot - INFO - [SCALP] 🔍 Scanning BTC/USDT:USDT
+2026-03-19 21:27:25,624 - crypto_bot - INFO - [SCALP] ❌ No signal: BTCUSDT
+2026-03-19 21:27:25,624 - crypto_bot - INFO - [SCALP] 🔍 Scanning ETH/USDT:USDT
+2026-03-19 21:27:25,834 - crypto_bot - INFO - [SCALP] ❌ No signal: ETHUSDT
+2026-03-19 21:27:25,835 - crypto_bot - INFO - [SCALP] 🔍 Scanning SOL/USDT:USDT
+2026-03-19 21:27:26,047 - crypto_bot - INFO - [SCALP] ❌ No signal: SOLUSDT
+2026-03-19 21:27:26,047 - crypto_bot - INFO - [SCALP] 🔍 Scanning XRP/USDT:USDT
+2026-03-19 21:27:26,265 - crypto_bot - INFO - [SCALP] ❌ No signal: XRPUSDT
+2026-03-19 21:27:26,265 - crypto_bot - INFO - [SCALP] 🔍 Scanning HYPE/USDT:USDT
+2026-03-19 21:27:26,800 - crypto_bot - INFO - [SCALP] ❌ No signal: HYPEUSDT
+2026-03-19 21:27:26,800 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAUT/USDT:USDT
+2026-03-19 21:27:27,002 - crypto_bot - INFO - [SCALP] ❌ No signal: XAUTUSDT
+2026-03-19 21:27:27,002 - crypto_bot - INFO - [SCALP] 🔍 Scanning DOGE/USDT:USDT
+2026-03-19 21:27:27,223 - crypto_bot - INFO - [SCALP] ❌ No signal: DOGEUSDT
+2026-03-19 21:27:27,223 - crypto_bot - INFO - [SCALP] 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-19 21:27:27,432 - crypto_bot - INFO - [SCALP] ❌ No signal: FARTCOINUSDT
+2026-03-19 21:27:27,432 - crypto_bot - INFO - [SCALP] 🔍 Scanning LYN/USDT:USDT
+2026-03-19 21:27:27,638 - crypto_bot - INFO - [SCALP] ❌ No signal: LYNUSDT
+2026-03-19 21:27:27,638 - crypto_bot - INFO - [SCALP] 🔍 Scanning RIVER/USDT:USDT
+2026-03-19 21:27:27,856 - crypto_bot - INFO - [SCALP] ❌ No signal: RIVERUSDT
+2026-03-19 21:27:27,856 - crypto_bot - INFO - [SCALP] 🔍 Scanning 1000PEPE/USDT:USDT
+2026-03-19 21:27:28,076 - crypto_bot - INFO - [SCALP] ❌ No signal: 1000PEPEUSDT
+2026-03-19 21:27:28,076 - crypto_bot - INFO - [SCALP] 🔍 Scanning TAO/USDT:USDT
+2026-03-19 21:27:28,284 - crypto_bot - INFO - [SCALP] ❌ No signal: TAOUSDT
+2026-03-19 21:27:28,284 - crypto_bot - INFO - [SCALP] 🔍 Scanning PIPPIN/USDT:USDT
+2026-03-19 21:27:28,497 - crypto_bot - INFO - [SCALP] ❌ No signal: PIPPINUSDT
+2026-03-19 21:27:28,497 - crypto_bot - INFO - [SCALP] 🔍 Scanning ZEC/USDT:USDT
+2026-03-19 21:27:28,711 - crypto_bot - INFO - [SCALP] ❌ No signal: ZECUSDT
+2026-03-19 21:27:28,711 - crypto_bot - INFO - [SCALP] 🔍 Scanning BARD/USDT:USDT
+2026-03-19 21:27:28,918 - crypto_bot - INFO - [SCALP] ❌ No signal: BARDUSDT
+2026-03-19 21:27:28,918 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAG/USDT:USDT
+2026-03-19 21:27:29,122 - crypto_bot - INFO - [SCALP] ❌ No signal: XAGUSDT
+2026-03-19 21:27:29,122 - crypto_bot - INFO - [SCALP] 🔍 Scanning ADA/USDT:USDT
+2026-03-19 21:27:29,340 - crypto_bot - INFO - [SCALP] ❌ No signal: ADAUSDT
+2026-03-19 21:27:29,340 - crypto_bot - INFO - [SCALP] 🔍 Scanning SAHARA/USDT:USDT
+2026-03-19 21:27:29,544 - crypto_bot - INFO - [SCALP] ❌ No signal: SAHARAUSDT
+2026-03-19 21:27:29,560 - crypto_bot - INFO - [SCALP] 🔍 Scanning SUI/USDT:USDT
+2026-03-19 21:27:29,762 - crypto_bot - INFO - [SCALP] ❌ No signal: SUIUSDT
+2026-03-19 21:27:29,762 - crypto_bot - INFO - [SCALP] 🔍 Scanning PAXG/USDT:USDT
+2026-03-19 21:27:29,981 - crypto_bot - INFO - [SCALP] ❌ No signal: PAXGUSDT
+2026-03-19 21:27:29,981 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAU/USDT:USDT
+2026-03-19 21:27:30,184 - crypto_bot - INFO - [SCALP] ❌ No signal: XAUUSDT
+2026-03-19 21:27:30,184 - crypto_bot - INFO - [SCALP] 🔍 Scanning LINK/USDT:USDT
+2026-03-19 21:27:30,407 - crypto_bot - INFO - [SCALP] ❌ No signal: LINKUSDT
+2026-03-19 21:27:30,407 - crypto_bot - INFO - [SCALP] 🔍 Scanning SIREN/USDT:USDT
+2026-03-19 21:27:30,621 - crypto_bot - INFO - [SCALP] ❌ No signal: SIRENUSDT
+2026-03-19 21:27:30,621 - crypto_bot - INFO - [SCALP] 🔍 Scanning TRUMP/USDT:USDT
+2026-03-19 21:27:30,835 - crypto_bot - INFO - [SCALP] ❌ No signal: TRUMPUSDT
+2026-03-19 21:27:30,836 - crypto_bot - INFO - [SCALP] 🔍 Scanning WLD/USDT:USDT
+2026-03-19 21:27:31,047 - crypto_bot - INFO - [SCALP] ❌ No signal: WLDUSDT
+2026-03-19 21:27:31,047 - crypto_bot - INFO - [SCALP] 🔍 Scanning NEAR/USDT:USDT
+2026-03-19 21:27:31,257 - crypto_bot - INFO - [SCALP] ❌ No signal: NEARUSDT
+2026-03-19 21:27:31,257 - crypto_bot - INFO - [SCALP] 🔍 Scanning BNB/USDT:USDT
+2026-03-19 21:27:31,470 - crypto_bot - INFO - [SCALP] ❌ No signal: BNBUSDT
+2026-03-19 21:27:31,470 - crypto_bot - INFO - [SCALP] 🔍 Scanning AAVE/USDT:USDT
+2026-03-19 21:27:31,669 - crypto_bot - INFO - [SCALP] ❌ No signal: AAVEUSDT
+2026-03-19 21:27:31,669 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAN/USDT:USDT
+2026-03-19 21:27:31,893 - crypto_bot - INFO - [SCALP] ❌ No signal: XANUSDT
+2026-03-19 21:27:31,894 - crypto_bot - INFO - [SCALP] 🔍 Scanning ETHFI/USDT:USDT
+2026-03-19 21:27:32,091 - crypto_bot - INFO - [SCALP] ❌ No signal: ETHFIUSDT
+2026-03-19 21:27:32,091 - crypto_bot - INFO - [SCALP] 🔍 Scanning PIXEL/USDT:USDT
+2026-03-19 21:27:32,308 - crypto_bot - INFO - [SCALP] ❌ No signal: PIXELUSDT
+2026-03-19 21:27:32,308 - crypto_bot - INFO - [SCALP] 🔍 Scanning BAN/USDT:USDT
+2026-03-19 21:27:32,512 - crypto_bot - INFO - [SCALP] ❌ No signal: BANUSDT
+2026-03-19 21:27:32,512 - crypto_bot - INFO - [SCALP] 🔍 Scanning ENA/USDT:USDT
+2026-03-19 21:27:32,738 - crypto_bot - INFO - [SCALP] ❌ No signal: ENAUSDT
+2026-03-19 21:27:32,738 - crypto_bot - INFO - [SCALP] 🔍 Scanning WIF/USDT:USDT
+2026-03-19 21:27:32,934 - crypto_bot - INFO - [SCALP] ❌ No signal: WIFUSDT
+2026-03-19 21:27:32,934 - crypto_bot - INFO - [SCALP] 🔍 Scanning ASTER/USDT:USDT
+2026-03-19 21:27:33,152 - crypto_bot - INFO - [SCALP] ❌ No signal: ASTERUSDT
+2026-03-19 21:27:33,152 - crypto_bot - INFO - [SCALP] 🔍 Scanning DOT/USDT:USDT
+2026-03-19 21:27:33,355 - crypto_bot - INFO - [SCALP] ❌ No signal: DOTUSDT
+2026-03-19 21:27:33,355 - crypto_bot - INFO - [SCALP] 🔍 Scanning VIRTUAL/USDT:USDT
+2026-03-19 21:27:33,574 - crypto_bot - INFO - [SCALP] ❌ No signal: VIRTUALUSDT
+2026-03-19 21:27:33,574 - crypto_bot - INFO - [SCALP] 🔍 Scanning AVAX/USDT:USDT
+2026-03-19 21:27:33,793 - crypto_bot - INFO - [SCALP] ❌ No signal: AVAXUSDT
+2026-03-19 21:27:33,793 - crypto_bot - INFO - [SCALP] 🔍 Scanning UAI/USDT:USDT
+2026-03-19 21:27:34,326 - crypto_bot - INFO - [SCALP] ❌ No signal: UAIUSDT
+2026-03-19 21:27:34,327 - crypto_bot - INFO - [SCALP] 🔍 Scanning PUMPFUN/USDT:USDT
+2026-03-19 21:27:34,536 - crypto_bot - INFO - [SCALP] ❌ No signal: PUMPFUNUSDT
+2026-03-19 21:27:34,536 - crypto_bot - INFO - [SCALP] 🔍 Scanning LTC/USDT:USDT
+2026-03-19 21:27:34,748 - crypto_bot - INFO - [SCALP] ❌ No signal: LTCUSDT
+2026-03-19 21:27:34,748 - crypto_bot - INFO - [SCALP] 🔍 Scanning GALA/USDT:USDT
+2026-03-19 21:27:35,282 - crypto_bot - INFO - [SCALP] ❌ No signal: GALAUSDT
+2026-03-19 21:27:35,282 - crypto_bot - INFO - [SCALP] 🔍 Scanning KITE/USDT:USDT
+2026-03-19 21:27:35,496 - crypto_bot - INFO - [SCALP] ❌ No signal: KITEUSDT
+2026-03-19 21:27:35,496 - crypto_bot - INFO - [SCALP] 🔍 Scanning XPL/USDT:USDT
+2026-03-19 21:27:35,710 - crypto_bot - INFO - [SCALP] ❌ No signal: XPLUSDT
+2026-03-19 21:27:35,711 - crypto_bot - INFO - [SCALP] 📊 Total signals after scan: 0
+2026-03-19 21:27:35,711 - crypto_bot - INFO - 📊 Signals found: 0
+2026-03-19 21:27:35,711 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
+2026-03-19 21:30:30,316 - crypto_bot - INFO - 🛑 Остановка по KeyboardInterrupt
+2026-03-19 21:30:32,938 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-19 21:30:32,938 - crypto_bot - WARNING - TELEGRAM_TOKEN не задан — бот запустится в режиме scanner + GUI без Telegram polling
+2026-03-19 21:30:32,938 - crypto_bot - INFO - [SCALP] scanner initialized | mode=SCALPING | timeframe=30m | candle_limit=120 | execution_tfs=30m, 15m
+2026-03-19 21:30:32,968 - crypto_bot - INFO - 🖥️ Signal GUI thread started
+2026-03-19 21:30:32,968 - crypto_bot - INFO - ✅ Telegram отключён: инициализированы scanner + GUI режим
+2026-03-19 21:30:32,968 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-19 21:30:32,968 - crypto_bot - INFO - 📡 Telegram polling disabled, running standalone scan loop
+2026-03-19 21:30:32,968 - crypto_bot - INFO - 🚀 SCAN LOOP STARTED
+2026-03-19 21:30:32,968 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-19 21:30:37,646 - crypto_bot - INFO - [SCALP] 📈 Top-50 symbols fetched: 50
+2026-03-19 21:30:42,705 - crypto_bot - INFO - [SCALP] 🔥 Active symbols after filter: 43 / 50
+2026-03-19 21:30:42,705 - crypto_bot - INFO - [SCALP] 🔍 Scanning BTC/USDT:USDT
+2026-03-19 21:30:42,932 - crypto_bot - INFO - [SCALP] ❌ No signal: BTCUSDT
+2026-03-19 21:30:42,932 - crypto_bot - INFO - [SCALP] 🔍 Scanning ETH/USDT:USDT
+2026-03-19 21:30:43,142 - crypto_bot - INFO - [SCALP] ❌ No signal: ETHUSDT
+2026-03-19 21:30:43,142 - crypto_bot - INFO - [SCALP] 🔍 Scanning SOL/USDT:USDT
+2026-03-19 21:30:43,361 - crypto_bot - INFO - [SCALP] ❌ No signal: SOLUSDT
+2026-03-19 21:30:43,361 - crypto_bot - INFO - [SCALP] 🔍 Scanning XRP/USDT:USDT
+2026-03-19 21:30:43,588 - crypto_bot - INFO - [SCALP] ❌ No signal: XRPUSDT
+2026-03-19 21:30:43,588 - crypto_bot - INFO - [SCALP] 🔍 Scanning HYPE/USDT:USDT
+2026-03-19 21:30:43,817 - crypto_bot - INFO - [SCALP] ❌ No signal: HYPEUSDT
+2026-03-19 21:30:43,817 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAUT/USDT:USDT
+2026-03-19 21:30:44,033 - crypto_bot - INFO - [SCALP] ❌ No signal: XAUTUSDT
+2026-03-19 21:30:44,033 - crypto_bot - INFO - [SCALP] 🔍 Scanning DOGE/USDT:USDT
+2026-03-19 21:30:44,324 - crypto_bot - INFO - [SCALP] ❌ No signal: DOGEUSDT
+2026-03-19 21:30:44,324 - crypto_bot - INFO - [SCALP] 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-19 21:30:44,554 - crypto_bot - INFO - [SCALP] ❌ No signal: FARTCOINUSDT
+2026-03-19 21:30:44,554 - crypto_bot - INFO - [SCALP] 🔍 Scanning LYN/USDT:USDT
+2026-03-19 21:30:44,777 - crypto_bot - INFO - [SCALP] ❌ No signal: LYNUSDT
+2026-03-19 21:30:44,777 - crypto_bot - INFO - [SCALP] 🔍 Scanning RIVER/USDT:USDT
+2026-03-19 21:30:45,003 - crypto_bot - INFO - [SCALP] ❌ No signal: RIVERUSDT
+2026-03-19 21:30:45,003 - crypto_bot - INFO - [SCALP] 🔍 Scanning 1000PEPE/USDT:USDT
+2026-03-19 21:30:45,221 - crypto_bot - INFO - [SCALP] ❌ No signal: 1000PEPEUSDT
+2026-03-19 21:30:45,221 - crypto_bot - INFO - [SCALP] 🔍 Scanning TAO/USDT:USDT
+2026-03-19 21:30:45,450 - crypto_bot - INFO - [SCALP] ❌ No signal: TAOUSDT
+2026-03-19 21:30:45,451 - crypto_bot - INFO - [SCALP] 🔍 Scanning ZEC/USDT:USDT
+2026-03-19 21:30:45,678 - crypto_bot - INFO - [SCALP] ❌ No signal: ZECUSDT
+2026-03-19 21:30:45,678 - crypto_bot - INFO - [SCALP] 🔍 Scanning BARD/USDT:USDT
+2026-03-19 21:30:45,895 - crypto_bot - INFO - [SCALP] ❌ No signal: BARDUSDT
+2026-03-19 21:30:45,895 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAG/USDT:USDT
+2026-03-19 21:30:46,431 - crypto_bot - INFO - [SCALP] ❌ No signal: XAGUSDT
+2026-03-19 21:30:46,432 - crypto_bot - INFO - [SCALP] 🔍 Scanning ADA/USDT:USDT
+2026-03-19 21:30:46,646 - crypto_bot - INFO - [SCALP] ❌ No signal: ADAUSDT
+2026-03-19 21:30:46,646 - crypto_bot - INFO - [SCALP] 🔍 Scanning SAHARA/USDT:USDT
+2026-03-19 21:30:46,856 - crypto_bot - INFO - [SCALP] ❌ No signal: SAHARAUSDT
+2026-03-19 21:30:46,856 - crypto_bot - INFO - [SCALP] 🔍 Scanning SUI/USDT:USDT
+2026-03-19 21:30:47,069 - crypto_bot - INFO - [SCALP] ❌ No signal: SUIUSDT
+2026-03-19 21:30:47,069 - crypto_bot - INFO - [SCALP] 🔍 Scanning PAXG/USDT:USDT
+2026-03-19 21:30:47,291 - crypto_bot - INFO - [SCALP] ❌ No signal: PAXGUSDT
+2026-03-19 21:30:47,291 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAU/USDT:USDT
+2026-03-19 21:30:47,526 - crypto_bot - INFO - [SCALP] ❌ No signal: XAUUSDT
+2026-03-19 21:30:47,527 - crypto_bot - INFO - [SCALP] 🔍 Scanning LINK/USDT:USDT
+2026-03-19 21:30:47,732 - crypto_bot - INFO - [SCALP] ❌ No signal: LINKUSDT
+2026-03-19 21:30:47,732 - crypto_bot - INFO - [SCALP] 🔍 Scanning SIREN/USDT:USDT
+2026-03-19 21:30:47,946 - crypto_bot - INFO - [SCALP] ❌ No signal: SIRENUSDT
+2026-03-19 21:30:47,946 - crypto_bot - INFO - [SCALP] 🔍 Scanning WLD/USDT:USDT
+2026-03-19 21:30:48,158 - crypto_bot - INFO - [SCALP] ❌ No signal: WLDUSDT
+2026-03-19 21:30:48,158 - crypto_bot - INFO - [SCALP] 🔍 Scanning TRUMP/USDT:USDT
+2026-03-19 21:30:48,384 - crypto_bot - INFO - [SCALP] ❌ No signal: TRUMPUSDT
+2026-03-19 21:30:48,384 - crypto_bot - INFO - [SCALP] 🔍 Scanning NEAR/USDT:USDT
+2026-03-19 21:30:48,598 - crypto_bot - INFO - [SCALP] ❌ No signal: NEARUSDT
+2026-03-19 21:30:48,598 - crypto_bot - INFO - [SCALP] 🔍 Scanning BNB/USDT:USDT
+2026-03-19 21:30:48,812 - crypto_bot - INFO - [SCALP] ❌ No signal: BNBUSDT
+2026-03-19 21:30:48,812 - crypto_bot - INFO - [SCALP] 🔍 Scanning AAVE/USDT:USDT
+2026-03-19 21:30:49,027 - crypto_bot - INFO - [SCALP] ❌ No signal: AAVEUSDT
+2026-03-19 21:30:49,027 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAN/USDT:USDT
+2026-03-19 21:30:49,252 - crypto_bot - INFO - [SCALP] ❌ No signal: XANUSDT
+2026-03-19 21:30:49,252 - crypto_bot - INFO - [SCALP] 🔍 Scanning ETHFI/USDT:USDT
+2026-03-19 21:30:49,465 - crypto_bot - INFO - [SCALP] ❌ No signal: ETHFIUSDT
+2026-03-19 21:30:49,465 - crypto_bot - INFO - [SCALP] 🔍 Scanning PIXEL/USDT:USDT
+2026-03-19 21:30:49,666 - crypto_bot - INFO - [SCALP] ❌ No signal: PIXELUSDT
+2026-03-19 21:30:49,666 - crypto_bot - INFO - [SCALP] 🔍 Scanning BAN/USDT:USDT
+2026-03-19 21:30:50,208 - crypto_bot - INFO - [SCALP] ❌ No signal: BANUSDT
+2026-03-19 21:30:50,208 - crypto_bot - INFO - [SCALP] 🔍 Scanning ENA/USDT:USDT
+2026-03-19 21:30:50,419 - crypto_bot - INFO - [SCALP] ❌ No signal: ENAUSDT
+2026-03-19 21:30:50,419 - crypto_bot - INFO - [SCALP] 🔍 Scanning WIF/USDT:USDT
+2026-03-19 21:30:50,647 - crypto_bot - INFO - [SCALP] ❌ No signal: WIFUSDT
+2026-03-19 21:30:50,647 - crypto_bot - INFO - [SCALP] 🔍 Scanning ASTER/USDT:USDT
+2026-03-19 21:30:50,859 - crypto_bot - INFO - [SCALP] ❌ No signal: ASTERUSDT
+2026-03-19 21:30:50,859 - crypto_bot - INFO - [SCALP] 🔍 Scanning DOT/USDT:USDT
+2026-03-19 21:30:51,076 - crypto_bot - INFO - [SCALP] ❌ No signal: DOTUSDT
+2026-03-19 21:30:51,076 - crypto_bot - INFO - [SCALP] 🔍 Scanning VIRTUAL/USDT:USDT
+2026-03-19 21:30:51,285 - crypto_bot - INFO - [SCALP] ❌ No signal: VIRTUALUSDT
+2026-03-19 21:30:51,285 - crypto_bot - INFO - [SCALP] 🔍 Scanning AVAX/USDT:USDT
+2026-03-19 21:30:51,508 - crypto_bot - INFO - [SCALP] ❌ No signal: AVAXUSDT
+2026-03-19 21:30:51,508 - crypto_bot - INFO - [SCALP] 🔍 Scanning UAI/USDT:USDT
+2026-03-19 21:30:51,722 - crypto_bot - INFO - [SCALP] ❌ No signal: UAIUSDT
+2026-03-19 21:30:51,722 - crypto_bot - INFO - [SCALP] 🔍 Scanning PUMPFUN/USDT:USDT
+2026-03-19 21:30:51,943 - crypto_bot - INFO - [SCALP] ❌ No signal: PUMPFUNUSDT
+2026-03-19 21:30:51,944 - crypto_bot - INFO - [SCALP] 🔍 Scanning LTC/USDT:USDT
+2026-03-19 21:30:52,687 - crypto_bot - INFO - [SCALP] ❌ No signal: LTCUSDT
+2026-03-19 21:30:52,687 - crypto_bot - INFO - [SCALP] 🔍 Scanning GALA/USDT:USDT
+2026-03-19 21:30:52,895 - crypto_bot - INFO - [SCALP] ❌ No signal: GALAUSDT
+2026-03-19 21:30:52,895 - crypto_bot - INFO - [SCALP] 🔍 Scanning KITE/USDT:USDT
+2026-03-19 21:30:53,609 - crypto_bot - INFO - [SCALP] ❌ No signal: KITEUSDT
+2026-03-19 21:30:53,609 - crypto_bot - INFO - [SCALP] 🔍 Scanning XPL/USDT:USDT
+2026-03-19 21:30:53,823 - crypto_bot - INFO - [SCALP] ❌ No signal: XPLUSDT
+2026-03-19 21:30:53,823 - crypto_bot - INFO - [SCALP] 📊 Total signals after scan: 0
+2026-03-19 21:30:53,825 - crypto_bot - INFO - 📊 Signals found: 0
+2026-03-19 21:30:53,825 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
+2026-03-19 21:35:53,842 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-19 21:35:55,622 - crypto_bot - INFO - [SCALP] 📈 Top-50 symbols fetched: 50
+2026-03-19 21:35:56,310 - crypto_bot - INFO - [SCALP] 🔥 Active symbols after filter: 44 / 50
+2026-03-19 21:35:56,310 - crypto_bot - INFO - [SCALP] 🔍 Scanning BTC/USDT:USDT
+2026-03-19 21:35:56,543 - crypto_bot - INFO - [SCALP] ❌ No signal: BTCUSDT
+2026-03-19 21:35:56,543 - crypto_bot - INFO - [SCALP] 🔍 Scanning ETH/USDT:USDT
+2026-03-19 21:35:56,759 - crypto_bot - INFO - [SCALP] ❌ No signal: ETHUSDT
+2026-03-19 21:35:56,760 - crypto_bot - INFO - [SCALP] 🔍 Scanning SOL/USDT:USDT
+2026-03-19 21:35:56,977 - crypto_bot - INFO - [SCALP] ❌ No signal: SOLUSDT
+2026-03-19 21:35:56,977 - crypto_bot - INFO - [SCALP] 🔍 Scanning XRP/USDT:USDT
+2026-03-19 21:35:57,194 - crypto_bot - INFO - [SCALP] ❌ No signal: XRPUSDT
+2026-03-19 21:35:57,195 - crypto_bot - INFO - [SCALP] 🔍 Scanning HYPE/USDT:USDT
+2026-03-19 21:35:57,411 - crypto_bot - INFO - [SCALP] ❌ No signal: HYPEUSDT
+2026-03-19 21:35:57,411 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAUT/USDT:USDT
+2026-03-19 21:35:57,628 - crypto_bot - INFO - [SCALP] ❌ No signal: XAUTUSDT
+2026-03-19 21:35:57,628 - crypto_bot - INFO - [SCALP] 🔍 Scanning DOGE/USDT:USDT
+2026-03-19 21:35:58,139 - crypto_bot - INFO - [SCALP] ❌ No signal: DOGEUSDT
+2026-03-19 21:35:58,139 - crypto_bot - INFO - [SCALP] 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-19 21:35:58,366 - crypto_bot - INFO - [SCALP] ❌ No signal: FARTCOINUSDT
+2026-03-19 21:35:58,366 - crypto_bot - INFO - [SCALP] 🔍 Scanning LYN/USDT:USDT
+2026-03-19 21:35:58,599 - crypto_bot - INFO - [SCALP] ❌ No signal: LYNUSDT
+2026-03-19 21:35:58,599 - crypto_bot - INFO - [SCALP] 🔍 Scanning RIVER/USDT:USDT
+2026-03-19 21:35:58,808 - crypto_bot - INFO - [SCALP] ❌ No signal: RIVERUSDT
+2026-03-19 21:35:58,808 - crypto_bot - INFO - [SCALP] 🔍 Scanning 1000PEPE/USDT:USDT
+2026-03-19 21:35:59,034 - crypto_bot - INFO - [SCALP] ❌ No signal: 1000PEPEUSDT
+2026-03-19 21:35:59,034 - crypto_bot - INFO - [SCALP] 🔍 Scanning TAO/USDT:USDT
+2026-03-19 21:35:59,248 - crypto_bot - INFO - [SCALP] ❌ No signal: TAOUSDT
+2026-03-19 21:35:59,248 - crypto_bot - INFO - [SCALP] 🔍 Scanning PIPPIN/USDT:USDT
+2026-03-19 21:35:59,468 - crypto_bot - INFO - [SCALP] ❌ No signal: PIPPINUSDT
+2026-03-19 21:35:59,468 - crypto_bot - INFO - [SCALP] 🔍 Scanning ZEC/USDT:USDT
+2026-03-19 21:35:59,686 - crypto_bot - INFO - [SCALP] ❌ No signal: ZECUSDT
+2026-03-19 21:35:59,686 - crypto_bot - INFO - [SCALP] 🔍 Scanning BARD/USDT:USDT
+2026-03-19 21:35:59,905 - crypto_bot - INFO - [SCALP] ❌ No signal: BARDUSDT
+2026-03-19 21:35:59,905 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAG/USDT:USDT
+2026-03-19 21:36:00,139 - crypto_bot - INFO - [SCALP] ❌ No signal: XAGUSDT
+2026-03-19 21:36:00,139 - crypto_bot - INFO - [SCALP] 🔍 Scanning ADA/USDT:USDT
+2026-03-19 21:36:00,345 - crypto_bot - INFO - [SCALP] ❌ No signal: ADAUSDT
+2026-03-19 21:36:00,345 - crypto_bot - INFO - [SCALP] 🔍 Scanning SAHARA/USDT:USDT
+2026-03-19 21:36:00,586 - crypto_bot - INFO - [SCALP] ❌ No signal: SAHARAUSDT
+2026-03-19 21:36:00,586 - crypto_bot - INFO - [SCALP] 🔍 Scanning SUI/USDT:USDT
+2026-03-19 21:36:00,797 - crypto_bot - INFO - [SCALP] ❌ No signal: SUIUSDT
+2026-03-19 21:36:00,797 - crypto_bot - INFO - [SCALP] 🔍 Scanning PAXG/USDT:USDT
+2026-03-19 21:36:01,643 - crypto_bot - INFO - [SCALP] ❌ No signal: PAXGUSDT
+2026-03-19 21:36:01,643 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAU/USDT:USDT
+2026-03-19 21:36:02,193 - crypto_bot - INFO - [SCALP] ❌ No signal: XAUUSDT
+2026-03-19 21:36:02,193 - crypto_bot - INFO - [SCALP] 🔍 Scanning LINK/USDT:USDT
+2026-03-19 21:36:02,413 - crypto_bot - INFO - [SCALP] ❌ No signal: LINKUSDT
+2026-03-19 21:36:02,414 - crypto_bot - INFO - [SCALP] 🔍 Scanning SIREN/USDT:USDT
+2026-03-19 21:36:02,632 - crypto_bot - INFO - [SCALP] ❌ No signal: SIRENUSDT
+2026-03-19 21:36:02,633 - crypto_bot - INFO - [SCALP] 🔍 Scanning WLD/USDT:USDT
+2026-03-19 21:36:03,184 - crypto_bot - INFO - [SCALP] ❌ No signal: WLDUSDT
+2026-03-19 21:36:03,184 - crypto_bot - INFO - [SCALP] 🔍 Scanning TRUMP/USDT:USDT
+2026-03-19 21:36:03,402 - crypto_bot - INFO - [SCALP] ❌ No signal: TRUMPUSDT
+2026-03-19 21:36:03,404 - crypto_bot - INFO - [SCALP] 🔍 Scanning NEAR/USDT:USDT
+2026-03-19 21:36:03,608 - crypto_bot - INFO - [SCALP] ❌ No signal: NEARUSDT
+2026-03-19 21:36:03,608 - crypto_bot - INFO - [SCALP] 🔍 Scanning BNB/USDT:USDT
+2026-03-19 21:36:03,827 - crypto_bot - INFO - [SCALP] ❌ No signal: BNBUSDT
+2026-03-19 21:36:03,827 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAN/USDT:USDT
+2026-03-19 21:36:04,048 - crypto_bot - INFO - [SCALP] ❌ No signal: XANUSDT
+2026-03-19 21:36:04,048 - crypto_bot - INFO - [SCALP] 🔍 Scanning AAVE/USDT:USDT
+2026-03-19 21:36:04,275 - crypto_bot - INFO - [SCALP] ❌ No signal: AAVEUSDT
+2026-03-19 21:36:04,276 - crypto_bot - INFO - [SCALP] 🔍 Scanning ETHFI/USDT:USDT
+2026-03-19 21:36:04,492 - crypto_bot - INFO - [SCALP] ❌ No signal: ETHFIUSDT
+2026-03-19 21:36:04,492 - crypto_bot - INFO - [SCALP] 🔍 Scanning PIXEL/USDT:USDT
+2026-03-19 21:36:04,710 - crypto_bot - INFO - [SCALP] ❌ No signal: PIXELUSDT
+2026-03-19 21:36:04,710 - crypto_bot - INFO - [SCALP] 🔍 Scanning BAN/USDT:USDT
+2026-03-19 21:36:04,991 - crypto_bot - INFO - [SCALP] ❌ No signal: BANUSDT
+2026-03-19 21:36:04,991 - crypto_bot - INFO - [SCALP] 🔍 Scanning ENA/USDT:USDT
+2026-03-19 21:36:05,211 - crypto_bot - INFO - [SCALP] ❌ No signal: ENAUSDT
+2026-03-19 21:36:05,211 - crypto_bot - INFO - [SCALP] 🔍 Scanning WIF/USDT:USDT
+2026-03-19 21:36:05,428 - crypto_bot - INFO - [SCALP] ❌ No signal: WIFUSDT
+2026-03-19 21:36:05,428 - crypto_bot - INFO - [SCALP] 🔍 Scanning ASTER/USDT:USDT
+2026-03-19 21:36:05,756 - crypto_bot - INFO - [SCALP] ❌ No signal: ASTERUSDT
+2026-03-19 21:36:05,756 - crypto_bot - INFO - [SCALP] 🔍 Scanning DOT/USDT:USDT
+2026-03-19 21:36:06,009 - crypto_bot - INFO - [SCALP] ❌ No signal: DOTUSDT
+2026-03-19 21:36:06,009 - crypto_bot - INFO - [SCALP] 🔍 Scanning VIRTUAL/USDT:USDT
+2026-03-19 21:36:06,235 - crypto_bot - INFO - [SCALP] ❌ No signal: VIRTUALUSDT
+2026-03-19 21:36:06,235 - crypto_bot - INFO - [SCALP] 🔍 Scanning AVAX/USDT:USDT
+2026-03-19 21:36:06,452 - crypto_bot - INFO - [SCALP] ❌ No signal: AVAXUSDT
+2026-03-19 21:36:06,452 - crypto_bot - INFO - [SCALP] 🔍 Scanning UAI/USDT:USDT
+2026-03-19 21:36:06,671 - crypto_bot - INFO - [SCALP] ❌ No signal: UAIUSDT
+2026-03-19 21:36:06,671 - crypto_bot - INFO - [SCALP] 🔍 Scanning PUMPFUN/USDT:USDT
+2026-03-19 21:36:06,921 - crypto_bot - INFO - [SCALP] ❌ No signal: PUMPFUNUSDT
+2026-03-19 21:36:06,921 - crypto_bot - INFO - [SCALP] 🔍 Scanning LTC/USDT:USDT
+2026-03-19 21:36:07,152 - crypto_bot - INFO - [SCALP] ❌ No signal: LTCUSDT
+2026-03-19 21:36:07,152 - crypto_bot - INFO - [SCALP] 🔍 Scanning GALA/USDT:USDT
+2026-03-19 21:36:07,359 - crypto_bot - INFO - [SCALP] ❌ No signal: GALAUSDT
+2026-03-19 21:36:07,359 - crypto_bot - INFO - [SCALP] 🔍 Scanning KITE/USDT:USDT
+2026-03-19 21:36:07,594 - crypto_bot - INFO - [SCALP] ❌ No signal: KITEUSDT
+2026-03-19 21:36:07,594 - crypto_bot - INFO - [SCALP] 🔍 Scanning XPL/USDT:USDT
+2026-03-19 21:36:07,812 - crypto_bot - INFO - [SCALP] ❌ No signal: XPLUSDT
+2026-03-19 21:36:07,812 - crypto_bot - INFO - [SCALP] 📊 Total signals after scan: 0
+2026-03-19 21:36:07,812 - crypto_bot - INFO - 📊 Signals found: 0
+2026-03-19 21:36:07,813 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
+2026-03-19 21:41:07,829 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-19 21:41:08,685 - crypto_bot - INFO - [SCALP] 📈 Top-50 symbols fetched: 50
+2026-03-19 21:41:09,251 - crypto_bot - INFO - [SCALP] 🔥 Active symbols after filter: 44 / 50
+2026-03-19 21:41:09,251 - crypto_bot - INFO - [SCALP] 🔍 Scanning BTC/USDT:USDT
+2026-03-19 21:41:09,469 - crypto_bot - INFO - [SCALP] ❌ No signal: BTCUSDT
+2026-03-19 21:41:09,469 - crypto_bot - INFO - [SCALP] 🔍 Scanning ETH/USDT:USDT
+2026-03-19 21:41:09,673 - crypto_bot - INFO - [SCALP] ❌ No signal: ETHUSDT
+2026-03-19 21:41:09,673 - crypto_bot - INFO - [SCALP] 🔍 Scanning SOL/USDT:USDT
+2026-03-19 21:41:09,891 - crypto_bot - INFO - [SCALP] ❌ No signal: SOLUSDT
+2026-03-19 21:41:09,891 - crypto_bot - INFO - [SCALP] 🔍 Scanning XRP/USDT:USDT
+2026-03-19 21:41:10,094 - crypto_bot - INFO - [SCALP] ❌ No signal: XRPUSDT
+2026-03-19 21:41:10,094 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAUT/USDT:USDT
+2026-03-19 21:41:10,298 - crypto_bot - INFO - [SCALP] ❌ No signal: XAUTUSDT
+2026-03-19 21:41:10,298 - crypto_bot - INFO - [SCALP] 🔍 Scanning HYPE/USDT:USDT
+2026-03-19 21:41:10,519 - crypto_bot - INFO - [SCALP] ❌ No signal: HYPEUSDT
+2026-03-19 21:41:10,519 - crypto_bot - INFO - [SCALP] 🔍 Scanning DOGE/USDT:USDT
+2026-03-19 21:41:10,719 - crypto_bot - INFO - [SCALP] ❌ No signal: DOGEUSDT
+2026-03-19 21:41:10,719 - crypto_bot - INFO - [SCALP] 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-19 21:41:10,938 - crypto_bot - INFO - [SCALP] ❌ No signal: FARTCOINUSDT
+2026-03-19 21:41:10,938 - crypto_bot - INFO - [SCALP] 🔍 Scanning LYN/USDT:USDT
+2026-03-19 21:41:11,154 - crypto_bot - INFO - [SCALP] ❌ No signal: LYNUSDT
+2026-03-19 21:41:11,155 - crypto_bot - INFO - [SCALP] 🔍 Scanning RIVER/USDT:USDT
+2026-03-19 21:41:11,359 - crypto_bot - INFO - [SCALP] ❌ No signal: RIVERUSDT
+2026-03-19 21:41:11,359 - crypto_bot - INFO - [SCALP] 🔍 Scanning 1000PEPE/USDT:USDT
+2026-03-19 21:41:11,579 - crypto_bot - INFO - [SCALP] ❌ No signal: 1000PEPEUSDT
+2026-03-19 21:41:11,579 - crypto_bot - INFO - [SCALP] 🔍 Scanning TAO/USDT:USDT
+2026-03-19 21:41:11,794 - crypto_bot - INFO - [SCALP] ❌ No signal: TAOUSDT
+2026-03-19 21:41:11,794 - crypto_bot - INFO - [SCALP] 🔍 Scanning PIPPIN/USDT:USDT
+2026-03-19 21:41:12,001 - crypto_bot - INFO - [SCALP] ❌ No signal: PIPPINUSDT
+2026-03-19 21:41:12,001 - crypto_bot - INFO - [SCALP] 🔍 Scanning ZEC/USDT:USDT
+2026-03-19 21:41:12,195 - crypto_bot - INFO - [SCALP] ❌ No signal: ZECUSDT
+2026-03-19 21:41:12,211 - crypto_bot - INFO - [SCALP] 🔍 Scanning BARD/USDT:USDT
+2026-03-19 21:41:12,411 - crypto_bot - INFO - [SCALP] ❌ No signal: BARDUSDT
+2026-03-19 21:41:12,411 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAG/USDT:USDT
+2026-03-19 21:41:12,627 - crypto_bot - INFO - [SCALP] ❌ No signal: XAGUSDT
+2026-03-19 21:41:12,627 - crypto_bot - INFO - [SCALP] 🔍 Scanning ADA/USDT:USDT
+2026-03-19 21:41:12,829 - crypto_bot - INFO - [SCALP] ❌ No signal: ADAUSDT
+2026-03-19 21:41:12,845 - crypto_bot - INFO - [SCALP] 🔍 Scanning SAHARA/USDT:USDT
+2026-03-19 21:41:13,048 - crypto_bot - INFO - [SCALP] ❌ No signal: SAHARAUSDT
+2026-03-19 21:41:13,048 - crypto_bot - INFO - [SCALP] 🔍 Scanning SUI/USDT:USDT
+2026-03-19 21:41:13,251 - crypto_bot - INFO - [SCALP] ❌ No signal: SUIUSDT
+2026-03-19 21:41:13,251 - crypto_bot - INFO - [SCALP] 🔍 Scanning PAXG/USDT:USDT
+2026-03-19 21:41:13,470 - crypto_bot - INFO - [SCALP] ❌ No signal: PAXGUSDT
+2026-03-19 21:41:13,470 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAU/USDT:USDT
+2026-03-19 21:41:13,686 - crypto_bot - INFO - [SCALP] ❌ No signal: XAUUSDT
+2026-03-19 21:41:13,686 - crypto_bot - INFO - [SCALP] 🔍 Scanning LINK/USDT:USDT
+2026-03-19 21:41:13,882 - crypto_bot - INFO - [SCALP] ❌ No signal: LINKUSDT
+2026-03-19 21:41:13,882 - crypto_bot - INFO - [SCALP] 🔍 Scanning SIREN/USDT:USDT
+2026-03-19 21:41:14,102 - crypto_bot - INFO - [SCALP] ❌ No signal: SIRENUSDT
+2026-03-19 21:41:14,102 - crypto_bot - INFO - [SCALP] 🔍 Scanning TRUMP/USDT:USDT
+2026-03-19 21:41:14,313 - crypto_bot - INFO - [SCALP] ❌ No signal: TRUMPUSDT
+2026-03-19 21:41:14,313 - crypto_bot - INFO - [SCALP] 🔍 Scanning WLD/USDT:USDT
+2026-03-19 21:41:14,532 - crypto_bot - INFO - [SCALP] ❌ No signal: WLDUSDT
+2026-03-19 21:41:14,532 - crypto_bot - INFO - [SCALP] 🔍 Scanning NEAR/USDT:USDT
+2026-03-19 21:41:14,772 - crypto_bot - INFO - [SCALP] ❌ No signal: NEARUSDT
+2026-03-19 21:41:14,772 - crypto_bot - INFO - [SCALP] 🔍 Scanning BNB/USDT:USDT
+2026-03-19 21:41:14,985 - crypto_bot - INFO - [SCALP] ❌ No signal: BNBUSDT
+2026-03-19 21:41:14,985 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAN/USDT:USDT
+2026-03-19 21:41:15,185 - crypto_bot - INFO - [SCALP] ❌ No signal: XANUSDT
+2026-03-19 21:41:15,185 - crypto_bot - INFO - [SCALP] 🔍 Scanning AAVE/USDT:USDT
+2026-03-19 21:41:15,405 - crypto_bot - INFO - [SCALP] ❌ No signal: AAVEUSDT
+2026-03-19 21:41:15,405 - crypto_bot - INFO - [SCALP] 🔍 Scanning ETHFI/USDT:USDT
+2026-03-19 21:41:15,614 - crypto_bot - INFO - [SCALP] ❌ No signal: ETHFIUSDT
+2026-03-19 21:41:15,614 - crypto_bot - INFO - [SCALP] 🔍 Scanning PIXEL/USDT:USDT
+2026-03-19 21:41:15,814 - crypto_bot - INFO - [SCALP] ❌ No signal: PIXELUSDT
+2026-03-19 21:41:15,814 - crypto_bot - INFO - [SCALP] 🔍 Scanning BAN/USDT:USDT
+2026-03-19 21:41:16,032 - crypto_bot - INFO - [SCALP] ❌ No signal: BANUSDT
+2026-03-19 21:41:16,032 - crypto_bot - INFO - [SCALP] 🔍 Scanning ENA/USDT:USDT
+2026-03-19 21:41:16,242 - crypto_bot - INFO - [SCALP] ❌ No signal: ENAUSDT
+2026-03-19 21:41:16,242 - crypto_bot - INFO - [SCALP] 🔍 Scanning WIF/USDT:USDT
+2026-03-19 21:41:16,455 - crypto_bot - INFO - [SCALP] ❌ No signal: WIFUSDT
+2026-03-19 21:41:16,456 - crypto_bot - INFO - [SCALP] 🔍 Scanning ASTER/USDT:USDT
+2026-03-19 21:41:16,655 - crypto_bot - INFO - [SCALP] ❌ No signal: ASTERUSDT
+2026-03-19 21:41:16,655 - crypto_bot - INFO - [SCALP] 🔍 Scanning DOT/USDT:USDT
+2026-03-19 21:41:16,876 - crypto_bot - INFO - [SCALP] ❌ No signal: DOTUSDT
+2026-03-19 21:41:16,876 - crypto_bot - INFO - [SCALP] 🔍 Scanning VIRTUAL/USDT:USDT
+2026-03-19 21:41:17,085 - crypto_bot - INFO - [SCALP] ❌ No signal: VIRTUALUSDT
+2026-03-19 21:41:17,085 - crypto_bot - INFO - [SCALP] 🔍 Scanning AVAX/USDT:USDT
+2026-03-19 21:41:17,283 - crypto_bot - INFO - [SCALP] ❌ No signal: AVAXUSDT
+2026-03-19 21:41:17,283 - crypto_bot - INFO - [SCALP] 🔍 Scanning UAI/USDT:USDT
+2026-03-19 21:41:17,500 - crypto_bot - INFO - [SCALP] ❌ No signal: UAIUSDT
+2026-03-19 21:41:17,500 - crypto_bot - INFO - [SCALP] 🔍 Scanning PUMPFUN/USDT:USDT
+2026-03-19 21:41:17,706 - crypto_bot - INFO - [SCALP] ❌ No signal: PUMPFUNUSDT
+2026-03-19 21:41:17,706 - crypto_bot - INFO - [SCALP] 🔍 Scanning LTC/USDT:USDT
+2026-03-19 21:41:17,923 - crypto_bot - INFO - [SCALP] ❌ No signal: LTCUSDT
+2026-03-19 21:41:17,923 - crypto_bot - INFO - [SCALP] 🔍 Scanning KITE/USDT:USDT
+2026-03-19 21:41:18,120 - crypto_bot - INFO - [SCALP] ❌ No signal: KITEUSDT
+2026-03-19 21:41:18,120 - crypto_bot - INFO - [SCALP] 🔍 Scanning GALA/USDT:USDT
+2026-03-19 21:41:18,337 - crypto_bot - INFO - [SCALP] ❌ No signal: GALAUSDT
+2026-03-19 21:41:18,337 - crypto_bot - INFO - [SCALP] 🔍 Scanning XPL/USDT:USDT
+2026-03-19 21:41:18,569 - crypto_bot - INFO - [SCALP] ❌ No signal: XPLUSDT
+2026-03-19 21:41:18,569 - crypto_bot - INFO - [SCALP] 📊 Total signals after scan: 0
+2026-03-19 21:41:18,570 - crypto_bot - INFO - 📊 Signals found: 0
+2026-03-19 21:41:18,570 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
+2026-03-19 21:46:18,572 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-19 21:46:19,345 - crypto_bot - INFO - [SCALP] 📈 Top-50 symbols fetched: 50
+2026-03-19 21:46:20,416 - crypto_bot - INFO - [SCALP] 🔥 Active symbols after filter: 44 / 50
+2026-03-19 21:46:20,416 - crypto_bot - INFO - [SCALP] 🔍 Scanning BTC/USDT:USDT
+2026-03-19 21:46:20,627 - crypto_bot - INFO - [SCALP] ❌ No signal: BTCUSDT
+2026-03-19 21:46:20,627 - crypto_bot - INFO - [SCALP] 🔍 Scanning ETH/USDT:USDT
+2026-03-19 21:46:20,851 - crypto_bot - INFO - [SCALP] ❌ No signal: ETHUSDT
+2026-03-19 21:46:20,851 - crypto_bot - INFO - [SCALP] 🔍 Scanning SOL/USDT:USDT
+2026-03-19 21:46:21,064 - crypto_bot - INFO - [SCALP] ❌ No signal: SOLUSDT
+2026-03-19 21:46:21,064 - crypto_bot - INFO - [SCALP] 🔍 Scanning XRP/USDT:USDT
+2026-03-19 21:46:21,278 - crypto_bot - INFO - [SCALP] ❌ No signal: XRPUSDT
+2026-03-19 21:46:21,278 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAUT/USDT:USDT
+2026-03-19 21:46:21,507 - crypto_bot - INFO - [SCALP] ❌ No signal: XAUTUSDT
+2026-03-19 21:46:21,507 - crypto_bot - INFO - [SCALP] 🔍 Scanning HYPE/USDT:USDT
+2026-03-19 21:46:21,718 - crypto_bot - INFO - [SCALP] ❌ No signal: HYPEUSDT
+2026-03-19 21:46:21,718 - crypto_bot - INFO - [SCALP] 🔍 Scanning DOGE/USDT:USDT
+2026-03-19 21:46:21,931 - crypto_bot - INFO - [SCALP] ❌ No signal: DOGEUSDT
+2026-03-19 21:46:21,931 - crypto_bot - INFO - [SCALP] 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-19 21:46:22,158 - crypto_bot - INFO - [SCALP] ❌ No signal: FARTCOINUSDT
+2026-03-19 21:46:22,158 - crypto_bot - INFO - [SCALP] 🔍 Scanning LYN/USDT:USDT
+2026-03-19 21:46:22,371 - crypto_bot - INFO - [SCALP] ❌ No signal: LYNUSDT
+2026-03-19 21:46:22,371 - crypto_bot - INFO - [SCALP] 🔍 Scanning RIVER/USDT:USDT
+2026-03-19 21:46:22,598 - crypto_bot - INFO - [SCALP] ❌ No signal: RIVERUSDT
+2026-03-19 21:46:22,598 - crypto_bot - INFO - [SCALP] 🔍 Scanning 1000PEPE/USDT:USDT
+2026-03-19 21:46:22,811 - crypto_bot - INFO - [SCALP] ❌ No signal: 1000PEPEUSDT
+2026-03-19 21:46:22,811 - crypto_bot - INFO - [SCALP] 🔍 Scanning TAO/USDT:USDT
+2026-03-19 21:46:23,025 - crypto_bot - INFO - [SCALP] ❌ No signal: TAOUSDT
+2026-03-19 21:46:23,025 - crypto_bot - INFO - [SCALP] 🔍 Scanning PIPPIN/USDT:USDT
+2026-03-19 21:46:23,238 - crypto_bot - INFO - [SCALP] ❌ No signal: PIPPINUSDT
+2026-03-19 21:46:23,238 - crypto_bot - INFO - [SCALP] 🔍 Scanning ZEC/USDT:USDT
+2026-03-19 21:46:23,465 - crypto_bot - INFO - [SCALP] ❌ No signal: ZECUSDT
+2026-03-19 21:46:23,465 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAG/USDT:USDT
+2026-03-19 21:46:23,691 - crypto_bot - INFO - [SCALP] ❌ No signal: XAGUSDT
+2026-03-19 21:46:23,692 - crypto_bot - INFO - [SCALP] 🔍 Scanning BARD/USDT:USDT
+2026-03-19 21:46:23,920 - crypto_bot - INFO - [SCALP] ❌ No signal: BARDUSDT
+2026-03-19 21:46:23,920 - crypto_bot - INFO - [SCALP] 🔍 Scanning ADA/USDT:USDT
+2026-03-19 21:46:24,138 - crypto_bot - INFO - [SCALP] ❌ No signal: ADAUSDT
+2026-03-19 21:46:24,138 - crypto_bot - INFO - [SCALP] 🔍 Scanning SAHARA/USDT:USDT
+2026-03-19 21:46:24,354 - crypto_bot - INFO - [SCALP] ❌ No signal: SAHARAUSDT
+2026-03-19 21:46:24,354 - crypto_bot - INFO - [SCALP] 🔍 Scanning SUI/USDT:USDT
+2026-03-19 21:46:24,572 - crypto_bot - INFO - [SCALP] ❌ No signal: SUIUSDT
+2026-03-19 21:46:24,572 - crypto_bot - INFO - [SCALP] 🔍 Scanning PAXG/USDT:USDT
+2026-03-19 21:46:24,785 - crypto_bot - INFO - [SCALP] ❌ No signal: PAXGUSDT
+2026-03-19 21:46:24,785 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAU/USDT:USDT
+2026-03-19 21:46:25,053 - crypto_bot - INFO - [SCALP] ❌ No signal: XAUUSDT
+2026-03-19 21:46:25,054 - crypto_bot - INFO - [SCALP] 🔍 Scanning LINK/USDT:USDT
+2026-03-19 21:46:25,279 - crypto_bot - INFO - [SCALP] ❌ No signal: LINKUSDT
+2026-03-19 21:46:25,279 - crypto_bot - INFO - [SCALP] 🔍 Scanning SIREN/USDT:USDT
+2026-03-19 21:46:25,495 - crypto_bot - INFO - [SCALP] ❌ No signal: SIRENUSDT
+2026-03-19 21:46:25,495 - crypto_bot - INFO - [SCALP] 🔍 Scanning TRUMP/USDT:USDT
+2026-03-19 21:46:25,712 - crypto_bot - INFO - [SCALP] ❌ No signal: TRUMPUSDT
+2026-03-19 21:46:25,712 - crypto_bot - INFO - [SCALP] 🔍 Scanning WLD/USDT:USDT
+2026-03-19 21:46:25,929 - crypto_bot - INFO - [SCALP] ❌ No signal: WLDUSDT
+2026-03-19 21:46:25,929 - crypto_bot - INFO - [SCALP] 🔍 Scanning NEAR/USDT:USDT
+2026-03-19 21:46:26,146 - crypto_bot - INFO - [SCALP] ❌ No signal: NEARUSDT
+2026-03-19 21:46:26,146 - crypto_bot - INFO - [SCALP] 🔍 Scanning BNB/USDT:USDT
+2026-03-19 21:46:26,364 - crypto_bot - INFO - [SCALP] ❌ No signal: BNBUSDT
+2026-03-19 21:46:26,365 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAN/USDT:USDT
+2026-03-19 21:46:26,581 - crypto_bot - INFO - [SCALP] ❌ No signal: XANUSDT
+2026-03-19 21:46:26,581 - crypto_bot - INFO - [SCALP] 🔍 Scanning AAVE/USDT:USDT
+2026-03-19 21:46:26,802 - crypto_bot - INFO - [SCALP] ❌ No signal: AAVEUSDT
+2026-03-19 21:46:26,802 - crypto_bot - INFO - [SCALP] 🔍 Scanning ETHFI/USDT:USDT
+2026-03-19 21:46:27,018 - crypto_bot - INFO - [SCALP] ❌ No signal: ETHFIUSDT
+2026-03-19 21:46:27,018 - crypto_bot - INFO - [SCALP] 🔍 Scanning PIXEL/USDT:USDT
+2026-03-19 21:46:27,233 - crypto_bot - INFO - [SCALP] ❌ No signal: PIXELUSDT
+2026-03-19 21:46:27,233 - crypto_bot - INFO - [SCALP] 🔍 Scanning BAN/USDT:USDT
+2026-03-19 21:46:27,453 - crypto_bot - INFO - [SCALP] ❌ No signal: BANUSDT
+2026-03-19 21:46:27,453 - crypto_bot - INFO - [SCALP] 🔍 Scanning ENA/USDT:USDT
+2026-03-19 21:46:27,671 - crypto_bot - INFO - [SCALP] ❌ No signal: ENAUSDT
+2026-03-19 21:46:27,671 - crypto_bot - INFO - [SCALP] 🔍 Scanning WIF/USDT:USDT
+2026-03-19 21:46:27,886 - crypto_bot - INFO - [SCALP] ❌ No signal: WIFUSDT
+2026-03-19 21:46:27,886 - crypto_bot - INFO - [SCALP] 🔍 Scanning ASTER/USDT:USDT
+2026-03-19 21:46:28,108 - crypto_bot - INFO - [SCALP] ❌ No signal: ASTERUSDT
+2026-03-19 21:46:28,108 - crypto_bot - INFO - [SCALP] 🔍 Scanning DOT/USDT:USDT
+2026-03-19 21:46:28,327 - crypto_bot - INFO - [SCALP] ❌ No signal: DOTUSDT
+2026-03-19 21:46:28,327 - crypto_bot - INFO - [SCALP] 🔍 Scanning VIRTUAL/USDT:USDT
+2026-03-19 21:46:28,547 - crypto_bot - INFO - [SCALP] ❌ No signal: VIRTUALUSDT
+2026-03-19 21:46:28,547 - crypto_bot - INFO - [SCALP] 🔍 Scanning UAI/USDT:USDT
+2026-03-19 21:46:28,776 - crypto_bot - INFO - [SCALP] ❌ No signal: UAIUSDT
+2026-03-19 21:46:28,776 - crypto_bot - INFO - [SCALP] 🔍 Scanning AVAX/USDT:USDT
+2026-03-19 21:46:28,997 - crypto_bot - INFO - [SCALP] ❌ No signal: AVAXUSDT
+2026-03-19 21:46:28,998 - crypto_bot - INFO - [SCALP] 🔍 Scanning PUMPFUN/USDT:USDT
+2026-03-19 21:46:29,219 - crypto_bot - INFO - [SCALP] ❌ No signal: PUMPFUNUSDT
+2026-03-19 21:46:29,220 - crypto_bot - INFO - [SCALP] 🔍 Scanning LTC/USDT:USDT
+2026-03-19 21:46:29,453 - crypto_bot - INFO - [SCALP] ❌ No signal: LTCUSDT
+2026-03-19 21:46:29,454 - crypto_bot - INFO - [SCALP] 🔍 Scanning KITE/USDT:USDT
+2026-03-19 21:46:29,667 - crypto_bot - INFO - [SCALP] ❌ No signal: KITEUSDT
+2026-03-19 21:46:29,667 - crypto_bot - INFO - [SCALP] 🔍 Scanning GALA/USDT:USDT
+2026-03-19 21:46:29,881 - crypto_bot - INFO - [SCALP] ❌ No signal: GALAUSDT
+2026-03-19 21:46:29,881 - crypto_bot - INFO - [SCALP] 🔍 Scanning XPL/USDT:USDT
+2026-03-19 21:46:30,094 - crypto_bot - INFO - [SCALP] ❌ No signal: XPLUSDT
+2026-03-19 21:46:30,094 - crypto_bot - INFO - [SCALP] 📊 Total signals after scan: 0
+2026-03-19 21:46:30,094 - crypto_bot - INFO - 📊 Signals found: 0
+2026-03-19 21:46:30,094 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
+2026-03-19 21:51:30,109 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-19 21:51:30,858 - crypto_bot - INFO - [SCALP] 📈 Top-50 symbols fetched: 50
+2026-03-19 21:51:31,429 - crypto_bot - INFO - [SCALP] 🔥 Active symbols after filter: 43 / 50
+2026-03-19 21:51:31,429 - crypto_bot - INFO - [SCALP] 🔍 Scanning BTC/USDT:USDT
+2026-03-19 21:51:31,646 - crypto_bot - INFO - [SCALP] ❌ No signal: BTCUSDT
+2026-03-19 21:51:31,646 - crypto_bot - INFO - [SCALP] 🔍 Scanning ETH/USDT:USDT
+2026-03-19 21:51:31,877 - crypto_bot - INFO - [SCALP] ❌ No signal: ETHUSDT
+2026-03-19 21:51:31,877 - crypto_bot - INFO - [SCALP] 🔍 Scanning SOL/USDT:USDT
+2026-03-19 21:51:32,078 - crypto_bot - INFO - [SCALP] ❌ No signal: SOLUSDT
+2026-03-19 21:51:32,078 - crypto_bot - INFO - [SCALP] 🔍 Scanning XRP/USDT:USDT
+2026-03-19 21:51:32,308 - crypto_bot - INFO - [SCALP] ❌ No signal: XRPUSDT
+2026-03-19 21:51:32,308 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAUT/USDT:USDT
+2026-03-19 21:51:32,532 - crypto_bot - INFO - [SCALP] ❌ No signal: XAUTUSDT
+2026-03-19 21:51:32,535 - crypto_bot - INFO - [SCALP] 🔍 Scanning HYPE/USDT:USDT
+2026-03-19 21:51:32,757 - crypto_bot - INFO - [SCALP] ❌ No signal: HYPEUSDT
+2026-03-19 21:51:32,757 - crypto_bot - INFO - [SCALP] 🔍 Scanning DOGE/USDT:USDT
+2026-03-19 21:51:32,973 - crypto_bot - INFO - [SCALP] ❌ No signal: DOGEUSDT
+2026-03-19 21:51:32,973 - crypto_bot - INFO - [SCALP] 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-19 21:51:33,196 - crypto_bot - INFO - [SCALP] ❌ No signal: FARTCOINUSDT
+2026-03-19 21:51:33,196 - crypto_bot - INFO - [SCALP] 🔍 Scanning LYN/USDT:USDT
+2026-03-19 21:51:33,417 - crypto_bot - INFO - [SCALP] ❌ No signal: LYNUSDT
+2026-03-19 21:51:33,417 - crypto_bot - INFO - [SCALP] 🔍 Scanning RIVER/USDT:USDT
+2026-03-19 21:51:33,640 - crypto_bot - INFO - [SCALP] ❌ No signal: RIVERUSDT
+2026-03-19 21:51:33,640 - crypto_bot - INFO - [SCALP] 🔍 Scanning 1000PEPE/USDT:USDT
+2026-03-19 21:51:33,854 - crypto_bot - INFO - [SCALP] ❌ No signal: 1000PEPEUSDT
+2026-03-19 21:51:33,854 - crypto_bot - INFO - [SCALP] 🔍 Scanning TAO/USDT:USDT
+2026-03-19 21:51:34,477 - crypto_bot - INFO - [SCALP] ❌ No signal: TAOUSDT
+2026-03-19 21:51:34,477 - crypto_bot - INFO - [SCALP] 🔍 Scanning ZEC/USDT:USDT
+2026-03-19 21:51:35,037 - crypto_bot - INFO - [SCALP] ❌ No signal: ZECUSDT
+2026-03-19 21:51:35,037 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAG/USDT:USDT
+2026-03-19 21:51:35,253 - crypto_bot - INFO - [SCALP] ❌ No signal: XAGUSDT
+2026-03-19 21:51:35,253 - crypto_bot - INFO - [SCALP] 🔍 Scanning BARD/USDT:USDT
+2026-03-19 21:51:35,471 - crypto_bot - INFO - [SCALP] ❌ No signal: BARDUSDT
+2026-03-19 21:51:35,471 - crypto_bot - INFO - [SCALP] 🔍 Scanning ADA/USDT:USDT
+2026-03-19 21:51:35,673 - crypto_bot - INFO - [SCALP] ❌ No signal: ADAUSDT
+2026-03-19 21:51:35,673 - crypto_bot - INFO - [SCALP] 🔍 Scanning SAHARA/USDT:USDT
+2026-03-19 21:51:35,912 - crypto_bot - INFO - [SCALP] ❌ No signal: SAHARAUSDT
+2026-03-19 21:51:35,913 - crypto_bot - INFO - [SCALP] 🔍 Scanning SUI/USDT:USDT
+2026-03-19 21:51:36,131 - crypto_bot - INFO - [SCALP] ❌ No signal: SUIUSDT
+2026-03-19 21:51:36,131 - crypto_bot - INFO - [SCALP] 🔍 Scanning PAXG/USDT:USDT
+2026-03-19 21:51:36,347 - crypto_bot - INFO - [SCALP] ❌ No signal: PAXGUSDT
+2026-03-19 21:51:36,347 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAU/USDT:USDT
+2026-03-19 21:51:36,564 - crypto_bot - INFO - [SCALP] ❌ No signal: XAUUSDT
+2026-03-19 21:51:36,565 - crypto_bot - INFO - [SCALP] 🔍 Scanning LINK/USDT:USDT
+2026-03-19 21:51:36,799 - crypto_bot - INFO - [SCALP] ❌ No signal: LINKUSDT
+2026-03-19 21:51:36,799 - crypto_bot - INFO - [SCALP] 🔍 Scanning SIREN/USDT:USDT
+2026-03-19 21:51:37,020 - crypto_bot - INFO - [SCALP] ❌ No signal: SIRENUSDT
+2026-03-19 21:51:37,020 - crypto_bot - INFO - [SCALP] 🔍 Scanning TRUMP/USDT:USDT
+2026-03-19 21:51:37,236 - crypto_bot - INFO - [SCALP] ❌ No signal: TRUMPUSDT
+2026-03-19 21:51:37,236 - crypto_bot - INFO - [SCALP] 🔍 Scanning WLD/USDT:USDT
+2026-03-19 21:51:37,795 - crypto_bot - INFO - [SCALP] ❌ No signal: WLDUSDT
+2026-03-19 21:51:37,795 - crypto_bot - INFO - [SCALP] 🔍 Scanning NEAR/USDT:USDT
+2026-03-19 21:51:38,356 - crypto_bot - INFO - [SCALP] ❌ No signal: NEARUSDT
+2026-03-19 21:51:38,356 - crypto_bot - INFO - [SCALP] 🔍 Scanning BNB/USDT:USDT
+2026-03-19 21:51:38,585 - crypto_bot - INFO - [SCALP] ❌ No signal: BNBUSDT
+2026-03-19 21:51:38,586 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAN/USDT:USDT
+2026-03-19 21:51:38,804 - crypto_bot - INFO - [SCALP] ❌ No signal: XANUSDT
+2026-03-19 21:51:38,805 - crypto_bot - INFO - [SCALP] 🔍 Scanning AAVE/USDT:USDT
+2026-03-19 21:51:39,369 - crypto_bot - INFO - [SCALP] ❌ No signal: AAVEUSDT
+2026-03-19 21:51:39,370 - crypto_bot - INFO - [SCALP] 🔍 Scanning ETHFI/USDT:USDT
+2026-03-19 21:51:39,914 - crypto_bot - INFO - [SCALP] ❌ No signal: ETHFIUSDT
+2026-03-19 21:51:39,914 - crypto_bot - INFO - [SCALP] 🔍 Scanning PIXEL/USDT:USDT
+2026-03-19 21:51:40,131 - crypto_bot - INFO - [SCALP] ❌ No signal: PIXELUSDT
+2026-03-19 21:51:40,131 - crypto_bot - INFO - [SCALP] 🔍 Scanning BAN/USDT:USDT
+2026-03-19 21:51:40,355 - crypto_bot - INFO - [SCALP] ❌ No signal: BANUSDT
+2026-03-19 21:51:40,355 - crypto_bot - INFO - [SCALP] 🔍 Scanning ENA/USDT:USDT
+2026-03-19 21:51:40,571 - crypto_bot - INFO - [SCALP] ❌ No signal: ENAUSDT
+2026-03-19 21:51:40,571 - crypto_bot - INFO - [SCALP] 🔍 Scanning WIF/USDT:USDT
+2026-03-19 21:51:40,786 - crypto_bot - INFO - [SCALP] ❌ No signal: WIFUSDT
+2026-03-19 21:51:40,786 - crypto_bot - INFO - [SCALP] 🔍 Scanning ASTER/USDT:USDT
+2026-03-19 21:51:40,999 - crypto_bot - INFO - [SCALP] ❌ No signal: ASTERUSDT
+2026-03-19 21:51:40,999 - crypto_bot - INFO - [SCALP] 🔍 Scanning DOT/USDT:USDT
+2026-03-19 21:51:41,216 - crypto_bot - INFO - [SCALP] ❌ No signal: DOTUSDT
+2026-03-19 21:51:41,216 - crypto_bot - INFO - [SCALP] 🔍 Scanning VIRTUAL/USDT:USDT
+2026-03-19 21:51:41,436 - crypto_bot - INFO - [SCALP] ❌ No signal: VIRTUALUSDT
+2026-03-19 21:51:41,437 - crypto_bot - INFO - [SCALP] 🔍 Scanning UAI/USDT:USDT
+2026-03-19 21:51:41,663 - crypto_bot - INFO - [SCALP] ❌ No signal: UAIUSDT
+2026-03-19 21:51:41,664 - crypto_bot - INFO - [SCALP] 🔍 Scanning AVAX/USDT:USDT
+2026-03-19 21:51:41,911 - crypto_bot - INFO - [SCALP] ❌ No signal: AVAXUSDT
+2026-03-19 21:51:41,911 - crypto_bot - INFO - [SCALP] 🔍 Scanning PUMPFUN/USDT:USDT
+2026-03-19 21:51:42,134 - crypto_bot - INFO - [SCALP] ❌ No signal: PUMPFUNUSDT
+2026-03-19 21:51:42,134 - crypto_bot - INFO - [SCALP] 🔍 Scanning LTC/USDT:USDT
+2026-03-19 21:51:42,466 - crypto_bot - INFO - [SCALP] ❌ No signal: LTCUSDT
+2026-03-19 21:51:42,466 - crypto_bot - INFO - [SCALP] 🔍 Scanning KITE/USDT:USDT
+2026-03-19 21:51:42,695 - crypto_bot - INFO - [SCALP] ❌ No signal: KITEUSDT
+2026-03-19 21:51:42,695 - crypto_bot - INFO - [SCALP] 🔍 Scanning GALA/USDT:USDT
+2026-03-19 21:51:42,924 - crypto_bot - INFO - [SCALP] ❌ No signal: GALAUSDT
+2026-03-19 21:51:42,924 - crypto_bot - INFO - [SCALP] 🔍 Scanning XPL/USDT:USDT
+2026-03-19 21:51:43,134 - crypto_bot - INFO - [SCALP] ❌ No signal: XPLUSDT
+2026-03-19 21:51:43,134 - crypto_bot - INFO - [SCALP] 📊 Total signals after scan: 0
+2026-03-19 21:51:43,134 - crypto_bot - INFO - 📊 Signals found: 0
+2026-03-19 21:51:43,134 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
+2026-03-19 21:56:43,136 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-19 21:56:43,969 - crypto_bot - INFO - [SCALP] 📈 Top-50 symbols fetched: 50
+2026-03-19 21:56:44,687 - crypto_bot - INFO - [SCALP] 🔥 Active symbols after filter: 42 / 50
+2026-03-19 21:56:44,687 - crypto_bot - INFO - [SCALP] 🔍 Scanning BTC/USDT:USDT
+2026-03-19 21:56:44,900 - crypto_bot - INFO - [SCALP] ❌ No signal: BTCUSDT
+2026-03-19 21:56:44,900 - crypto_bot - INFO - [SCALP] 🔍 Scanning ETH/USDT:USDT
+2026-03-19 21:56:45,109 - crypto_bot - INFO - [SCALP] ❌ No signal: ETHUSDT
+2026-03-19 21:56:45,109 - crypto_bot - INFO - [SCALP] 🔍 Scanning SOL/USDT:USDT
+2026-03-19 21:56:45,343 - crypto_bot - INFO - [SCALP] ❌ No signal: SOLUSDT
+2026-03-19 21:56:45,343 - crypto_bot - INFO - [SCALP] 🔍 Scanning XRP/USDT:USDT
+2026-03-19 21:56:45,570 - crypto_bot - INFO - [SCALP] ❌ No signal: XRPUSDT
+2026-03-19 21:56:45,571 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAUT/USDT:USDT
+2026-03-19 21:56:45,775 - crypto_bot - INFO - [SCALP] ❌ No signal: XAUTUSDT
+2026-03-19 21:56:45,775 - crypto_bot - INFO - [SCALP] 🔍 Scanning HYPE/USDT:USDT
+2026-03-19 21:56:45,997 - crypto_bot - INFO - [SCALP] ❌ No signal: HYPEUSDT
+2026-03-19 21:56:45,997 - crypto_bot - INFO - [SCALP] 🔍 Scanning DOGE/USDT:USDT
+2026-03-19 21:56:46,208 - crypto_bot - INFO - [SCALP] ❌ No signal: DOGEUSDT
+2026-03-19 21:56:46,208 - crypto_bot - INFO - [SCALP] 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-19 21:56:46,754 - crypto_bot - INFO - [SCALP] ❌ No signal: FARTCOINUSDT
+2026-03-19 21:56:46,754 - crypto_bot - INFO - [SCALP] 🔍 Scanning LYN/USDT:USDT
+2026-03-19 21:56:46,971 - crypto_bot - INFO - [SCALP] ❌ No signal: LYNUSDT
+2026-03-19 21:56:46,972 - crypto_bot - INFO - [SCALP] 🔍 Scanning RIVER/USDT:USDT
+2026-03-19 21:56:47,179 - crypto_bot - INFO - [SCALP] ❌ No signal: RIVERUSDT
+2026-03-19 21:56:47,179 - crypto_bot - INFO - [SCALP] 🔍 Scanning 1000PEPE/USDT:USDT
+2026-03-19 21:56:47,404 - crypto_bot - INFO - [SCALP] ❌ No signal: 1000PEPEUSDT
+2026-03-19 21:56:47,404 - crypto_bot - INFO - [SCALP] 🔍 Scanning TAO/USDT:USDT
+2026-03-19 21:56:47,620 - crypto_bot - INFO - [SCALP] ❌ No signal: TAOUSDT
+2026-03-19 21:56:47,620 - crypto_bot - INFO - [SCALP] 🔍 Scanning PIPPIN/USDT:USDT
+2026-03-19 21:56:47,832 - crypto_bot - INFO - [SCALP] ❌ No signal: PIPPINUSDT
+2026-03-19 21:56:47,832 - crypto_bot - INFO - [SCALP] 🔍 Scanning ZEC/USDT:USDT
+2026-03-19 21:56:48,060 - crypto_bot - INFO - [SCALP] ❌ No signal: ZECUSDT
+2026-03-19 21:56:48,060 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAG/USDT:USDT
+2026-03-19 21:56:48,283 - crypto_bot - INFO - [SCALP] ❌ No signal: XAGUSDT
+2026-03-19 21:56:48,283 - crypto_bot - INFO - [SCALP] 🔍 Scanning BARD/USDT:USDT
+2026-03-19 21:56:48,503 - crypto_bot - INFO - [SCALP] ❌ No signal: BARDUSDT
+2026-03-19 21:56:48,503 - crypto_bot - INFO - [SCALP] 🔍 Scanning ADA/USDT:USDT
+2026-03-19 21:56:48,709 - crypto_bot - INFO - [SCALP] ❌ No signal: ADAUSDT
+2026-03-19 21:56:48,709 - crypto_bot - INFO - [SCALP] 🔍 Scanning SAHARA/USDT:USDT
+2026-03-19 21:56:48,923 - crypto_bot - INFO - [SCALP] ❌ No signal: SAHARAUSDT
+2026-03-19 21:56:48,937 - crypto_bot - INFO - [SCALP] 🔍 Scanning SUI/USDT:USDT
+2026-03-19 21:56:49,137 - crypto_bot - INFO - [SCALP] ❌ No signal: SUIUSDT
+2026-03-19 21:56:49,137 - crypto_bot - INFO - [SCALP] 🔍 Scanning ENJ/USDT:USDT
+2026-03-19 21:56:49,366 - crypto_bot - INFO - [SCALP] ❌ No signal: ENJUSDT
+2026-03-19 21:56:49,366 - crypto_bot - INFO - [SCALP] 🔍 Scanning PAXG/USDT:USDT
+2026-03-19 21:56:49,581 - crypto_bot - INFO - [SCALP] ❌ No signal: PAXGUSDT
+2026-03-19 21:56:49,581 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAU/USDT:USDT
+2026-03-19 21:56:49,800 - crypto_bot - INFO - [SCALP] ❌ No signal: XAUUSDT
+2026-03-19 21:56:49,800 - crypto_bot - INFO - [SCALP] 🔍 Scanning LINK/USDT:USDT
+2026-03-19 21:56:50,008 - crypto_bot - INFO - [SCALP] ❌ No signal: LINKUSDT
+2026-03-19 21:56:50,008 - crypto_bot - INFO - [SCALP] 🔍 Scanning SIREN/USDT:USDT
+2026-03-19 21:56:50,247 - crypto_bot - INFO - [SCALP] ❌ No signal: SIRENUSDT
+2026-03-19 21:56:50,247 - crypto_bot - INFO - [SCALP] 🔍 Scanning TRUMP/USDT:USDT
+2026-03-19 21:56:50,470 - crypto_bot - INFO - [SCALP] ❌ No signal: TRUMPUSDT
+2026-03-19 21:56:50,470 - crypto_bot - INFO - [SCALP] 🔍 Scanning WLD/USDT:USDT
+2026-03-19 21:56:50,682 - crypto_bot - INFO - [SCALP] ❌ No signal: WLDUSDT
+2026-03-19 21:56:50,682 - crypto_bot - INFO - [SCALP] 🔍 Scanning NEAR/USDT:USDT
+2026-03-19 21:56:50,893 - crypto_bot - INFO - [SCALP] ❌ No signal: NEARUSDT
+2026-03-19 21:56:50,893 - crypto_bot - INFO - [SCALP] 🔍 Scanning BNB/USDT:USDT
+2026-03-19 21:56:51,087 - crypto_bot - INFO - [SCALP] ❌ No signal: BNBUSDT
+2026-03-19 21:56:51,087 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAN/USDT:USDT
+2026-03-19 21:56:51,310 - crypto_bot - INFO - [SCALP] ❌ No signal: XANUSDT
+2026-03-19 21:56:51,310 - crypto_bot - INFO - [SCALP] 🔍 Scanning AAVE/USDT:USDT
+2026-03-19 21:56:51,524 - crypto_bot - INFO - [SCALP] ❌ No signal: AAVEUSDT
+2026-03-19 21:56:51,524 - crypto_bot - INFO - [SCALP] 🔍 Scanning ETHFI/USDT:USDT
+2026-03-19 21:56:51,741 - crypto_bot - INFO - [SCALP] ❌ No signal: ETHFIUSDT
+2026-03-19 21:56:51,742 - crypto_bot - INFO - [SCALP] 🔍 Scanning PIXEL/USDT:USDT
+2026-03-19 21:56:51,939 - crypto_bot - INFO - [SCALP] ❌ No signal: PIXELUSDT
+2026-03-19 21:56:51,939 - crypto_bot - INFO - [SCALP] 🔍 Scanning BAN/USDT:USDT
+2026-03-19 21:56:52,163 - crypto_bot - INFO - [SCALP] ❌ No signal: BANUSDT
+2026-03-19 21:56:52,163 - crypto_bot - INFO - [SCALP] 🔍 Scanning ENA/USDT:USDT
+2026-03-19 21:56:52,371 - crypto_bot - INFO - [SCALP] ❌ No signal: ENAUSDT
+2026-03-19 21:56:52,372 - crypto_bot - INFO - [SCALP] 🔍 Scanning WIF/USDT:USDT
+2026-03-19 21:56:52,590 - crypto_bot - INFO - [SCALP] ❌ No signal: WIFUSDT
+2026-03-19 21:56:52,590 - crypto_bot - INFO - [SCALP] 🔍 Scanning DOT/USDT:USDT
+2026-03-19 21:56:52,798 - crypto_bot - INFO - [SCALP] ❌ No signal: DOTUSDT
+2026-03-19 21:56:52,799 - crypto_bot - INFO - [SCALP] 🔍 Scanning UAI/USDT:USDT
+2026-03-19 21:56:53,006 - crypto_bot - INFO - [SCALP] ❌ No signal: UAIUSDT
+2026-03-19 21:56:53,006 - crypto_bot - INFO - [SCALP] 🔍 Scanning VIRTUAL/USDT:USDT
+2026-03-19 21:56:53,212 - crypto_bot - INFO - [SCALP] ❌ No signal: VIRTUALUSDT
+2026-03-19 21:56:53,213 - crypto_bot - INFO - [SCALP] 🔍 Scanning AVAX/USDT:USDT
+2026-03-19 21:56:53,445 - crypto_bot - INFO - [SCALP] ❌ No signal: AVAXUSDT
+2026-03-19 21:56:53,445 - crypto_bot - INFO - [SCALP] 🔍 Scanning PUMPFUN/USDT:USDT
+2026-03-19 21:56:53,663 - crypto_bot - INFO - [SCALP] ❌ No signal: PUMPFUNUSDT
+2026-03-19 21:56:53,663 - crypto_bot - INFO - [SCALP] 🔍 Scanning KITE/USDT:USDT
+2026-03-19 21:56:53,887 - crypto_bot - INFO - [SCALP] ❌ No signal: KITEUSDT
+2026-03-19 21:56:53,887 - crypto_bot - INFO - [SCALP] 🔍 Scanning GALA/USDT:USDT
+2026-03-19 21:56:54,096 - crypto_bot - INFO - [SCALP] ❌ No signal: GALAUSDT
+2026-03-19 21:56:54,097 - crypto_bot - INFO - [SCALP] 📊 Total signals after scan: 0
+2026-03-19 21:56:54,098 - crypto_bot - INFO - 📊 Signals found: 0
+2026-03-19 21:56:54,098 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
+2026-03-19 21:57:07,380 - crypto_bot - INFO - 🛑 Остановка по KeyboardInterrupt
+2026-03-19 21:57:17,493 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-19 21:57:17,493 - crypto_bot - WARNING - TELEGRAM_TOKEN не задан — бот запустится в режиме scanner + GUI без Telegram polling
+2026-03-19 21:57:17,493 - crypto_bot - INFO - [SCALP] scanner initialized | mode=SCALPING | timeframe=30m | candle_limit=120 | execution_tfs=30m, 15m
+2026-03-19 21:57:17,534 - crypto_bot - INFO - 🖥️ Signal GUI thread started
+2026-03-19 21:57:17,534 - crypto_bot - INFO - ✅ Telegram отключён: инициализированы scanner + GUI режим
+2026-03-19 21:57:17,535 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-19 21:57:17,535 - crypto_bot - INFO - 📡 Telegram polling disabled, running standalone scan loop
+2026-03-19 21:57:17,537 - crypto_bot - INFO - 🚀 SCAN LOOP STARTED
+2026-03-19 21:57:17,537 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-19 21:57:22,862 - crypto_bot - INFO - [SCALP] 📈 Top-50 symbols fetched: 50
+2026-03-19 21:57:27,751 - crypto_bot - INFO - [SCALP] 🔥 Active symbols after filter: 41 / 50
+2026-03-19 21:57:27,751 - crypto_bot - INFO - [SCALP] 🔍 Scanning BTC/USDT:USDT
+2026-03-19 21:57:28,285 - crypto_bot - INFO - [SCALP] ❌ No signal: BTCUSDT
+2026-03-19 21:57:28,285 - crypto_bot - INFO - [SCALP] 🔍 Scanning ETH/USDT:USDT
+2026-03-19 21:57:28,490 - crypto_bot - INFO - [SCALP] ❌ No signal: ETHUSDT
+2026-03-19 21:57:28,490 - crypto_bot - INFO - [SCALP] 🔍 Scanning SOL/USDT:USDT
+2026-03-19 21:57:28,731 - crypto_bot - INFO - [SCALP] ❌ No signal: SOLUSDT
+2026-03-19 21:57:28,731 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAUT/USDT:USDT
+2026-03-19 21:57:28,949 - crypto_bot - INFO - [SCALP] ❌ No signal: XAUTUSDT
+2026-03-19 21:57:28,950 - crypto_bot - INFO - [SCALP] 🔍 Scanning HYPE/USDT:USDT
+2026-03-19 21:57:29,166 - crypto_bot - INFO - [SCALP] ❌ No signal: HYPEUSDT
+2026-03-19 21:57:29,166 - crypto_bot - INFO - [SCALP] 🔍 Scanning DOGE/USDT:USDT
+2026-03-19 21:57:29,398 - crypto_bot - INFO - [SCALP] ❌ No signal: DOGEUSDT
+2026-03-19 21:57:29,398 - crypto_bot - INFO - [SCALP] 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-19 21:57:29,606 - crypto_bot - INFO - [SCALP] ❌ No signal: FARTCOINUSDT
+2026-03-19 21:57:29,606 - crypto_bot - INFO - [SCALP] 🔍 Scanning LYN/USDT:USDT
+2026-03-19 21:57:29,815 - crypto_bot - INFO - [SCALP] ❌ No signal: LYNUSDT
+2026-03-19 21:57:29,815 - crypto_bot - INFO - [SCALP] 🔍 Scanning RIVER/USDT:USDT
+2026-03-19 21:57:30,029 - crypto_bot - INFO - [SCALP] ❌ No signal: RIVERUSDT
+2026-03-19 21:57:30,029 - crypto_bot - INFO - [SCALP] 🔍 Scanning 1000PEPE/USDT:USDT
+2026-03-19 21:57:30,256 - crypto_bot - INFO - [SCALP] ❌ No signal: 1000PEPEUSDT
+2026-03-19 21:57:30,256 - crypto_bot - INFO - [SCALP] 🔍 Scanning TAO/USDT:USDT
+2026-03-19 21:57:30,463 - crypto_bot - INFO - [SCALP] ❌ No signal: TAOUSDT
+2026-03-19 21:57:30,463 - crypto_bot - INFO - [SCALP] 🔍 Scanning PIPPIN/USDT:USDT
+2026-03-19 21:57:30,675 - crypto_bot - INFO - [SCALP] ❌ No signal: PIPPINUSDT
+2026-03-19 21:57:30,675 - crypto_bot - INFO - [SCALP] 🔍 Scanning ZEC/USDT:USDT
+2026-03-19 21:57:30,912 - crypto_bot - INFO - [SCALP] ❌ No signal: ZECUSDT
+2026-03-19 21:57:30,913 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAG/USDT:USDT
+2026-03-19 21:57:31,439 - crypto_bot - INFO - [SCALP] ❌ No signal: XAGUSDT
+2026-03-19 21:57:31,440 - crypto_bot - INFO - [SCALP] 🔍 Scanning BARD/USDT:USDT
+2026-03-19 21:57:31,643 - crypto_bot - INFO - [SCALP] ❌ No signal: BARDUSDT
+2026-03-19 21:57:31,643 - crypto_bot - INFO - [SCALP] 🔍 Scanning ADA/USDT:USDT
+2026-03-19 21:57:31,855 - crypto_bot - INFO - [SCALP] ❌ No signal: ADAUSDT
+2026-03-19 21:57:31,856 - crypto_bot - INFO - [SCALP] 🔍 Scanning SAHARA/USDT:USDT
+2026-03-19 21:57:32,061 - crypto_bot - INFO - [SCALP] ❌ No signal: SAHARAUSDT
+2026-03-19 21:57:32,061 - crypto_bot - INFO - [SCALP] 🔍 Scanning SUI/USDT:USDT
+2026-03-19 21:57:32,254 - crypto_bot - INFO - [SCALP] ❌ No signal: SUIUSDT
+2026-03-19 21:57:32,254 - crypto_bot - INFO - [SCALP] 🔍 Scanning ENJ/USDT:USDT
+2026-03-19 21:57:32,486 - crypto_bot - INFO - [SCALP] ❌ No signal: ENJUSDT
+2026-03-19 21:57:32,486 - crypto_bot - INFO - [SCALP] 🔍 Scanning PAXG/USDT:USDT
+2026-03-19 21:57:32,722 - crypto_bot - INFO - [SCALP] ❌ No signal: PAXGUSDT
+2026-03-19 21:57:32,722 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAU/USDT:USDT
+2026-03-19 21:57:32,942 - crypto_bot - INFO - [SCALP] ❌ No signal: XAUUSDT
+2026-03-19 21:57:32,943 - crypto_bot - INFO - [SCALP] 🔍 Scanning LINK/USDT:USDT
+2026-03-19 21:57:33,140 - crypto_bot - INFO - [SCALP] ❌ No signal: LINKUSDT
+2026-03-19 21:57:33,140 - crypto_bot - INFO - [SCALP] 🔍 Scanning SIREN/USDT:USDT
+2026-03-19 21:57:33,363 - crypto_bot - INFO - [SCALP] ❌ No signal: SIRENUSDT
+2026-03-19 21:57:33,363 - crypto_bot - INFO - [SCALP] 🔍 Scanning TRUMP/USDT:USDT
+2026-03-19 21:57:33,577 - crypto_bot - INFO - [SCALP] ❌ No signal: TRUMPUSDT
+2026-03-19 21:57:33,577 - crypto_bot - INFO - [SCALP] 🔍 Scanning WLD/USDT:USDT
+2026-03-19 21:57:33,784 - crypto_bot - INFO - [SCALP] ❌ No signal: WLDUSDT
+2026-03-19 21:57:33,784 - crypto_bot - INFO - [SCALP] 🔍 Scanning NEAR/USDT:USDT
+2026-03-19 21:57:33,987 - crypto_bot - INFO - [SCALP] ❌ No signal: NEARUSDT
+2026-03-19 21:57:33,987 - crypto_bot - INFO - [SCALP] 🔍 Scanning BNB/USDT:USDT
+2026-03-19 21:57:34,205 - crypto_bot - INFO - [SCALP] ❌ No signal: BNBUSDT
+2026-03-19 21:57:34,205 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAN/USDT:USDT
+2026-03-19 21:57:34,412 - crypto_bot - INFO - [SCALP] ❌ No signal: XANUSDT
+2026-03-19 21:57:34,412 - crypto_bot - INFO - [SCALP] 🔍 Scanning AAVE/USDT:USDT
+2026-03-19 21:57:34,611 - crypto_bot - INFO - [SCALP] ❌ No signal: AAVEUSDT
+2026-03-19 21:57:34,611 - crypto_bot - INFO - [SCALP] 🔍 Scanning ETHFI/USDT:USDT
+2026-03-19 21:57:34,827 - crypto_bot - INFO - [SCALP] ❌ No signal: ETHFIUSDT
+2026-03-19 21:57:34,827 - crypto_bot - INFO - [SCALP] 🔍 Scanning PIXEL/USDT:USDT
+2026-03-19 21:57:35,035 - crypto_bot - INFO - [SCALP] ❌ No signal: PIXELUSDT
+2026-03-19 21:57:35,035 - crypto_bot - INFO - [SCALP] 🔍 Scanning BAN/USDT:USDT
+2026-03-19 21:57:35,259 - crypto_bot - INFO - [SCALP] ❌ No signal: BANUSDT
+2026-03-19 21:57:35,259 - crypto_bot - INFO - [SCALP] 🔍 Scanning WIF/USDT:USDT
+2026-03-19 21:57:35,464 - crypto_bot - INFO - [SCALP] ❌ No signal: WIFUSDT
+2026-03-19 21:57:35,464 - crypto_bot - INFO - [SCALP] 🔍 Scanning ENA/USDT:USDT
+2026-03-19 21:57:35,675 - crypto_bot - INFO - [SCALP] ❌ No signal: ENAUSDT
+2026-03-19 21:57:35,675 - crypto_bot - INFO - [SCALP] 🔍 Scanning DOT/USDT:USDT
+2026-03-19 21:57:35,890 - crypto_bot - INFO - [SCALP] ❌ No signal: DOTUSDT
+2026-03-19 21:57:35,890 - crypto_bot - INFO - [SCALP] 🔍 Scanning UAI/USDT:USDT
+2026-03-19 21:57:36,091 - crypto_bot - INFO - [SCALP] ❌ No signal: UAIUSDT
+2026-03-19 21:57:36,091 - crypto_bot - INFO - [SCALP] 🔍 Scanning VIRTUAL/USDT:USDT
+2026-03-19 21:57:36,291 - crypto_bot - INFO - [SCALP] ❌ No signal: VIRTUALUSDT
+2026-03-19 21:57:36,291 - crypto_bot - INFO - [SCALP] 🔍 Scanning AVAX/USDT:USDT
+2026-03-19 21:57:36,518 - crypto_bot - INFO - [SCALP] ❌ No signal: AVAXUSDT
+2026-03-19 21:57:36,518 - crypto_bot - INFO - [SCALP] 🔍 Scanning PUMPFUN/USDT:USDT
+2026-03-19 21:57:36,742 - crypto_bot - INFO - [SCALP] ❌ No signal: PUMPFUNUSDT
+2026-03-19 21:57:36,742 - crypto_bot - INFO - [SCALP] 🔍 Scanning KITE/USDT:USDT
+2026-03-19 21:57:36,960 - crypto_bot - INFO - [SCALP] ❌ No signal: KITEUSDT
+2026-03-19 21:57:36,960 - crypto_bot - INFO - [SCALP] 🔍 Scanning GALA/USDT:USDT
+2026-03-19 21:57:37,186 - crypto_bot - INFO - [SCALP] ❌ No signal: GALAUSDT
+2026-03-19 21:57:37,186 - crypto_bot - INFO - [SCALP] 📊 Total signals after scan: 0
+2026-03-19 21:57:37,186 - crypto_bot - INFO - 📊 Signals found: 0
+2026-03-19 21:57:37,186 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
+2026-03-19 21:57:43,449 - crypto_bot - INFO - 🛑 Остановка по KeyboardInterrupt
+2026-03-19 22:00:26,041 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-19 22:00:26,041 - crypto_bot - WARNING - TELEGRAM_TOKEN не задан — бот запустится в режиме scanner + GUI без Telegram polling
+2026-03-19 22:00:26,041 - crypto_bot - INFO - [LIGHT] scanner initialized | mode=LIGHT | timeframe=30m | candle_limit=220 | execution_tfs=30m, 1h
+2026-03-19 22:00:26,074 - crypto_bot - INFO - 🖥️ Signal GUI thread started
+2026-03-19 22:00:26,074 - crypto_bot - INFO - ✅ Telegram отключён: инициализированы scanner + GUI режим
+2026-03-19 22:00:26,074 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-19 22:00:26,074 - crypto_bot - INFO - 📡 Telegram polling disabled, running standalone scan loop
+2026-03-19 22:00:26,074 - crypto_bot - INFO - 🚀 SCAN LOOP STARTED
+2026-03-19 22:00:26,074 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-19 22:00:29,635 - crypto_bot - INFO - [LIGHT] 📈 Top-50 symbols fetched: 50
+2026-03-19 22:00:35,150 - crypto_bot - INFO - [LIGHT] 🔥 Active symbols after filter: 40 / 50
+2026-03-19 22:00:35,150 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BTC/USDT:USDT
+2026-03-19 22:00:35,382 - crypto_bot - INFO - [LIGHT] ❌ No signal: BTCUSDT
+2026-03-19 22:00:35,382 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ETH/USDT:USDT
+2026-03-19 22:00:35,605 - crypto_bot - INFO - [LIGHT] ❌ No signal: ETHUSDT
+2026-03-19 22:00:35,605 - crypto_bot - INFO - [LIGHT] 🔍 Scanning SOL/USDT:USDT
+2026-03-19 22:00:35,832 - crypto_bot - INFO - [LIGHT] ❌ No signal: SOLUSDT
+2026-03-19 22:00:35,832 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XRP/USDT:USDT
+2026-03-19 22:00:36,044 - crypto_bot - INFO - [LIGHT] ❌ No signal: XRPUSDT
+2026-03-19 22:00:36,044 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAUT/USDT:USDT
+2026-03-19 22:00:36,246 - crypto_bot - INFO - [LIGHT] ❌ No signal: XAUTUSDT
+2026-03-19 22:00:36,246 - crypto_bot - INFO - [LIGHT] 🔍 Scanning HYPE/USDT:USDT
+2026-03-19 22:00:36,937 - crypto_bot - INFO - [LIGHT] ❌ No signal: HYPEUSDT
+2026-03-19 22:00:36,937 - crypto_bot - INFO - [LIGHT] 🔍 Scanning DOGE/USDT:USDT
+2026-03-19 22:00:37,137 - crypto_bot - INFO - [LIGHT] ❌ No signal: DOGEUSDT
+2026-03-19 22:00:37,137 - crypto_bot - INFO - [LIGHT] 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-19 22:00:37,366 - crypto_bot - INFO - [LIGHT] ❌ No signal: FARTCOINUSDT
+2026-03-19 22:00:37,366 - crypto_bot - INFO - [LIGHT] 🔍 Scanning LYN/USDT:USDT
+2026-03-19 22:00:37,592 - crypto_bot - INFO - [LIGHT] ❌ No signal: LYNUSDT
+2026-03-19 22:00:37,592 - crypto_bot - INFO - [LIGHT] 🔍 Scanning RIVER/USDT:USDT
+2026-03-19 22:00:37,817 - crypto_bot - INFO - [LIGHT] ❌ No signal: RIVERUSDT
+2026-03-19 22:00:37,819 - crypto_bot - INFO - [LIGHT] 🔍 Scanning 1000PEPE/USDT:USDT
+2026-03-19 22:00:38,038 - crypto_bot - INFO - [LIGHT] ❌ No signal: 1000PEPEUSDT
+2026-03-19 22:00:38,038 - crypto_bot - INFO - [LIGHT] 🔍 Scanning TAO/USDT:USDT
+2026-03-19 22:00:38,246 - crypto_bot - INFO - [LIGHT] ❌ No signal: TAOUSDT
+2026-03-19 22:00:38,246 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ZEC/USDT:USDT
+2026-03-19 22:00:38,476 - crypto_bot - INFO - [LIGHT] ❌ No signal: ZECUSDT
+2026-03-19 22:00:38,476 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAG/USDT:USDT
+2026-03-19 22:00:38,700 - crypto_bot - INFO - [LIGHT] ❌ No signal: XAGUSDT
+2026-03-19 22:00:38,700 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BARD/USDT:USDT
+2026-03-19 22:00:38,911 - crypto_bot - INFO - [LIGHT] ❌ No signal: BARDUSDT
+2026-03-19 22:00:38,911 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ADA/USDT:USDT
+2026-03-19 22:00:39,115 - crypto_bot - INFO - [LIGHT] ❌ No signal: ADAUSDT
+2026-03-19 22:00:39,115 - crypto_bot - INFO - [LIGHT] 🔍 Scanning SAHARA/USDT:USDT
+2026-03-19 22:00:39,325 - crypto_bot - INFO - [LIGHT] ❌ No signal: SAHARAUSDT
+2026-03-19 22:00:39,325 - crypto_bot - INFO - [LIGHT] 🔍 Scanning SUI/USDT:USDT
+2026-03-19 22:00:39,541 - crypto_bot - INFO - [LIGHT] ❌ No signal: SUIUSDT
+2026-03-19 22:00:39,541 - crypto_bot - INFO - [LIGHT] 🔍 Scanning PAXG/USDT:USDT
+2026-03-19 22:00:39,780 - crypto_bot - INFO - [LIGHT] ❌ No signal: PAXGUSDT
+2026-03-19 22:00:39,780 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAU/USDT:USDT
+2026-03-19 22:00:40,008 - crypto_bot - INFO - [LIGHT] ❌ No signal: XAUUSDT
+2026-03-19 22:00:40,008 - crypto_bot - INFO - [LIGHT] 🔍 Scanning LINK/USDT:USDT
+2026-03-19 22:00:40,221 - crypto_bot - INFO - [LIGHT] ❌ No signal: LINKUSDT
+2026-03-19 22:00:40,221 - crypto_bot - INFO - [LIGHT] 🔍 Scanning SIREN/USDT:USDT
+2026-03-19 22:00:40,447 - crypto_bot - INFO - [LIGHT] ❌ No signal: SIRENUSDT
+2026-03-19 22:00:40,447 - crypto_bot - INFO - [LIGHT] 🔍 Scanning TRUMP/USDT:USDT
+2026-03-19 22:00:40,663 - crypto_bot - INFO - [LIGHT] ❌ No signal: TRUMPUSDT
+2026-03-19 22:00:40,663 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WLD/USDT:USDT
+2026-03-19 22:00:40,892 - crypto_bot - INFO - [LIGHT] ❌ No signal: WLDUSDT
+2026-03-19 22:00:40,892 - crypto_bot - INFO - [LIGHT] 🔍 Scanning NEAR/USDT:USDT
+2026-03-19 22:00:41,096 - crypto_bot - INFO - [LIGHT] ❌ No signal: NEARUSDT
+2026-03-19 22:00:41,096 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BNB/USDT:USDT
+2026-03-19 22:00:41,316 - crypto_bot - INFO - [LIGHT] ❌ No signal: BNBUSDT
+2026-03-19 22:00:41,316 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAN/USDT:USDT
+2026-03-19 22:00:41,527 - crypto_bot - INFO - [LIGHT] ❌ No signal: XANUSDT
+2026-03-19 22:00:41,527 - crypto_bot - INFO - [LIGHT] 🔍 Scanning AAVE/USDT:USDT
+2026-03-19 22:00:41,730 - crypto_bot - INFO - [LIGHT] ❌ No signal: AAVEUSDT
+2026-03-19 22:00:41,730 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ETHFI/USDT:USDT
+2026-03-19 22:00:41,970 - crypto_bot - INFO - [LIGHT] ❌ No signal: ETHFIUSDT
+2026-03-19 22:00:41,970 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BAN/USDT:USDT
+2026-03-19 22:00:42,181 - crypto_bot - INFO - [LIGHT] ❌ No signal: BANUSDT
+2026-03-19 22:00:42,181 - crypto_bot - INFO - [LIGHT] 🔍 Scanning PIXEL/USDT:USDT
+2026-03-19 22:00:42,376 - crypto_bot - INFO - [LIGHT] ❌ No signal: PIXELUSDT
+2026-03-19 22:00:42,376 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WIF/USDT:USDT
+2026-03-19 22:00:42,594 - crypto_bot - INFO - [LIGHT] ❌ No signal: WIFUSDT
+2026-03-19 22:00:42,594 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ENA/USDT:USDT
+2026-03-19 22:00:42,800 - crypto_bot - INFO - [LIGHT] ❌ No signal: ENAUSDT
+2026-03-19 22:00:42,800 - crypto_bot - INFO - [LIGHT] 🔍 Scanning DOT/USDT:USDT
+2026-03-19 22:00:43,018 - crypto_bot - INFO - [LIGHT] ❌ No signal: DOTUSDT
+2026-03-19 22:00:43,018 - crypto_bot - INFO - [LIGHT] 🔍 Scanning UAI/USDT:USDT
+2026-03-19 22:00:43,234 - crypto_bot - INFO - [LIGHT] ❌ No signal: UAIUSDT
+2026-03-19 22:00:43,234 - crypto_bot - INFO - [LIGHT] 🔍 Scanning VIRTUAL/USDT:USDT
+2026-03-19 22:00:43,453 - crypto_bot - INFO - [LIGHT] ❌ No signal: VIRTUALUSDT
+2026-03-19 22:00:43,453 - crypto_bot - INFO - [LIGHT] 🔍 Scanning AVAX/USDT:USDT
+2026-03-19 22:00:43,664 - crypto_bot - INFO - [LIGHT] ❌ No signal: AVAXUSDT
+2026-03-19 22:00:43,664 - crypto_bot - INFO - [LIGHT] 🔍 Scanning PUMPFUN/USDT:USDT
+2026-03-19 22:00:43,880 - crypto_bot - INFO - [LIGHT] ❌ No signal: PUMPFUNUSDT
+2026-03-19 22:00:43,880 - crypto_bot - INFO - [LIGHT] 🔍 Scanning KITE/USDT:USDT
+2026-03-19 22:00:44,099 - crypto_bot - INFO - [LIGHT] ❌ No signal: KITEUSDT
+2026-03-19 22:00:44,099 - crypto_bot - INFO - [LIGHT] 🔍 Scanning GALA/USDT:USDT
+2026-03-19 22:00:44,304 - crypto_bot - INFO - [LIGHT] ❌ No signal: GALAUSDT
+2026-03-19 22:00:44,304 - crypto_bot - INFO - [LIGHT] 📊 Total signals after scan: 0
+2026-03-19 22:00:44,304 - crypto_bot - INFO - 📊 Signals found: 0
+2026-03-19 22:00:44,304 - crypto_bot - INFO - ⏳ Sleeping for 180 seconds
+2026-03-19 22:01:56,690 - crypto_bot - INFO - 🛑 Остановка по KeyboardInterrupt
