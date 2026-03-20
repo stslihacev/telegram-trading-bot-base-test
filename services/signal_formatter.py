@@ -1,0 +1,71 @@
+"""Utilities for human-readable signal logging formats."""
+
+from __future__ import annotations
+
+
+def _safe_float(value: object, digits: int) -> str:
+    try:
+        return f"{float(value):.{digits}f}"
+    except (TypeError, ValueError):
+        return "N/A"
+
+
+def _stringify_filters(value: object) -> str:
+    if isinstance(value, (list, tuple, set)):
+        items = [str(item).upper() for item in value if str(item).strip()]
+        return ", ".join(items) if items else "-"
+    if value is None:
+        return "-"
+    text = str(value).strip()
+    return text.upper() if text else "-"
+
+
+def format_signal_full(signal: dict) -> str:
+    """Return multi-line pretty signal representation for logs."""
+    mode = str(signal.get("label_prefix") or signal.get("live_mode") or "[MAIN]").strip()
+    symbol = str(signal.get("symbol") or "N/A")
+    direction = str(signal.get("direction") or "N/A")
+    timeframe = str(signal.get("tf") or "N/A")
+
+    score = _safe_float(signal.get("score"), 2)
+    max_score = _safe_float(signal.get("max_score"), 2)
+    confidence = _safe_float(signal.get("confidence"), 2)
+
+    entry = _safe_float(signal.get("entry"), 6)
+    tp = _safe_float(signal.get("tp"), 6)
+    sl = _safe_float(signal.get("sl"), 6)
+    rr = _safe_float(signal.get("rr"), 2)
+
+    passed = _stringify_filters(signal.get("passed_filters"))
+    failed = _stringify_filters(signal.get("failed_filters"))
+
+    regime = str(signal.get("regime") or "N/A")
+    timestamp = str(signal.get("timestamp") or "N/A")
+
+    return (
+        f"{mode} 📡 SIGNAL\n\n"
+        f"Symbol:    {symbol}\n"
+        f"Direction: {direction}\n"
+        f"Timeframe: {timeframe}\n\n"
+        f"Entry: {entry}\n"
+        f"TP:    {tp}\n"
+        f"SL:    {sl}\n"
+        f"RR:    {rr}\n\n"
+        f"Score:      {score} / {max_score}\n"
+        f"Confidence: {confidence}\n\n"
+        f"Passed: {passed}\n"
+        f"Failed: {failed}\n\n"
+        f"Regime: {regime}\n"
+        f"Time:   {timestamp}"
+    )
+
+
+def format_signal_compact(signal: dict) -> str:
+    """Return one-line compact signal representation for logs."""
+    symbol = str(signal.get("symbol") or "N/A")
+    direction = str(signal.get("direction") or "N/A")
+    timeframe = str(signal.get("tf") or "N/A")
+    score = _safe_float(signal.get("score"), 2)
+    max_score = _safe_float(signal.get("max_score"), 2)
+    rr = _safe_float(signal.get("rr"), 2)
+    return f"{symbol} {direction} | TF {timeframe} | Score {score}/{max_score} | RR {rr}"

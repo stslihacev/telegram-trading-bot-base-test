@@ -22,3 +22,1295 @@
 2026-03-20 21:56:41,837 - INFO - {'symbol': 'ATHUSDT', 'signal_type': 'LIGHT_SHORT', 'direction': 'SHORT', 'entry': 0.008002, 'tp': 0.007663728571428572, 'sl': 0.008227514285714286, 'rr': 1.5000000000000038, 'confidence': 0.416667, 'score': 3.0, 'max_score': 7.2, 'passed_filters': ['RSI', 'BODY', 'VOLUME'], 'failed_filters': ['EMA', 'SMA', 'MACD', 'VOLUME'], 'regime': 'LIGHT_RANGE', 'timestamp': '2026-03-20 18:00:00+00:00', 'tf': '30m', 'trade_type': 'signal_only', 'position_size': 0.0, 'trade_risk': 0.0, 'live_mode': 'LIGHT', 'label_prefix': '[LIGHT]', 'execution_timeframes': ('30m', '1h'), 'signal_only': True, 'alert_text': '[LIGHT] ALERT: ATHUSDT SHORT | EMA/SMA + RSI + MACD + volume filters'}
 2026-03-20 21:56:41,838 - INFO - {'symbol': 'BEATUSDT', 'signal_type': 'LIGHT_SHORT', 'direction': 'SHORT', 'entry': 0.57156, 'tp': 0.5383345714285714, 'sl': 0.5937102857142856, 'rr': 1.5, 'confidence': 0.555556, 'score': 4.0, 'max_score': 7.2, 'passed_filters': ['SMA', 'MACD', 'BODY', 'VOLUME'], 'failed_filters': ['EMA', 'RSI', 'VOLUME'], 'regime': 'LIGHT_RANGE', 'timestamp': '2026-03-20 18:00:00+00:00', 'tf': '30m', 'trade_type': 'signal_only', 'position_size': 0.0, 'trade_risk': 0.0, 'live_mode': 'LIGHT', 'label_prefix': '[LIGHT]', 'execution_timeframes': ('30m', '1h'), 'signal_only': True, 'alert_text': '[LIGHT] ALERT: BEATUSDT SHORT | EMA/SMA + RSI + MACD + volume filters'}
 2026-03-20 21:56:41,838 - INFO - {'symbol': 'RENDERUSDT', 'signal_type': 'LIGHT_SHORT', 'direction': 'SHORT', 'entry': 1.6935, 'tp': 1.663452857142857, 'sl': 1.7135314285714287, 'rr': 1.4999999999999944, 'confidence': 0.444444, 'score': 3.2, 'max_score': 7.2, 'passed_filters': ['MACD', 'BODY', 'VOLUME'], 'failed_filters': ['EMA', 'SMA', 'RSI', 'VOLUME'], 'regime': 'LIGHT_RANGE', 'timestamp': '2026-03-20 18:00:00+00:00', 'tf': '30m', 'trade_type': 'signal_only', 'position_size': 0.0, 'trade_risk': 0.0, 'live_mode': 'LIGHT', 'label_prefix': '[LIGHT]', 'execution_timeframes': ('30m', '1h'), 'signal_only': True, 'alert_text': '[LIGHT] ALERT: RENDERUSDT SHORT | EMA/SMA + RSI + MACD + volume filters'}
+2026-03-20 23:38:02,971 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    TAOUSDT
+Direction: LONG
+Timeframe: 30m
+
+Entry: 267.130000
+TP:    275.574571
+SL:    261.500286
+RR:    1.50
+
+Score:      3.00 / 7.20
+Confidence: 0.42
+
+Passed: RSI, BODY
+Failed: EMA, SMA, MACD, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:38:02,971 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    HYPEUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 39.116000
+TP:    38.113786
+SL:    39.784143
+RR:    1.50
+
+Score:      3.20 / 7.20
+Confidence: 0.44
+
+Passed: SMA, VOLUME
+Failed: EMA, RSI, MACD, BODY
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:38:02,971 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    LYNUSDT
+Direction: LONG
+Timeframe: 30m
+
+Entry: 0.067640
+TP:    0.074710
+SL:    0.062927
+RR:    1.50
+
+Score:      3.20 / 7.20
+Confidence: 0.44
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:38:02,971 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    RIVERUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 21.503000
+TP:    20.123043
+SL:    22.422971
+RR:    1.50
+
+Score:      3.20 / 7.20
+Confidence: 0.44
+
+Passed: SMA, MACD
+Failed: EMA, RSI, BODY, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:38:02,971 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    FARTCOINUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 0.190520
+TP:    0.183420
+SL:    0.195253
+RR:    1.50
+
+Score:      5.20 / 7.20
+Confidence: 0.72
+
+Passed: SMA, MACD, BODY, VOLUME
+Failed: EMA, RSI
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:38:02,971 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    UAIUSDT
+Direction: LONG
+Timeframe: 30m
+
+Entry: 0.428070
+TP:    0.492372
+SL:    0.385202
+RR:    1.50
+
+Score:      3.20 / 7.20
+Confidence: 0.44
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:38:02,971 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    WAXPUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 0.008411
+TP:    0.007906
+SL:    0.008748
+RR:    1.50
+
+Score:      3.00 / 7.20
+Confidence: 0.42
+
+Passed: RSI, BODY
+Failed: EMA, SMA, MACD, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:38:02,971 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    ADAUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 0.262800
+TP:    0.259200
+SL:    0.265200
+RR:    1.50
+
+Score:      4.00 / 7.20
+Confidence: 0.56
+
+Passed: SMA, MACD, BODY
+Failed: EMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:38:02,971 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    SAHARAUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 0.029752
+TP:    0.028509
+SL:    0.030581
+RR:    1.50
+
+Score:      4.20 / 7.20
+Confidence: 0.58
+
+Passed: RSI, BODY, VOLUME
+Failed: EMA, SMA, MACD
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:38:02,971 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    NEARUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 1.314900
+TP:    1.293364
+SL:    1.329257
+RR:    1.50
+
+Score:      4.00 / 7.20
+Confidence: 0.56
+
+Passed: SMA, MACD, BODY
+Failed: EMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:38:02,985 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    ENAUSDT
+Direction: LONG
+Timeframe: 30m
+
+Entry: 0.100870
+TP:    0.102651
+SL:    0.099683
+RR:    1.50
+
+Score:      3.00 / 7.20
+Confidence: 0.42
+
+Passed: RSI, BODY
+Failed: EMA, SMA, MACD, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:38:02,987 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    BANUSDT
+Direction: LONG
+Timeframe: 30m
+
+Entry: 0.052960
+TP:    0.055696
+SL:    0.051136
+RR:    1.50
+
+Score:      3.20 / 7.20
+Confidence: 0.44
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:38:02,987 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    KASUSDT
+Direction: LONG
+Timeframe: 30m
+
+Entry: 0.036630
+TP:    0.038755
+SL:    0.035213
+RR:    1.50
+
+Score:      3.20 / 7.20
+Confidence: 0.44
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:38:02,988 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    KITEUSDT
+Direction: LONG
+Timeframe: 30m
+
+Entry: 0.220120
+TP:    0.225907
+SL:    0.216262
+RR:    1.50
+
+Score:      3.20 / 7.20
+Confidence: 0.44
+
+Passed: SMA, MACD
+Failed: EMA, RSI, BODY, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:38:02,990 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    WIFUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 0.176530
+TP:    0.172589
+SL:    0.179157
+RR:    1.50
+
+Score:      4.20 / 7.20
+Confidence: 0.58
+
+Passed: EMA, MACD, BODY
+Failed: SMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:38:02,991 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    BCHUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 465.800000
+TP:    460.232857
+SL:    469.511429
+RR:    1.50
+
+Score:      3.20 / 7.20
+Confidence: 0.44
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:38:02,991 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    XPLUSDT
+Direction: LONG
+Timeframe: 30m
+
+Entry: 0.093090
+TP:    0.096291
+SL:    0.090956
+RR:    1.50
+
+Score:      3.00 / 7.20
+Confidence: 0.42
+
+Passed: RSI, BODY
+Failed: EMA, SMA, MACD, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:38:02,993 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    DOTUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 1.500800
+TP:    1.478904
+SL:    1.515397
+RR:    1.50
+
+Score:      4.00 / 7.20
+Confidence: 0.56
+
+Passed: SMA, MACD, BODY
+Failed: EMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:38:02,993 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    ATHUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 0.007712
+TP:    0.007407
+SL:    0.007916
+RR:    1.50
+
+Score:      3.20 / 7.20
+Confidence: 0.44
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:38:02,994 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    BEATUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 0.545820
+TP:    0.518073
+SL:    0.564318
+RR:    1.50
+
+Score:      5.20 / 7.20
+Confidence: 0.72
+
+Passed: SMA, MACD, BODY, VOLUME
+Failed: EMA, RSI
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:38:02,994 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    AAVEUSDT
+Direction: LONG
+Timeframe: 30m
+
+Entry: 110.140000
+TP:    111.832000
+SL:    109.012000
+RR:    1.50
+
+Score:      3.20 / 7.20
+Confidence: 0.44
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:38:02,997 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    RENDERUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 1.681100
+TP:    1.650629
+SL:    1.701414
+RR:    1.50
+
+Score:      4.00 / 7.20
+Confidence: 0.56
+
+Passed: SMA, MACD, BODY
+Failed: EMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:41:12,939 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    BTCUSDT
+Direction: LONG
+Timeframe: 30m
+
+Entry: 69943.800000
+TP:    70766.850000
+SL:    69395.100000
+RR:    1.50
+
+Score:      3.20 / 7.20
+Confidence: 0.44
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:41:12,939 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    TAOUSDT
+Direction: LONG
+Timeframe: 30m
+
+Entry: 267.130000
+TP:    275.574571
+SL:    261.500286
+RR:    1.50
+
+Score:      3.00 / 7.20
+Confidence: 0.42
+
+Passed: RSI, BODY
+Failed: EMA, SMA, MACD, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:41:12,939 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    HYPEUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 39.116000
+TP:    38.113786
+SL:    39.784143
+RR:    1.50
+
+Score:      3.20 / 7.20
+Confidence: 0.44
+
+Passed: SMA, VOLUME
+Failed: EMA, RSI, MACD, BODY
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:41:12,939 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    LYNUSDT
+Direction: LONG
+Timeframe: 30m
+
+Entry: 0.067640
+TP:    0.074710
+SL:    0.062927
+RR:    1.50
+
+Score:      3.20 / 7.20
+Confidence: 0.44
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:41:12,939 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    RIVERUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 21.503000
+TP:    20.123043
+SL:    22.422971
+RR:    1.50
+
+Score:      3.20 / 7.20
+Confidence: 0.44
+
+Passed: SMA, MACD
+Failed: EMA, RSI, BODY, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:41:12,939 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    FARTCOINUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 0.190520
+TP:    0.183420
+SL:    0.195253
+RR:    1.50
+
+Score:      5.20 / 7.20
+Confidence: 0.72
+
+Passed: SMA, MACD, BODY, VOLUME
+Failed: EMA, RSI
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:41:12,939 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    UAIUSDT
+Direction: LONG
+Timeframe: 30m
+
+Entry: 0.428070
+TP:    0.492372
+SL:    0.385202
+RR:    1.50
+
+Score:      3.20 / 7.20
+Confidence: 0.44
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:41:12,939 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    WAXPUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 0.008411
+TP:    0.007906
+SL:    0.008748
+RR:    1.50
+
+Score:      3.00 / 7.20
+Confidence: 0.42
+
+Passed: RSI, BODY
+Failed: EMA, SMA, MACD, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:41:12,939 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    ADAUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 0.262800
+TP:    0.259200
+SL:    0.265200
+RR:    1.50
+
+Score:      4.00 / 7.20
+Confidence: 0.56
+
+Passed: SMA, MACD, BODY
+Failed: EMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:41:12,939 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    SAHARAUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 0.029752
+TP:    0.028509
+SL:    0.030581
+RR:    1.50
+
+Score:      4.20 / 7.20
+Confidence: 0.58
+
+Passed: RSI, BODY, VOLUME
+Failed: EMA, SMA, MACD
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:41:12,939 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    NEARUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 1.314900
+TP:    1.293364
+SL:    1.329257
+RR:    1.50
+
+Score:      4.00 / 7.20
+Confidence: 0.56
+
+Passed: SMA, MACD, BODY
+Failed: EMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:41:12,952 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    ENAUSDT
+Direction: LONG
+Timeframe: 30m
+
+Entry: 0.100870
+TP:    0.102651
+SL:    0.099683
+RR:    1.50
+
+Score:      3.00 / 7.20
+Confidence: 0.42
+
+Passed: RSI, BODY
+Failed: EMA, SMA, MACD, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:41:12,953 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    BANUSDT
+Direction: LONG
+Timeframe: 30m
+
+Entry: 0.052960
+TP:    0.055696
+SL:    0.051136
+RR:    1.50
+
+Score:      3.20 / 7.20
+Confidence: 0.44
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:41:12,953 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    KASUSDT
+Direction: LONG
+Timeframe: 30m
+
+Entry: 0.036630
+TP:    0.038755
+SL:    0.035213
+RR:    1.50
+
+Score:      3.20 / 7.20
+Confidence: 0.44
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:41:12,953 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    KITEUSDT
+Direction: LONG
+Timeframe: 30m
+
+Entry: 0.220120
+TP:    0.225907
+SL:    0.216262
+RR:    1.50
+
+Score:      3.20 / 7.20
+Confidence: 0.44
+
+Passed: SMA, MACD
+Failed: EMA, RSI, BODY, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:41:12,953 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    VIRTUALUSDT
+Direction: LONG
+Timeframe: 30m
+
+Entry: 0.696900
+TP:    0.710336
+SL:    0.687943
+RR:    1.50
+
+Score:      4.20 / 7.20
+Confidence: 0.58
+
+Passed: RSI, BODY, VOLUME
+Failed: EMA, SMA, MACD
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:41:12,953 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    WIFUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 0.176530
+TP:    0.172589
+SL:    0.179157
+RR:    1.50
+
+Score:      4.20 / 7.20
+Confidence: 0.58
+
+Passed: EMA, MACD, BODY
+Failed: SMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:41:12,953 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    BCHUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 465.800000
+TP:    460.232857
+SL:    469.511429
+RR:    1.50
+
+Score:      3.20 / 7.20
+Confidence: 0.44
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:41:12,953 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    XPLUSDT
+Direction: LONG
+Timeframe: 30m
+
+Entry: 0.093090
+TP:    0.096291
+SL:    0.090956
+RR:    1.50
+
+Score:      3.00 / 7.20
+Confidence: 0.42
+
+Passed: RSI, BODY
+Failed: EMA, SMA, MACD, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:41:12,953 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    DOTUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 1.500800
+TP:    1.478904
+SL:    1.515397
+RR:    1.50
+
+Score:      4.00 / 7.20
+Confidence: 0.56
+
+Passed: SMA, MACD, BODY
+Failed: EMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:41:12,953 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    ATHUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 0.007712
+TP:    0.007407
+SL:    0.007916
+RR:    1.50
+
+Score:      3.20 / 7.20
+Confidence: 0.44
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:41:12,953 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    BEATUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 0.545820
+TP:    0.518073
+SL:    0.564318
+RR:    1.50
+
+Score:      5.20 / 7.20
+Confidence: 0.72
+
+Passed: SMA, MACD, BODY, VOLUME
+Failed: EMA, RSI
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:41:12,953 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    AAVEUSDT
+Direction: LONG
+Timeframe: 30m
+
+Entry: 110.140000
+TP:    111.832000
+SL:    109.012000
+RR:    1.50
+
+Score:      3.20 / 7.20
+Confidence: 0.44
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:44:24,571 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    TAOUSDT
+Direction: LONG
+Timeframe: 30m
+
+Entry: 267.130000
+TP:    275.574571
+SL:    261.500286
+RR:    1.50
+
+Score:      3.00 / 7.20
+Confidence: 0.42
+
+Passed: RSI, BODY
+Failed: EMA, SMA, MACD, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:44:24,571 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    HYPEUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 39.116000
+TP:    38.113786
+SL:    39.784143
+RR:    1.50
+
+Score:      3.20 / 7.20
+Confidence: 0.44
+
+Passed: SMA, VOLUME
+Failed: EMA, RSI, MACD, BODY
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:44:24,571 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    LYNUSDT
+Direction: LONG
+Timeframe: 30m
+
+Entry: 0.067640
+TP:    0.074710
+SL:    0.062927
+RR:    1.50
+
+Score:      3.20 / 7.20
+Confidence: 0.44
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:44:24,571 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    RIVERUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 21.503000
+TP:    20.123043
+SL:    22.422971
+RR:    1.50
+
+Score:      3.20 / 7.20
+Confidence: 0.44
+
+Passed: SMA, MACD
+Failed: EMA, RSI, BODY, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:44:24,571 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    FARTCOINUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 0.190520
+TP:    0.183420
+SL:    0.195253
+RR:    1.50
+
+Score:      5.20 / 7.20
+Confidence: 0.72
+
+Passed: SMA, MACD, BODY, VOLUME
+Failed: EMA, RSI
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:44:24,571 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    UAIUSDT
+Direction: LONG
+Timeframe: 30m
+
+Entry: 0.428070
+TP:    0.492372
+SL:    0.385202
+RR:    1.50
+
+Score:      3.20 / 7.20
+Confidence: 0.44
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:44:24,571 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    WAXPUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 0.008411
+TP:    0.007906
+SL:    0.008748
+RR:    1.50
+
+Score:      3.00 / 7.20
+Confidence: 0.42
+
+Passed: RSI, BODY
+Failed: EMA, SMA, MACD, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:44:24,571 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    ADAUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 0.262800
+TP:    0.259200
+SL:    0.265200
+RR:    1.50
+
+Score:      4.00 / 7.20
+Confidence: 0.56
+
+Passed: SMA, MACD, BODY
+Failed: EMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:44:24,571 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    SAHARAUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 0.029752
+TP:    0.028509
+SL:    0.030581
+RR:    1.50
+
+Score:      4.20 / 7.20
+Confidence: 0.58
+
+Passed: RSI, BODY, VOLUME
+Failed: EMA, SMA, MACD
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:44:24,571 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    NEARUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 1.314900
+TP:    1.293364
+SL:    1.329257
+RR:    1.50
+
+Score:      4.00 / 7.20
+Confidence: 0.56
+
+Passed: SMA, MACD, BODY
+Failed: EMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:44:24,571 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    ENAUSDT
+Direction: LONG
+Timeframe: 30m
+
+Entry: 0.100870
+TP:    0.102651
+SL:    0.099683
+RR:    1.50
+
+Score:      3.00 / 7.20
+Confidence: 0.42
+
+Passed: RSI, BODY
+Failed: EMA, SMA, MACD, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:44:24,589 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    BANUSDT
+Direction: LONG
+Timeframe: 30m
+
+Entry: 0.052960
+TP:    0.055696
+SL:    0.051136
+RR:    1.50
+
+Score:      3.20 / 7.20
+Confidence: 0.44
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:44:24,589 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    KASUSDT
+Direction: LONG
+Timeframe: 30m
+
+Entry: 0.036630
+TP:    0.038755
+SL:    0.035213
+RR:    1.50
+
+Score:      3.20 / 7.20
+Confidence: 0.44
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:44:24,589 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    KITEUSDT
+Direction: LONG
+Timeframe: 30m
+
+Entry: 0.220120
+TP:    0.225907
+SL:    0.216262
+RR:    1.50
+
+Score:      3.20 / 7.20
+Confidence: 0.44
+
+Passed: SMA, MACD
+Failed: EMA, RSI, BODY, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:44:24,589 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    VIRTUALUSDT
+Direction: LONG
+Timeframe: 30m
+
+Entry: 0.696900
+TP:    0.710336
+SL:    0.687943
+RR:    1.50
+
+Score:      4.20 / 7.20
+Confidence: 0.58
+
+Passed: RSI, BODY, VOLUME
+Failed: EMA, SMA, MACD
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:44:24,589 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    WIFUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 0.176530
+TP:    0.172589
+SL:    0.179157
+RR:    1.50
+
+Score:      4.20 / 7.20
+Confidence: 0.58
+
+Passed: EMA, MACD, BODY
+Failed: SMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:44:24,589 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    BCHUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 465.800000
+TP:    460.232857
+SL:    469.511429
+RR:    1.50
+
+Score:      3.20 / 7.20
+Confidence: 0.44
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:44:24,589 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    XPLUSDT
+Direction: LONG
+Timeframe: 30m
+
+Entry: 0.093090
+TP:    0.096291
+SL:    0.090956
+RR:    1.50
+
+Score:      3.00 / 7.20
+Confidence: 0.42
+
+Passed: RSI, BODY
+Failed: EMA, SMA, MACD, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:44:24,589 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    DOTUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 1.500800
+TP:    1.478904
+SL:    1.515397
+RR:    1.50
+
+Score:      4.00 / 7.20
+Confidence: 0.56
+
+Passed: SMA, MACD, BODY
+Failed: EMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:44:24,589 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    ATHUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 0.007712
+TP:    0.007407
+SL:    0.007916
+RR:    1.50
+
+Score:      3.20 / 7.20
+Confidence: 0.44
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:44:24,589 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    BEATUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 0.545820
+TP:    0.518073
+SL:    0.564318
+RR:    1.50
+
+Score:      5.20 / 7.20
+Confidence: 0.72
+
+Passed: SMA, MACD, BODY, VOLUME
+Failed: EMA, RSI
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:44:24,595 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    AAVEUSDT
+Direction: LONG
+Timeframe: 30m
+
+Entry: 110.140000
+TP:    111.832000
+SL:    109.012000
+RR:    1.50
+
+Score:      3.20 / 7.20
+Confidence: 0.44
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00
+2026-03-20 23:44:24,596 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    RENDERUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 1.681100
+TP:    1.650629
+SL:    1.701414
+RR:    1.50
+
+Score:      4.00 / 7.20
+Confidence: 0.56
+
+Passed: SMA, MACD, BODY
+Failed: EMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:00:00+00:00

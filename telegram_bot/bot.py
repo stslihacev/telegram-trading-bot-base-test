@@ -14,11 +14,20 @@ from tkinter.scrolledtext import ScrolledText
 from dotenv import load_dotenv
 from telegram.ext import Application, CallbackQueryHandler, CommandHandler
 
-from core.config import DEBUG_MODE, MIN_SIGNAL_RR, SCAN_INTERVAL, SCAN_INTERVAL_MIN, TOP_N, get_live_runtime_settings
+from core.config import (
+    DEBUG_MODE,
+    MIN_SIGNAL_RR,
+    SCAN_INTERVAL,
+    SCAN_INTERVAL_MIN,
+    SIGNAL_LOG_MODE,
+    TOP_N,
+    get_live_runtime_settings,
+)
 from core.debug import success
 from core.state_manager import state_manager
 from execution.signal_dispatcher import SignalDispatcher
 from scanner.market_scanner import MarketScanner
+from services.signal_formatter import format_signal_compact, format_signal_full
 from scanner.volume_scanner import get_top_usdt_pairs
 from telegram_bot.handlers.callbacks import callback_handler
 from telegram_bot.handlers.commands import (
@@ -233,10 +242,14 @@ class TelegramTradingBot:
                 logger.info(f"📊 Signals found: {len(signals)}")
 
                 for signal in signals:
-                    signal_prefix = signal.get('label_prefix', '')
-                    logger.info(f"{signal_prefix} 📡 Signal found: {signal}".strip())
-                    signals_logger.info(signal)
-                    self.signal_queue.put(str(signal))
+                    if str(SIGNAL_LOG_MODE).upper() == "FULL":
+                        formatted_signal = format_signal_full(signal)
+                    else:
+                        formatted_signal = format_signal_compact(signal)
+
+                    logger.info(formatted_signal)
+                    signals_logger.info(formatted_signal)
+                    self.signal_queue.put(formatted_signal)
                     # await self.broadcast_if_needed(signal)  # временно отключено до повторного включения Telegram/Discord
 
             except TimeoutError:
