@@ -20,6 +20,7 @@ from backtest.backtest_engine import (
 )
 from core.debug import debug_stage, reject
 from services.light_mode_strategy import LightModeStrategy
+from services.signal_scoring import get_mode_threshold
 from utils.logger import logger
 
 class BacktestStrategyAdapter:
@@ -126,6 +127,14 @@ class BacktestStrategyAdapter:
             return 0.0
         return float((tp - entry) / denominator)
 
+    @staticmethod
+    def _strict_mode_scoring(_mode: str) -> tuple[float, float, float]:
+        weights = getattr(config, "FILTER_WEIGHTS", {}) or {}
+        max_score = float(sum(float(v) for v in weights.values()) or 1.0)
+        score = max_score
+        confidence = 0.0 if max_score <= 0 else score / max_score
+        return score, max_score, confidence
+
     def generate_signal(self, symbol: str, candles: pd.DataFrame) -> dict | None:
         """Генерирует сигнал в telegram-формате только если backtest-логика даёт сделку."""
         runtime = self._runtime_settings()
@@ -214,6 +223,19 @@ class BacktestStrategyAdapter:
                 if runtime.get("is_scalping") and str(signal_tf).lower() == "1h":
                     signal_tf = runtime["scan_timeframe"]
 
+                score, max_score, confidence = self._strict_mode_scoring(runtime["mode"])
+                if config.ENABLE_SIGNAL_SCORING:
+                    score_threshold = get_mode_threshold(runtime["mode"])
+                    if score < score_threshold:
+                        if config.DEBUG_MODE:
+                            reject(
+                                symbol,
+                                "SCORING",
+                                "score below threshold",
+                                extra={"score": score, "max_score": max_score, "threshold": score_threshold},
+                            )
+                        return None
+
                 return {
                     "symbol": signal["symbol"],
                     "signal_type": signal["signal_type"],
@@ -222,7 +244,11 @@ class BacktestStrategyAdapter:
                     "tp": tp,
                     "sl": sl,
                     "rr": rr,
-                    "confidence": float(signal.get("confidence", 0.0)),
+                    "confidence": confidence,
+                    "score": score,
+                    "max_score": max_score,
+                    "passed_filters": [name.upper() for name in config.FILTER_WEIGHTS.keys()],
+                    "failed_filters": [],
                     "regime": signal.get("regime", "N/A"),
                     "timestamp": str(df.index[i]),
                     "tf": signal_tf,

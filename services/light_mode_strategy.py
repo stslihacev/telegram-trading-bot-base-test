@@ -8,6 +8,7 @@ import pandas as pd
 
 import core.config as config
 from core.debug import debug_stage, reject
+from services.signal_scoring import build_breakdown, get_mode_threshold
 
 
 class LightModeStrategy:
@@ -92,73 +93,101 @@ class LightModeStrategy:
         if not price:
             return None
 
-        long_conditions: list[bool] = []
-        short_conditions: list[bool] = []
+        long_checks: dict[str, bool] = {}
+        short_checks: dict[str, bool] = {}
         reasons: list[str] = []
 
         if config.LIGHT_EMA_CROSS_ENABLED:
             ema_long = prev["ema_short"] <= prev["ema_long"] and last["ema_short"] > last["ema_long"]
             ema_short = prev["ema_short"] >= prev["ema_long"] and last["ema_short"] < last["ema_long"]
-            long_conditions.append(bool(ema_long))
-            short_conditions.append(bool(ema_short))
+            long_checks["ema_cross"] = bool(ema_long)
+            short_checks["ema_cross"] = bool(ema_short)
             reasons.append("EMA cross")
 
         if config.LIGHT_SMA_TREND_FILTER_ENABLED:
             sma_long = last["sma_short"] >= last["sma_long"]
             sma_short = last["sma_short"] <= last["sma_long"]
-            long_conditions.append(bool(sma_long))
-            short_conditions.append(bool(sma_short))
+            long_checks["sma_trend"] = bool(sma_long)
+            short_checks["sma_trend"] = bool(sma_short)
             reasons.append("SMA trend")
 
         if config.LIGHT_RSI_ENABLED:
             rsi_long = float(last["rsi"]) <= float(config.LIGHT_RSI_OVERSOLD)
             rsi_short = float(last["rsi"]) >= float(config.LIGHT_RSI_OVERBOUGHT)
-            long_conditions.append(rsi_long)
-            short_conditions.append(rsi_short)
+            long_checks["rsi"] = rsi_long
+            short_checks["rsi"] = rsi_short
             reasons.append("RSI")
 
         if config.LIGHT_MACD_ENABLED:
             macd_long = last["macd"] > last["macd_signal"] and last["macd_hist"] > prev["macd_hist"]
             macd_short = last["macd"] < last["macd_signal"] and last["macd_hist"] < prev["macd_hist"]
-            long_conditions.append(bool(macd_long))
-            short_conditions.append(bool(macd_short))
+            long_checks["macd"] = bool(macd_long)
+            short_checks["macd"] = bool(macd_short)
             reasons.append("MACD")
 
         if config.LIGHT_MIN_BODY_FILTER_ENABLED:
             body_pct = float(last["body_pct"]) if pd.notna(last["body_pct"]) else 0.0
             impulse_ok = body_pct >= float(config.LIGHT_MIN_BODY_PCT)
-            long_conditions.append(impulse_ok)
-            short_conditions.append(impulse_ok)
+            long_checks["candle_body"] = impulse_ok
+            short_checks["candle_body"] = impulse_ok
             reasons.append("Candle body")
 
         if config.LIGHT_VOLUME_FILTER_ENABLED:
             current_volume = float(last["volume"]) if pd.notna(last["volume"]) else 0.0
             volume_ok = current_volume >= float(config.LIGHT_VOLUME_THRESHOLD)
-            long_conditions.append(volume_ok)
-            short_conditions.append(volume_ok)
+            long_checks["volume_threshold"] = volume_ok
+            short_checks["volume_threshold"] = volume_ok
             reasons.append("Volume threshold")
 
         if config.LIGHT_VOLUME_RATIO_FILTER_ENABLED:
             avg_volume = float(last["volume_ma"]) if pd.notna(last["volume_ma"]) else 0.0
             current_volume = float(last["volume"]) if pd.notna(last["volume"]) else 0.0
             volume_ratio_ok = avg_volume > 0 and (current_volume / avg_volume) >= float(config.LIGHT_VOLUME_RATIO_THRESHOLD)
-            long_conditions.append(volume_ratio_ok)
-            short_conditions.append(volume_ratio_ok)
+            long_checks["volume_ratio"] = volume_ratio_ok
+            short_checks["volume_ratio"] = volume_ratio_ok
             reasons.append("Volume ratio")
 
-        direction = None
-        signal_type = None
-        if long_conditions and all(long_conditions):
-            direction = "LONG"
-            signal_type = "LIGHT_LONG"
-        elif short_conditions and all(short_conditions):
-            direction = "SHORT"
-            signal_type = "LIGHT_SHORT"
+        long_breakdown = build_breakdown(long_checks)
+        short_breakdown = build_breakdown(short_checks)
 
-        if direction is None:
+        direction = "LONG" if long_breakdown.score >= short_breakdown.score else "SHORT"
+        selected = long_breakdown if direction == "LONG" else short_breakdown
+        signal_type = "LIGHT_LONG" if direction == "LONG" else "LIGHT_SHORT"
+
+        scoring_enabled = bool(config.ENABLE_SIGNAL_SCORING)
+        min_score_threshold = get_mode_threshold("LIGHT")
+        strict_long_ok = bool(long_checks) and all(long_checks.values())
+        strict_short_ok = bool(short_checks) and all(short_checks.values())
+        strict_legacy_ok = strict_long_ok or strict_short_ok
+
+        if scoring_enabled:
+            if selected.score < min_score_threshold:
+                if config.DEBUG_MODE:
+                    reject(
+                        symbol,
+                        "SCORING",
+                        "score below threshold",
+                        extra={
+                            "score": selected.score,
+                            "max_score": selected.max_score,
+                            "threshold": min_score_threshold,
+                        },
+                    )
+                return None
+        elif not strict_legacy_ok:
             if config.DEBUG_MODE:
                 reject(symbol, "LIGHT", "filters not aligned", extra={"checks": reasons})
             return None
+
+        if not scoring_enabled:
+            if strict_long_ok:
+                direction = "LONG"
+                signal_type = "LIGHT_LONG"
+                selected = long_breakdown
+            elif strict_short_ok:
+                direction = "SHORT"
+                signal_type = "LIGHT_SHORT"
+                selected = short_breakdown
 
         if not self._probability_allows_signal():
             if config.DEBUG_MODE:
@@ -191,7 +220,11 @@ class LightModeStrategy:
             "tp": float(tp),
             "sl": float(sl),
             "rr": float(rr),
-            "confidence": 1.0,
+            "confidence": float(selected.confidence),
+            "score": float(selected.score),
+            "max_score": float(selected.max_score),
+            "passed_filters": selected.passed_filters,
+            "failed_filters": selected.failed_filters,
             "regime": "LIGHT_RANGE",
             "timestamp": str(last["timestamp"]),
             "tf": config.SCAN_TIMEFRAME_LIGHT,
@@ -209,8 +242,9 @@ class LightModeStrategy:
         }
         if config.DEBUG_MODE:
             debug_stage(
-                "LIGHT",
+                "SCORING",
                 symbol,
-                f"signal ready | side={direction} | rr={rr:.2f} | body_pct={(float(last['body_pct']) if pd.notna(last['body_pct']) else 0.0):.4f}",
+                f"score: {selected.score:.2f}/{selected.max_score:.2f} | confidence: {selected.confidence:.2f} | "
+                f"passed: {', '.join(selected.passed_filters) or '-'} | failed: {', '.join(selected.failed_filters) or '-'}",
             )
         return signal

@@ -22,6 +22,33 @@ LIVE_MODE = "LIGHT"
 # LIGHT — отдельный signal-only режим для спокойного / бокового рынка.
 
 # ============================================================
+# Signal scoring
+# ============================================================
+ENABLE_SIGNAL_SCORING = True
+# Включает weighted scoring для live-сигналов.
+# При False используется текущая строгая логика без изменений.
+
+MIN_SCORE_THRESHOLD_MAIN = 6.0
+# MAIN: максимально строгий порог 6.0 (фактически требует совпадения всех фильтров).
+
+MIN_SCORE_THRESHOLD_SCALPING = 4.0
+# SCALPING: средний порог 4.0 для более частых, но всё ещё фильтрованных сигналов.
+
+MIN_SCORE_THRESHOLD_LIGHT = 3.0
+# LIGHT: мягкий порог 3.0 для signal-only режима.
+
+FILTER_WEIGHTS = {
+    "ema": 1.0,
+    "sma": 0.8,
+    "rsi": 1.0,
+    "macd": 1.2,
+    "volume": 1.2,
+    "body": 0.8,
+}
+# FILTER_WEIGHTS стандартные "ema": 1.0, "sma": 1.0, "rsi": 1.0, "macd": 1.0, "volume": 1.0, "body": 1.0,
+# ====================================Базовые веса фильтров scoring-системы.==========================
+
+# ============================================================
 # Scan / Analysis
 # ============================================================
 SCAN_INTERVAL = 300
@@ -38,8 +65,8 @@ ANALYSIS_DELAY = 300
 SCAN_TIMEFRAME = "1h"
 # Базовый таймфрейм live-анализа и сканирования. 1h или 30m для более частых сигналов; можно оставить 1h и использовать MTF для разных таймфреймов
 
-SCAN_CANDLE_LIMIT = 300
-# Сколько свечей загружать для анализа.
+SCAN_CANDLE_LIMIT = 220
+# Сколько свечей загружать для анализа. было 300
 # 220 достаточно для EMA200, ATR/ADX/RSI и swing-контекста.
 
 LIVE_ADX_MIN = 23.0
@@ -49,7 +76,7 @@ LIVE_ADX_MIN = 23.0
 LIVE_VOLUME_MA_WINDOW = 20
 # Окно средней объёмной свечи для локального фильтра текущего объёма.
 
-CONFIDENCE_THRESHOLD = 1.0
+CONFIDENCE_THRESHOLD = 2.0
 # Минимальный общий confidence для live-сигнала.
 # Значение 2.0 лучше согласовано с логикой backtest-стратегии,
 # чем прежний слишком мягкий порог 1.0.
@@ -93,13 +120,13 @@ MTF_EXECUTION_TIMEFRAMES_SCALPING = ("30m", "15m")
 SWING_WINDOW_SCALPING = 3
 # Более короткое окно swing-структуры для быстрых локальных импульсов.
 
-LOOKBACK_LEVELS_SCALPING = 15
+LOOKBACK_LEVELS_SCALPING = 20
 # Более короткий structural lookback, чтобы TP/SL не тянулись слишком далеко. было 20
 
 SCAN_CANDLE_LIMIT_SCALPING = 120
 # Достаточно истории для intraday-скальпинга без лишней задержки загрузки.
 
-CONFIDENCE_THRESHOLD_SCALPING = 0.5
+CONFIDENCE_THRESHOLD_SCALPING = 0.8
 # Скальпинг допускает чуть более ранние сигналы, но дальше усиливается RR/MTF-фильтрами. ,было 0.8
 
 MIN_SIGNAL_RR_SCALPING = 1.0
@@ -556,6 +583,7 @@ def get_live_runtime_settings() -> dict:
             "min_signal_rr": MIN_SIGNAL_RR_SCALPING,
             "max_rr": MAX_RR_SCALPING,
             "signal_prefix": SCALPING_SIGNAL_PREFIX,
+            "min_score_threshold": MIN_SCORE_THRESHOLD_SCALPING,
         }
 
     if mode == "LIGHT":
@@ -575,6 +603,7 @@ def get_live_runtime_settings() -> dict:
             "min_signal_rr": MIN_SIGNAL_RR_LIGHT,
             "max_rr": MAX_RR_LIGHT,
             "signal_prefix": LIGHT_SIGNAL_PREFIX,
+            "min_score_threshold": MIN_SCORE_THRESHOLD_LIGHT,
         }
 
     return {
@@ -592,4 +621,5 @@ def get_live_runtime_settings() -> dict:
         "min_signal_rr": MIN_SIGNAL_RR,
         "max_rr": MAX_RR,
         "signal_prefix": "",
+        "min_score_threshold": MIN_SCORE_THRESHOLD_MAIN,
     }

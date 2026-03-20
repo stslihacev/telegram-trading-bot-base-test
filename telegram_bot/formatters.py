@@ -16,6 +16,16 @@ def format_signal(signal: dict) -> str:
     if signal.get("signal_only") or signal.get("alert_text"):
         alert_text = signal.get("alert_text", "Signal-only alert")
         alert_line = f"Alert: <b>{alert_text}</b>\n"
+    confidence = float(signal.get("confidence", 0.0) or 0.0)
+    score = signal.get("score")
+    max_score = signal.get("max_score")
+    if score is not None and max_score is not None:
+        confidence_line = (
+            f"Confidence: <b>{confidence:.2f}</b> | "
+            f"Score: <b>{float(score):.2f}/{float(max_score):.2f}</b>\n"
+        )
+    else:
+        confidence_line = f"Confidence: <b>{confidence:.2f}</b>\n"
     return (
         f"📢 <b>{title}</b>\n"
         f"Пара: <b>{signal['symbol']}</b>\n"
@@ -25,7 +35,7 @@ def format_signal(signal: dict) -> str:
         f"TP: <code>{signal['tp']:.6f}</code>\n"
         f"SL: <code>{signal['sl']:.6f}</code>\n"
         f"RR: <b>1:{signal['rr']:.2f}</b>\n"
-        f"Confidence: <b>{signal['confidence']}/5</b>\n"
+        f"{confidence_line}"
         f"Regime: <b>{signal.get('regime', 'N/A')}</b>\n"
         f"{mode_line}"
         f"{alert_line}"
