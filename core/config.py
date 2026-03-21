@@ -15,7 +15,7 @@ TOP_N = 50
 # ============================================================
 # Live mode selection
 # ============================================================
-LIVE_MODE = "SCALPING"
+LIVE_MODE = "LIGHT"
 # OPTIONS: "MAIN", "SCALPING", "LIGHT".
 # MAIN сохраняет текущую live-логику без изменений.
 # SCALPING включает отдельный набор параметров для более коротких сетапов.
@@ -561,6 +561,9 @@ MIN_UPGRADE_SCORE = 4.5
 MIN_SCORE_DIFF = 0.5
 FAILED_SIGNAL_COOLDOWN_MINUTES = 30
 RUNTIME_STATE_TTL_HOURS = 4
+MIN_REVERSAL_INTERVAL_MINUTES = 20
+COOLDOWN_OVERRIDE_SCORE = 6.0
+ANALYTICS_LOW_ACTIVITY_SIGNALS = 10
 
 def get_live_mode() -> str:
     """Возвращает нормализованный live-режим."""

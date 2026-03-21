@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -19,22 +20,32 @@ def _to_dt(value: str | None) -> datetime | None:
     try:
         if value.endswith("Z"):
             value = value[:-1] + "+00:00"
-        return datetime.fromisoformat(value)
+        parsed = datetime.fromisoformat(value)
+        if parsed.tzinfo is None:
+            parsed = parsed.replace(tzinfo=timezone.utc)
+        return parsed.astimezone(timezone.utc)
     except ValueError:
         return None
 
+def parse_datetime_utc(value: str | None) -> datetime | None:
+    """Parse ISO timestamp to timezone-aware UTC datetime."""
+    return _to_dt(value)
 
 @dataclass
 class SignalStateService:
     state_path: Path
+    schema_version: int = 2
     min_upgrade_score: float = 4.5
     min_score_diff: float = 0.5
     failed_cooldown_minutes: int = 30
+    cooldown_override_score: float = 6.0
+    min_reversal_interval_minutes: int = 20
     stale_hours: int = 4
 
     active_signals: dict[str, dict[str, Any]] = field(default_factory=dict)
     seen_signals: dict[str, str] = field(default_factory=dict)
     failed_signals: dict[str, str] = field(default_factory=dict)
+    last_reversal_at: dict[str, str] = field(default_factory=dict)
 
     def load(self) -> None:
         self.state_path.parent.mkdir(parents=True, exist_ok=True)
@@ -50,21 +61,26 @@ class SignalStateService:
         self.active_signals = dict(payload.get("active_signals") or {})
         self.seen_signals = dict(payload.get("seen_signals") or {})
         self.failed_signals = dict(payload.get("failed_signals") or {})
+        self.last_reversal_at = dict(payload.get("last_reversal_at") or {})
         self.cleanup_stale()
 
     def save(self) -> None:
         payload = {
+            "version": self.schema_version,
             "active_signals": self.active_signals,
             "seen_signals": self.seen_signals,
             "failed_signals": self.failed_signals,
+            "last_reversal_at": self.last_reversal_at,
         }
         self.state_path.parent.mkdir(parents=True, exist_ok=True)
-        self.state_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+        tmp_path = self.state_path.with_suffix(f"{self.state_path.suffix}.tmp")
+        tmp_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+        os.replace(tmp_path, self.state_path)
 
     def cleanup_stale(self) -> None:
         now = _utc_now()
         ttl = timedelta(hours=self.stale_hours)
-        for storage in (self.active_signals, self.seen_signals, self.failed_signals):
+        for storage in (self.active_signals, self.seen_signals, self.failed_signals, self.last_reversal_at):
             stale_keys: list[str] = []
             for key, value in storage.items():
                 ts_value = value.get("timestamp") if isinstance(value, dict) else value
@@ -75,7 +91,8 @@ class SignalStateService:
                 storage.pop(key, None)
 
     def mark_seen(self, signal_id: str, timestamp: str) -> None:
-        self.seen_signals[signal_id] = timestamp
+        normalized = _to_dt(timestamp)
+        self.seen_signals[signal_id] = (normalized or _utc_now()).isoformat()
 
     def register_failed_signal(self, symbol: str, timestamp: str | None = None) -> None:
         ts = timestamp or _utc_now().isoformat()
@@ -114,12 +131,15 @@ class SignalStateService:
             return "IGNORE", "empty symbol"
 
         now = _utc_now()
-        if self.is_cooldown_active(symbol, now=now):
+        score = float(signal.get("score") or 0.0)
+        direction = str(signal.get("direction") or "").upper()
+        cooldown_active = self.is_cooldown_active(symbol, now=now)
+        if cooldown_active and score < self.cooldown_override_score:
             return "COOLDOWN", "blocked after SL"
+        if cooldown_active and score >= self.cooldown_override_score:
+            return "NEW", "cooldown overridden by strong score"
 
         current = self.active_signals.get(symbol)
-        direction = str(signal.get("direction") or "").upper()
-        score = float(signal.get("score") or 0.0)
 
         if not current:
             return "NEW", "no active signal"
@@ -139,6 +159,11 @@ class SignalStateService:
         old_is_weak = old_score < self.min_upgrade_score
         new_is_much_stronger = score > old_score + self.min_score_diff
         if old_is_weak or new_is_much_stronger:
+            last_reversal = _to_dt(self.last_reversal_at.get(symbol))
+            interval = timedelta(minutes=self.min_reversal_interval_minutes)
+            if last_reversal is not None and now - last_reversal < interval:
+                return "IGNORE", "reversal blocked by minimum interval"
+            self.last_reversal_at[symbol] = now.isoformat()
             return "REVERSAL", "direction changed with stronger setup"
         return "IGNORE", "reversal blocked"
 

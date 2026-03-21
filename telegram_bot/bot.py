@@ -9,7 +9,7 @@ import os
 import queue
 import threading
 import tkinter as tk
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from tkinter.scrolledtext import ScrolledText
 
@@ -19,7 +19,9 @@ from telegram.ext import Application, CallbackQueryHandler, CommandHandler
 from core.config import (
     DEBUG_MODE,
     FAILED_SIGNAL_COOLDOWN_MINUTES,
+    COOLDOWN_OVERRIDE_SCORE,
     MIN_SIGNAL_RR,
+    MIN_REVERSAL_INTERVAL_MINUTES,
     MIN_SCORE_DIFF,
     MIN_UPGRADE_SCORE,
     RUNTIME_STATE_TTL_HOURS,
@@ -36,7 +38,7 @@ from scanner.market_scanner import MarketScanner
 from services.signal_analytics import SignalAnalytics
 from services.signal_deduplicator import SignalDeduplicator
 from services.signal_formatter import format_signal_compact, format_signal_full
-from services.signal_state import SignalStateService
+from services.signal_state import SignalStateService, parse_datetime_utc
 from scanner.volume_scanner import get_top_usdt_pairs
 from telegram_bot.handlers.callbacks import callback_handler
 from telegram_bot.handlers.commands import (
@@ -113,14 +115,17 @@ class TelegramTradingBot:
             min_upgrade_score=MIN_UPGRADE_SCORE,
             min_score_diff=MIN_SCORE_DIFF,
             failed_cooldown_minutes=FAILED_SIGNAL_COOLDOWN_MINUTES,
+            cooldown_override_score=COOLDOWN_OVERRIDE_SCORE,
+            min_reversal_interval_minutes=MIN_REVERSAL_INTERVAL_MINUTES,
             stale_hours=RUNTIME_STATE_TTL_HOURS,
         )
         self.signal_state.load()
-        self.signal_deduplicator.seen_signals = {
-            signal_id: datetime.fromisoformat(ts)
-            for signal_id, ts in self.signal_state.seen_signals.items()
-            if ts
-        }
+        restored_seen: dict[str, datetime] = {}
+        for signal_id, ts in self.signal_state.seen_signals.items():
+            parsed = parse_datetime_utc(ts)
+            if parsed is not None:
+                restored_seen[signal_id] = parsed
+        self.signal_deduplicator.seen_signals = restored_seen
         self.runtime = get_live_runtime_settings()
         runtime_interval = int(self.runtime.get("scan_interval", SCAN_INTERVAL))
         default_scan_interval_min = max(1, (runtime_interval + 59) // 60)
@@ -303,14 +308,6 @@ class TelegramTradingBot:
                 for signal in signals:
                     enriched_signal = self._enrich_signal(signal)
                     self.signal_state.maybe_register_exit(enriched_signal)
-                    is_duplicate, signal_id = self.signal_deduplicator.mark_and_check(enriched_signal)
-                    if is_duplicate:
-                        logger.info("[DEBUG] DUPLICATE SIGNAL | id=%s | fp=%s", signal_id, enriched_signal["fingerprint"])
-                    else:
-                        logger.info("[DEBUG] NEW SIGNAL | id=%s | fp=%s", signal_id, enriched_signal["fingerprint"])
-                    self.signal_analytics.collect_signal(enriched_signal, is_duplicate=is_duplicate)
-                    if is_duplicate:
-                        continue
                     state_action, state_reason = self.signal_state.evaluate_signal(enriched_signal)
                     if state_action in {"IGNORE", "COOLDOWN"}:
                         logger.info(
@@ -320,8 +317,30 @@ class TelegramTradingBot:
                             state_reason,
                         )
                         continue
+
+                    is_state_transition = state_action in {"UPDATE", "REVERSAL"}
+                    signal_id = str(enriched_signal.get("signal_id") or "")
+                    is_duplicate = False
+                    if not is_state_transition:
+                        is_duplicate, signal_id = self.signal_deduplicator.mark_and_check(enriched_signal)
+                        if is_duplicate:
+                            logger.info("[DEBUG] DUPLICATE SIGNAL | id=%s | fp=%s", signal_id, enriched_signal["fingerprint"])
+                        else:
+                            logger.info("[DEBUG] NEW SIGNAL | id=%s | fp=%s", signal_id, enriched_signal["fingerprint"])
+                        self.signal_analytics.collect_signal(enriched_signal, is_duplicate=is_duplicate)
+                        if is_duplicate:
+                            continue
+                    else:
+                        logger.info(
+                            "[DEBUG] STATE TRANSITION SIGNAL | action=%s | id=%s | reason=%s",
+                            state_action,
+                            signal_id,
+                            state_reason,
+                        )
+                        self.signal_analytics.collect_signal(enriched_signal, is_duplicate=False)
+
                     self.signal_state.upsert_active(enriched_signal, status="OPEN")
-                    self.signal_state.mark_seen(signal_id, datetime.utcnow().isoformat())
+                    self.signal_state.mark_seen(signal_id, datetime.now(timezone.utc).isoformat())
                     self.signal_state.cleanup_stale()
                     self.signal_state.save()
                     if str(SIGNAL_LOG_MODE).upper() == "FULL":

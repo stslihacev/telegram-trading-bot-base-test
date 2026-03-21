@@ -7,6 +7,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
 from typing import Any
 
+import core.config as config
 
 @dataclass
 class SignalAnalytics:
@@ -65,6 +66,10 @@ class SignalAnalytics:
 
     def _build_recommendations(self) -> list[str]:
         recommendations: list[str] = []
+        low_activity_limit = int(getattr(config, "ANALYTICS_LOW_ACTIVITY_SIGNALS", 10))
+        if self.total_signals < max(1, low_activity_limit):
+            recommendations.append("Низкая активность (возможно рынок спокойный). Накопите больше сигналов перед изменением настроек.")
+            return recommendations
         total = max(self.total_signals, 1)
         main_ratio = self.mode_counter.get("MAIN", 0) / total
         if main_ratio < 0.1:

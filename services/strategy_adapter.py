@@ -152,6 +152,21 @@ class BacktestStrategyAdapter:
             except (TypeError, ValueError):
                 pass
 
+        atr_raw = signal.get("atr")
+        try:
+            atr = float(atr_raw)
+        except (TypeError, ValueError):
+            atr = 0.0
+
+        min_stop_pct = float(getattr(config, "MIN_STOP_PCT", 0.001))
+        min_sl_distance = max(abs(entry) * min_stop_pct, max(atr, 0.0) * float(config.ATR_SL_MULTIPLIER), 1e-9)
+        current_sl_distance = abs(entry - refined_sl)
+        if current_sl_distance < min_sl_distance:
+            if direction == "LONG":
+                refined_sl = entry - min_sl_distance
+            else:
+                refined_sl = entry + min_sl_distance
+
         risk = abs(entry - refined_sl)
         if risk <= 1e-9:
             return refined_sl, float(signal.get("tp") or entry)

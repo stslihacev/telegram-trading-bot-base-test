@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 
 @dataclass
@@ -24,9 +24,13 @@ class SignalDispatcher:
         self._recent_signals: dict[tuple[str, str, float], datetime] = {}
         self._open_positions: dict[str, Position] = {}
 
+    @staticmethod
+    def _utc_now() -> datetime:
+        return datetime.now(timezone.utc)
+
     def is_duplicate(self, signal: dict) -> bool:
         key = (signal["symbol"], signal["direction"], round(float(signal["entry"]), 8))
-        now = datetime.utcnow()
+        now = self._utc_now()
         prev = self._recent_signals.get(key)
         if prev and now - prev < self.dedup_window:
             return True
@@ -40,7 +44,7 @@ class SignalDispatcher:
             entry=signal["entry"],
             sl=signal["sl"],
             tp=signal["tp"],
-            opened_at=datetime.utcnow(),
+            opened_at=self._utc_now(),
         )
 
     def check_exit(self, symbol: str, last_price: float) -> str | None:
