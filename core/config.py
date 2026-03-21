@@ -554,6 +554,13 @@ MAX_POSITION_VALUE = 1_000_000
 SCALPING_SIGNAL_PREFIX = "[SCALP]"
 # Отдельная метка для логов и Telegram-сообщений в режиме скальпинга.
 
+# ============================================================
+# Live signal state / update policy
+# ============================================================
+MIN_UPGRADE_SCORE = 4.5
+MIN_SCORE_DIFF = 0.5
+FAILED_SIGNAL_COOLDOWN_MINUTES = 30
+RUNTIME_STATE_TTL_HOURS = 4
 
 def get_live_mode() -> str:
     """Возвращает нормализованный live-режим."""

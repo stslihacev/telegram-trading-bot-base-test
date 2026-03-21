@@ -57,6 +57,14 @@ class LightModeStrategy:
         probability = min(max(float(config.LIGHT_SIGNAL_PROBABILITY), 0.0), 1.0)
         return random.random() <= probability
 
+    @staticmethod
+    def _rr_from_confidence(confidence: float) -> float:
+        if confidence >= 0.8:
+            return 2.0
+        if confidence >= 0.6:
+            return 1.6
+        return 1.4
+
     def generate_signal(self, symbol: str, candles: pd.DataFrame) -> dict | None:
         required_period = max(
             config.LIGHT_EMA_LONG_PERIOD,
@@ -203,13 +211,14 @@ class LightModeStrategy:
         if atr <= 0:
             return None
 
+        rr_target = self._rr_from_confidence(float(selected.confidence))
         if direction == "LONG":
             sl = price - atr * float(config.LIGHT_SL_ATR_MULTIPLIER)
-            tp = price + atr * float(config.LIGHT_TP_ATR_MULTIPLIER)
+            tp = price + (price - sl) * rr_target
             rr = (tp - price) / max(price - sl, 1e-9)
         else:
             sl = price + atr * float(config.LIGHT_SL_ATR_MULTIPLIER)
-            tp = price - atr * float(config.LIGHT_TP_ATR_MULTIPLIER)
+            tp = price - (sl - price) * rr_target
             rr = (price - tp) / max(sl - price, 1e-9)
 
         signal = {

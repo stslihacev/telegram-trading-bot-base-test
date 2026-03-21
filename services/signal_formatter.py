@@ -9,6 +9,18 @@ def _safe_float(value: object, digits: int) -> str:
     except (TypeError, ValueError):
         return "N/A"
 
+def _smart_price(value: object) -> str:
+    try:
+        number = float(value)
+    except (TypeError, ValueError):
+        return "N/A"
+    if abs(number) >= 100:
+        digits = 2
+    elif abs(number) >= 1:
+        digits = 4
+    else:
+        digits = 6
+    return f"{number:.{digits}f}".rstrip("0").rstrip(".")
 
 def _stringify_filters(value: object) -> str:
     if isinstance(value, (list, tuple, set)):
@@ -85,7 +97,13 @@ def format_signal_compact(signal: dict) -> str:
     direction = str(signal.get("direction") or "N/A")
     direction_emoji = "🟢" if direction.upper() == "LONG" else "🔻" if direction.upper() == "SHORT" else "⚪"
     timeframe = str(signal.get("tf") or "N/A")
-    score = _safe_float(signal.get("score"), 2)
-    max_score = _safe_float(signal.get("max_score"), 2)
+    entry = _smart_price(signal.get("entry"))
+    tp = _smart_price(signal.get("tp"))
+    sl = _smart_price(signal.get("sl"))
     rr = _safe_float(signal.get("rr"), 2)
-    return f"{symbol} {direction_emoji}{direction} | TF {timeframe} | Score {score}/{max_score} | RR {rr}"
+    try:
+        confidence = float(signal.get("confidence") or 0.0)
+    except (TypeError, ValueError):
+        confidence = 0.0
+    stars = get_stars(confidence)
+    return f"{symbol} {direction_emoji} | {timeframe} | Вход: {entry} | TP: {tp} | SL: {sl} | {stars} | RR {rr}"

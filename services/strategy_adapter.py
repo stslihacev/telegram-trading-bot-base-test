@@ -128,6 +128,42 @@ class BacktestStrategyAdapter:
         return float((tp - entry) / denominator)
 
     @staticmethod
+    def _normalize_rr_by_strength(confidence: float) -> float:
+        if confidence >= 0.8:
+            return 2.0
+        if confidence >= 0.6:
+            return 1.7
+        return 1.4
+
+    def _refine_risk_levels(self, signal: dict, entry: float, sl: float, direction: str, confidence: float) -> tuple[float, float]:
+        """Аккуратно донастраивает SL/TP без ломки текущей ATR-логики."""
+        swing_low = signal.get("last_swing_low")
+        swing_high = signal.get("last_swing_high")
+        refined_sl = sl
+
+        if direction == "LONG" and swing_low is not None:
+            try:
+                refined_sl = max(refined_sl, float(swing_low))
+            except (TypeError, ValueError):
+                pass
+        elif direction == "SHORT" and swing_high is not None:
+            try:
+                refined_sl = min(refined_sl, float(swing_high))
+            except (TypeError, ValueError):
+                pass
+
+        risk = abs(entry - refined_sl)
+        if risk <= 1e-9:
+            return refined_sl, float(signal.get("tp") or entry)
+
+        rr_target = self._normalize_rr_by_strength(confidence)
+        if direction == "LONG":
+            refined_tp = entry + risk * rr_target
+        else:
+            refined_tp = entry - risk * rr_target
+        return float(refined_sl), float(refined_tp)
+
+    @staticmethod
     def _strict_mode_scoring(_mode: str) -> tuple[float, float, float]:
         weights = getattr(config, "FILTER_WEIGHTS", {}) or {}
         max_score = float(sum(float(v) for v in weights.values()) or 1.0)
@@ -188,6 +224,14 @@ class BacktestStrategyAdapter:
                 entry = float(signal["entry"])
                 tp = float(signal["tp"])
                 sl = float(signal["sl"])
+                score, max_score, confidence = self._strict_mode_scoring(runtime["mode"])
+                sl, tp = self._refine_risk_levels(
+                    signal=signal,
+                    entry=entry,
+                    sl=sl,
+                    direction=str(signal.get("direction") or ""),
+                    confidence=confidence,
+                )
                 rr = self._calculate_rr(entry=entry, tp=tp, sl=sl)
                 rr_min = float(self.min_rr)
                 rr_max = float(self.max_rr)
@@ -223,7 +267,6 @@ class BacktestStrategyAdapter:
                 if runtime.get("is_scalping") and str(signal_tf).lower() == "1h":
                     signal_tf = runtime["scan_timeframe"]
 
-                score, max_score, confidence = self._strict_mode_scoring(runtime["mode"])
                 if config.ENABLE_SIGNAL_SCORING:
                     score_threshold = get_mode_threshold(runtime["mode"])
                     if score < score_threshold:
