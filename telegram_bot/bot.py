@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+import hashlib
 import logging
 import os
 import queue
@@ -27,6 +28,8 @@ from core.debug import success
 from core.state_manager import state_manager
 from execution.signal_dispatcher import SignalDispatcher
 from scanner.market_scanner import MarketScanner
+from services.signal_analytics import SignalAnalytics
+from services.signal_deduplicator import SignalDeduplicator
 from services.signal_formatter import format_signal_compact, format_signal_full
 from scanner.volume_scanner import get_top_usdt_pairs
 from telegram_bot.handlers.callbacks import callback_handler
@@ -84,6 +87,8 @@ class TelegramTradingBot:
         self.min_rr = float(os.getenv("MIN_SIGNAL_RR", str(MIN_SIGNAL_RR)))
 
         self.dispatcher = SignalDispatcher(dedup_minutes=60)
+        self.signal_deduplicator = SignalDeduplicator(ttl_seconds=3600)
+        self.signal_analytics = SignalAnalytics()
         self.runtime = get_live_runtime_settings()
         runtime_interval = int(self.runtime.get("scan_interval", SCAN_INTERVAL))
         default_scan_interval_min = max(1, (runtime_interval + 59) // 60)
@@ -220,6 +225,28 @@ class TelegramTradingBot:
                 )
             await broadcast_signal(self.application.bot, unique_users, signal)
 
+    @staticmethod
+    def _enrich_signal(signal: dict) -> dict:
+        enriched = dict(signal)
+        signal_id = (
+            f"{enriched.get('symbol', 'N/A')}_"
+            f"{enriched.get('tf', 'N/A')}_"
+            f"{enriched.get('direction', 'N/A')}_"
+            f"{enriched.get('timestamp', 'N/A')}"
+        )
+        fingerprint_base = (
+            f"{enriched.get('symbol', '')}"
+            f"{enriched.get('direction', '')}"
+            f"{enriched.get('entry', '')}"
+            f"{enriched.get('timestamp', '')}"
+        )
+        enriched["signal_id"] = signal_id
+        enriched["fingerprint"] = hashlib.sha256(fingerprint_base.encode("utf-8")).hexdigest()[:16]
+        return enriched
+
+    def generate_analytics_report(self) -> str:
+        return self.signal_analytics.generate_report()
+
     async def scan_loop(self, interval_sec: int | None = None) -> None:
         logger.info("🚀 SCAN LOOP STARTED")
 
@@ -242,10 +269,19 @@ class TelegramTradingBot:
                 logger.info(f"📊 Signals found: {len(signals)}")
 
                 for signal in signals:
-                    if str(SIGNAL_LOG_MODE).upper() == "FULL":
-                        formatted_signal = format_signal_full(signal)
+                    enriched_signal = self._enrich_signal(signal)
+                    is_duplicate, signal_id = self.signal_deduplicator.mark_and_check(enriched_signal)
+                    if is_duplicate:
+                        logger.info("[DEBUG] DUPLICATE SIGNAL | id=%s | fp=%s", signal_id, enriched_signal["fingerprint"])
                     else:
-                        formatted_signal = format_signal_compact(signal)
+                        logger.info("[DEBUG] NEW SIGNAL | id=%s | fp=%s", signal_id, enriched_signal["fingerprint"])
+                    self.signal_analytics.collect_signal(enriched_signal, is_duplicate=is_duplicate)
+                    if is_duplicate:
+                        continue
+                    if str(SIGNAL_LOG_MODE).upper() == "FULL":
+                        formatted_signal = format_signal_full(enriched_signal)
+                    else:
+                        formatted_signal = format_signal_compact(enriched_signal)
 
                     logger.info(formatted_signal)
                     signals_logger.info(formatted_signal)
@@ -279,6 +315,7 @@ class TelegramTradingBot:
         self.application.run_polling(drop_pending_updates=True)
 
     async def stop(self) -> None:
+        logger.info("\n%s", self.generate_analytics_report())
         if self.application:
             await self.application.stop()
             await self.application.shutdown()

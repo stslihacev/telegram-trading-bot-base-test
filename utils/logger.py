@@ -11,16 +11,23 @@ LOG_FILE = LOG_DIR / "bot.log"
 # Настройка логгера
 logger = logging.getLogger("crypto_bot")
 logger.setLevel(logging.INFO)
+logger.propagate = False
 
 # Формат сообщений
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-# Вывод в файл
-file_handler = logging.FileHandler(LOG_FILE, encoding='utf-8')
-file_handler.setFormatter(formatter)
-logger.addHandler(file_handler)
+has_file = any(
+    isinstance(handler, logging.FileHandler)
+    and Path(getattr(handler, "baseFilename", "")) == LOG_FILE
+    for handler in logger.handlers
+)
+if not has_file:
+    file_handler = logging.FileHandler(LOG_FILE, encoding='utf-8')
+    file_handler.setFormatter(formatter)
+    logger.addHandler(file_handler)
 
-# Вывод в консоль (опционально)
-console_handler = logging.StreamHandler(sys.stdout)
-console_handler.setFormatter(formatter)
-logger.addHandler(console_handler)
+has_console = any(isinstance(handler, logging.StreamHandler) and not isinstance(handler, logging.FileHandler) for handler in logger.handlers)
+if not has_console:
+    console_handler = logging.StreamHandler(sys.stdout)
+    console_handler.setFormatter(formatter)
+    logger.addHandler(console_handler)

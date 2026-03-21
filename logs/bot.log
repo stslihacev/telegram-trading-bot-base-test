@@ -14226,3 +14226,1945 @@ Time:   2026-03-20 20:00:00+00:00
 2026-03-21 00:09:39,484 - crypto_bot - INFO - 📊 Signals found: 0
 2026-03-21 00:09:39,484 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
 2026-03-21 00:11:17,509 - crypto_bot - INFO - 🛑 Остановка по KeyboardInterrupt
+2026-03-21 00:12:26,613 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-21 00:12:26,613 - crypto_bot - WARNING - TELEGRAM_TOKEN не задан — бот запустится в режиме scanner + GUI без Telegram polling
+2026-03-21 00:12:26,616 - crypto_bot - INFO - [LIGHT] scanner initialized | mode=LIGHT | timeframe=30m | candle_limit=220 | execution_tfs=30m, 1h
+2026-03-21 00:12:26,646 - crypto_bot - INFO - 🖥️ Signal GUI thread started
+2026-03-21 00:12:26,647 - crypto_bot - INFO - ✅ Telegram отключён: инициализированы scanner + GUI режим
+2026-03-21 00:12:26,647 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-21 00:12:26,647 - crypto_bot - INFO - 📡 Telegram polling disabled, running standalone scan loop
+2026-03-21 00:12:26,647 - crypto_bot - INFO - 🚀 SCAN LOOP STARTED
+2026-03-21 00:12:26,647 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-21 00:12:31,292 - crypto_bot - INFO - [LIGHT] 📈 Top-50 symbols fetched: 50
+2026-03-21 00:12:36,252 - crypto_bot - INFO - [LIGHT] 🔥 Active symbols after filter: 34 / 50
+2026-03-21 00:12:36,252 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ETH/USDT:USDT
+2026-03-21 00:12:36,622 - crypto_bot - INFO - [LIGHT] ❌ No signal: ETHUSDT
+2026-03-21 00:12:36,622 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XRP/USDT:USDT
+2026-03-21 00:12:36,835 - crypto_bot - INFO - [LIGHT] ❌ No signal: XRPUSDT
+2026-03-21 00:12:36,835 - crypto_bot - INFO - [LIGHT] 🔍 Scanning HYPE/USDT:USDT
+2026-03-21 00:12:37,043 - crypto_bot - INFO - [LIGHT] ❌ No signal: HYPEUSDT
+2026-03-21 00:12:37,043 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAUT/USDT:USDT
+2026-03-21 00:12:37,273 - crypto_bot - INFO - [LIGHT] ❌ No signal: XAUTUSDT
+2026-03-21 00:12:37,273 - crypto_bot - INFO - [LIGHT] 🔍 Scanning LYN/USDT:USDT
+2026-03-21 00:12:37,499 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: LYNUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:12:37,499 - crypto_bot - INFO - [LIGHT] 🔍 Scanning RIVER/USDT:USDT
+2026-03-21 00:12:37,719 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: RIVERUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:12:37,719 - crypto_bot - INFO - [LIGHT] 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-21 00:12:37,937 - crypto_bot - INFO - [LIGHT] ❌ No signal: FARTCOINUSDT
+2026-03-21 00:12:37,937 - crypto_bot - INFO - [LIGHT] 🔍 Scanning UAI/USDT:USDT
+2026-03-21 00:12:38,168 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: UAIUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:12:38,168 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ZEC/USDT:USDT
+2026-03-21 00:12:38,393 - crypto_bot - INFO - [LIGHT] ❌ No signal: ZECUSDT
+2026-03-21 00:12:38,393 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAG/USDT:USDT
+2026-03-21 00:12:38,622 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: XAGUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:12:38,622 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WAXP/USDT:USDT
+2026-03-21 00:12:38,833 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: WAXPUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:12:38,833 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WLD/USDT:USDT
+2026-03-21 00:12:39,041 - crypto_bot - INFO - [LIGHT] ❌ No signal: WLDUSDT
+2026-03-21 00:12:39,041 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ADA/USDT:USDT
+2026-03-21 00:12:39,270 - crypto_bot - INFO - [LIGHT] ❌ No signal: ADAUSDT
+2026-03-21 00:12:39,272 - crypto_bot - INFO - [LIGHT] 🔍 Scanning PAXG/USDT:USDT
+2026-03-21 00:12:39,483 - crypto_bot - INFO - [LIGHT] ❌ No signal: PAXGUSDT
+2026-03-21 00:12:39,483 - crypto_bot - INFO - [LIGHT] 🔍 Scanning SAHARA/USDT:USDT
+2026-03-21 00:12:39,686 - crypto_bot - INFO - [LIGHT] ❌ No signal: SAHARAUSDT
+2026-03-21 00:12:39,686 - crypto_bot - INFO - [LIGHT] 🔍 Scanning NEAR/USDT:USDT
+2026-03-21 00:12:39,900 - crypto_bot - INFO - [LIGHT] ❌ No signal: NEARUSDT
+2026-03-21 00:12:39,900 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAU/USDT:USDT
+2026-03-21 00:12:40,129 - crypto_bot - INFO - [LIGHT] ❌ No signal: XAUUSDT
+2026-03-21 00:12:40,129 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ENA/USDT:USDT
+2026-03-21 00:12:40,343 - crypto_bot - INFO - [LIGHT] ❌ No signal: ENAUSDT
+2026-03-21 00:12:40,343 - crypto_bot - INFO - [LIGHT] 🔍 Scanning APT/USDT:USDT
+2026-03-21 00:12:40,580 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: APTUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:12:40,580 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BAN/USDT:USDT
+2026-03-21 00:12:40,808 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: BANUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:12:40,808 - crypto_bot - INFO - [LIGHT] 🔍 Scanning KAS/USDT:USDT
+2026-03-21 00:12:41,020 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: KASUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:12:41,020 - crypto_bot - INFO - [LIGHT] 🔍 Scanning KITE/USDT:USDT
+2026-03-21 00:12:41,244 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: KITEUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:12:41,244 - crypto_bot - INFO - [LIGHT] 🔍 Scanning VIRTUAL/USDT:USDT
+2026-03-21 00:12:41,474 - crypto_bot - INFO - [LIGHT] ❌ No signal: VIRTUALUSDT
+2026-03-21 00:12:41,474 - crypto_bot - INFO - [LIGHT] 🔍 Scanning PHA/USDT:USDT
+2026-03-21 00:12:41,700 - crypto_bot - INFO - [LIGHT] ❌ No signal: PHAUSDT
+2026-03-21 00:12:41,700 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BARD/USDT:USDT
+2026-03-21 00:12:41,924 - crypto_bot - INFO - [LIGHT] ❌ No signal: BARDUSDT
+2026-03-21 00:12:41,924 - crypto_bot - INFO - [LIGHT] 🔍 Scanning APR/USDT:USDT
+2026-03-21 00:12:42,130 - crypto_bot - INFO - [LIGHT] ❌ No signal: APRUSDT
+2026-03-21 00:12:42,130 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WIF/USDT:USDT
+2026-03-21 00:12:42,353 - crypto_bot - INFO - [LIGHT] ❌ No signal: WIFUSDT
+2026-03-21 00:12:42,353 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BCH/USDT:USDT
+2026-03-21 00:12:42,568 - crypto_bot - INFO - [LIGHT] ❌ No signal: BCHUSDT
+2026-03-21 00:12:42,568 - crypto_bot - INFO - [LIGHT] 🔍 Scanning DOT/USDT:USDT
+2026-03-21 00:12:42,791 - crypto_bot - INFO - [LIGHT] ❌ No signal: DOTUSDT
+2026-03-21 00:12:42,791 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XPL/USDT:USDT
+2026-03-21 00:12:43,024 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: XPLUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:12:43,024 - crypto_bot - INFO - [LIGHT] 🔍 Scanning SIREN/USDT:USDT
+2026-03-21 00:12:43,382 - crypto_bot - INFO - [LIGHT] ❌ No signal: SIRENUSDT
+2026-03-21 00:12:43,382 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ATH/USDT:USDT
+2026-03-21 00:12:43,621 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: ATHUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:12:43,621 - crypto_bot - INFO - [LIGHT] 🔍 Scanning AAVE/USDT:USDT
+2026-03-21 00:12:43,835 - crypto_bot - INFO - [LIGHT] ❌ No signal: AAVEUSDT
+2026-03-21 00:12:43,835 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ZETA/USDT:USDT
+2026-03-21 00:12:44,072 - crypto_bot - INFO - [LIGHT] ❌ No signal: ZETAUSDT
+2026-03-21 00:12:44,074 - crypto_bot - INFO - [LIGHT] 📊 Total signals after scan: 11
+2026-03-21 00:12:44,074 - crypto_bot - INFO - 📊 Signals found: 11
+2026-03-21 00:12:44,074 - crypto_bot - INFO - LYNUSDT LONG | TF 30m | Score 3.20/7.20 | RR 1.50
+2026-03-21 00:12:44,074 - crypto_bot - INFO - RIVERUSDT SHORT | TF 30m | Score 4.00/7.20 | RR 1.50
+2026-03-21 00:12:44,074 - crypto_bot - INFO - UAIUSDT LONG | TF 30m | Score 3.20/7.20 | RR 1.50
+2026-03-21 00:12:44,074 - crypto_bot - INFO - XAGUSDT LONG | TF 30m | Score 3.40/7.20 | RR 1.50
+2026-03-21 00:12:44,074 - crypto_bot - INFO - WAXPUSDT SHORT | TF 30m | Score 3.00/7.20 | RR 1.50
+2026-03-21 00:12:44,074 - crypto_bot - INFO - APTUSDT SHORT | TF 30m | Score 4.20/7.20 | RR 1.50
+2026-03-21 00:12:44,074 - crypto_bot - INFO - BANUSDT LONG | TF 30m | Score 3.20/7.20 | RR 1.50
+2026-03-21 00:12:44,074 - crypto_bot - INFO - KASUSDT LONG | TF 30m | Score 3.20/7.20 | RR 1.50
+2026-03-21 00:12:44,074 - crypto_bot - INFO - KITEUSDT LONG | TF 30m | Score 4.00/7.20 | RR 1.50
+2026-03-21 00:12:44,074 - crypto_bot - INFO - XPLUSDT LONG | TF 30m | Score 3.00/7.20 | RR 1.50
+2026-03-21 00:12:44,074 - crypto_bot - INFO - ATHUSDT SHORT | TF 30m | Score 4.40/7.20 | RR 1.50
+2026-03-21 00:12:44,074 - crypto_bot - INFO - ⏳ Sleeping for 180 seconds
+2026-03-21 00:13:11,482 - crypto_bot - INFO - 🛑 Остановка по KeyboardInterrupt
+2026-03-21 00:13:14,122 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-21 00:13:14,122 - crypto_bot - WARNING - TELEGRAM_TOKEN не задан — бот запустится в режиме scanner + GUI без Telegram polling
+2026-03-21 00:13:14,129 - crypto_bot - INFO - [LIGHT] scanner initialized | mode=LIGHT | timeframe=30m | candle_limit=220 | execution_tfs=30m, 1h
+2026-03-21 00:13:14,142 - crypto_bot - INFO - 🖥️ Signal GUI thread started
+2026-03-21 00:13:14,155 - crypto_bot - INFO - ✅ Telegram отключён: инициализированы scanner + GUI режим
+2026-03-21 00:13:14,155 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-21 00:13:14,155 - crypto_bot - INFO - 📡 Telegram polling disabled, running standalone scan loop
+2026-03-21 00:13:14,156 - crypto_bot - INFO - 🚀 SCAN LOOP STARTED
+2026-03-21 00:13:14,157 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-21 00:13:23,623 - crypto_bot - INFO - [LIGHT] 📈 Top-50 symbols fetched: 50
+2026-03-21 00:13:33,479 - crypto_bot - INFO - [LIGHT] 🔥 Active symbols after filter: 34 / 50
+2026-03-21 00:13:33,479 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ETH/USDT:USDT
+2026-03-21 00:13:34,226 - crypto_bot - INFO - [LIGHT] ❌ No signal: ETHUSDT
+2026-03-21 00:13:34,226 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XRP/USDT:USDT
+2026-03-21 00:13:34,633 - crypto_bot - INFO - [LIGHT] ❌ No signal: XRPUSDT
+2026-03-21 00:13:34,633 - crypto_bot - INFO - [LIGHT] 🔍 Scanning HYPE/USDT:USDT
+2026-03-21 00:13:35,388 - crypto_bot - INFO - [LIGHT] ❌ No signal: HYPEUSDT
+2026-03-21 00:13:35,390 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAUT/USDT:USDT
+2026-03-21 00:13:35,596 - crypto_bot - INFO - [LIGHT] ❌ No signal: XAUTUSDT
+2026-03-21 00:13:35,596 - crypto_bot - INFO - [LIGHT] 🔍 Scanning LYN/USDT:USDT
+2026-03-21 00:13:35,813 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: LYNUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:13:35,813 - crypto_bot - INFO - [LIGHT] 🔍 Scanning RIVER/USDT:USDT
+2026-03-21 00:13:36,572 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: RIVERUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:13:36,572 - crypto_bot - INFO - [LIGHT] 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-21 00:13:37,317 - crypto_bot - INFO - [LIGHT] ❌ No signal: FARTCOINUSDT
+2026-03-21 00:13:37,317 - crypto_bot - INFO - [LIGHT] 🔍 Scanning UAI/USDT:USDT
+2026-03-21 00:13:38,082 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: UAIUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:13:38,082 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ZEC/USDT:USDT
+2026-03-21 00:13:38,840 - crypto_bot - INFO - [LIGHT] ❌ No signal: ZECUSDT
+2026-03-21 00:13:38,841 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAG/USDT:USDT
+2026-03-21 00:13:39,590 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: XAGUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:13:39,590 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WAXP/USDT:USDT
+2026-03-21 00:13:39,809 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: WAXPUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:13:39,810 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WLD/USDT:USDT
+2026-03-21 00:13:40,017 - crypto_bot - INFO - [LIGHT] ❌ No signal: WLDUSDT
+2026-03-21 00:13:40,017 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ADA/USDT:USDT
+2026-03-21 00:13:40,774 - crypto_bot - INFO - [LIGHT] ❌ No signal: ADAUSDT
+2026-03-21 00:13:40,774 - crypto_bot - INFO - [LIGHT] 🔍 Scanning PAXG/USDT:USDT
+2026-03-21 00:13:41,533 - crypto_bot - INFO - [LIGHT] ❌ No signal: PAXGUSDT
+2026-03-21 00:13:41,533 - crypto_bot - INFO - [LIGHT] 🔍 Scanning SAHARA/USDT:USDT
+2026-03-21 00:13:42,290 - crypto_bot - INFO - [LIGHT] ❌ No signal: SAHARAUSDT
+2026-03-21 00:13:42,291 - crypto_bot - INFO - [LIGHT] 🔍 Scanning NEAR/USDT:USDT
+2026-03-21 00:13:43,087 - crypto_bot - INFO - [LIGHT] ❌ No signal: NEARUSDT
+2026-03-21 00:13:43,087 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAU/USDT:USDT
+2026-03-21 00:13:43,852 - crypto_bot - INFO - [LIGHT] ❌ No signal: XAUUSDT
+2026-03-21 00:13:43,852 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ENA/USDT:USDT
+2026-03-21 00:13:44,053 - crypto_bot - INFO - [LIGHT] ❌ No signal: ENAUSDT
+2026-03-21 00:13:44,053 - crypto_bot - INFO - [LIGHT] 🔍 Scanning APT/USDT:USDT
+2026-03-21 00:13:44,818 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: APTUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:13:44,818 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BAN/USDT:USDT
+2026-03-21 00:13:45,025 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: BANUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:13:45,025 - crypto_bot - INFO - [LIGHT] 🔍 Scanning KAS/USDT:USDT
+2026-03-21 00:13:45,785 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: KASUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:13:45,785 - crypto_bot - INFO - [LIGHT] 🔍 Scanning KITE/USDT:USDT
+2026-03-21 00:13:45,998 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: KITEUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:13:45,998 - crypto_bot - INFO - [LIGHT] 🔍 Scanning VIRTUAL/USDT:USDT
+2026-03-21 00:13:46,760 - crypto_bot - INFO - [LIGHT] ❌ No signal: VIRTUALUSDT
+2026-03-21 00:13:46,760 - crypto_bot - INFO - [LIGHT] 🔍 Scanning PHA/USDT:USDT
+2026-03-21 00:13:47,503 - crypto_bot - INFO - [LIGHT] ❌ No signal: PHAUSDT
+2026-03-21 00:13:47,503 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BARD/USDT:USDT
+2026-03-21 00:13:48,267 - crypto_bot - INFO - [LIGHT] ❌ No signal: BARDUSDT
+2026-03-21 00:13:48,267 - crypto_bot - INFO - [LIGHT] 🔍 Scanning APR/USDT:USDT
+2026-03-21 00:13:49,025 - crypto_bot - INFO - [LIGHT] ❌ No signal: APRUSDT
+2026-03-21 00:13:49,025 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WIF/USDT:USDT
+2026-03-21 00:13:49,782 - crypto_bot - INFO - [LIGHT] ❌ No signal: WIFUSDT
+2026-03-21 00:13:49,782 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BCH/USDT:USDT
+2026-03-21 00:13:49,985 - crypto_bot - INFO - [LIGHT] ❌ No signal: BCHUSDT
+2026-03-21 00:13:49,985 - crypto_bot - INFO - [LIGHT] 🔍 Scanning DOT/USDT:USDT
+2026-03-21 00:13:50,737 - crypto_bot - INFO - [LIGHT] ❌ No signal: DOTUSDT
+2026-03-21 00:13:50,737 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XPL/USDT:USDT
+2026-03-21 00:13:51,503 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: XPLUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:13:51,503 - crypto_bot - INFO - [LIGHT] 🔍 Scanning SIREN/USDT:USDT
+2026-03-21 00:13:51,723 - crypto_bot - INFO - [LIGHT] ❌ No signal: SIRENUSDT
+2026-03-21 00:13:51,723 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ATH/USDT:USDT
+2026-03-21 00:13:51,948 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: ATHUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:13:51,949 - crypto_bot - INFO - [LIGHT] 🔍 Scanning AAVE/USDT:USDT
+2026-03-21 00:13:52,164 - crypto_bot - INFO - [LIGHT] ❌ No signal: AAVEUSDT
+2026-03-21 00:13:52,164 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ZETA/USDT:USDT
+2026-03-21 00:13:52,365 - crypto_bot - INFO - [LIGHT] ❌ No signal: ZETAUSDT
+2026-03-21 00:13:52,365 - crypto_bot - INFO - [LIGHT] 📊 Total signals after scan: 11
+2026-03-21 00:13:52,365 - crypto_bot - INFO - 📊 Signals found: 11
+2026-03-21 00:13:52,365 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    LYNUSDT
+Direction: LONG
+Timeframe: 30m
+
+Entry: 0.066740
+TP:    0.073379
+SL:    0.062314
+RR:    1.50
+
+Score:      3.20 / 7.20
+Confidence: 0.44
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:30:00+00:00
+2026-03-21 00:13:52,365 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    RIVERUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 21.152000
+TP:    19.880300
+SL:    21.999800
+RR:    1.50
+
+Score:      4.00 / 7.20
+Confidence: 0.56
+
+Passed: SMA, MACD, BODY
+Failed: EMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:30:00+00:00
+2026-03-21 00:13:52,365 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    UAIUSDT
+Direction: LONG
+Timeframe: 30m
+
+Entry: 0.439330
+TP:    0.492952
+SL:    0.403582
+RR:    1.50
+
+Score:      3.20 / 7.20
+Confidence: 0.44
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:30:00+00:00
+2026-03-21 00:13:52,365 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    XAGUSDT
+Direction: LONG
+Timeframe: 30m
+
+Entry: 67.970000
+TP:    69.692857
+SL:    66.821429
+RR:    1.50
+
+Score:      3.40 / 7.20
+Confidence: 0.47
+
+Passed: RSI, VOLUME
+Failed: EMA, SMA, MACD, BODY
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:30:00+00:00
+2026-03-21 00:13:52,365 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    WAXPUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 0.008492
+TP:    0.007993
+SL:    0.008825
+RR:    1.50
+
+Score:      3.00 / 7.20
+Confidence: 0.42
+
+Passed: RSI, BODY
+Failed: EMA, SMA, MACD, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:30:00+00:00
+2026-03-21 00:13:52,365 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    APTUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 0.988400
+TP:    0.963354
+SL:    1.005097
+RR:    1.50
+
+Score:      4.20 / 7.20
+Confidence: 0.58
+
+Passed: EMA, MACD, BODY
+Failed: SMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:30:00+00:00
+2026-03-21 00:13:52,381 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    BANUSDT
+Direction: LONG
+Timeframe: 30m
+
+Entry: 0.053420
+TP:    0.055891
+SL:    0.051773
+RR:    1.50
+
+Score:      3.20 / 7.20
+Confidence: 0.44
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:30:00+00:00
+2026-03-21 00:13:52,381 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    KASUSDT
+Direction: LONG
+Timeframe: 30m
+
+Entry: 0.037250
+TP:    0.039401
+SL:    0.035816
+RR:    1.50
+
+Score:      3.20 / 7.20
+Confidence: 0.44
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:30:00+00:00
+2026-03-21 00:13:52,381 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    KITEUSDT
+Direction: LONG
+Timeframe: 30m
+
+Entry: 0.220840
+TP:    0.226525
+SL:    0.217050
+RR:    1.50
+
+Score:      4.00 / 7.20
+Confidence: 0.56
+
+Passed: SMA, MACD, BODY
+Failed: EMA, RSI, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:30:00+00:00
+2026-03-21 00:13:52,383 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    XPLUSDT
+Direction: LONG
+Timeframe: 30m
+
+Entry: 0.093530
+TP:    0.096539
+SL:    0.091524
+RR:    1.50
+
+Score:      3.00 / 7.20
+Confidence: 0.42
+
+Passed: RSI, BODY
+Failed: EMA, SMA, MACD, VOLUME
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:30:00+00:00
+2026-03-21 00:13:52,384 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    ATHUSDT
+Direction: SHORT
+Timeframe: 30m
+
+Entry: 0.007626
+TP:    0.007324
+SL:    0.007827
+RR:    1.50
+
+Score:      4.40 / 7.20
+Confidence: 0.61
+
+Passed: MACD, BODY, VOLUME
+Failed: EMA, SMA, RSI
+
+Regime: LIGHT_RANGE
+Time:   2026-03-20 20:30:00+00:00
+2026-03-21 00:13:52,385 - crypto_bot - INFO - ⏳ Sleeping for 180 seconds
+2026-03-21 00:16:30,511 - crypto_bot - INFO - 🛑 Остановка по KeyboardInterrupt
+2026-03-21 00:28:04,362 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-21 00:28:04,362 - crypto_bot - WARNING - TELEGRAM_TOKEN не задан — бот запустится в режиме scanner + GUI без Telegram polling
+2026-03-21 00:28:04,366 - crypto_bot - INFO - [LIGHT] scanner initialized | mode=LIGHT | timeframe=30m | candle_limit=220 | execution_tfs=30m, 1h
+2026-03-21 00:28:04,395 - crypto_bot - INFO - 🖥️ Signal GUI thread started
+2026-03-21 00:28:04,395 - crypto_bot - INFO - ✅ Telegram отключён: инициализированы scanner + GUI режим
+2026-03-21 00:28:04,395 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-21 00:28:04,395 - crypto_bot - INFO - 📡 Telegram polling disabled, running standalone scan loop
+2026-03-21 00:28:04,404 - crypto_bot - INFO - 🚀 SCAN LOOP STARTED
+2026-03-21 00:28:04,404 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-21 00:28:07,953 - crypto_bot - INFO - [LIGHT] 📈 Top-50 symbols fetched: 50
+2026-03-21 00:28:11,525 - crypto_bot - INFO - [LIGHT] 🔥 Active symbols after filter: 26 / 50
+2026-03-21 00:28:11,525 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAUT/USDT:USDT
+2026-03-21 00:28:11,751 - crypto_bot - INFO - [LIGHT] ❌ No signal: XAUTUSDT
+2026-03-21 00:28:11,751 - crypto_bot - INFO - [LIGHT] 🔍 Scanning LYN/USDT:USDT
+2026-03-21 00:28:11,975 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: LYNUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:28:11,975 - crypto_bot - INFO - [LIGHT] 🔍 Scanning RIVER/USDT:USDT
+2026-03-21 00:28:12,202 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: RIVERUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:28:12,202 - crypto_bot - INFO - [LIGHT] 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-21 00:28:12,426 - crypto_bot - INFO - [LIGHT] ❌ No signal: FARTCOINUSDT
+2026-03-21 00:28:12,426 - crypto_bot - INFO - [LIGHT] 🔍 Scanning UAI/USDT:USDT
+2026-03-21 00:28:12,634 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: UAIUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:28:12,634 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ZEC/USDT:USDT
+2026-03-21 00:28:12,866 - crypto_bot - INFO - [LIGHT] ❌ No signal: ZECUSDT
+2026-03-21 00:28:12,866 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAG/USDT:USDT
+2026-03-21 00:28:13,134 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: XAGUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:28:13,134 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WAXP/USDT:USDT
+2026-03-21 00:28:13,418 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: WAXPUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:28:13,418 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WLD/USDT:USDT
+2026-03-21 00:28:13,638 - crypto_bot - INFO - [LIGHT] ❌ No signal: WLDUSDT
+2026-03-21 00:28:13,640 - crypto_bot - INFO - [LIGHT] 🔍 Scanning PAXG/USDT:USDT
+2026-03-21 00:28:13,854 - crypto_bot - INFO - [LIGHT] ❌ No signal: PAXGUSDT
+2026-03-21 00:28:13,854 - crypto_bot - INFO - [LIGHT] 🔍 Scanning SAHARA/USDT:USDT
+2026-03-21 00:28:14,058 - crypto_bot - INFO - [LIGHT] ❌ No signal: SAHARAUSDT
+2026-03-21 00:28:14,058 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAU/USDT:USDT
+2026-03-21 00:28:14,283 - crypto_bot - INFO - [LIGHT] ❌ No signal: XAUUSDT
+2026-03-21 00:28:14,283 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ENA/USDT:USDT
+2026-03-21 00:28:14,522 - crypto_bot - INFO - [LIGHT] ❌ No signal: ENAUSDT
+2026-03-21 00:28:14,522 - crypto_bot - INFO - [LIGHT] 🔍 Scanning APT/USDT:USDT
+2026-03-21 00:28:14,737 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: APTUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:28:14,737 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BAN/USDT:USDT
+2026-03-21 00:28:14,949 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: BANUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:28:14,949 - crypto_bot - INFO - [LIGHT] 🔍 Scanning KITE/USDT:USDT
+2026-03-21 00:28:15,161 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: KITEUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:28:15,161 - crypto_bot - INFO - [LIGHT] 🔍 Scanning PHA/USDT:USDT
+2026-03-21 00:28:15,370 - crypto_bot - INFO - [LIGHT] ❌ No signal: PHAUSDT
+2026-03-21 00:28:15,370 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BARD/USDT:USDT
+2026-03-21 00:28:15,588 - crypto_bot - INFO - [LIGHT] ❌ No signal: BARDUSDT
+2026-03-21 00:28:15,588 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WIF/USDT:USDT
+2026-03-21 00:28:15,853 - crypto_bot - INFO - [LIGHT] ❌ No signal: WIFUSDT
+2026-03-21 00:28:15,853 - crypto_bot - INFO - [LIGHT] 🔍 Scanning APR/USDT:USDT
+2026-03-21 00:28:16,072 - crypto_bot - INFO - [LIGHT] ❌ No signal: APRUSDT
+2026-03-21 00:28:16,072 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BCH/USDT:USDT
+2026-03-21 00:28:16,811 - crypto_bot - INFO - [LIGHT] ❌ No signal: BCHUSDT
+2026-03-21 00:28:16,811 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XPL/USDT:USDT
+2026-03-21 00:28:17,030 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: XPLUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:28:17,030 - crypto_bot - INFO - [LIGHT] 🔍 Scanning SIREN/USDT:USDT
+2026-03-21 00:28:17,259 - crypto_bot - INFO - [LIGHT] ❌ No signal: SIRENUSDT
+2026-03-21 00:28:17,259 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ATH/USDT:USDT
+2026-03-21 00:28:17,478 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: ATHUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:28:17,478 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ZETA/USDT:USDT
+2026-03-21 00:28:18,233 - crypto_bot - INFO - [LIGHT] ❌ No signal: ZETAUSDT
+2026-03-21 00:28:18,235 - crypto_bot - INFO - [LIGHT] 🔍 Scanning RENDER/USDT:USDT
+2026-03-21 00:28:18,450 - crypto_bot - INFO - [LIGHT] ❌ No signal: RENDERUSDT
+2026-03-21 00:28:18,450 - crypto_bot - INFO - [LIGHT] 📊 Total signals after scan: 10
+2026-03-21 00:28:18,450 - crypto_bot - INFO - 📊 Signals found: 10
+2026-03-21 00:28:18,481 - crypto_bot - INFO - [DEBUG] NEW SIGNAL | id=LYNUSDT_30m_LONG_2026-03-20 20:30:00+00:00 | fp=e38e8a5f15505698
+2026-03-21 00:28:18,481 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    LYNUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 0.066740
+🎯 TP:    0.073379
+🛑 SL:    0.062314
+RR:    1.50
+
+Score:      3.20 / 7.20
+⭐ Confidence: 0.44 ⭐⭐⭐
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-20 20:30:00+00:00
+Fingerprint: e38e8a5f15505698
+2026-03-21 00:28:18,481 - crypto_bot - INFO - [DEBUG] NEW SIGNAL | id=RIVERUSDT_30m_SHORT_2026-03-20 20:30:00+00:00 | fp=55568103354bd154
+2026-03-21 00:28:18,481 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    RIVERUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 21.152000
+🎯 TP:    19.880300
+🛑 SL:    21.999800
+RR:    1.50
+
+Score:      4.00 / 7.20
+⭐ Confidence: 0.56 ⭐⭐⭐
+
+Passed: SMA, MACD, BODY
+Failed: EMA, RSI, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-20 20:30:00+00:00
+Fingerprint: 55568103354bd154
+2026-03-21 00:28:18,481 - crypto_bot - INFO - [DEBUG] NEW SIGNAL | id=UAIUSDT_30m_LONG_2026-03-20 20:30:00+00:00 | fp=1c7ab1c90ace6ab3
+2026-03-21 00:28:18,481 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    UAIUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 0.439330
+🎯 TP:    0.492952
+🛑 SL:    0.403582
+RR:    1.50
+
+Score:      3.20 / 7.20
+⭐ Confidence: 0.44 ⭐⭐⭐
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-20 20:30:00+00:00
+Fingerprint: 1c7ab1c90ace6ab3
+2026-03-21 00:28:18,481 - crypto_bot - INFO - [DEBUG] NEW SIGNAL | id=XAGUSDT_30m_LONG_2026-03-20 20:30:00+00:00 | fp=8d58ddd87db4cefd
+2026-03-21 00:28:18,481 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    XAGUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 67.970000
+🎯 TP:    69.692857
+🛑 SL:    66.821429
+RR:    1.50
+
+Score:      3.40 / 7.20
+⭐ Confidence: 0.47 ⭐⭐⭐
+
+Passed: RSI, VOLUME
+Failed: EMA, SMA, MACD, BODY
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-20 20:30:00+00:00
+Fingerprint: 8d58ddd87db4cefd
+2026-03-21 00:28:18,481 - crypto_bot - INFO - [DEBUG] NEW SIGNAL | id=WAXPUSDT_30m_SHORT_2026-03-20 20:30:00+00:00 | fp=4792714a9c79f064
+2026-03-21 00:28:18,481 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    WAXPUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 0.008492
+🎯 TP:    0.007993
+🛑 SL:    0.008825
+RR:    1.50
+
+Score:      3.00 / 7.20
+⭐ Confidence: 0.42 ⭐⭐⭐
+
+Passed: RSI, BODY
+Failed: EMA, SMA, MACD, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-20 20:30:00+00:00
+Fingerprint: 4792714a9c79f064
+2026-03-21 00:28:18,481 - crypto_bot - INFO - [DEBUG] NEW SIGNAL | id=APTUSDT_30m_SHORT_2026-03-20 20:30:00+00:00 | fp=b16949b7676c28ae
+2026-03-21 00:28:18,481 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    APTUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 0.988400
+🎯 TP:    0.963354
+🛑 SL:    1.005097
+RR:    1.50
+
+Score:      4.20 / 7.20
+⭐ Confidence: 0.58 ⭐⭐⭐
+
+Passed: EMA, MACD, BODY
+Failed: SMA, RSI, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-20 20:30:00+00:00
+Fingerprint: b16949b7676c28ae
+2026-03-21 00:28:18,481 - crypto_bot - INFO - [DEBUG] NEW SIGNAL | id=BANUSDT_30m_LONG_2026-03-20 20:30:00+00:00 | fp=242d617f0884befc
+2026-03-21 00:28:18,481 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    BANUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 0.053420
+🎯 TP:    0.055891
+🛑 SL:    0.051773
+RR:    1.50
+
+Score:      3.20 / 7.20
+⭐ Confidence: 0.44 ⭐⭐⭐
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-20 20:30:00+00:00
+Fingerprint: 242d617f0884befc
+2026-03-21 00:28:18,481 - crypto_bot - INFO - [DEBUG] NEW SIGNAL | id=KITEUSDT_30m_LONG_2026-03-20 20:30:00+00:00 | fp=d430e7cc73304062
+2026-03-21 00:28:18,481 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    KITEUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 0.220840
+🎯 TP:    0.226525
+🛑 SL:    0.217050
+RR:    1.50
+
+Score:      4.00 / 7.20
+⭐ Confidence: 0.56 ⭐⭐⭐
+
+Passed: SMA, MACD, BODY
+Failed: EMA, RSI, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-20 20:30:00+00:00
+Fingerprint: d430e7cc73304062
+2026-03-21 00:28:18,481 - crypto_bot - INFO - [DEBUG] NEW SIGNAL | id=XPLUSDT_30m_LONG_2026-03-20 20:30:00+00:00 | fp=7ccf78d7cfb52ff1
+2026-03-21 00:28:18,481 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    XPLUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 0.093530
+🎯 TP:    0.096539
+🛑 SL:    0.091524
+RR:    1.50
+
+Score:      3.00 / 7.20
+⭐ Confidence: 0.42 ⭐⭐⭐
+
+Passed: RSI, BODY
+Failed: EMA, SMA, MACD, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-20 20:30:00+00:00
+Fingerprint: 7ccf78d7cfb52ff1
+2026-03-21 00:28:18,481 - crypto_bot - INFO - [DEBUG] NEW SIGNAL | id=ATHUSDT_30m_SHORT_2026-03-20 20:30:00+00:00 | fp=55ad819b3e2885a4
+2026-03-21 00:28:18,481 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    ATHUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 0.007626
+🎯 TP:    0.007324
+🛑 SL:    0.007827
+RR:    1.50
+
+Score:      4.40 / 7.20
+⭐ Confidence: 0.61 ⭐⭐⭐⭐
+
+Passed: MACD, BODY, VOLUME
+Failed: EMA, SMA, RSI
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-20 20:30:00+00:00
+Fingerprint: 55ad819b3e2885a4
+2026-03-21 00:28:18,481 - crypto_bot - INFO - ⏳ Sleeping for 180 seconds
+2026-03-21 00:31:18,494 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-21 00:31:18,928 - crypto_bot - INFO - [LIGHT] 📈 Top-50 symbols fetched: 50
+2026-03-21 00:31:19,192 - crypto_bot - INFO - [LIGHT] 🔥 Active symbols after filter: 28 / 50
+2026-03-21 00:31:19,192 - crypto_bot - INFO - [LIGHT] 🔍 Scanning TAO/USDT:USDT
+2026-03-21 00:31:19,419 - crypto_bot - INFO - [LIGHT] ❌ No signal: TAOUSDT
+2026-03-21 00:31:19,419 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAUT/USDT:USDT
+2026-03-21 00:31:19,651 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: XAUTUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:31:19,651 - crypto_bot - INFO - [LIGHT] 🔍 Scanning LYN/USDT:USDT
+2026-03-21 00:31:19,869 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: LYNUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:31:19,869 - crypto_bot - INFO - [LIGHT] 🔍 Scanning RIVER/USDT:USDT
+2026-03-21 00:31:20,102 - crypto_bot - INFO - [LIGHT] ❌ No signal: RIVERUSDT
+2026-03-21 00:31:20,102 - crypto_bot - INFO - [LIGHT] 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-21 00:31:20,316 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: FARTCOINUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:31:20,316 - crypto_bot - INFO - [LIGHT] 🔍 Scanning UAI/USDT:USDT
+2026-03-21 00:31:20,538 - crypto_bot - INFO - [LIGHT] ❌ No signal: UAIUSDT
+2026-03-21 00:31:20,538 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ZEC/USDT:USDT
+2026-03-21 00:31:20,761 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: ZECUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:31:20,761 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAG/USDT:USDT
+2026-03-21 00:31:20,975 - crypto_bot - INFO - [LIGHT] ❌ No signal: XAGUSDT
+2026-03-21 00:31:20,975 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WAXP/USDT:USDT
+2026-03-21 00:31:21,185 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: WAXPUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:31:21,185 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WLD/USDT:USDT
+2026-03-21 00:31:21,410 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: WLDUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:31:21,410 - crypto_bot - INFO - [LIGHT] 🔍 Scanning PAXG/USDT:USDT
+2026-03-21 00:31:21,621 - crypto_bot - INFO - [LIGHT] ❌ No signal: PAXGUSDT
+2026-03-21 00:31:21,621 - crypto_bot - INFO - [LIGHT] 🔍 Scanning SAHARA/USDT:USDT
+2026-03-21 00:31:21,826 - crypto_bot - INFO - [LIGHT] ❌ No signal: SAHARAUSDT
+2026-03-21 00:31:21,826 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAU/USDT:USDT
+2026-03-21 00:31:22,044 - crypto_bot - INFO - [LIGHT] ❌ No signal: XAUUSDT
+2026-03-21 00:31:22,044 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ENA/USDT:USDT
+2026-03-21 00:31:22,263 - crypto_bot - INFO - [LIGHT] ❌ No signal: ENAUSDT
+2026-03-21 00:31:22,263 - crypto_bot - INFO - [LIGHT] 🔍 Scanning APT/USDT:USDT
+2026-03-21 00:31:22,482 - crypto_bot - INFO - [LIGHT] ❌ No signal: APTUSDT
+2026-03-21 00:31:22,482 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BAN/USDT:USDT
+2026-03-21 00:31:22,700 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: BANUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:31:22,700 - crypto_bot - INFO - [LIGHT] 🔍 Scanning KITE/USDT:USDT
+2026-03-21 00:31:22,922 - crypto_bot - INFO - [LIGHT] ❌ No signal: KITEUSDT
+2026-03-21 00:31:22,922 - crypto_bot - INFO - [LIGHT] 🔍 Scanning PHA/USDT:USDT
+2026-03-21 00:31:23,152 - crypto_bot - INFO - [LIGHT] ❌ No signal: PHAUSDT
+2026-03-21 00:31:23,152 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BARD/USDT:USDT
+2026-03-21 00:31:23,374 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: BARDUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:31:23,374 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WIF/USDT:USDT
+2026-03-21 00:31:23,589 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: WIFUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:31:23,590 - crypto_bot - INFO - [LIGHT] 🔍 Scanning APR/USDT:USDT
+2026-03-21 00:31:23,792 - crypto_bot - INFO - [LIGHT] ❌ No signal: APRUSDT
+2026-03-21 00:31:23,792 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BCH/USDT:USDT
+2026-03-21 00:31:24,003 - crypto_bot - INFO - [LIGHT] ❌ No signal: BCHUSDT
+2026-03-21 00:31:24,003 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XPL/USDT:USDT
+2026-03-21 00:31:24,222 - crypto_bot - INFO - [LIGHT] ❌ No signal: XPLUSDT
+2026-03-21 00:31:24,222 - crypto_bot - INFO - [LIGHT] 🔍 Scanning SIREN/USDT:USDT
+2026-03-21 00:31:24,437 - crypto_bot - INFO - [LIGHT] ❌ No signal: SIRENUSDT
+2026-03-21 00:31:24,437 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ATH/USDT:USDT
+2026-03-21 00:31:24,662 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: ATHUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:31:24,663 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ZETA/USDT:USDT
+2026-03-21 00:31:24,863 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: ZETAUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:31:24,863 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ENJ/USDT:USDT
+2026-03-21 00:31:25,089 - crypto_bot - INFO - [LIGHT] ❌ No signal: ENJUSDT
+2026-03-21 00:31:25,091 - crypto_bot - INFO - [LIGHT] 🔍 Scanning RENDER/USDT:USDT
+2026-03-21 00:31:25,304 - crypto_bot - INFO - [LIGHT] ❌ No signal: RENDERUSDT
+2026-03-21 00:31:25,304 - crypto_bot - INFO - [LIGHT] 📊 Total signals after scan: 11
+2026-03-21 00:31:25,304 - crypto_bot - INFO - 📊 Signals found: 11
+2026-03-21 00:31:25,304 - crypto_bot - INFO - [DEBUG] NEW SIGNAL | id=XAUTUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=e3c5abd05d0ee791
+2026-03-21 00:31:25,304 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    XAUTUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 4505.900000
+🎯 TP:    4565.107143
+🛑 SL:    4466.428571
+RR:    1.50
+
+Score:      3.00 / 7.20
+⭐ Confidence: 0.42 ⭐⭐⭐
+
+Passed: RSI, BODY
+Failed: EMA, SMA, MACD, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-20 21:00:00+00:00
+Fingerprint: e3c5abd05d0ee791
+2026-03-21 00:31:25,304 - crypto_bot - INFO - [DEBUG] NEW SIGNAL | id=LYNUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=2492f17cffbe84f1
+2026-03-21 00:31:25,304 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    LYNUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 0.066290
+🎯 TP:    0.072392
+🛑 SL:    0.062222
+RR:    1.50
+
+Score:      3.20 / 7.20
+⭐ Confidence: 0.44 ⭐⭐⭐
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-20 21:00:00+00:00
+Fingerprint: 2492f17cffbe84f1
+2026-03-21 00:31:25,304 - crypto_bot - INFO - [DEBUG] NEW SIGNAL | id=FARTCOINUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=6dfd06f9a6fecc04
+2026-03-21 00:31:25,304 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    FARTCOINUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 0.196730
+🎯 TP:    0.189288
+🛑 SL:    0.201691
+RR:    1.50
+
+Score:      4.00 / 7.20
+⭐ Confidence: 0.56 ⭐⭐⭐
+
+Passed: SMA, BODY, VOLUME
+Failed: EMA, RSI, MACD
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-20 21:00:00+00:00
+Fingerprint: 6dfd06f9a6fecc04
+2026-03-21 00:31:25,304 - crypto_bot - INFO - [DEBUG] NEW SIGNAL | id=ZECUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=ab33998af8a11d7c
+2026-03-21 00:31:25,304 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    ZECUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 235.060000
+🎯 TP:    241.118286
+🛑 SL:    231.021143
+RR:    1.50
+
+Score:      4.40 / 7.20
+⭐ Confidence: 0.61 ⭐⭐⭐⭐
+
+Passed: MACD, BODY, VOLUME
+Failed: EMA, SMA, RSI
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-20 21:00:00+00:00
+Fingerprint: ab33998af8a11d7c
+2026-03-21 00:31:25,304 - crypto_bot - INFO - [DEBUG] NEW SIGNAL | id=WAXPUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=76dedc113801ecdc
+2026-03-21 00:31:25,304 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    WAXPUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 0.008452
+🎯 TP:    0.007977
+🛑 SL:    0.008768
+RR:    1.50
+
+Score:      4.20 / 7.20
+⭐ Confidence: 0.58 ⭐⭐⭐
+
+Passed: RSI, MACD, BODY
+Failed: EMA, SMA, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-20 21:00:00+00:00
+Fingerprint: 76dedc113801ecdc
+2026-03-21 00:31:25,304 - crypto_bot - INFO - [DEBUG] NEW SIGNAL | id=WLDUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=b09973b9c460bf08
+2026-03-21 00:31:25,304 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    WLDUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 0.326300
+🎯 TP:    0.314729
+🛑 SL:    0.334014
+RR:    1.50
+
+Score:      3.20 / 7.20
+⭐ Confidence: 0.44 ⭐⭐⭐
+
+Passed: SMA, MACD
+Failed: EMA, RSI, BODY, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-20 21:00:00+00:00
+Fingerprint: b09973b9c460bf08
+2026-03-21 00:31:25,304 - crypto_bot - INFO - [DEBUG] NEW SIGNAL | id=BANUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=d9033f4b999c0a6b
+2026-03-21 00:31:25,304 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    BANUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 0.053600
+🎯 TP:    0.055873
+🛑 SL:    0.052085
+RR:    1.50
+
+Score:      3.20 / 7.20
+⭐ Confidence: 0.44 ⭐⭐⭐
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-20 21:00:00+00:00
+Fingerprint: d9033f4b999c0a6b
+2026-03-21 00:31:25,304 - crypto_bot - INFO - [DEBUG] NEW SIGNAL | id=BARDUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=549f30ac57ff719a
+2026-03-21 00:31:25,304 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    BARDUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 0.550000
+🎯 TP:    0.560131
+🛑 SL:    0.543246
+RR:    1.50
+
+Score:      3.20 / 7.20
+⭐ Confidence: 0.44 ⭐⭐⭐
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-20 21:00:00+00:00
+Fingerprint: 549f30ac57ff719a
+2026-03-21 00:31:25,304 - crypto_bot - INFO - [DEBUG] NEW SIGNAL | id=WIFUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=e5cbe1e35628fc6d
+2026-03-21 00:31:25,304 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    WIFUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 0.179340
+🎯 TP:    0.183429
+🛑 SL:    0.176614
+RR:    1.50
+
+Score:      3.80 / 7.20
+⭐ Confidence: 0.53 ⭐⭐⭐
+
+Passed: EMA, SMA, BODY
+Failed: RSI, MACD, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-20 21:00:00+00:00
+Fingerprint: e5cbe1e35628fc6d
+2026-03-21 00:31:25,304 - crypto_bot - INFO - [DEBUG] NEW SIGNAL | id=ATHUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=9d88f10442f23c64
+2026-03-21 00:31:25,304 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    ATHUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 0.007654
+🎯 TP:    0.007358
+🛑 SL:    0.007851
+RR:    1.50
+
+Score:      3.20 / 7.20
+⭐ Confidence: 0.44 ⭐⭐⭐
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-20 21:00:00+00:00
+Fingerprint: 9d88f10442f23c64
+2026-03-21 00:31:25,313 - crypto_bot - INFO - [DEBUG] NEW SIGNAL | id=ZETAUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=efb1984299d2408b
+2026-03-21 00:31:25,314 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    ZETAUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 0.056670
+🎯 TP:    0.055017
+🛑 SL:    0.057772
+RR:    1.50
+
+Score:      3.20 / 7.20
+⭐ Confidence: 0.44 ⭐⭐⭐
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-20 21:00:00+00:00
+Fingerprint: efb1984299d2408b
+2026-03-21 00:31:25,314 - crypto_bot - INFO - ⏳ Sleeping for 180 seconds
+2026-03-21 00:34:25,315 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-21 00:34:25,920 - crypto_bot - INFO - [LIGHT] 📈 Top-50 symbols fetched: 50
+2026-03-21 00:34:26,197 - crypto_bot - INFO - [LIGHT] 🔥 Active symbols after filter: 29 / 50
+2026-03-21 00:34:26,199 - crypto_bot - INFO - [LIGHT] 🔍 Scanning SOL/USDT:USDT
+2026-03-21 00:34:26,414 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: SOLUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:34:26,415 - crypto_bot - INFO - [LIGHT] 🔍 Scanning TAO/USDT:USDT
+2026-03-21 00:34:26,633 - crypto_bot - INFO - [LIGHT] ❌ No signal: TAOUSDT
+2026-03-21 00:34:26,633 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAUT/USDT:USDT
+2026-03-21 00:34:26,854 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: XAUTUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:34:26,854 - crypto_bot - INFO - [LIGHT] 🔍 Scanning LYN/USDT:USDT
+2026-03-21 00:34:27,081 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: LYNUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:34:27,081 - crypto_bot - INFO - [LIGHT] 🔍 Scanning RIVER/USDT:USDT
+2026-03-21 00:34:27,315 - crypto_bot - INFO - [LIGHT] ❌ No signal: RIVERUSDT
+2026-03-21 00:34:27,315 - crypto_bot - INFO - [LIGHT] 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-21 00:34:27,529 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: FARTCOINUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:34:27,529 - crypto_bot - INFO - [LIGHT] 🔍 Scanning UAI/USDT:USDT
+2026-03-21 00:34:27,746 - crypto_bot - INFO - [LIGHT] ❌ No signal: UAIUSDT
+2026-03-21 00:34:27,746 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ZEC/USDT:USDT
+2026-03-21 00:34:27,957 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: ZECUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:34:27,957 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAG/USDT:USDT
+2026-03-21 00:34:28,200 - crypto_bot - INFO - [LIGHT] ❌ No signal: XAGUSDT
+2026-03-21 00:34:28,200 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WAXP/USDT:USDT
+2026-03-21 00:34:28,430 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: WAXPUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:34:28,430 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WLD/USDT:USDT
+2026-03-21 00:34:28,645 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: WLDUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:34:28,645 - crypto_bot - INFO - [LIGHT] 🔍 Scanning PAXG/USDT:USDT
+2026-03-21 00:34:28,864 - crypto_bot - INFO - [LIGHT] ❌ No signal: PAXGUSDT
+2026-03-21 00:34:28,864 - crypto_bot - INFO - [LIGHT] 🔍 Scanning SAHARA/USDT:USDT
+2026-03-21 00:34:29,072 - crypto_bot - INFO - [LIGHT] ❌ No signal: SAHARAUSDT
+2026-03-21 00:34:29,072 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAU/USDT:USDT
+2026-03-21 00:34:29,297 - crypto_bot - INFO - [LIGHT] ❌ No signal: XAUUSDT
+2026-03-21 00:34:29,297 - crypto_bot - INFO - [LIGHT] 🔍 Scanning APT/USDT:USDT
+2026-03-21 00:34:29,508 - crypto_bot - INFO - [LIGHT] ❌ No signal: APTUSDT
+2026-03-21 00:34:29,508 - crypto_bot - INFO - [LIGHT] 🔍 Scanning KAS/USDT:USDT
+2026-03-21 00:34:29,738 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: KASUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:34:29,738 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BAN/USDT:USDT
+2026-03-21 00:34:29,955 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: BANUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:34:29,955 - crypto_bot - INFO - [LIGHT] 🔍 Scanning KITE/USDT:USDT
+2026-03-21 00:34:30,689 - crypto_bot - INFO - [LIGHT] ❌ No signal: KITEUSDT
+2026-03-21 00:34:30,689 - crypto_bot - INFO - [LIGHT] 🔍 Scanning PHA/USDT:USDT
+2026-03-21 00:34:31,436 - crypto_bot - INFO - [LIGHT] ❌ No signal: PHAUSDT
+2026-03-21 00:34:31,436 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WIF/USDT:USDT
+2026-03-21 00:34:32,170 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: WIFUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:34:32,170 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BARD/USDT:USDT
+2026-03-21 00:34:32,385 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: BARDUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:34:32,385 - crypto_bot - INFO - [LIGHT] 🔍 Scanning APR/USDT:USDT
+2026-03-21 00:34:32,614 - crypto_bot - INFO - [LIGHT] ❌ No signal: APRUSDT
+2026-03-21 00:34:32,616 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BCH/USDT:USDT
+2026-03-21 00:34:32,841 - crypto_bot - INFO - [LIGHT] ❌ No signal: BCHUSDT
+2026-03-21 00:34:32,841 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XPL/USDT:USDT
+2026-03-21 00:34:33,624 - crypto_bot - INFO - [LIGHT] ❌ No signal: XPLUSDT
+2026-03-21 00:34:33,624 - crypto_bot - INFO - [LIGHT] 🔍 Scanning SIREN/USDT:USDT
+2026-03-21 00:34:33,847 - crypto_bot - INFO - [LIGHT] ❌ No signal: SIRENUSDT
+2026-03-21 00:34:33,847 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ATH/USDT:USDT
+2026-03-21 00:34:34,067 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: ATHUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:34:34,067 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ZETA/USDT:USDT
+2026-03-21 00:34:34,287 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: ZETAUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:34:34,289 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ENJ/USDT:USDT
+2026-03-21 00:34:35,031 - crypto_bot - INFO - [LIGHT] ❌ No signal: ENJUSDT
+2026-03-21 00:34:35,031 - crypto_bot - INFO - [LIGHT] 🔍 Scanning RENDER/USDT:USDT
+2026-03-21 00:34:35,243 - crypto_bot - INFO - [LIGHT] ❌ No signal: RENDERUSDT
+2026-03-21 00:34:35,243 - crypto_bot - INFO - [LIGHT] 📊 Total signals after scan: 13
+2026-03-21 00:34:35,243 - crypto_bot - INFO - 📊 Signals found: 13
+2026-03-21 00:34:35,243 - crypto_bot - INFO - [DEBUG] NEW SIGNAL | id=SOLUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=60340ae9660fdf94
+2026-03-21 00:34:35,243 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    SOLUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 89.760000
+🎯 TP:    90.892714
+🛑 SL:    89.004857
+RR:    1.50
+
+Score:      4.20 / 7.20
+⭐ Confidence: 0.58 ⭐⭐⭐
+
+Passed: EMA, MACD, BODY
+Failed: SMA, RSI, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-20 21:00:00+00:00
+Fingerprint: 60340ae9660fdf94
+2026-03-21 00:34:35,243 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: XAUTUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:34:35,243 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=XAUTUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=e3c5abd05d0ee791
+2026-03-21 00:34:35,243 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: LYNUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:34:35,243 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=LYNUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=2492f17cffbe84f1
+2026-03-21 00:34:35,243 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: FARTCOINUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:34:35,243 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=FARTCOINUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=6dfd06f9a6fecc04
+2026-03-21 00:34:35,250 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: ZECUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:34:35,250 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=ZECUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=ab33998af8a11d7c
+2026-03-21 00:34:35,250 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: WAXPUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:34:35,250 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=WAXPUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=76dedc113801ecdc
+2026-03-21 00:34:35,251 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: WLDUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:34:35,251 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=WLDUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=b09973b9c460bf08
+2026-03-21 00:34:35,251 - crypto_bot - INFO - [DEBUG] NEW SIGNAL | id=KASUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=e634810c6404f26b
+2026-03-21 00:34:35,251 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    KASUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 0.038160
+🎯 TP:    0.040344
+🛑 SL:    0.036704
+RR:    1.50
+
+Score:      4.20 / 7.20
+⭐ Confidence: 0.58 ⭐⭐⭐
+
+Passed: EMA, MACD, BODY
+Failed: SMA, RSI, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-20 21:00:00+00:00
+Fingerprint: e634810c6404f26b
+2026-03-21 00:34:35,251 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: BANUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:34:35,251 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=BANUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=d9033f4b999c0a6b
+2026-03-21 00:34:35,251 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: WIFUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:34:35,251 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=WIFUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=e5cbe1e35628fc6d
+2026-03-21 00:34:35,252 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: BARDUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:34:35,252 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=BARDUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=549f30ac57ff719a
+2026-03-21 00:34:35,252 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: ATHUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:34:35,252 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=ATHUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=9d88f10442f23c64
+2026-03-21 00:34:35,252 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: ZETAUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:34:35,252 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=ZETAUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=efb1984299d2408b
+2026-03-21 00:34:35,252 - crypto_bot - INFO - ⏳ Sleeping for 180 seconds
+2026-03-21 00:37:35,268 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-21 00:37:35,549 - crypto_bot - INFO - [LIGHT] 📈 Top-50 symbols fetched: 50
+2026-03-21 00:37:35,795 - crypto_bot - INFO - [LIGHT] 🔥 Active symbols after filter: 30 / 50
+2026-03-21 00:37:35,795 - crypto_bot - INFO - [LIGHT] 🔍 Scanning SOL/USDT:USDT
+2026-03-21 00:37:36,022 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: SOLUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:37:36,022 - crypto_bot - INFO - [LIGHT] 🔍 Scanning TAO/USDT:USDT
+2026-03-21 00:37:36,485 - crypto_bot - INFO - [LIGHT] ❌ No signal: TAOUSDT
+2026-03-21 00:37:36,485 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAUT/USDT:USDT
+2026-03-21 00:37:36,710 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: XAUTUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:37:36,710 - crypto_bot - INFO - [LIGHT] 🔍 Scanning LYN/USDT:USDT
+2026-03-21 00:37:36,922 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: LYNUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:37:36,922 - crypto_bot - INFO - [LIGHT] 🔍 Scanning RIVER/USDT:USDT
+2026-03-21 00:37:37,143 - crypto_bot - INFO - [LIGHT] ❌ No signal: RIVERUSDT
+2026-03-21 00:37:37,143 - crypto_bot - INFO - [LIGHT] 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-21 00:37:37,363 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: FARTCOINUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:37:37,363 - crypto_bot - INFO - [LIGHT] 🔍 Scanning UAI/USDT:USDT
+2026-03-21 00:37:37,575 - crypto_bot - INFO - [LIGHT] ❌ No signal: UAIUSDT
+2026-03-21 00:37:37,575 - crypto_bot - INFO - [LIGHT] 🔍 Scanning PIPPIN/USDT:USDT
+2026-03-21 00:37:37,796 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: PIPPINUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:37:37,796 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ZEC/USDT:USDT
+2026-03-21 00:37:38,014 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: ZECUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:37:38,015 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAG/USDT:USDT
+2026-03-21 00:37:38,212 - crypto_bot - INFO - [LIGHT] ❌ No signal: XAGUSDT
+2026-03-21 00:37:38,212 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WAXP/USDT:USDT
+2026-03-21 00:37:38,438 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: WAXPUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:37:38,438 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WLD/USDT:USDT
+2026-03-21 00:37:38,652 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: WLDUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:37:38,652 - crypto_bot - INFO - [LIGHT] 🔍 Scanning PAXG/USDT:USDT
+2026-03-21 00:37:38,867 - crypto_bot - INFO - [LIGHT] ❌ No signal: PAXGUSDT
+2026-03-21 00:37:38,867 - crypto_bot - INFO - [LIGHT] 🔍 Scanning SAHARA/USDT:USDT
+2026-03-21 00:37:39,092 - crypto_bot - INFO - [LIGHT] ❌ No signal: SAHARAUSDT
+2026-03-21 00:37:39,092 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAU/USDT:USDT
+2026-03-21 00:37:39,306 - crypto_bot - INFO - [LIGHT] ❌ No signal: XAUUSDT
+2026-03-21 00:37:39,306 - crypto_bot - INFO - [LIGHT] 🔍 Scanning APT/USDT:USDT
+2026-03-21 00:37:39,530 - crypto_bot - INFO - [LIGHT] ❌ No signal: APTUSDT
+2026-03-21 00:37:39,530 - crypto_bot - INFO - [LIGHT] 🔍 Scanning KAS/USDT:USDT
+2026-03-21 00:37:39,746 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: KASUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:37:39,746 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BAN/USDT:USDT
+2026-03-21 00:37:39,970 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: BANUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:37:39,970 - crypto_bot - INFO - [LIGHT] 🔍 Scanning KITE/USDT:USDT
+2026-03-21 00:37:40,175 - crypto_bot - INFO - [LIGHT] ❌ No signal: KITEUSDT
+2026-03-21 00:37:40,175 - crypto_bot - INFO - [LIGHT] 🔍 Scanning PHA/USDT:USDT
+2026-03-21 00:37:40,413 - crypto_bot - INFO - [LIGHT] ❌ No signal: PHAUSDT
+2026-03-21 00:37:40,413 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WIF/USDT:USDT
+2026-03-21 00:37:40,626 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: WIFUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:37:40,626 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BARD/USDT:USDT
+2026-03-21 00:37:40,858 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: BARDUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:37:40,858 - crypto_bot - INFO - [LIGHT] 🔍 Scanning APR/USDT:USDT
+2026-03-21 00:37:41,069 - crypto_bot - INFO - [LIGHT] ❌ No signal: APRUSDT
+2026-03-21 00:37:41,069 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BCH/USDT:USDT
+2026-03-21 00:37:41,291 - crypto_bot - INFO - [LIGHT] ❌ No signal: BCHUSDT
+2026-03-21 00:37:41,291 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XPL/USDT:USDT
+2026-03-21 00:37:41,506 - crypto_bot - INFO - [LIGHT] ❌ No signal: XPLUSDT
+2026-03-21 00:37:41,506 - crypto_bot - INFO - [LIGHT] 🔍 Scanning SIREN/USDT:USDT
+2026-03-21 00:37:41,720 - crypto_bot - INFO - [LIGHT] ❌ No signal: SIRENUSDT
+2026-03-21 00:37:41,720 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ATH/USDT:USDT
+2026-03-21 00:37:41,937 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: ATHUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:37:41,937 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ZETA/USDT:USDT
+2026-03-21 00:37:42,151 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: ZETAUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:37:42,151 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ENJ/USDT:USDT
+2026-03-21 00:37:42,363 - crypto_bot - INFO - [LIGHT] ❌ No signal: ENJUSDT
+2026-03-21 00:37:42,363 - crypto_bot - INFO - [LIGHT] 🔍 Scanning RENDER/USDT:USDT
+2026-03-21 00:37:42,571 - crypto_bot - INFO - [LIGHT] ❌ No signal: RENDERUSDT
+2026-03-21 00:37:42,571 - crypto_bot - INFO - [LIGHT] 📊 Total signals after scan: 14
+2026-03-21 00:37:42,571 - crypto_bot - INFO - 📊 Signals found: 14
+2026-03-21 00:37:42,571 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: SOLUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:37:42,571 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=SOLUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=60340ae9660fdf94
+2026-03-21 00:37:42,571 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: XAUTUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:37:42,571 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=XAUTUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=e3c5abd05d0ee791
+2026-03-21 00:37:42,571 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: LYNUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:37:42,571 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=LYNUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=2492f17cffbe84f1
+2026-03-21 00:37:42,571 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: FARTCOINUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:37:42,571 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=FARTCOINUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=6dfd06f9a6fecc04
+2026-03-21 00:37:42,571 - crypto_bot - INFO - [DEBUG] NEW SIGNAL | id=PIPPINUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=a7dfc6de36c8f4ee
+2026-03-21 00:37:42,571 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    PIPPINUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 0.099410
+🎯 TP:    0.090710
+🛑 SL:    0.105210
+RR:    1.50
+
+Score:      3.20 / 7.20
+⭐ Confidence: 0.44 ⭐⭐⭐
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-20 21:00:00+00:00
+Fingerprint: a7dfc6de36c8f4ee
+2026-03-21 00:37:42,571 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: ZECUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:37:42,571 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=ZECUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=ab33998af8a11d7c
+2026-03-21 00:37:42,571 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: WAXPUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:37:42,571 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=WAXPUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=76dedc113801ecdc
+2026-03-21 00:37:42,571 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: WLDUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:37:42,571 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=WLDUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=b09973b9c460bf08
+2026-03-21 00:37:42,571 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: KASUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:37:42,571 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=KASUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=e634810c6404f26b
+2026-03-21 00:37:42,571 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: BANUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:37:42,571 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=BANUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=d9033f4b999c0a6b
+2026-03-21 00:37:42,571 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: WIFUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:37:42,571 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=WIFUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=e5cbe1e35628fc6d
+2026-03-21 00:37:42,571 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: BARDUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:37:42,571 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=BARDUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=549f30ac57ff719a
+2026-03-21 00:37:42,571 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: ATHUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:37:42,571 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=ATHUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=9d88f10442f23c64
+2026-03-21 00:37:42,571 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: ZETAUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:37:42,571 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=ZETAUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=efb1984299d2408b
+2026-03-21 00:37:42,571 - crypto_bot - INFO - ⏳ Sleeping for 180 seconds
+2026-03-21 00:40:42,593 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-21 00:40:42,853 - crypto_bot - INFO - [LIGHT] 📈 Top-50 symbols fetched: 50
+2026-03-21 00:40:43,126 - crypto_bot - INFO - [LIGHT] 🔥 Active symbols after filter: 31 / 50
+2026-03-21 00:40:43,126 - crypto_bot - INFO - [LIGHT] 🔍 Scanning TAO/USDT:USDT
+2026-03-21 00:40:43,341 - crypto_bot - INFO - [LIGHT] ❌ No signal: TAOUSDT
+2026-03-21 00:40:43,341 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAUT/USDT:USDT
+2026-03-21 00:40:43,576 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: XAUTUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:40:43,576 - crypto_bot - INFO - [LIGHT] 🔍 Scanning LYN/USDT:USDT
+2026-03-21 00:40:43,777 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: LYNUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:40:43,777 - crypto_bot - INFO - [LIGHT] 🔍 Scanning RIVER/USDT:USDT
+2026-03-21 00:40:44,014 - crypto_bot - INFO - [LIGHT] ❌ No signal: RIVERUSDT
+2026-03-21 00:40:44,016 - crypto_bot - INFO - [LIGHT] 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-21 00:40:44,253 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: FARTCOINUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:40:44,255 - crypto_bot - INFO - [LIGHT] 🔍 Scanning UAI/USDT:USDT
+2026-03-21 00:40:44,453 - crypto_bot - INFO - [LIGHT] ❌ No signal: UAIUSDT
+2026-03-21 00:40:44,453 - crypto_bot - INFO - [LIGHT] 🔍 Scanning PIPPIN/USDT:USDT
+2026-03-21 00:40:44,693 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: PIPPINUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:40:44,695 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ZEC/USDT:USDT
+2026-03-21 00:40:44,895 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: ZECUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:40:44,895 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAG/USDT:USDT
+2026-03-21 00:40:45,106 - crypto_bot - INFO - [LIGHT] ❌ No signal: XAGUSDT
+2026-03-21 00:40:45,106 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WAXP/USDT:USDT
+2026-03-21 00:40:45,338 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: WAXPUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:40:45,338 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WLD/USDT:USDT
+2026-03-21 00:40:45,555 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: WLDUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:40:45,555 - crypto_bot - INFO - [LIGHT] 🔍 Scanning PAXG/USDT:USDT
+2026-03-21 00:40:45,768 - crypto_bot - INFO - [LIGHT] ❌ No signal: PAXGUSDT
+2026-03-21 00:40:45,768 - crypto_bot - INFO - [LIGHT] 🔍 Scanning SAHARA/USDT:USDT
+2026-03-21 00:40:45,976 - crypto_bot - INFO - [LIGHT] ❌ No signal: SAHARAUSDT
+2026-03-21 00:40:45,992 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAU/USDT:USDT
+2026-03-21 00:40:46,220 - crypto_bot - INFO - [LIGHT] ❌ No signal: XAUUSDT
+2026-03-21 00:40:46,221 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ENA/USDT:USDT
+2026-03-21 00:40:46,435 - crypto_bot - INFO - [LIGHT] ❌ No signal: ENAUSDT
+2026-03-21 00:40:46,435 - crypto_bot - INFO - [LIGHT] 🔍 Scanning APT/USDT:USDT
+2026-03-21 00:40:46,649 - crypto_bot - INFO - [LIGHT] ❌ No signal: APTUSDT
+2026-03-21 00:40:46,649 - crypto_bot - INFO - [LIGHT] 🔍 Scanning KAS/USDT:USDT
+2026-03-21 00:40:46,870 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: KASUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:40:46,870 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BAN/USDT:USDT
+2026-03-21 00:40:47,075 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: BANUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:40:47,075 - crypto_bot - INFO - [LIGHT] 🔍 Scanning KITE/USDT:USDT
+2026-03-21 00:40:47,299 - crypto_bot - INFO - [LIGHT] ❌ No signal: KITEUSDT
+2026-03-21 00:40:47,300 - crypto_bot - INFO - [LIGHT] 🔍 Scanning PHA/USDT:USDT
+2026-03-21 00:40:47,526 - crypto_bot - INFO - [LIGHT] ❌ No signal: PHAUSDT
+2026-03-21 00:40:47,526 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WIF/USDT:USDT
+2026-03-21 00:40:47,741 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: WIFUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:40:47,741 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BARD/USDT:USDT
+2026-03-21 00:40:47,963 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: BARDUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:40:47,963 - crypto_bot - INFO - [LIGHT] 🔍 Scanning APR/USDT:USDT
+2026-03-21 00:40:48,181 - crypto_bot - INFO - [LIGHT] ❌ No signal: APRUSDT
+2026-03-21 00:40:48,181 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BCH/USDT:USDT
+2026-03-21 00:40:48,395 - crypto_bot - INFO - [LIGHT] ❌ No signal: BCHUSDT
+2026-03-21 00:40:48,395 - crypto_bot - INFO - [LIGHT] 🔍 Scanning DOT/USDT:USDT
+2026-03-21 00:40:48,622 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: DOTUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:40:48,622 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XPL/USDT:USDT
+2026-03-21 00:40:48,857 - crypto_bot - INFO - [LIGHT] ❌ No signal: XPLUSDT
+2026-03-21 00:40:48,857 - crypto_bot - INFO - [LIGHT] 🔍 Scanning SIREN/USDT:USDT
+2026-03-21 00:40:49,070 - crypto_bot - INFO - [LIGHT] ❌ No signal: SIRENUSDT
+2026-03-21 00:40:49,070 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ATH/USDT:USDT
+2026-03-21 00:40:49,276 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: ATHUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:40:49,276 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ZETA/USDT:USDT
+2026-03-21 00:40:49,503 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: ZETAUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:40:49,503 - crypto_bot - INFO - [LIGHT] 🔍 Scanning RENDER/USDT:USDT
+2026-03-21 00:40:49,719 - crypto_bot - INFO - [LIGHT] ❌ No signal: RENDERUSDT
+2026-03-21 00:40:49,719 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ENJ/USDT:USDT
+2026-03-21 00:40:49,935 - crypto_bot - INFO - [LIGHT] ❌ No signal: ENJUSDT
+2026-03-21 00:40:49,935 - crypto_bot - INFO - [LIGHT] 📊 Total signals after scan: 14
+2026-03-21 00:40:49,935 - crypto_bot - INFO - 📊 Signals found: 14
+2026-03-21 00:40:49,935 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: XAUTUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:40:49,936 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=XAUTUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=e3c5abd05d0ee791
+2026-03-21 00:40:49,936 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: LYNUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:40:49,936 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=LYNUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=2492f17cffbe84f1
+2026-03-21 00:40:49,936 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: FARTCOINUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:40:49,936 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=FARTCOINUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=6dfd06f9a6fecc04
+2026-03-21 00:40:49,936 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: PIPPINUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:40:49,936 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=PIPPINUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=a7dfc6de36c8f4ee
+2026-03-21 00:40:49,937 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: ZECUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:40:49,937 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=ZECUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=ab33998af8a11d7c
+2026-03-21 00:40:49,937 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: WAXPUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:40:49,937 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=WAXPUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=76dedc113801ecdc
+2026-03-21 00:40:49,937 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: WLDUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:40:49,937 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=WLDUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=b09973b9c460bf08
+2026-03-21 00:40:49,937 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: KASUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:40:49,937 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=KASUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=e634810c6404f26b
+2026-03-21 00:40:49,938 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: BANUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:40:49,938 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=BANUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=d9033f4b999c0a6b
+2026-03-21 00:40:49,938 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: WIFUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:40:49,938 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=WIFUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=e5cbe1e35628fc6d
+2026-03-21 00:40:49,938 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: BARDUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:40:49,938 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=BARDUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=549f30ac57ff719a
+2026-03-21 00:40:49,938 - crypto_bot - INFO - [DEBUG] NEW SIGNAL | id=DOTUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=ab8eb2c3eca26fde
+2026-03-21 00:40:49,939 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    DOTUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 1.514800
+🎯 TP:    1.493367
+🛑 SL:    1.529089
+RR:    1.50
+
+Score:      4.00 / 7.20
+⭐ Confidence: 0.56 ⭐⭐⭐
+
+Passed: SMA, BODY, VOLUME
+Failed: EMA, RSI, MACD
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-20 21:00:00+00:00
+Fingerprint: ab8eb2c3eca26fde
+2026-03-21 00:40:49,939 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: ATHUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:40:49,939 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=ATHUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=9d88f10442f23c64
+2026-03-21 00:40:49,939 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: ZETAUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:40:49,939 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=ZETAUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=efb1984299d2408b
+2026-03-21 00:40:49,939 - crypto_bot - INFO - ⏳ Sleeping for 180 seconds
+2026-03-21 00:43:49,993 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-21 00:43:50,255 - crypto_bot - INFO - [LIGHT] 📈 Top-50 symbols fetched: 50
+2026-03-21 00:43:50,510 - crypto_bot - INFO - [LIGHT] 🔥 Active symbols after filter: 32 / 50
+2026-03-21 00:43:50,510 - crypto_bot - INFO - [LIGHT] 🔍 Scanning TAO/USDT:USDT
+2026-03-21 00:43:50,741 - crypto_bot - INFO - [LIGHT] ❌ No signal: TAOUSDT
+2026-03-21 00:43:50,741 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAUT/USDT:USDT
+2026-03-21 00:43:50,949 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: XAUTUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:43:50,949 - crypto_bot - INFO - [LIGHT] 🔍 Scanning LYN/USDT:USDT
+2026-03-21 00:43:51,165 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: LYNUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:43:51,165 - crypto_bot - INFO - [LIGHT] 🔍 Scanning RIVER/USDT:USDT
+2026-03-21 00:43:51,391 - crypto_bot - INFO - [LIGHT] ❌ No signal: RIVERUSDT
+2026-03-21 00:43:51,391 - crypto_bot - INFO - [LIGHT] 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-21 00:43:51,595 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: FARTCOINUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:43:51,595 - crypto_bot - INFO - [LIGHT] 🔍 Scanning UAI/USDT:USDT
+2026-03-21 00:43:52,345 - crypto_bot - INFO - [LIGHT] ❌ No signal: UAIUSDT
+2026-03-21 00:43:52,345 - crypto_bot - INFO - [LIGHT] 🔍 Scanning PIPPIN/USDT:USDT
+2026-03-21 00:43:52,555 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: PIPPINUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:43:52,555 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ZEC/USDT:USDT
+2026-03-21 00:43:52,776 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: ZECUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:43:52,776 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAG/USDT:USDT
+2026-03-21 00:43:53,510 - crypto_bot - INFO - [LIGHT] ❌ No signal: XAGUSDT
+2026-03-21 00:43:53,510 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WAXP/USDT:USDT
+2026-03-21 00:43:53,746 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: WAXPUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:43:53,746 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WLD/USDT:USDT
+2026-03-21 00:43:53,975 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: WLDUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:43:53,975 - crypto_bot - INFO - [LIGHT] 🔍 Scanning PAXG/USDT:USDT
+2026-03-21 00:43:54,700 - crypto_bot - INFO - [LIGHT] ❌ No signal: PAXGUSDT
+2026-03-21 00:43:54,700 - crypto_bot - INFO - [LIGHT] 🔍 Scanning SAHARA/USDT:USDT
+2026-03-21 00:43:54,927 - crypto_bot - INFO - [LIGHT] ❌ No signal: SAHARAUSDT
+2026-03-21 00:43:54,929 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAU/USDT:USDT
+2026-03-21 00:43:55,665 - crypto_bot - INFO - [LIGHT] ❌ No signal: XAUUSDT
+2026-03-21 00:43:55,665 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ENA/USDT:USDT
+2026-03-21 00:43:55,881 - crypto_bot - INFO - [LIGHT] ❌ No signal: ENAUSDT
+2026-03-21 00:43:55,882 - crypto_bot - INFO - [LIGHT] 🔍 Scanning APT/USDT:USDT
+2026-03-21 00:43:56,629 - crypto_bot - INFO - [LIGHT] ❌ No signal: APTUSDT
+2026-03-21 00:43:56,629 - crypto_bot - INFO - [LIGHT] 🔍 Scanning KAS/USDT:USDT
+2026-03-21 00:43:57,415 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: KASUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:43:57,415 - crypto_bot - INFO - [LIGHT] 🔍 Scanning KITE/USDT:USDT
+2026-03-21 00:43:57,637 - crypto_bot - INFO - [LIGHT] ❌ No signal: KITEUSDT
+2026-03-21 00:43:57,637 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BAN/USDT:USDT
+2026-03-21 00:43:58,364 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: BANUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:43:58,364 - crypto_bot - INFO - [LIGHT] 🔍 Scanning PHA/USDT:USDT
+2026-03-21 00:43:58,593 - crypto_bot - INFO - [LIGHT] ❌ No signal: PHAUSDT
+2026-03-21 00:43:58,593 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WIF/USDT:USDT
+2026-03-21 00:43:59,336 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: WIFUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:43:59,336 - crypto_bot - INFO - [LIGHT] 🔍 Scanning APR/USDT:USDT
+2026-03-21 00:43:59,552 - crypto_bot - INFO - [LIGHT] ❌ No signal: APRUSDT
+2026-03-21 00:43:59,552 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BARD/USDT:USDT
+2026-03-21 00:43:59,769 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: BARDUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:43:59,769 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WLFI/USDT:USDT
+2026-03-21 00:44:00,564 - crypto_bot - INFO - [LIGHT] ❌ No signal: WLFIUSDT
+2026-03-21 00:44:00,564 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BCH/USDT:USDT
+2026-03-21 00:44:00,972 - crypto_bot - INFO - [LIGHT] ❌ No signal: BCHUSDT
+2026-03-21 00:44:00,972 - crypto_bot - INFO - [LIGHT] 🔍 Scanning DOT/USDT:USDT
+2026-03-21 00:44:01,196 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: DOTUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:44:01,196 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XPL/USDT:USDT
+2026-03-21 00:44:01,939 - crypto_bot - INFO - [LIGHT] ❌ No signal: XPLUSDT
+2026-03-21 00:44:01,939 - crypto_bot - INFO - [LIGHT] 🔍 Scanning SIREN/USDT:USDT
+2026-03-21 00:44:02,153 - crypto_bot - INFO - [LIGHT] ❌ No signal: SIRENUSDT
+2026-03-21 00:44:02,153 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ATH/USDT:USDT
+2026-03-21 00:44:02,365 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: ATHUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:44:02,365 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ZETA/USDT:USDT
+2026-03-21 00:44:02,575 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: ZETAUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:44:02,575 - crypto_bot - INFO - [LIGHT] 🔍 Scanning RENDER/USDT:USDT
+2026-03-21 00:44:02,803 - crypto_bot - INFO - [LIGHT] ❌ No signal: RENDERUSDT
+2026-03-21 00:44:02,805 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ENJ/USDT:USDT
+2026-03-21 00:44:03,023 - crypto_bot - INFO - [LIGHT] ❌ No signal: ENJUSDT
+2026-03-21 00:44:03,023 - crypto_bot - INFO - [LIGHT] 📊 Total signals after scan: 14
+2026-03-21 00:44:03,024 - crypto_bot - INFO - 📊 Signals found: 14
+2026-03-21 00:44:03,024 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: XAUTUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:44:03,024 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=XAUTUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=e3c5abd05d0ee791
+2026-03-21 00:44:03,024 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: LYNUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:44:03,024 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=LYNUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=2492f17cffbe84f1
+2026-03-21 00:44:03,025 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: FARTCOINUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:44:03,025 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=FARTCOINUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=6dfd06f9a6fecc04
+2026-03-21 00:44:03,025 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: PIPPINUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:44:03,025 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=PIPPINUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=a7dfc6de36c8f4ee
+2026-03-21 00:44:03,025 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: ZECUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:44:03,025 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=ZECUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=ab33998af8a11d7c
+2026-03-21 00:44:03,025 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: WAXPUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:44:03,025 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=WAXPUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=76dedc113801ecdc
+2026-03-21 00:44:03,026 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: WLDUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:44:03,026 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=WLDUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=b09973b9c460bf08
+2026-03-21 00:44:03,026 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: KASUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:44:03,026 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=KASUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=e634810c6404f26b
+2026-03-21 00:44:03,026 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: BANUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:44:03,026 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=BANUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=d9033f4b999c0a6b
+2026-03-21 00:44:03,026 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: WIFUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:44:03,027 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=WIFUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=e5cbe1e35628fc6d
+2026-03-21 00:44:03,028 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: BARDUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:44:03,028 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=BARDUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=549f30ac57ff719a
+2026-03-21 00:44:03,028 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: DOTUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:44:03,028 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=DOTUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=ab8eb2c3eca26fde
+2026-03-21 00:44:03,028 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: ATHUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:44:03,028 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=ATHUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=9d88f10442f23c64
+2026-03-21 00:44:03,029 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: ZETAUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:44:03,029 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=ZETAUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=efb1984299d2408b
+2026-03-21 00:44:03,029 - crypto_bot - INFO - ⏳ Sleeping for 180 seconds
+2026-03-21 00:47:03,079 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-21 00:47:03,373 - crypto_bot - INFO - [LIGHT] 📈 Top-50 symbols fetched: 50
+2026-03-21 00:47:03,627 - crypto_bot - INFO - [LIGHT] 🔥 Active symbols after filter: 31 / 50
+2026-03-21 00:47:03,627 - crypto_bot - INFO - [LIGHT] 🔍 Scanning TAO/USDT:USDT
+2026-03-21 00:47:03,854 - crypto_bot - INFO - [LIGHT] ❌ No signal: TAOUSDT
+2026-03-21 00:47:03,854 - crypto_bot - INFO - [LIGHT] 🔍 Scanning HYPE/USDT:USDT
+2026-03-21 00:47:04,067 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: HYPEUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:47:04,068 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAUT/USDT:USDT
+2026-03-21 00:47:04,296 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: XAUTUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:47:04,296 - crypto_bot - INFO - [LIGHT] 🔍 Scanning LYN/USDT:USDT
+2026-03-21 00:47:04,517 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: LYNUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:47:04,517 - crypto_bot - INFO - [LIGHT] 🔍 Scanning RIVER/USDT:USDT
+2026-03-21 00:47:04,904 - crypto_bot - INFO - [LIGHT] ❌ No signal: RIVERUSDT
+2026-03-21 00:47:04,904 - crypto_bot - INFO - [LIGHT] 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-21 00:47:05,643 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: FARTCOINUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:47:05,643 - crypto_bot - INFO - [LIGHT] 🔍 Scanning UAI/USDT:USDT
+2026-03-21 00:47:06,031 - crypto_bot - INFO - [LIGHT] ❌ No signal: UAIUSDT
+2026-03-21 00:47:06,031 - crypto_bot - INFO - [LIGHT] 🔍 Scanning PIPPIN/USDT:USDT
+2026-03-21 00:47:06,808 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: PIPPINUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:47:06,808 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ZEC/USDT:USDT
+2026-03-21 00:47:07,556 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: ZECUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:47:07,556 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAG/USDT:USDT
+2026-03-21 00:47:07,775 - crypto_bot - INFO - [LIGHT] ❌ No signal: XAGUSDT
+2026-03-21 00:47:07,775 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WAXP/USDT:USDT
+2026-03-21 00:47:07,992 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: WAXPUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:47:07,992 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WLD/USDT:USDT
+2026-03-21 00:47:08,199 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: WLDUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:47:08,199 - crypto_bot - INFO - [LIGHT] 🔍 Scanning PAXG/USDT:USDT
+2026-03-21 00:47:08,584 - crypto_bot - INFO - [LIGHT] ❌ No signal: PAXGUSDT
+2026-03-21 00:47:08,584 - crypto_bot - INFO - [LIGHT] 🔍 Scanning SAHARA/USDT:USDT
+2026-03-21 00:47:08,807 - crypto_bot - INFO - [LIGHT] ❌ No signal: SAHARAUSDT
+2026-03-21 00:47:08,807 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAU/USDT:USDT
+2026-03-21 00:47:09,015 - crypto_bot - INFO - [LIGHT] ❌ No signal: XAUUSDT
+2026-03-21 00:47:09,015 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ENA/USDT:USDT
+2026-03-21 00:47:09,234 - crypto_bot - INFO - [LIGHT] ❌ No signal: ENAUSDT
+2026-03-21 00:47:09,235 - crypto_bot - INFO - [LIGHT] 🔍 Scanning APT/USDT:USDT
+2026-03-21 00:47:09,446 - crypto_bot - INFO - [LIGHT] ❌ No signal: APTUSDT
+2026-03-21 00:47:09,446 - crypto_bot - INFO - [LIGHT] 🔍 Scanning KAS/USDT:USDT
+2026-03-21 00:47:09,665 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: KASUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:47:09,665 - crypto_bot - INFO - [LIGHT] 🔍 Scanning KITE/USDT:USDT
+2026-03-21 00:47:09,877 - crypto_bot - INFO - [LIGHT] ❌ No signal: KITEUSDT
+2026-03-21 00:47:09,877 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BAN/USDT:USDT
+2026-03-21 00:47:10,091 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: BANUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:47:10,091 - crypto_bot - INFO - [LIGHT] 🔍 Scanning PHA/USDT:USDT
+2026-03-21 00:47:10,298 - crypto_bot - INFO - [LIGHT] ❌ No signal: PHAUSDT
+2026-03-21 00:47:10,298 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WIF/USDT:USDT
+2026-03-21 00:47:10,517 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: WIFUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:47:10,518 - crypto_bot - INFO - [LIGHT] 🔍 Scanning APR/USDT:USDT
+2026-03-21 00:47:10,726 - crypto_bot - INFO - [LIGHT] ❌ No signal: APRUSDT
+2026-03-21 00:47:10,726 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BARD/USDT:USDT
+2026-03-21 00:47:10,936 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: BARDUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:47:10,936 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BCH/USDT:USDT
+2026-03-21 00:47:11,150 - crypto_bot - INFO - [LIGHT] ❌ No signal: BCHUSDT
+2026-03-21 00:47:11,150 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XPL/USDT:USDT
+2026-03-21 00:47:11,539 - crypto_bot - INFO - [LIGHT] ❌ No signal: XPLUSDT
+2026-03-21 00:47:11,539 - crypto_bot - INFO - [LIGHT] 🔍 Scanning SIREN/USDT:USDT
+2026-03-21 00:47:12,280 - crypto_bot - INFO - [LIGHT] ❌ No signal: SIRENUSDT
+2026-03-21 00:47:12,280 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ATH/USDT:USDT
+2026-03-21 00:47:12,515 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: ATHUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:47:12,515 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ZETA/USDT:USDT
+2026-03-21 00:47:12,732 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: ZETAUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:47:12,732 - crypto_bot - INFO - [LIGHT] 🔍 Scanning RENDER/USDT:USDT
+2026-03-21 00:47:12,938 - crypto_bot - INFO - [LIGHT] ❌ No signal: RENDERUSDT
+2026-03-21 00:47:12,938 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ENJ/USDT:USDT
+2026-03-21 00:47:13,184 - crypto_bot - INFO - [LIGHT] ❌ No signal: ENJUSDT
+2026-03-21 00:47:13,184 - crypto_bot - INFO - [LIGHT] 📊 Total signals after scan: 14
+2026-03-21 00:47:13,184 - crypto_bot - INFO - 📊 Signals found: 14
+2026-03-21 00:47:13,184 - crypto_bot - INFO - [DEBUG] NEW SIGNAL | id=HYPEUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=2fe1995f7fbb1d7c
+2026-03-21 00:47:13,184 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    HYPEUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 39.461000
+🎯 TP:    40.420657
+🛑 SL:    38.821229
+RR:    1.50
+
+Score:      3.20 / 7.20
+⭐ Confidence: 0.44 ⭐⭐⭐
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-20 21:00:00+00:00
+Fingerprint: 2fe1995f7fbb1d7c
+2026-03-21 00:47:13,184 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: XAUTUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:47:13,185 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=XAUTUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=e3c5abd05d0ee791
+2026-03-21 00:47:13,185 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: LYNUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:47:13,185 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=LYNUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=2492f17cffbe84f1
+2026-03-21 00:47:13,185 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: FARTCOINUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:47:13,185 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=FARTCOINUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=6dfd06f9a6fecc04
+2026-03-21 00:47:13,185 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: PIPPINUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:47:13,185 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=PIPPINUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=a7dfc6de36c8f4ee
+2026-03-21 00:47:13,185 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: ZECUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:47:13,185 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=ZECUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=ab33998af8a11d7c
+2026-03-21 00:47:13,186 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: WAXPUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:47:13,186 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=WAXPUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=76dedc113801ecdc
+2026-03-21 00:47:13,186 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: WLDUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:47:13,186 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=WLDUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=b09973b9c460bf08
+2026-03-21 00:47:13,186 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: KASUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:47:13,186 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=KASUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=e634810c6404f26b
+2026-03-21 00:47:13,186 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: BANUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:47:13,186 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=BANUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=d9033f4b999c0a6b
+2026-03-21 00:47:13,186 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: WIFUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:47:13,186 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=WIFUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=e5cbe1e35628fc6d
+2026-03-21 00:47:13,187 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: BARDUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:47:13,187 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=BARDUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=549f30ac57ff719a
+2026-03-21 00:47:13,187 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: ATHUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:47:13,187 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=ATHUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=9d88f10442f23c64
+2026-03-21 00:47:13,187 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: ZETAUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:47:13,187 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=ZETAUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=efb1984299d2408b
+2026-03-21 00:47:13,187 - crypto_bot - INFO - ⏳ Sleeping for 180 seconds
+2026-03-21 00:50:13,244 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-21 00:50:13,514 - crypto_bot - INFO - [LIGHT] 📈 Top-50 symbols fetched: 50
+2026-03-21 00:50:13,960 - crypto_bot - INFO - [LIGHT] 🔥 Active symbols after filter: 30 / 50
+2026-03-21 00:50:13,960 - crypto_bot - INFO - [LIGHT] 🔍 Scanning TAO/USDT:USDT
+2026-03-21 00:50:14,183 - crypto_bot - INFO - [LIGHT] ❌ No signal: TAOUSDT
+2026-03-21 00:50:14,183 - crypto_bot - INFO - [LIGHT] 🔍 Scanning HYPE/USDT:USDT
+2026-03-21 00:50:14,389 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: HYPEUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:50:14,389 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAUT/USDT:USDT
+2026-03-21 00:50:14,614 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: XAUTUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:50:14,616 - crypto_bot - INFO - [LIGHT] 🔍 Scanning LYN/USDT:USDT
+2026-03-21 00:50:14,832 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: LYNUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:50:14,832 - crypto_bot - INFO - [LIGHT] 🔍 Scanning RIVER/USDT:USDT
+2026-03-21 00:50:15,560 - crypto_bot - INFO - [LIGHT] ❌ No signal: RIVERUSDT
+2026-03-21 00:50:15,560 - crypto_bot - INFO - [LIGHT] 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-21 00:50:15,789 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: FARTCOINUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:50:15,790 - crypto_bot - INFO - [LIGHT] 🔍 Scanning UAI/USDT:USDT
+2026-03-21 00:50:16,516 - crypto_bot - INFO - [LIGHT] ❌ No signal: UAIUSDT
+2026-03-21 00:50:16,516 - crypto_bot - INFO - [LIGHT] 🔍 Scanning PIPPIN/USDT:USDT
+2026-03-21 00:50:16,915 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: PIPPINUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:50:16,915 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ZEC/USDT:USDT
+2026-03-21 00:50:17,129 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: ZECUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:50:17,129 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAG/USDT:USDT
+2026-03-21 00:50:17,349 - crypto_bot - INFO - [LIGHT] ❌ No signal: XAGUSDT
+2026-03-21 00:50:17,349 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WAXP/USDT:USDT
+2026-03-21 00:50:18,094 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: WAXPUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:50:18,095 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WLD/USDT:USDT
+2026-03-21 00:50:18,313 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: WLDUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:50:18,314 - crypto_bot - INFO - [LIGHT] 🔍 Scanning PAXG/USDT:USDT
+2026-03-21 00:50:18,519 - crypto_bot - INFO - [LIGHT] ❌ No signal: PAXGUSDT
+2026-03-21 00:50:18,519 - crypto_bot - INFO - [LIGHT] 🔍 Scanning SAHARA/USDT:USDT
+2026-03-21 00:50:18,724 - crypto_bot - INFO - [LIGHT] ❌ No signal: SAHARAUSDT
+2026-03-21 00:50:18,724 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAU/USDT:USDT
+2026-03-21 00:50:18,956 - crypto_bot - INFO - [LIGHT] ❌ No signal: XAUUSDT
+2026-03-21 00:50:18,957 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ENA/USDT:USDT
+2026-03-21 00:50:19,701 - crypto_bot - INFO - [LIGHT] ❌ No signal: ENAUSDT
+2026-03-21 00:50:19,701 - crypto_bot - INFO - [LIGHT] 🔍 Scanning APT/USDT:USDT
+2026-03-21 00:50:19,917 - crypto_bot - INFO - [LIGHT] ❌ No signal: APTUSDT
+2026-03-21 00:50:19,917 - crypto_bot - INFO - [LIGHT] 🔍 Scanning KAS/USDT:USDT
+2026-03-21 00:50:20,130 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: KASUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:50:20,131 - crypto_bot - INFO - [LIGHT] 🔍 Scanning KITE/USDT:USDT
+2026-03-21 00:50:20,347 - crypto_bot - INFO - [LIGHT] ❌ No signal: KITEUSDT
+2026-03-21 00:50:20,347 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BAN/USDT:USDT
+2026-03-21 00:50:20,569 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: BANUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:50:20,569 - crypto_bot - INFO - [LIGHT] 🔍 Scanning PHA/USDT:USDT
+2026-03-21 00:50:20,790 - crypto_bot - INFO - [LIGHT] ❌ No signal: PHAUSDT
+2026-03-21 00:50:20,791 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WIF/USDT:USDT
+2026-03-21 00:50:21,007 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: WIFUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:50:21,007 - crypto_bot - INFO - [LIGHT] 🔍 Scanning APR/USDT:USDT
+2026-03-21 00:50:21,223 - crypto_bot - INFO - [LIGHT] ❌ No signal: APRUSDT
+2026-03-21 00:50:21,223 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BARD/USDT:USDT
+2026-03-21 00:50:21,426 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: BARDUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:50:21,426 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BCH/USDT:USDT
+2026-03-21 00:50:22,169 - crypto_bot - INFO - [LIGHT] ❌ No signal: BCHUSDT
+2026-03-21 00:50:22,169 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XPL/USDT:USDT
+2026-03-21 00:50:22,385 - crypto_bot - INFO - [LIGHT] ❌ No signal: XPLUSDT
+2026-03-21 00:50:22,385 - crypto_bot - INFO - [LIGHT] 🔍 Scanning SIREN/USDT:USDT
+2026-03-21 00:50:22,588 - crypto_bot - INFO - [LIGHT] ❌ No signal: SIRENUSDT
+2026-03-21 00:50:22,588 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ATH/USDT:USDT
+2026-03-21 00:50:22,817 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: ATHUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:50:22,817 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ZETA/USDT:USDT
+2026-03-21 00:50:23,020 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: ZETAUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:50:23,020 - crypto_bot - INFO - [LIGHT] 🔍 Scanning RENDER/USDT:USDT
+2026-03-21 00:50:23,416 - crypto_bot - INFO - [LIGHT] ❌ No signal: RENDERUSDT
+2026-03-21 00:50:23,416 - crypto_bot - INFO - [LIGHT] 📊 Total signals after scan: 14
+2026-03-21 00:50:23,416 - crypto_bot - INFO - 📊 Signals found: 14
+2026-03-21 00:50:23,416 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: HYPEUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:50:23,416 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=HYPEUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=2fe1995f7fbb1d7c
+2026-03-21 00:50:23,416 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: XAUTUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:50:23,416 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=XAUTUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=e3c5abd05d0ee791
+2026-03-21 00:50:23,416 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: LYNUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:50:23,416 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=LYNUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=2492f17cffbe84f1
+2026-03-21 00:50:23,416 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: FARTCOINUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:50:23,416 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=FARTCOINUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=6dfd06f9a6fecc04
+2026-03-21 00:50:23,416 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: PIPPINUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:50:23,416 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=PIPPINUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=a7dfc6de36c8f4ee
+2026-03-21 00:50:23,416 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: ZECUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:50:23,416 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=ZECUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=ab33998af8a11d7c
+2026-03-21 00:50:23,416 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: WAXPUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:50:23,416 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=WAXPUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=76dedc113801ecdc
+2026-03-21 00:50:23,416 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: WLDUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:50:23,416 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=WLDUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=b09973b9c460bf08
+2026-03-21 00:50:23,416 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: KASUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:50:23,416 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=KASUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=e634810c6404f26b
+2026-03-21 00:50:23,416 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: BANUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:50:23,416 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=BANUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=d9033f4b999c0a6b
+2026-03-21 00:50:23,416 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: WIFUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:50:23,416 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=WIFUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=e5cbe1e35628fc6d
+2026-03-21 00:50:23,416 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: BARDUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:50:23,416 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=BARDUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=549f30ac57ff719a
+2026-03-21 00:50:23,422 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: ATHUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:50:23,426 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=ATHUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=9d88f10442f23c64
+2026-03-21 00:50:23,426 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: ZETAUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:50:23,426 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=ZETAUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=efb1984299d2408b
+2026-03-21 00:50:23,427 - crypto_bot - INFO - ⏳ Sleeping for 180 seconds
+2026-03-21 00:53:23,476 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-21 00:53:24,429 - crypto_bot - INFO - [LIGHT] 📈 Top-50 symbols fetched: 50
+2026-03-21 00:53:24,681 - crypto_bot - INFO - [LIGHT] 🔥 Active symbols after filter: 29 / 50
+2026-03-21 00:53:24,681 - crypto_bot - INFO - [LIGHT] 🔍 Scanning TAO/USDT:USDT
+2026-03-21 00:53:24,925 - crypto_bot - INFO - [LIGHT] ❌ No signal: TAOUSDT
+2026-03-21 00:53:24,925 - crypto_bot - INFO - [LIGHT] 🔍 Scanning HYPE/USDT:USDT
+2026-03-21 00:53:25,138 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: HYPEUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:53:25,138 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAUT/USDT:USDT
+2026-03-21 00:53:25,353 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: XAUTUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:53:25,353 - crypto_bot - INFO - [LIGHT] 🔍 Scanning LYN/USDT:USDT
+2026-03-21 00:53:25,573 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: LYNUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:53:25,573 - crypto_bot - INFO - [LIGHT] 🔍 Scanning RIVER/USDT:USDT
+2026-03-21 00:53:25,782 - crypto_bot - INFO - [LIGHT] ❌ No signal: RIVERUSDT
+2026-03-21 00:53:25,782 - crypto_bot - INFO - [LIGHT] 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-21 00:53:26,010 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: FARTCOINUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:53:26,011 - crypto_bot - INFO - [LIGHT] 🔍 Scanning UAI/USDT:USDT
+2026-03-21 00:53:26,227 - crypto_bot - INFO - [LIGHT] ❌ No signal: UAIUSDT
+2026-03-21 00:53:26,228 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ZEC/USDT:USDT
+2026-03-21 00:53:26,426 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: ZECUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:53:26,426 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAG/USDT:USDT
+2026-03-21 00:53:27,219 - crypto_bot - INFO - [LIGHT] ❌ No signal: XAGUSDT
+2026-03-21 00:53:27,219 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WAXP/USDT:USDT
+2026-03-21 00:53:27,446 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: WAXPUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:53:27,446 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WLD/USDT:USDT
+2026-03-21 00:53:28,188 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: WLDUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:53:28,189 - crypto_bot - INFO - [LIGHT] 🔍 Scanning PAXG/USDT:USDT
+2026-03-21 00:53:28,585 - crypto_bot - INFO - [LIGHT] ❌ No signal: PAXGUSDT
+2026-03-21 00:53:28,585 - crypto_bot - INFO - [LIGHT] 🔍 Scanning SAHARA/USDT:USDT
+2026-03-21 00:53:28,788 - crypto_bot - INFO - [LIGHT] ❌ No signal: SAHARAUSDT
+2026-03-21 00:53:28,788 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAU/USDT:USDT
+2026-03-21 00:53:29,528 - crypto_bot - INFO - [LIGHT] ❌ No signal: XAUUSDT
+2026-03-21 00:53:29,528 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ENA/USDT:USDT
+2026-03-21 00:53:30,269 - crypto_bot - INFO - [LIGHT] ❌ No signal: ENAUSDT
+2026-03-21 00:53:30,269 - crypto_bot - INFO - [LIGHT] 🔍 Scanning APT/USDT:USDT
+2026-03-21 00:53:30,483 - crypto_bot - INFO - [LIGHT] ❌ No signal: APTUSDT
+2026-03-21 00:53:30,483 - crypto_bot - INFO - [LIGHT] 🔍 Scanning KAS/USDT:USDT
+2026-03-21 00:53:31,229 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: KASUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:53:31,231 - crypto_bot - INFO - [LIGHT] 🔍 Scanning KITE/USDT:USDT
+2026-03-21 00:53:31,443 - crypto_bot - INFO - [LIGHT] ❌ No signal: KITEUSDT
+2026-03-21 00:53:31,445 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BAN/USDT:USDT
+2026-03-21 00:53:31,649 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: BANUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:53:31,649 - crypto_bot - INFO - [LIGHT] 🔍 Scanning PHA/USDT:USDT
+2026-03-21 00:53:31,881 - crypto_bot - INFO - [LIGHT] ❌ No signal: PHAUSDT
+2026-03-21 00:53:31,881 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WIF/USDT:USDT
+2026-03-21 00:53:32,087 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: WIFUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:53:32,087 - crypto_bot - INFO - [LIGHT] 🔍 Scanning APR/USDT:USDT
+2026-03-21 00:53:32,305 - crypto_bot - INFO - [LIGHT] ❌ No signal: APRUSDT
+2026-03-21 00:53:32,307 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BARD/USDT:USDT
+2026-03-21 00:53:32,519 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: BARDUSDT | LIGHT_LONG | tf=30m
+2026-03-21 00:53:32,519 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BCH/USDT:USDT
+2026-03-21 00:53:32,728 - crypto_bot - INFO - [LIGHT] ❌ No signal: BCHUSDT
+2026-03-21 00:53:32,728 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XPL/USDT:USDT
+2026-03-21 00:53:32,931 - crypto_bot - INFO - [LIGHT] ❌ No signal: XPLUSDT
+2026-03-21 00:53:32,931 - crypto_bot - INFO - [LIGHT] 🔍 Scanning SIREN/USDT:USDT
+2026-03-21 00:53:33,334 - crypto_bot - INFO - [LIGHT] ❌ No signal: SIRENUSDT
+2026-03-21 00:53:33,334 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ATH/USDT:USDT
+2026-03-21 00:53:33,546 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: ATHUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:53:33,548 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ZETA/USDT:USDT
+2026-03-21 00:53:33,757 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: ZETAUSDT | LIGHT_SHORT | tf=30m
+2026-03-21 00:53:33,757 - crypto_bot - INFO - [LIGHT] 🔍 Scanning RENDER/USDT:USDT
+2026-03-21 00:53:34,163 - crypto_bot - INFO - [LIGHT] ❌ No signal: RENDERUSDT
+2026-03-21 00:53:34,163 - crypto_bot - INFO - [LIGHT] 📊 Total signals after scan: 13
+2026-03-21 00:53:34,163 - crypto_bot - INFO - 📊 Signals found: 13
+2026-03-21 00:53:34,163 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: HYPEUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:53:34,163 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=HYPEUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=2fe1995f7fbb1d7c
+2026-03-21 00:53:34,163 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: XAUTUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:53:34,163 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=XAUTUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=e3c5abd05d0ee791
+2026-03-21 00:53:34,163 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: LYNUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:53:34,163 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=LYNUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=2492f17cffbe84f1
+2026-03-21 00:53:34,163 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: FARTCOINUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:53:34,163 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=FARTCOINUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=6dfd06f9a6fecc04
+2026-03-21 00:53:34,163 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: ZECUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:53:34,163 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=ZECUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=ab33998af8a11d7c
+2026-03-21 00:53:34,163 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: WAXPUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:53:34,163 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=WAXPUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=76dedc113801ecdc
+2026-03-21 00:53:34,163 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: WLDUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:53:34,163 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=WLDUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=b09973b9c460bf08
+2026-03-21 00:53:34,163 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: KASUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:53:34,163 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=KASUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=e634810c6404f26b
+2026-03-21 00:53:34,163 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: BANUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:53:34,163 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=BANUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=d9033f4b999c0a6b
+2026-03-21 00:53:34,163 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: WIFUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:53:34,163 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=WIFUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=e5cbe1e35628fc6d
+2026-03-21 00:53:34,163 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: BARDUSDT_30m_LONG_2026-03-20 21:00:00+00:00
+2026-03-21 00:53:34,163 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=BARDUSDT_30m_LONG_2026-03-20 21:00:00+00:00 | fp=549f30ac57ff719a
+2026-03-21 00:53:34,163 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: ATHUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:53:34,163 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=ATHUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=9d88f10442f23c64
+2026-03-21 00:53:34,163 - crypto_bot - INFO - [DEDUP] Skipped duplicate signal: ZETAUSDT_30m_SHORT_2026-03-20 21:00:00+00:00
+2026-03-21 00:53:34,163 - crypto_bot - INFO - [DEBUG] DUPLICATE SIGNAL | id=ZETAUSDT_30m_SHORT_2026-03-20 21:00:00+00:00 | fp=efb1984299d2408b
+2026-03-21 00:53:34,163 - crypto_bot - INFO - ⏳ Sleeping for 180 seconds
+2026-03-21 00:54:56,949 - crypto_bot - INFO - 🛑 Остановка по KeyboardInterrupt
+2026-03-21 12:56:38,063 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-21 12:56:38,063 - crypto_bot - WARNING - TELEGRAM_TOKEN не задан — бот запустится в режиме scanner + GUI без Telegram polling
+2026-03-21 12:56:38,063 - crypto_bot - INFO - [SCALP] scanner initialized | mode=SCALPING | timeframe=30m | candle_limit=120 | execution_tfs=30m, 15m
+2026-03-21 12:56:39,236 - crypto_bot - INFO - 🖥️ Signal GUI thread started
+2026-03-21 12:56:39,236 - crypto_bot - INFO - ✅ Telegram отключён: инициализированы scanner + GUI режим
+2026-03-21 12:56:39,237 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-21 12:56:39,237 - crypto_bot - INFO - 📡 Telegram polling disabled, running standalone scan loop
+2026-03-21 12:56:39,238 - crypto_bot - INFO - 🚀 SCAN LOOP STARTED
+2026-03-21 12:56:39,238 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-21 12:56:55,209 - crypto_bot - INFO - [SCALP] 📈 Top-50 symbols fetched: 50
+2026-03-21 12:57:02,620 - crypto_bot - INFO - [SCALP] 🔥 Active symbols after filter: 25 / 50
+2026-03-21 12:57:02,620 - crypto_bot - INFO - [SCALP] 🔍 Scanning SOL/USDT:USDT
+2026-03-21 12:57:02,880 - crypto_bot - INFO - [SCALP] ❌ No signal: SOLUSDT
+2026-03-21 12:57:02,880 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAUT/USDT:USDT
+2026-03-21 12:57:03,216 - crypto_bot - INFO - [SCALP] ❌ No signal: XAUTUSDT
+2026-03-21 12:57:03,216 - crypto_bot - INFO - [SCALP] 🔍 Scanning RIVER/USDT:USDT
+2026-03-21 12:57:03,480 - crypto_bot - INFO - [SCALP] ❌ No signal: RIVERUSDT
+2026-03-21 12:57:03,480 - crypto_bot - INFO - [SCALP] 🔍 Scanning TAO/USDT:USDT
+2026-03-21 12:57:04,134 - crypto_bot - INFO - [SCALP] ❌ No signal: TAOUSDT
+2026-03-21 12:57:04,134 - crypto_bot - INFO - [SCALP] 🔍 Scanning LYN/USDT:USDT
+2026-03-21 12:57:04,463 - crypto_bot - INFO - [SCALP] ❌ No signal: LYNUSDT
+2026-03-21 12:57:04,463 - crypto_bot - INFO - [SCALP] 🔍 Scanning PIPPIN/USDT:USDT
+2026-03-21 12:57:04,864 - crypto_bot - INFO - [SCALP] ❌ No signal: PIPPINUSDT
+2026-03-21 12:57:04,864 - crypto_bot - INFO - [SCALP] 🔍 Scanning UAI/USDT:USDT
+2026-03-21 12:57:05,321 - crypto_bot - INFO - [SCALP] ❌ No signal: UAIUSDT
+2026-03-21 12:57:05,321 - crypto_bot - INFO - [SCALP] 🔍 Scanning WAXP/USDT:USDT
+2026-03-21 12:57:05,647 - crypto_bot - INFO - [SCALP] ❌ No signal: WAXPUSDT
+2026-03-21 12:57:05,647 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAG/USDT:USDT
+2026-03-21 12:57:05,933 - crypto_bot - INFO - [SCALP] ❌ No signal: XAGUSDT
+2026-03-21 12:57:05,933 - crypto_bot - INFO - [SCALP] 🔍 Scanning WLD/USDT:USDT
+2026-03-21 12:57:06,202 - crypto_bot - INFO - [SCALP] ❌ No signal: WLDUSDT
+2026-03-21 12:57:06,202 - crypto_bot - INFO - [SCALP] 🔍 Scanning SAHARA/USDT:USDT
+2026-03-21 12:57:06,469 - crypto_bot - INFO - [SCALP] ❌ No signal: SAHARAUSDT
+2026-03-21 12:57:06,469 - crypto_bot - INFO - [SCALP] 🔍 Scanning ADA/USDT:USDT
+2026-03-21 12:57:06,813 - crypto_bot - INFO - [SCALP] ❌ No signal: ADAUSDT
+2026-03-21 12:57:06,813 - crypto_bot - INFO - [SCALP] 🔍 Scanning PAXG/USDT:USDT
+2026-03-21 12:57:07,415 - crypto_bot - INFO - [SCALP] ❌ No signal: PAXGUSDT
+2026-03-21 12:57:07,415 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAU/USDT:USDT
+2026-03-21 12:57:07,679 - crypto_bot - INFO - [SCALP] ❌ No signal: XAUUSDT
+2026-03-21 12:57:07,679 - crypto_bot - INFO - [SCALP] 🔍 Scanning KAS/USDT:USDT
+2026-03-21 12:57:07,954 - crypto_bot - INFO - [SCALP] ❌ No signal: KASUSDT
+2026-03-21 12:57:07,954 - crypto_bot - INFO - [SCALP] 🔍 Scanning ANKR/USDT:USDT
+2026-03-21 12:57:08,305 - crypto_bot - INFO - [SCALP] ❌ No signal: ANKRUSDT
+2026-03-21 12:57:08,305 - crypto_bot - INFO - [SCALP] 🔍 Scanning NEAR/USDT:USDT
+2026-03-21 12:57:08,571 - crypto_bot - INFO - [SCALP] ❌ No signal: NEARUSDT
+2026-03-21 12:57:08,571 - crypto_bot - INFO - [SCALP] 🔍 Scanning ENA/USDT:USDT
+2026-03-21 12:57:09,164 - crypto_bot - INFO - [SCALP] ❌ No signal: ENAUSDT
+2026-03-21 12:57:09,176 - crypto_bot - INFO - [SCALP] 🔍 Scanning ETHFI/USDT:USDT
+2026-03-21 12:57:09,520 - crypto_bot - INFO - [SCALP] ❌ No signal: ETHFIUSDT
+2026-03-21 12:57:09,520 - crypto_bot - INFO - [SCALP] 🔍 Scanning APT/USDT:USDT
+2026-03-21 12:57:10,067 - crypto_bot - INFO - [SCALP] ❌ No signal: APTUSDT
+2026-03-21 12:57:10,067 - crypto_bot - INFO - [SCALP] 🔍 Scanning XPL/USDT:USDT
+2026-03-21 12:57:10,302 - crypto_bot - INFO - [SCALP] ❌ No signal: XPLUSDT
+2026-03-21 12:57:10,302 - crypto_bot - INFO - [SCALP] 🔍 Scanning BEAT/USDT:USDT
+2026-03-21 12:57:10,676 - crypto_bot - INFO - [SCALP] ❌ No signal: BEATUSDT
+2026-03-21 12:57:10,676 - crypto_bot - INFO - [SCALP] 🔍 Scanning BCH/USDT:USDT
+2026-03-21 12:57:10,950 - crypto_bot - INFO - [SCALP] ❌ No signal: BCHUSDT
+2026-03-21 12:57:10,950 - crypto_bot - INFO - [SCALP] 🔍 Scanning WIF/USDT:USDT
+2026-03-21 12:57:11,202 - crypto_bot - INFO - [SCALP] ❌ No signal: WIFUSDT
+2026-03-21 12:57:11,202 - crypto_bot - INFO - [SCALP] 🔍 Scanning KITE/USDT:USDT
+2026-03-21 12:57:11,456 - crypto_bot - INFO - [SCALP] ❌ No signal: KITEUSDT
+2026-03-21 12:57:11,456 - crypto_bot - INFO - [SCALP] 📊 Total signals after scan: 0
+2026-03-21 12:57:11,456 - crypto_bot - INFO - 📊 Signals found: 0
+2026-03-21 12:57:11,456 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
+2026-03-21 13:02:11,434 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-21 13:02:12,256 - crypto_bot - INFO - [SCALP] 📈 Top-50 symbols fetched: 50
+2026-03-21 13:02:13,248 - crypto_bot - INFO - [SCALP] 🔥 Active symbols after filter: 25 / 50
+2026-03-21 13:02:13,248 - crypto_bot - INFO - [SCALP] 🔍 Scanning SOL/USDT:USDT
+2026-03-21 13:02:13,447 - crypto_bot - INFO - [SCALP] ❌ No signal: SOLUSDT
+2026-03-21 13:02:13,447 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAUT/USDT:USDT
+2026-03-21 13:02:13,665 - crypto_bot - INFO - [SCALP] ❌ No signal: XAUTUSDT
+2026-03-21 13:02:13,665 - crypto_bot - INFO - [SCALP] 🔍 Scanning RIVER/USDT:USDT
+2026-03-21 13:02:13,871 - crypto_bot - INFO - [SCALP] ❌ No signal: RIVERUSDT
+2026-03-21 13:02:13,871 - crypto_bot - INFO - [SCALP] 🔍 Scanning TAO/USDT:USDT
+2026-03-21 13:02:14,091 - crypto_bot - INFO - [SCALP] ❌ No signal: TAOUSDT
+2026-03-21 13:02:14,091 - crypto_bot - INFO - [SCALP] 🔍 Scanning LYN/USDT:USDT
+2026-03-21 13:02:14,287 - crypto_bot - INFO - [SCALP] ❌ No signal: LYNUSDT
+2026-03-21 13:02:14,287 - crypto_bot - INFO - [SCALP] 🔍 Scanning PIPPIN/USDT:USDT
+2026-03-21 13:02:14,504 - crypto_bot - INFO - [SCALP] ❌ No signal: PIPPINUSDT
+2026-03-21 13:02:14,504 - crypto_bot - INFO - [SCALP] 🔍 Scanning UAI/USDT:USDT
+2026-03-21 13:02:14,706 - crypto_bot - INFO - [SCALP] ❌ No signal: UAIUSDT
+2026-03-21 13:02:14,706 - crypto_bot - INFO - [SCALP] 🔍 Scanning WAXP/USDT:USDT
+2026-03-21 13:02:14,921 - crypto_bot - INFO - [SCALP] ❌ No signal: WAXPUSDT
+2026-03-21 13:02:14,921 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAG/USDT:USDT
+2026-03-21 13:02:15,131 - crypto_bot - INFO - [SCALP] ❌ No signal: XAGUSDT
+2026-03-21 13:02:15,131 - crypto_bot - INFO - [SCALP] 🔍 Scanning WLD/USDT:USDT
+2026-03-21 13:02:15,336 - crypto_bot - INFO - [SCALP] ❌ No signal: WLDUSDT
+2026-03-21 13:02:15,336 - crypto_bot - INFO - [SCALP] 🔍 Scanning SAHARA/USDT:USDT
+2026-03-21 13:02:15,550 - crypto_bot - INFO - [SCALP] ❌ No signal: SAHARAUSDT
+2026-03-21 13:02:15,550 - crypto_bot - INFO - [SCALP] 🔍 Scanning ADA/USDT:USDT
+2026-03-21 13:02:15,753 - crypto_bot - INFO - [SCALP] ❌ No signal: ADAUSDT
+2026-03-21 13:02:15,753 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAU/USDT:USDT
+2026-03-21 13:02:15,971 - crypto_bot - INFO - [SCALP] ❌ No signal: XAUUSDT
+2026-03-21 13:02:15,971 - crypto_bot - INFO - [SCALP] 🔍 Scanning PAXG/USDT:USDT
+2026-03-21 13:02:16,209 - crypto_bot - INFO - [SCALP] ❌ No signal: PAXGUSDT
+2026-03-21 13:02:16,209 - crypto_bot - INFO - [SCALP] 🔍 Scanning KAS/USDT:USDT
+2026-03-21 13:02:16,409 - crypto_bot - INFO - [SCALP] ❌ No signal: KASUSDT
+2026-03-21 13:02:16,409 - crypto_bot - INFO - [SCALP] 🔍 Scanning ANKR/USDT:USDT
+2026-03-21 13:02:16,628 - crypto_bot - INFO - [SCALP] ❌ No signal: ANKRUSDT
+2026-03-21 13:02:16,628 - crypto_bot - INFO - [SCALP] 🔍 Scanning NEAR/USDT:USDT
+2026-03-21 13:02:16,846 - crypto_bot - INFO - [SCALP] ❌ No signal: NEARUSDT
+2026-03-21 13:02:16,846 - crypto_bot - INFO - [SCALP] 🔍 Scanning ENA/USDT:USDT
+2026-03-21 13:02:17,065 - crypto_bot - INFO - [SCALP] ❌ No signal: ENAUSDT
+2026-03-21 13:02:17,065 - crypto_bot - INFO - [SCALP] 🔍 Scanning ETHFI/USDT:USDT
+2026-03-21 13:02:17,280 - crypto_bot - INFO - [SCALP] ❌ No signal: ETHFIUSDT
+2026-03-21 13:02:17,280 - crypto_bot - INFO - [SCALP] 🔍 Scanning APT/USDT:USDT
+2026-03-21 13:02:17,472 - crypto_bot - INFO - [SCALP] ❌ No signal: APTUSDT
+2026-03-21 13:02:17,472 - crypto_bot - INFO - [SCALP] 🔍 Scanning XPL/USDT:USDT
+2026-03-21 13:02:17,691 - crypto_bot - INFO - [SCALP] ❌ No signal: XPLUSDT
+2026-03-21 13:02:17,691 - crypto_bot - INFO - [SCALP] 🔍 Scanning BEAT/USDT:USDT
+2026-03-21 13:02:17,891 - crypto_bot - INFO - [SCALP] ❌ No signal: BEATUSDT
+2026-03-21 13:02:17,891 - crypto_bot - INFO - [SCALP] 🔍 Scanning BCH/USDT:USDT
+2026-03-21 13:02:18,115 - crypto_bot - INFO - [SCALP] ❌ No signal: BCHUSDT
+2026-03-21 13:02:18,116 - crypto_bot - INFO - [SCALP] 🔍 Scanning WIF/USDT:USDT
+2026-03-21 13:02:18,316 - crypto_bot - INFO - [SCALP] ❌ No signal: WIFUSDT
+2026-03-21 13:02:18,316 - crypto_bot - INFO - [SCALP] 🔍 Scanning KITE/USDT:USDT
+2026-03-21 13:02:18,537 - crypto_bot - INFO - [SCALP] ❌ No signal: KITEUSDT
+2026-03-21 13:02:18,537 - crypto_bot - INFO - [SCALP] 📊 Total signals after scan: 0
+2026-03-21 13:02:18,537 - crypto_bot - INFO - 📊 Signals found: 0
+2026-03-21 13:02:18,537 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
+2026-03-21 13:07:18,526 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-21 13:07:19,382 - crypto_bot - INFO - [SCALP] 📈 Top-50 symbols fetched: 50
+2026-03-21 13:07:20,074 - crypto_bot - INFO - [SCALP] 🔥 Active symbols after filter: 25 / 50
+2026-03-21 13:07:20,074 - crypto_bot - INFO - [SCALP] 🔍 Scanning SOL/USDT:USDT
+2026-03-21 13:07:20,274 - crypto_bot - INFO - [SCALP] ❌ No signal: SOLUSDT
+2026-03-21 13:07:20,274 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAUT/USDT:USDT
+2026-03-21 13:07:20,489 - crypto_bot - INFO - [SCALP] ❌ No signal: XAUTUSDT
+2026-03-21 13:07:20,489 - crypto_bot - INFO - [SCALP] 🔍 Scanning RIVER/USDT:USDT
+2026-03-21 13:07:20,706 - crypto_bot - INFO - [SCALP] ❌ No signal: RIVERUSDT
+2026-03-21 13:07:20,706 - crypto_bot - INFO - [SCALP] 🔍 Scanning TAO/USDT:USDT
+2026-03-21 13:07:20,899 - crypto_bot - INFO - [SCALP] ❌ No signal: TAOUSDT
+2026-03-21 13:07:20,899 - crypto_bot - INFO - [SCALP] 🔍 Scanning LYN/USDT:USDT
+2026-03-21 13:07:21,130 - crypto_bot - INFO - [SCALP] ❌ No signal: LYNUSDT
+2026-03-21 13:07:21,130 - crypto_bot - INFO - [SCALP] 🔍 Scanning PIPPIN/USDT:USDT
+2026-03-21 13:07:21,334 - crypto_bot - INFO - [SCALP] ❌ No signal: PIPPINUSDT
+2026-03-21 13:07:21,334 - crypto_bot - INFO - [SCALP] 🔍 Scanning UAI/USDT:USDT
+2026-03-21 13:07:21,548 - crypto_bot - INFO - [SCALP] ❌ No signal: UAIUSDT
+2026-03-21 13:07:21,548 - crypto_bot - INFO - [SCALP] 🔍 Scanning WAXP/USDT:USDT
+2026-03-21 13:07:21,771 - crypto_bot - INFO - [SCALP] ❌ No signal: WAXPUSDT
+2026-03-21 13:07:21,772 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAG/USDT:USDT
+2026-03-21 13:07:21,977 - crypto_bot - INFO - [SCALP] ❌ No signal: XAGUSDT
+2026-03-21 13:07:21,977 - crypto_bot - INFO - [SCALP] 🔍 Scanning WLD/USDT:USDT
+2026-03-21 13:07:22,211 - crypto_bot - INFO - [SCALP] ❌ No signal: WLDUSDT
+2026-03-21 13:07:22,211 - crypto_bot - INFO - [SCALP] 🔍 Scanning ADA/USDT:USDT
+2026-03-21 13:07:22,430 - crypto_bot - INFO - [SCALP] ❌ No signal: ADAUSDT
+2026-03-21 13:07:22,430 - crypto_bot - INFO - [SCALP] 🔍 Scanning SAHARA/USDT:USDT
+2026-03-21 13:07:22,649 - crypto_bot - INFO - [SCALP] ❌ No signal: SAHARAUSDT
+2026-03-21 13:07:22,649 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAU/USDT:USDT
+2026-03-21 13:07:22,859 - crypto_bot - INFO - [SCALP] ❌ No signal: XAUUSDT
+2026-03-21 13:07:22,859 - crypto_bot - INFO - [SCALP] 🔍 Scanning PAXG/USDT:USDT
+2026-03-21 13:07:23,070 - crypto_bot - INFO - [SCALP] ❌ No signal: PAXGUSDT
+2026-03-21 13:07:23,070 - crypto_bot - INFO - [SCALP] 🔍 Scanning KAS/USDT:USDT
+2026-03-21 13:07:23,289 - crypto_bot - INFO - [SCALP] ❌ No signal: KASUSDT
+2026-03-21 13:07:23,289 - crypto_bot - INFO - [SCALP] 🔍 Scanning ANKR/USDT:USDT
+2026-03-21 13:07:23,524 - crypto_bot - INFO - [SCALP] ❌ No signal: ANKRUSDT
+2026-03-21 13:07:23,524 - crypto_bot - INFO - [SCALP] 🔍 Scanning NEAR/USDT:USDT
+2026-03-21 13:07:23,726 - crypto_bot - INFO - [SCALP] ❌ No signal: NEARUSDT
+2026-03-21 13:07:23,726 - crypto_bot - INFO - [SCALP] 🔍 Scanning ENA/USDT:USDT
+2026-03-21 13:07:23,935 - crypto_bot - INFO - [SCALP] ❌ No signal: ENAUSDT
+2026-03-21 13:07:23,935 - crypto_bot - INFO - [SCALP] 🔍 Scanning ETHFI/USDT:USDT
+2026-03-21 13:07:24,156 - crypto_bot - INFO - [SCALP] ❌ No signal: ETHFIUSDT
+2026-03-21 13:07:24,156 - crypto_bot - INFO - [SCALP] 🔍 Scanning APT/USDT:USDT
+2026-03-21 13:07:24,368 - crypto_bot - INFO - [SCALP] ❌ No signal: APTUSDT
+2026-03-21 13:07:24,368 - crypto_bot - INFO - [SCALP] 🔍 Scanning ATH/USDT:USDT
+2026-03-21 13:07:24,585 - crypto_bot - INFO - [SCALP] ❌ No signal: ATHUSDT
+2026-03-21 13:07:24,585 - crypto_bot - INFO - [SCALP] 🔍 Scanning XPL/USDT:USDT
+2026-03-21 13:07:24,808 - crypto_bot - INFO - [SCALP] ❌ No signal: XPLUSDT
+2026-03-21 13:07:24,808 - crypto_bot - INFO - [SCALP] 🔍 Scanning BEAT/USDT:USDT
+2026-03-21 13:07:25,013 - crypto_bot - INFO - [SCALP] ❌ No signal: BEATUSDT
+2026-03-21 13:07:25,013 - crypto_bot - INFO - [SCALP] 🔍 Scanning BCH/USDT:USDT
+2026-03-21 13:07:25,247 - crypto_bot - INFO - [SCALP] ❌ No signal: BCHUSDT
+2026-03-21 13:07:25,247 - crypto_bot - INFO - [SCALP] 🔍 Scanning KITE/USDT:USDT
+2026-03-21 13:07:25,448 - crypto_bot - INFO - [SCALP] ❌ No signal: KITEUSDT
+2026-03-21 13:07:25,448 - crypto_bot - INFO - [SCALP] 📊 Total signals after scan: 0
+2026-03-21 13:07:25,448 - crypto_bot - INFO - 📊 Signals found: 0
+2026-03-21 13:07:25,448 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
+2026-03-21 13:12:25,439 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-21 13:12:26,904 - crypto_bot - INFO - [SCALP] 📈 Top-50 symbols fetched: 50
+2026-03-21 13:12:27,416 - crypto_bot - INFO - [SCALP] 🔥 Active symbols after filter: 25 / 50
+2026-03-21 13:12:27,416 - crypto_bot - INFO - [SCALP] 🔍 Scanning ETH/USDT:USDT
+2026-03-21 13:12:27,637 - crypto_bot - INFO - [SCALP] ❌ No signal: ETHUSDT
+2026-03-21 13:12:27,637 - crypto_bot - INFO - [SCALP] 🔍 Scanning SOL/USDT:USDT
+2026-03-21 13:12:27,848 - crypto_bot - INFO - [SCALP] ❌ No signal: SOLUSDT
+2026-03-21 13:12:27,849 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAUT/USDT:USDT
+2026-03-21 13:12:28,056 - crypto_bot - INFO - [SCALP] ❌ No signal: XAUTUSDT
+2026-03-21 13:12:28,056 - crypto_bot - INFO - [SCALP] 🔍 Scanning RIVER/USDT:USDT
+2026-03-21 13:12:28,263 - crypto_bot - INFO - [SCALP] ❌ No signal: RIVERUSDT
+2026-03-21 13:12:28,264 - crypto_bot - INFO - [SCALP] 🔍 Scanning TAO/USDT:USDT
+2026-03-21 13:12:28,472 - crypto_bot - INFO - [SCALP] ❌ No signal: TAOUSDT
+2026-03-21 13:12:28,475 - crypto_bot - INFO - [SCALP] 🔍 Scanning LYN/USDT:USDT
+2026-03-21 13:12:28,687 - crypto_bot - INFO - [SCALP] ❌ No signal: LYNUSDT
+2026-03-21 13:12:28,687 - crypto_bot - INFO - [SCALP] 🔍 Scanning PIPPIN/USDT:USDT
+2026-03-21 13:12:28,889 - crypto_bot - INFO - [SCALP] ❌ No signal: PIPPINUSDT
+2026-03-21 13:12:28,889 - crypto_bot - INFO - [SCALP] 🔍 Scanning UAI/USDT:USDT
+2026-03-21 13:12:29,103 - crypto_bot - INFO - [SCALP] ❌ No signal: UAIUSDT
+2026-03-21 13:12:29,103 - crypto_bot - INFO - [SCALP] 🔍 Scanning WAXP/USDT:USDT
+2026-03-21 13:12:29,312 - crypto_bot - INFO - [SCALP] ❌ No signal: WAXPUSDT
+2026-03-21 13:12:29,312 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAG/USDT:USDT
+2026-03-21 13:12:29,528 - crypto_bot - INFO - [SCALP] ❌ No signal: XAGUSDT
+2026-03-21 13:12:29,528 - crypto_bot - INFO - [SCALP] 🔍 Scanning WLD/USDT:USDT
+2026-03-21 13:12:29,739 - crypto_bot - INFO - [SCALP] ❌ No signal: WLDUSDT
+2026-03-21 13:12:29,739 - crypto_bot - INFO - [SCALP] 🔍 Scanning ADA/USDT:USDT
+2026-03-21 13:12:29,948 - crypto_bot - INFO - [SCALP] ❌ No signal: ADAUSDT
+2026-03-21 13:12:29,948 - crypto_bot - INFO - [SCALP] 🔍 Scanning SAHARA/USDT:USDT
+2026-03-21 13:12:30,141 - crypto_bot - INFO - [SCALP] ❌ No signal: SAHARAUSDT
+2026-03-21 13:12:30,141 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAU/USDT:USDT
+2026-03-21 13:12:30,359 - crypto_bot - INFO - [SCALP] ❌ No signal: XAUUSDT
+2026-03-21 13:12:30,359 - crypto_bot - INFO - [SCALP] 🔍 Scanning PAXG/USDT:USDT
+2026-03-21 13:12:30,567 - crypto_bot - INFO - [SCALP] ❌ No signal: PAXGUSDT
+2026-03-21 13:12:30,567 - crypto_bot - INFO - [SCALP] 🔍 Scanning ANKR/USDT:USDT
+2026-03-21 13:12:30,785 - crypto_bot - INFO - [SCALP] ❌ No signal: ANKRUSDT
+2026-03-21 13:12:30,786 - crypto_bot - INFO - [SCALP] 🔍 Scanning NEAR/USDT:USDT
+2026-03-21 13:12:30,997 - crypto_bot - INFO - [SCALP] ❌ No signal: NEARUSDT
+2026-03-21 13:12:30,998 - crypto_bot - INFO - [SCALP] 🔍 Scanning ENA/USDT:USDT
+2026-03-21 13:12:31,196 - crypto_bot - INFO - [SCALP] ❌ No signal: ENAUSDT
+2026-03-21 13:12:31,196 - crypto_bot - INFO - [SCALP] 🔍 Scanning ETHFI/USDT:USDT
+2026-03-21 13:12:31,405 - crypto_bot - INFO - [SCALP] ❌ No signal: ETHFIUSDT
+2026-03-21 13:12:31,405 - crypto_bot - INFO - [SCALP] 🔍 Scanning APT/USDT:USDT
+2026-03-21 13:12:31,633 - crypto_bot - INFO - [SCALP] ❌ No signal: APTUSDT
+2026-03-21 13:12:31,633 - crypto_bot - INFO - [SCALP] 🔍 Scanning XPL/USDT:USDT
+2026-03-21 13:12:31,830 - crypto_bot - INFO - [SCALP] ❌ No signal: XPLUSDT
+2026-03-21 13:12:31,830 - crypto_bot - INFO - [SCALP] 🔍 Scanning ATH/USDT:USDT
+2026-03-21 13:12:32,059 - crypto_bot - INFO - [SCALP] ❌ No signal: ATHUSDT
+2026-03-21 13:12:32,062 - crypto_bot - INFO - [SCALP] 🔍 Scanning BEAT/USDT:USDT
+2026-03-21 13:12:32,270 - crypto_bot - INFO - [SCALP] ❌ No signal: BEATUSDT
+2026-03-21 13:12:32,270 - crypto_bot - INFO - [SCALP] 🔍 Scanning BCH/USDT:USDT
+2026-03-21 13:12:32,468 - crypto_bot - INFO - [SCALP] ❌ No signal: BCHUSDT
+2026-03-21 13:12:32,468 - crypto_bot - INFO - [SCALP] 🔍 Scanning KITE/USDT:USDT
+2026-03-21 13:12:32,684 - crypto_bot - INFO - [SCALP] ❌ No signal: KITEUSDT
+2026-03-21 13:12:32,684 - crypto_bot - INFO - [SCALP] 📊 Total signals after scan: 0
+2026-03-21 13:12:32,685 - crypto_bot - INFO - 📊 Signals found: 0
+2026-03-21 13:12:32,685 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
+2026-03-21 13:14:10,196 - crypto_bot - INFO - 🛑 Остановка по KeyboardInterrupt

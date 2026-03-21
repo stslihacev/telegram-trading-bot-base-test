@@ -28,10 +28,10 @@ ENABLE_SIGNAL_SCORING = True
 # Включает weighted scoring для live-сигналов.
 # При False используется текущая строгая логика без изменений.
 
-SIGNAL_LOG_MODE = "COMPACT"
+SIGNAL_LOG_MODE = "FULL"
 # Режим логирования сигналов: "FULL" (многострочный) или "COMPACT" (одна строка).
 
-MIN_SCORE_THRESHOLD_MAIN = 6.0
+MIN_SCORE_THRESHOLD_MAIN = 5.0
 # MAIN: максимально строгий порог 6.0 (фактически требует совпадения всех фильтров).
 
 MIN_SCORE_THRESHOLD_SCALPING = 4.0
