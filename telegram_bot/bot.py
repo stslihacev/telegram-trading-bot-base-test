@@ -9,6 +9,7 @@ import os
 import queue
 import threading
 import tkinter as tk
+from tkinter import ttk
 from datetime import datetime, timezone
 from pathlib import Path
 from tkinter.scrolledtext import ScrolledText
@@ -143,6 +144,7 @@ class TelegramTradingBot:
         self.signal_queue: queue.Queue[str] = queue.Queue()
         self.gui_thread: threading.Thread | None = None
         self.gui_started = False
+        self.gui_summary_queue: queue.Queue[dict[str, str]] = queue.Queue()
 
     def ensure_user(self, chat_id: int) -> None:
         state_manager.init_user(chat_id)
@@ -179,10 +181,17 @@ class TelegramTradingBot:
             try:
                 root = tk.Tk()
                 root.title("TelegramTradingBot Signals")
-                root.geometry("720x420")
+                root.geometry("760x500")
 
-                text_widget = ScrolledText(root, wrap=tk.WORD, state=tk.DISABLED)
-                text_widget.pack(fill=tk.BOTH, expand=True, padx=12, pady=12)
+                top_frame = ttk.Frame(root)
+                top_frame.pack(fill=tk.X, padx=12, pady=(12, 6))
+                mode_stats_var = tk.StringVar(value="Modes: loading...")
+                last_trade_var = tk.StringVar(value="Last close: -")
+                ttk.Label(top_frame, textvariable=mode_stats_var, justify=tk.LEFT).pack(anchor=tk.W)
+                ttk.Label(top_frame, textvariable=last_trade_var, justify=tk.LEFT).pack(anchor=tk.W, pady=(4, 0))
+
+                text_widget = ScrolledText(root, wrap=tk.WORD, state=tk.DISABLED, height=18)
+                text_widget.pack(fill=tk.BOTH, expand=True, padx=12, pady=(0, 12))
 
                 def poll_queue() -> None:
                     try:
@@ -192,6 +201,10 @@ class TelegramTradingBot:
                             text_widget.insert(tk.END, f"{signal_message}\n")
                             text_widget.see(tk.END)
                             text_widget.configure(state=tk.DISABLED)
+                        while True:
+                            summary = self.gui_summary_queue.get_nowait()
+                            mode_stats_var.set(summary.get("modes", "Modes: -"))
+                            last_trade_var.set(summary.get("last_trade", "Last close: -"))
                     except queue.Empty:
                         pass
                     finally:
@@ -288,6 +301,27 @@ class TelegramTradingBot:
         ANALYTICS_SNAPSHOT_PATH.write_text(report + "\n", encoding="utf-8")
         return report
 
+    async def _reconcile_active_trades_on_startup(self) -> None:
+        active_symbols = sorted(self.signal_analytics.active_trades.keys())
+        if not active_symbols:
+            return
+        logger.info("[STARTUP] reconciling active trades: %s", len(active_symbols))
+        for symbol in active_symbols:
+            market_symbol = f"{symbol.replace('USDT', '/USDT')}:USDT"
+            try:
+                ticker = self.scanner.exchange.fetch_ticker(market_symbol)
+            except Exception as exc:
+                logger.warning("[STARTUP] ticker unavailable for %s: %s", symbol, exc)
+                continue
+            last_price = ticker.get("last")
+            if last_price is None:
+                continue
+            self.signal_analytics.check_trade_exits(
+                current_price=last_price,
+                symbol=symbol,
+                timestamp=datetime.now(timezone.utc).isoformat(),
+            )
+
     async def scan_loop(self, interval_sec: int | None = None) -> None:
         logger.info("🚀 SCAN LOOP STARTED")
 
@@ -297,6 +331,7 @@ class TelegramTradingBot:
             interval_sec = self.default_interval_sec
 
         interval_sec = max(60, int(interval_sec))
+        await self._reconcile_active_trades_on_startup()
 
         while True:
             try:
@@ -339,12 +374,17 @@ class TelegramTradingBot:
                     if state_action in {"IGNORE", "COOLDOWN"}:
                         try:
                             if float(enriched_signal.get("confidence") or 0.0) >= 0.7 and not analytics_added:
+                                warning_text = (
+                                    f"[WARNING] HIGH CONF SIGNAL NOT IN ANALYTICS | "
+                                    f"{enriched_signal.get('symbol')} conf={float(enriched_signal.get('confidence') or 0.0):.2f} action={state_action}"
+                                )
                                 logger.warning(
                                     "[WARNING] HIGH CONF SIGNAL NOT IN ANALYTICS | symbol=%s | conf=%.2f | action=%s",
                                     enriched_signal.get("symbol"),
                                     float(enriched_signal.get("confidence") or 0.0),
                                     state_action,
                                 )
+                                self.signal_queue.put(warning_text)
                         except (TypeError, ValueError):
                             pass
                         logger.info(
@@ -377,12 +417,17 @@ class TelegramTradingBot:
                         
                     try:
                         if float(enriched_signal.get("confidence") or 0.0) >= 0.7 and not analytics_added:
+                            warning_text = (
+                                f"[WARNING] HIGH CONF SIGNAL NOT IN ANALYTICS | "
+                                f"{enriched_signal.get('symbol')} conf={float(enriched_signal.get('confidence') or 0.0):.2f} action={state_action}"
+                            )
                             logger.warning(
                                 "[WARNING] HIGH CONF SIGNAL NOT IN ANALYTICS | symbol=%s | conf=%.2f | action=%s",
                                 enriched_signal.get("symbol"),
                                 float(enriched_signal.get("confidence") or 0.0),
                                 state_action,
                             )
+                            self.signal_queue.put(warning_text)
                     except (TypeError, ValueError):
                         pass
 
@@ -400,7 +445,18 @@ class TelegramTradingBot:
 
                     logger.info(formatted_signal)
                     signals_logger.info(formatted_signal)
-                    self.signal_queue.put(formatted_signal)
+                    if state_action in {"NEW", "REVERSAL"}:
+                        self.signal_queue.put(formatted_signal)
+                    elif state_action == "UPDATE":
+                        self.signal_queue.put(f"[UPDATE] {enriched_signal.get('symbol')} score/conf improved")
+                    if self.signal_analytics.last_closed_trade:
+                        self.signal_queue.put(f"[CLOSED] {self.signal_analytics.get_last_closed_trade_brief()}")
+                    self.gui_summary_queue.put(
+                        {
+                            "modes": " | ".join(self.signal_analytics.get_mode_stats_compact()),
+                            "last_trade": self.signal_analytics.get_last_closed_trade_brief(),
+                        }
+                    )
                     if self.signal_analytics.should_emit_report(signals_step=20, minutes_step=10):
                         analytics_logger.info("\n%s\n", self.generate_analytics_report())
                     # await self.broadcast_if_needed(signal)  # временно отключено до повторного включения Telegram/Discord

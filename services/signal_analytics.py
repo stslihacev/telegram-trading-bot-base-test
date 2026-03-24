@@ -7,6 +7,7 @@ import json
 import os
 import threading
 from collections import Counter
+import csv
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -36,6 +37,15 @@ class SignalAnalytics:
     active_trades: dict[str, dict[str, Any]] = field(default_factory=dict)
     closed_trades: list[dict[str, Any]] = field(default_factory=list)
     trades_path: Path = field(default_factory=lambda: Path("data") / "active_trades.json")
+    trade_results_log_path: Path = field(default_factory=lambda: Path("logs") / "trades_results.log")
+    trade_results_snapshot_json_path: Path = field(default_factory=lambda: Path("logs") / "trades_results_snapshot.json")
+    trade_results_snapshot_csv_path: Path = field(default_factory=lambda: Path("logs") / "trades_results_snapshot.csv")
+    last_closed_trade: dict[str, Any] | None = None
+    mode_closed_counter: Counter[str] = field(default_factory=Counter)
+    mode_win_counter: Counter[str] = field(default_factory=Counter)
+    mode_rr_sum: Counter[str] = field(default_factory=Counter)
+    high_conf_loss_counter: int = 0
+    filter_result_counter: dict[str, Counter[str]] = field(default_factory=dict)
     _io_lock: threading.RLock = field(default_factory=threading.RLock, init=False, repr=False)
 
     def __post_init__(self) -> None:
@@ -114,7 +124,19 @@ class SignalAnalytics:
             serialized["open_time"] = open_time.astimezone(timezone.utc).isoformat()
         elif open_time is not None:
             serialized["open_time"] = str(open_time)
+        close_time = serialized.get("close_time")
+        if isinstance(close_time, datetime):
+            serialized["close_time"] = close_time.astimezone(timezone.utc).isoformat()
+        elif close_time is not None:
+            serialized["close_time"] = str(close_time)
         return serialized
+
+    @staticmethod
+    def _format_duration(seconds: float) -> str:
+        safe_seconds = max(0, int(seconds or 0))
+        hours, remainder = divmod(safe_seconds, 3600)
+        minutes = remainder // 60
+        return f"{hours}h {minutes}m"
 
     def _sanitize_trade_payload(self, symbol: str, payload: dict[str, Any]) -> dict[str, Any] | None:
         required_fields = ("direction", "entry", "tp", "sl")
@@ -140,6 +162,11 @@ class SignalAnalytics:
             "score": self._safe_float(payload.get("score")),
             "mode": str(payload.get("mode") or "UNKNOWN").upper().strip("[]"),
             "is_reversal": bool(payload.get("is_reversal", False)),
+            "passed_filters": [
+                str(name).upper().strip()
+                for name in (payload.get("passed_filters") or [])
+                if str(name).strip()
+            ],
         }
         if trade["direction"] not in {"LONG", "SHORT"}:
             return None
@@ -218,53 +245,109 @@ class SignalAnalytics:
             pass
 
     def _close_trade(self, symbol: str, exit_price: float, timestamp: Any, result: str) -> None:
-        if symbol not in self.active_trades:
-            return
-        trade = self.active_trades.pop(symbol, None)
-        if not trade:
-            return
+        with self._io_lock:
+            if symbol not in self.active_trades:
+                return
+            trade = self.active_trades.pop(symbol, None)
+            if not trade:
+                return
 
-        direction = str(trade.get("direction") or "").upper()
-        entry = self._safe_float(trade.get("entry"))
-        tp = self._safe_float(trade.get("tp"))
-        sl = self._safe_float(trade.get("sl"))
-        open_time = self._parse_timestamp(trade.get("open_time"))
-        close_time = self._parse_timestamp(timestamp)
-        try:
-            duration_sec = max((close_time - open_time).total_seconds(), 0.0)
-        except Exception:
-            duration_sec = 0.0
-        risk = abs(entry - sl)
-        rr = abs(exit_price - entry) / risk if risk > 0 else 0.0
+            direction = str(trade.get("direction") or "").upper()
+            entry = self._safe_float(trade.get("entry"))
+            tp = self._safe_float(trade.get("tp"))
+            sl = self._safe_float(trade.get("sl"))
+            open_time = self._parse_timestamp(trade.get("open_time"))
+            close_time = self._parse_timestamp(timestamp)
+            try:
+                duration_sec = max((close_time - open_time).total_seconds(), 0.0)
+            except Exception:
+                duration_sec = 0.0
+            risk = abs(entry - sl)
+            rr = abs(exit_price - entry) / risk if risk > 0 else 0.0
+            pnl = (exit_price - entry) if direction == "LONG" else (entry - exit_price)
+            result_bucket = "PROFIT" if pnl >= 0 else "LOSS"
+            mode = str(trade.get("mode") or "UNKNOWN").upper()
 
-        closed = {
-            "symbol": symbol,
-            "result": result,
-            "entry": entry,
-            "exit": exit_price,
-            "tp": tp,
-            "sl": sl,
-            "direction": direction,
-            "duration_sec": duration_sec,
-            "rr": rr,
-            "confidence": self._safe_float(trade.get("confidence")),
-            "score": self._safe_float(trade.get("score")),
-            "mode": str(trade.get("mode") or "UNKNOWN"),
-            "is_reversal": bool(trade.get("is_reversal", False)),
-        }
-        self.closed_trades.append(closed)
-        self._save_active_trades()
+            closed = {
+                "symbol": symbol,
+                "result": result,
+                "result_bucket": result_bucket,
+                "entry": entry,
+                "exit": exit_price,
+                "tp": tp,
+                "sl": sl,
+                "direction": direction,
+                "duration_sec": duration_sec,
+                "duration_hm": self._format_duration(duration_sec),
+                "rr": rr,
+                "r_multiple": rr if result_bucket == "PROFIT" else -rr,
+                "pnl_points": pnl,
+                "confidence": self._safe_float(trade.get("confidence")),
+                "score": self._safe_float(trade.get("score")),
+                "mode": mode,
+                "is_reversal": bool(trade.get("is_reversal", False)),
+                "open_time": open_time,
+                "close_time": close_time,
+                "passed_filters": list(trade.get("passed_filters") or []),
+            }
+            self.closed_trades.append(closed)
+            self.last_closed_trade = closed
+            self.mode_closed_counter[mode] += 1
+            self.mode_rr_sum[mode] += rr
+            if result_bucket == "PROFIT":
+                self.mode_win_counter[mode] += 1
+            if result_bucket == "LOSS" and self._safe_float(trade.get("confidence")) >= 0.7:
+                self.high_conf_loss_counter += 1
+            for filter_name in closed.get("passed_filters") or []:
+                bucket = self.filter_result_counter.setdefault(str(filter_name), Counter())
+                bucket[result_bucket] += 1
+
+            self._save_active_trades()
+            self._append_closed_trade_log(closed)
+            self._write_closed_trade_snapshots()
         try:
             logger.info(
-                "[TRADE CLOSED] symbol=%s result=%s rr=%.2f duration=%.0fs",
+                "[TRADE CLOSED] symbol=%s result=%s rr=%.2f duration=%s",
                 symbol,
                 result,
                 rr,
-                duration_sec,
+                closed["duration_hm"],
             )
-            logger.info("[TRADE DEBUG] active_trades size=%s", len(self.active_trades))
+            if closed["result_bucket"] == "LOSS" and closed["confidence"] >= 0.7:
+                logger.warning(
+                    "[WARNING] HIGH CONF CLOSED IN LOSS | symbol=%s | conf=%.2f | mode=%s",
+                    symbol,
+                    closed["confidence"],
+                    closed["mode"],
+                )
         except Exception:
             pass
+
+    def _append_closed_trade_log(self, closed: dict[str, Any]) -> None:
+        self.trade_results_log_path.parent.mkdir(parents=True, exist_ok=True)
+        payload = self._serialize_trade(closed)
+        with self.trade_results_log_path.open("a", encoding="utf-8") as file:
+            file.write(json.dumps(payload, ensure_ascii=False) + "\n")
+
+    def _write_closed_trade_snapshots(self) -> None:
+        self.trade_results_snapshot_json_path.parent.mkdir(parents=True, exist_ok=True)
+        serialized_trades = [self._serialize_trade(trade) for trade in self.closed_trades]
+        self.trade_results_snapshot_json_path.write_text(
+            json.dumps(serialized_trades, ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+
+        fieldnames = [
+            "symbol", "mode", "direction", "result", "result_bucket",
+            "entry", "exit", "tp", "sl", "rr", "r_multiple", "pnl_points",
+            "confidence", "score", "duration_sec", "duration_hm",
+            "open_time", "close_time", "is_reversal",
+        ]
+        with self.trade_results_snapshot_csv_path.open("w", encoding="utf-8", newline="") as csv_file:
+            writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+            writer.writeheader()
+            for trade in serialized_trades:
+                writer.writerow({name: trade.get(name) for name in fieldnames})
 
     def register_trade(self, signal: dict[str, Any], action: str) -> None:
         if not signal:
@@ -294,6 +377,11 @@ class SignalAnalytics:
             trade["confidence"] = self._safe_float(signal.get("confidence"))
             trade["score"] = self._safe_float(signal.get("score"))
             trade["mode"] = str(signal.get("live_mode") or signal.get("label_prefix") or "UNKNOWN").upper().strip("[]")
+            trade["passed_filters"] = [
+                str(name).upper().strip()
+                for name in (signal.get("passed_filters") or [])
+                if str(name).strip()
+            ]
             self.active_trades[symbol] = trade
             self._save_active_trades()
             return
@@ -313,6 +401,11 @@ class SignalAnalytics:
             "score": self._safe_float(signal.get("score")),
             "mode": str(signal.get("live_mode") or signal.get("label_prefix") or "UNKNOWN").upper().strip("[]"),
             "is_reversal": action_upper == "REVERSAL" or bool(signal.get("is_reversal", False)),
+            "passed_filters": [
+                str(name).upper().strip()
+                for name in (signal.get("passed_filters") or [])
+                if str(name).strip()
+            ],
         }
         self.active_trades[symbol] = trade
         self._save_active_trades()
@@ -326,7 +419,6 @@ class SignalAnalytics:
                 trade["sl"],
                 trade["confidence"],
             )
-            logger.info("[TRADE DEBUG] active_trades size=%s", len(self.active_trades))
         except Exception:
             pass
 
@@ -334,13 +426,14 @@ class SignalAnalytics:
         symbol_key = str(symbol or "").strip()
         if not symbol_key:
             return
-        if symbol_key not in self.active_trades:
-            return
         if current_price is None:
             return
-        trade = self.active_trades.get(symbol_key)
-        if not trade:
-            return
+        with self._io_lock:
+            if symbol_key not in self.active_trades:
+                return
+            trade = self.active_trades.get(symbol_key)
+            if not trade:
+                return
         price = self._safe_float(current_price, default=float("nan"))
         if price != price:  # NaN guard
             return
@@ -443,6 +536,32 @@ class SignalAnalytics:
             if trades_total
             else 0.0
         )
+        avg_r = (
+            sum(self._safe_float(trade.get("r_multiple")) for trade in self.closed_trades) / trades_total
+            if trades_total
+            else 0.0
+        )
+        mode_lines = []
+        for mode_name in ("LIGHT", "MAIN", "SCALPING"):
+            signals_count = self.mode_counter.get(mode_name, 0)
+            closed_count = self.mode_closed_counter.get(mode_name, 0)
+            wins = self.mode_win_counter.get(mode_name, 0)
+            winrate_mode = (wins / closed_count * 100) if closed_count else 0.0
+            avg_rr_mode = (self.mode_rr_sum.get(mode_name, 0.0) / closed_count) if closed_count else 0.0
+            mode_lines.append(
+                f"{mode_name}: signals={signals_count}, closed={closed_count}, winrate={winrate_mode:.1f}%, avgRR={avg_rr_mode:.2f}"
+            )
+        mode_stats_text = "\n".join(mode_lines)
+
+        filter_breakdown_lines = []
+        for filter_name, counters in sorted(self.filter_result_counter.items()):
+            profit = counters.get("PROFIT", 0)
+            loss = counters.get("LOSS", 0)
+            total_filter = max(1, profit + loss)
+            filter_breakdown_lines.append(
+                f"{filter_name}: profit={profit}, loss={loss}, winrate={profit / total_filter * 100:.1f}%"
+            )
+        filter_breakdown_text = "\n".join(filter_breakdown_lines[:8]) if filter_breakdown_lines else "-"
 
         return (
             "📊 SIGNAL ANALYTICS\n\n"
@@ -471,8 +590,33 @@ class SignalAnalytics:
             f"Reversal trades: {reversal_count}\n"
             f"Reversal winrate: {reversal_winrate:.2f}%\n\n"
             f"Avg RR: {avg_rr:.2f}\n"
-            f"Avg duration: {avg_duration:.1f}s\n\n"
+            f"Avg R: {avg_r:.2f}\n"
+            f"Avg duration: {self._format_duration(avg_duration)}\n"
+            f"High-conf losses: {self.high_conf_loss_counter}\n\n"
+            "📌 MODE TRADE STATS\n"
+            f"{mode_stats_text}\n\n"
+            "🧪 FILTER OUTCOME BREAKDOWN\n"
+            f"{filter_breakdown_text}\n\n"
             "--------------------------------\n\n"
             "⚠️ РЕКОМЕНДАЦИИ\n\n"
             f"{recommendations}"
+        )
+
+    def get_mode_stats_compact(self) -> list[str]:
+        rows: list[str] = []
+        for mode_name in ("LIGHT", "MAIN", "SCALPING"):
+            closed_count = self.mode_closed_counter.get(mode_name, 0)
+            wins = self.mode_win_counter.get(mode_name, 0)
+            winrate = (wins / closed_count * 100) if closed_count else 0.0
+            rows.append(f"{mode_name}: sig={self.mode_counter.get(mode_name, 0)} close={closed_count} win={winrate:.0f}%")
+        return rows
+
+    def get_last_closed_trade_brief(self) -> str:
+        if not self.last_closed_trade:
+            return "Last close: -"
+        trade = self.last_closed_trade
+        return (
+            f"{trade.get('symbol')} {trade.get('result_bucket')} "
+            f"RR {self._safe_float(trade.get('rr')):.2f} "
+            f"Duration: {trade.get('duration_hm', '-')}"
         )
