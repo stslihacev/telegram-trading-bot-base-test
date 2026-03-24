@@ -46,6 +46,7 @@ class SignalAnalytics:
     mode_rr_sum: Counter[str] = field(default_factory=Counter)
     high_conf_loss_counter: int = 0
     filter_result_counter: dict[str, Counter[str]] = field(default_factory=dict)
+    _closed_trade_keys: set[str] = field(default_factory=set, init=False, repr=False)
     _io_lock: threading.RLock = field(default_factory=threading.RLock, init=False, repr=False)
 
     def __post_init__(self) -> None:
@@ -267,6 +268,10 @@ class SignalAnalytics:
             pnl = (exit_price - entry) if direction == "LONG" else (entry - exit_price)
             result_bucket = "PROFIT" if pnl >= 0 else "LOSS"
             mode = str(trade.get("mode") or "UNKNOWN").upper()
+            close_event_key = f"{symbol}|{open_time.isoformat()}|{close_time.isoformat()}|{result}"
+            if close_event_key in self._closed_trade_keys:
+                return
+            self._closed_trade_keys.add(close_event_key)
 
             closed = {
                 "symbol": symbol,
@@ -280,7 +285,9 @@ class SignalAnalytics:
                 "duration_sec": duration_sec,
                 "duration_hm": self._format_duration(duration_sec),
                 "rr": rr,
+                "RR": rr,
                 "r_multiple": rr if result_bucket == "PROFIT" else -rr,
+                "R": rr if result_bucket == "PROFIT" else -rr,
                 "pnl_points": pnl,
                 "confidence": self._safe_float(trade.get("confidence")),
                 "score": self._safe_float(trade.get("score")),
@@ -289,6 +296,7 @@ class SignalAnalytics:
                 "open_time": open_time,
                 "close_time": close_time,
                 "passed_filters": list(trade.get("passed_filters") or []),
+                "close_event_key": close_event_key,
             }
             self.closed_trades.append(closed)
             self.last_closed_trade = closed
@@ -332,22 +340,23 @@ class SignalAnalytics:
     def _write_closed_trade_snapshots(self) -> None:
         self.trade_results_snapshot_json_path.parent.mkdir(parents=True, exist_ok=True)
         serialized_trades = [self._serialize_trade(trade) for trade in self.closed_trades]
-        self.trade_results_snapshot_json_path.write_text(
-            json.dumps(serialized_trades, ensure_ascii=False, indent=2),
-            encoding="utf-8",
-        )
+        json_tmp = self.trade_results_snapshot_json_path.with_suffix(f"{self.trade_results_snapshot_json_path.suffix}.tmp")
+        json_tmp.write_text(json.dumps(serialized_trades, ensure_ascii=False, indent=2), encoding="utf-8")
+        os.replace(json_tmp, self.trade_results_snapshot_json_path)
 
         fieldnames = [
             "symbol", "mode", "direction", "result", "result_bucket",
-            "entry", "exit", "tp", "sl", "rr", "r_multiple", "pnl_points",
+            "entry", "exit", "tp", "sl", "rr", "RR", "r_multiple", "R", "pnl_points",
             "confidence", "score", "duration_sec", "duration_hm",
             "open_time", "close_time", "is_reversal",
         ]
-        with self.trade_results_snapshot_csv_path.open("w", encoding="utf-8", newline="") as csv_file:
+        csv_tmp = self.trade_results_snapshot_csv_path.with_suffix(f"{self.trade_results_snapshot_csv_path.suffix}.tmp")
+        with csv_tmp.open("w", encoding="utf-8", newline="") as csv_file:
             writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
             writer.writeheader()
             for trade in serialized_trades:
                 writer.writerow({name: trade.get(name) for name in fieldnames})
+        os.replace(csv_tmp, self.trade_results_snapshot_csv_path)
 
     def register_trade(self, signal: dict[str, Any], action: str) -> None:
         if not signal:

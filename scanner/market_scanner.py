@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import asyncio
 import ccxt
 import pandas as pd
 from datetime import datetime, timezone
@@ -10,6 +9,7 @@ from datetime import datetime, timezone
 import core.config as config
 from core.debug import debug_stage, reject
 from scanner.volume_scanner import get_top_usdt_pairs
+from services.bybit_request_manager import get_bybit_request_manager
 from services.strategy_adapter import build_live_strategy
 from utils.logger import logger
 
@@ -25,6 +25,8 @@ class MarketScanner:
         self.log_prefix = runtime["signal_prefix"]
         self.strategy = build_live_strategy()
         self.exchange = ccxt.bybit({"enableRateLimit": True, "options": {"defaultType": "swap"}})
+        self.request_manager = get_bybit_request_manager()
+        self.ohlcv_cache_ttl_sec = int(getattr(config, "OHLCV_CACHE_TTL_SEC", 30))
         self._forced_test_signal_sent = False
         logger.info(
             "%s scanner initialized | mode=%s | timeframe=%s | candle_limit=%s | execution_tfs=%s",
@@ -36,11 +38,13 @@ class MarketScanner:
         )
 
     async def _fetch_ohlcv(self, symbol: str) -> pd.DataFrame | None:
-        loop = asyncio.get_running_loop()
         try:
-            data = await loop.run_in_executor(
-                None,
-                lambda: self.exchange.fetch_ohlcv(symbol, self.timeframe, limit=self.candle_limit),
+            data = await self.request_manager.fetch_ohlcv(
+                exchange=self.exchange,
+                symbol=symbol,
+                timeframe=self.timeframe,
+                limit=self.candle_limit,
+                ttl_sec=self.ohlcv_cache_ttl_sec,
             )
         except Exception as exc:
             logger.warning(f"{self.log_prefix} {symbol} | ошибка загрузки свечей: {exc}".strip())
@@ -94,7 +98,7 @@ class MarketScanner:
 
     def _filter_active_symbols(self, symbols: list[str]) -> list[str]:
         """Сохраняет существующую логику фильтра по объёму и % изменения."""
-        tickers = self.exchange.fetch_tickers()
+        tickers = self.request_manager.fetch_tickers(self.exchange, ttl_sec=10)
         active = []
         for symbol in symbols:
             ticker = tickers.get(symbol)

@@ -37,6 +37,7 @@ from core.state_manager import state_manager
 from execution.signal_dispatcher import SignalDispatcher
 from scanner.market_scanner import MarketScanner
 from services.signal_analytics import SignalAnalytics
+from services.bybit_request_manager import get_bybit_request_manager
 from services.signal_deduplicator import SignalDeduplicator
 from services.signal_formatter import format_signal_compact, format_signal_full, get_stars
 from services.signal_state import SignalStateService, parse_datetime_utc
@@ -134,6 +135,7 @@ class TelegramTradingBot:
         default_scan_interval_min = max(1, (runtime_interval + 59) // 60)
         self.scan_interval_min = int(os.getenv("SCAN_INTERVAL_MIN", str(default_scan_interval_min or SCAN_INTERVAL_MIN)))
         self.scanner = MarketScanner()
+        self.request_manager = get_bybit_request_manager()
         if hasattr(self.scanner.strategy, "min_rr"):
             self.scanner.strategy.min_rr = self.min_rr
 
@@ -309,7 +311,7 @@ class TelegramTradingBot:
         for symbol in active_symbols:
             market_symbol = f"{symbol.replace('USDT', '/USDT')}:USDT"
             try:
-                ticker = self.scanner.exchange.fetch_ticker(market_symbol)
+                ticker = self.request_manager.fetch_ticker(self.scanner.exchange, market_symbol, ttl_sec=2)
             except Exception as exc:
                 logger.warning("[STARTUP] ticker unavailable for %s: %s", symbol, exc)
                 continue

@@ -42868,3 +42868,391 @@ Fingerprint: d068b86e12bceda4
 2026-03-24 20:19:28,482 - crypto_bot - INFO - [STATE] WLFIUSDT IGNORE skipped: no significant improvement
 2026-03-24 20:19:28,482 - crypto_bot - INFO - ⏳ Sleeping for 180 seconds
 2026-03-24 20:21:54,883 - crypto_bot - INFO - 🛑 Остановка по KeyboardInterrupt
+2026-03-24 20:38:52,198 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-24 20:38:52,198 - crypto_bot - WARNING - TELEGRAM_TOKEN не задан — бот запустится в режиме scanner + GUI без Telegram polling
+2026-03-24 20:38:52,198 - crypto_bot - INFO - [ANALYTICS INIT] trade tracking enabled
+2026-03-24 20:38:52,199 - crypto_bot - INFO - [PERSISTENCE] loaded trades: 24
+2026-03-24 20:38:52,203 - crypto_bot - INFO - [LIGHT] scanner initialized | mode=LIGHT | timeframe=30m | candle_limit=220 | execution_tfs=30m, 1h
+2026-03-24 20:38:52,249 - crypto_bot - INFO - 🖥️ Signal GUI thread started
+2026-03-24 20:38:52,250 - crypto_bot - INFO - ✅ Telegram отключён: инициализированы scanner + GUI режим
+2026-03-24 20:38:52,250 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-24 20:38:52,250 - crypto_bot - INFO - 📡 Telegram polling disabled, running standalone scan loop
+2026-03-24 20:38:52,251 - crypto_bot - INFO - 🚀 SCAN LOOP STARTED
+2026-03-24 20:38:52,251 - crypto_bot - INFO - [STARTUP] reconciling active trades: 24
+2026-03-24 20:39:01,069 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-24 20:39:01,072 - crypto_bot - INFO - [TRADE CLOSED] symbol=PAXGUSDT result=SL rr=1.06 duration=1h 39m
+2026-03-24 20:39:03,153 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-24 20:39:03,156 - crypto_bot - INFO - [TRADE CLOSED] symbol=XAUUSDT result=SL rr=1.03 duration=1h 39m
+2026-03-24 20:39:03,361 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-24 20:39:08,726 - crypto_bot - INFO - [MARKET] get_top_usdt_pairs prepared 546 liquid swap symbols
+2026-03-24 20:39:08,726 - crypto_bot - INFO - [LIGHT] 📈 Top-50 symbols fetched: 50
+2026-03-24 20:39:08,726 - crypto_bot - INFO - [LIGHT] 🔥 Active symbols after filter: 37 / 50
+2026-03-24 20:39:08,727 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BTC/USDT:USDT
+2026-03-24 20:39:08,944 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: BTCUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:39:08,944 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ETH/USDT:USDT
+2026-03-24 20:39:09,162 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: ETHUSDT | LIGHT_LONG | tf=30m
+2026-03-24 20:39:09,162 - crypto_bot - INFO - [LIGHT] 🔍 Scanning SOL/USDT:USDT
+2026-03-24 20:39:09,376 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: SOLUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:39:09,376 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XRP/USDT:USDT
+2026-03-24 20:39:09,798 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: XRPUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:39:09,798 - crypto_bot - INFO - [LIGHT] 🔍 Scanning TAO/USDT:USDT
+2026-03-24 20:39:10,025 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: TAOUSDT | LIGHT_LONG | tf=30m
+2026-03-24 20:39:10,025 - crypto_bot - INFO - [LIGHT] 🔍 Scanning HYPE/USDT:USDT
+2026-03-24 20:39:10,239 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: HYPEUSDT | LIGHT_LONG | tf=30m
+2026-03-24 20:39:10,239 - crypto_bot - INFO - [LIGHT] 🔍 Scanning RIVER/USDT:USDT
+2026-03-24 20:39:10,465 - crypto_bot - INFO - [LIGHT] ❌ No signal: RIVERUSDT
+2026-03-24 20:39:10,466 - crypto_bot - INFO - [LIGHT] 🔍 Scanning DOGE/USDT:USDT
+2026-03-24 20:39:10,679 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: DOGEUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:39:10,679 - crypto_bot - INFO - [LIGHT] 🔍 Scanning SIREN/USDT:USDT
+2026-03-24 20:39:10,892 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: SIRENUSDT | LIGHT_LONG | tf=30m
+2026-03-24 20:39:10,892 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ONT/USDT:USDT
+2026-03-24 20:39:11,263 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: ONTUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:39:11,264 - crypto_bot - INFO - [LIGHT] 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-24 20:39:11,490 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: FARTCOINUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:39:11,490 - crypto_bot - INFO - [LIGHT] 🔍 Scanning 1000PEPE/USDT:USDT
+2026-03-24 20:39:11,704 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: 1000PEPEUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:39:11,705 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ADA/USDT:USDT
+2026-03-24 20:39:11,918 - crypto_bot - INFO - [LIGHT] ❌ No signal: ADAUSDT
+2026-03-24 20:39:11,918 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ENA/USDT:USDT
+2026-03-24 20:39:12,132 - crypto_bot - INFO - [LIGHT] ❌ No signal: ENAUSDT
+2026-03-24 20:39:12,132 - crypto_bot - INFO - [LIGHT] 🔍 Scanning APT/USDT:USDT
+2026-03-24 20:39:12,345 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: APTUSDT | LIGHT_LONG | tf=30m
+2026-03-24 20:39:12,345 - crypto_bot - INFO - [LIGHT] 🔍 Scanning SUI/USDT:USDT
+2026-03-24 20:39:12,559 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: SUIUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:39:12,559 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAU/USDT:USDT
+2026-03-24 20:39:12,771 - crypto_bot - INFO - [LIGHT] ❌ No signal: XAUUSDT
+2026-03-24 20:39:12,772 - crypto_bot - INFO - [LIGHT] 🔍 Scanning JTO/USDT:USDT
+2026-03-24 20:39:13,142 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: JTOUSDT | LIGHT_LONG | tf=30m
+2026-03-24 20:39:13,142 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ZEC/USDT:USDT
+2026-03-24 20:39:13,355 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: ZECUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:39:13,355 - crypto_bot - INFO - [LIGHT] 🔍 Scanning LIGHT/USDT:USDT
+2026-03-24 20:39:13,568 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: LIGHTUSDT | LIGHT_LONG | tf=30m
+2026-03-24 20:39:13,568 - crypto_bot - INFO - [LIGHT] 🔍 Scanning DOT/USDT:USDT
+2026-03-24 20:39:13,782 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: DOTUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:39:13,782 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BTR/USDT:USDT
+2026-03-24 20:39:13,994 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: BTRUSDT | LIGHT_LONG | tf=30m
+2026-03-24 20:39:13,994 - crypto_bot - INFO - [LIGHT] 🔍 Scanning PIPPIN/USDT:USDT
+2026-03-24 20:39:14,208 - crypto_bot - INFO - [LIGHT] ❌ No signal: PIPPINUSDT
+2026-03-24 20:39:14,208 - crypto_bot - INFO - [LIGHT] 🔍 Scanning JCT/USDT:USDT
+2026-03-24 20:39:14,422 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: JCTUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:39:14,422 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BR/USDT:USDT
+2026-03-24 20:39:14,634 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: BRUSDT | LIGHT_LONG | tf=30m
+2026-03-24 20:39:14,634 - crypto_bot - INFO - [LIGHT] 🔍 Scanning PAXG/USDT:USDT
+2026-03-24 20:39:14,848 - crypto_bot - INFO - [LIGHT] ❌ No signal: PAXGUSDT
+2026-03-24 20:39:14,848 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BNB/USDT:USDT
+2026-03-24 20:39:15,062 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: BNBUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:39:15,062 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ZRO/USDT:USDT
+2026-03-24 20:39:15,433 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: ZROUSDT | LIGHT_LONG | tf=30m
+2026-03-24 20:39:15,433 - crypto_bot - INFO - [LIGHT] 🔍 Scanning AVAX/USDT:USDT
+2026-03-24 20:39:15,646 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: AVAXUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:39:15,646 - crypto_bot - INFO - [LIGHT] 🔍 Scanning LYN/USDT:USDT
+2026-03-24 20:39:15,859 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: LYNUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:39:15,859 - crypto_bot - INFO - [LIGHT] 🔍 Scanning NEAR/USDT:USDT
+2026-03-24 20:39:16,072 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: NEARUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:39:16,073 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ARIA/USDT:USDT
+2026-03-24 20:39:16,286 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: ARIAUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:39:16,287 - crypto_bot - INFO - [LIGHT] 🔍 Scanning AAVE/USDT:USDT
+2026-03-24 20:39:16,501 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: AAVEUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:39:16,501 - crypto_bot - INFO - [LIGHT] 🔍 Scanning TRUMP/USDT:USDT
+2026-03-24 20:39:16,730 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: TRUMPUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:39:16,730 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WLD/USDT:USDT
+2026-03-24 20:39:16,943 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: WLDUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:39:16,944 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WLFI/USDT:USDT
+2026-03-24 20:39:17,157 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: WLFIUSDT | LIGHT_LONG | tf=30m
+2026-03-24 20:39:17,157 - crypto_bot - INFO - [LIGHT] 🔍 Scanning NAORIS/USDT:USDT
+2026-03-24 20:39:17,382 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: NAORISUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:39:17,382 - crypto_bot - INFO - [LIGHT] 📊 Total signals after scan: 31
+2026-03-24 20:39:17,382 - crypto_bot - INFO - 📊 Signals found: 31
+2026-03-24 20:39:17,383 - crypto_bot - WARNING - [WARNING] HIGH CONF SIGNAL NOT IN ANALYTICS | symbol=BTCUSDT | conf=0.72 | action=IGNORE
+2026-03-24 20:39:17,383 - crypto_bot - INFO - [STATE] BTCUSDT IGNORE skipped: no significant improvement
+2026-03-24 20:39:17,383 - crypto_bot - INFO - [STATE] ETHUSDT IGNORE skipped: reversal blocked
+2026-03-24 20:39:17,383 - crypto_bot - INFO - [STATE] SOLUSDT IGNORE skipped: no significant improvement
+2026-03-24 20:39:17,383 - crypto_bot - INFO - [STATE] XRPUSDT IGNORE skipped: no significant improvement
+2026-03-24 20:39:17,383 - crypto_bot - INFO - [STATE] TAOUSDT IGNORE skipped: both below upgrade threshold
+2026-03-24 20:39:17,383 - crypto_bot - INFO - [STATE] HYPEUSDT IGNORE skipped: no significant improvement
+2026-03-24 20:39:17,384 - crypto_bot - INFO - [STATE] DOGEUSDT IGNORE skipped: no significant improvement
+2026-03-24 20:39:17,384 - crypto_bot - INFO - [STATE] SIRENUSDT IGNORE skipped: both below upgrade threshold
+2026-03-24 20:39:17,384 - crypto_bot - INFO - [STATE] ONTUSDT IGNORE skipped: both below upgrade threshold
+2026-03-24 20:39:17,385 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-24 20:39:17,388 - crypto_bot - INFO - [TRADE CLOSED] symbol=FARTCOINUSDT result=REVERSAL_EXIT rr=0.90 duration=2h 30m
+2026-03-24 20:39:17,390 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-24 20:39:17,391 - crypto_bot - INFO - [TRADE OPEN] symbol=FARTCOINUSDT dir=SHORT entry=0.17496 tp=0.1702956 sl=0.1782917142857143 conf=0.44
+2026-03-24 20:39:17,391 - crypto_bot - INFO - [ANALYTICS] ADD SIGNAL | symbol=FARTCOINUSDT | score=3.2 | conf=0.444444 | stars=⭐⭐⭐
+2026-03-24 20:39:17,391 - crypto_bot - INFO - [DEBUG] STATE TRANSITION SIGNAL | action=REVERSAL | id=FARTCOINUSDT_30m_SHORT_2026-03-24 17:00:00+00:00 | reason=direction changed with stronger setup
+2026-03-24 20:39:17,393 - crypto_bot - INFO - [REVERSAL] [LIGHT] 📡 SIGNAL
+
+Symbol:    FARTCOINUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 0.174960
+🎯 TP:    0.170296
+🛑 SL:    0.178292
+RR:    1.40
+
+Score:      3.20 / 7.20
+⭐ Confidence: 0.44 ⭐⭐⭐
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 17:00:00+00:00
+Fingerprint: 2ae84a216282e203
+2026-03-24 20:39:17,394 - crypto_bot - INFO - [STATE] 1000PEPEUSDT IGNORE skipped: no significant improvement
+2026-03-24 20:39:17,396 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-24 20:39:17,396 - crypto_bot - INFO - [TRADE OPEN] symbol=APTUSDT dir=LONG entry=1.0479 tp=1.0702560000000003 sl=1.0319314285714285 conf=0.44
+2026-03-24 20:39:17,396 - crypto_bot - INFO - [ANALYTICS] ADD SIGNAL | symbol=APTUSDT | score=3.2 | conf=0.444444 | stars=⭐⭐⭐
+2026-03-24 20:39:17,396 - crypto_bot - INFO - [DEBUG] NEW SIGNAL | id=APTUSDT_30m_LONG_2026-03-24 17:00:00+00:00 | fp=05315e31980bbc7f
+2026-03-24 20:39:17,397 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    APTUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 1.047900
+🎯 TP:    1.070256
+🛑 SL:    1.031931
+RR:    1.40
+
+Score:      3.20 / 7.20
+⭐ Confidence: 0.44 ⭐⭐⭐
+
+Passed: SMA, VOLUME
+Failed: EMA, RSI, MACD, BODY
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 17:00:00+00:00
+Fingerprint: 05315e31980bbc7f
+2026-03-24 20:39:17,398 - crypto_bot - INFO - [ANALYTICS] ADD SIGNAL | symbol=SUIUSDT | score=5.2 | conf=0.722222 | stars=⭐⭐⭐⭐
+2026-03-24 20:39:17,398 - crypto_bot - INFO - [DEBUG] STATE TRANSITION SIGNAL | action=UPDATE | id=SUIUSDT_30m_SHORT_2026-03-24 17:00:00+00:00 | reason=new reached upgrade threshold
+2026-03-24 20:39:17,400 - crypto_bot - INFO - [UPDATE] [LIGHT] 📡 SIGNAL
+
+Symbol:    SUIUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 0.929800
+🎯 TP:    0.916593
+🛑 SL:    0.938054
+RR:    1.60
+
+Score:      5.20 / 7.20
+⭐ Confidence: 0.72 ⭐⭐⭐⭐
+
+Passed: SMA, MACD, BODY, VOLUME
+Failed: EMA, RSI
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 17:00:00+00:00
+Fingerprint: 6ef7fbfd6d72e86e
+2026-03-24 20:39:17,400 - crypto_bot - INFO - [STATE] JTOUSDT IGNORE skipped: both below upgrade threshold
+2026-03-24 20:39:17,400 - crypto_bot - INFO - [STATE] ZECUSDT IGNORE skipped: no significant improvement
+2026-03-24 20:39:17,400 - crypto_bot - INFO - [STATE] LIGHTUSDT IGNORE skipped: both below upgrade threshold
+2026-03-24 20:39:17,400 - crypto_bot - INFO - [STATE] DOTUSDT IGNORE skipped: no significant improvement
+2026-03-24 20:39:17,400 - crypto_bot - INFO - [STATE] BTRUSDT IGNORE skipped: no significant improvement
+2026-03-24 20:39:17,401 - crypto_bot - INFO - [STATE] JCTUSDT IGNORE skipped: both below upgrade threshold
+2026-03-24 20:39:17,401 - crypto_bot - INFO - [STATE] BRUSDT IGNORE skipped: both below upgrade threshold
+2026-03-24 20:39:17,401 - crypto_bot - INFO - [STATE] BNBUSDT IGNORE skipped: no significant improvement
+2026-03-24 20:39:17,401 - crypto_bot - INFO - [STATE] ZROUSDT IGNORE skipped: no significant improvement
+2026-03-24 20:39:17,402 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-24 20:39:17,404 - crypto_bot - INFO - [TRADE CLOSED] symbol=AVAXUSDT result=REVERSAL_EXIT rr=0.32 duration=0h 30m
+2026-03-24 20:39:17,406 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-24 20:39:17,406 - crypto_bot - INFO - [TRADE OPEN] symbol=AVAXUSDT dir=SHORT entry=9.379 tp=9.266542857142856 sl=9.449285714285715 conf=0.61
+2026-03-24 20:39:17,406 - crypto_bot - INFO - [ANALYTICS] ADD SIGNAL | symbol=AVAXUSDT | score=4.4 | conf=0.611111 | stars=⭐⭐⭐⭐
+2026-03-24 20:39:17,406 - crypto_bot - INFO - [DEBUG] STATE TRANSITION SIGNAL | action=REVERSAL | id=AVAXUSDT_30m_SHORT_2026-03-24 17:00:00+00:00 | reason=direction changed with stronger setup
+2026-03-24 20:39:17,408 - crypto_bot - INFO - [REVERSAL] [LIGHT] 📡 SIGNAL
+
+Symbol:    AVAXUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 9.379000
+🎯 TP:    9.266543
+🛑 SL:    9.449286
+RR:    1.60
+
+Score:      4.40 / 7.20
+⭐ Confidence: 0.61 ⭐⭐⭐⭐
+
+Passed: SMA, MACD, VOLUME
+Failed: EMA, RSI, BODY
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 17:00:00+00:00
+Fingerprint: 9037c05d1192cfc6
+2026-03-24 20:39:17,409 - crypto_bot - INFO - [STATE] LYNUSDT IGNORE skipped: no significant improvement
+2026-03-24 20:39:17,409 - crypto_bot - INFO - [STATE] NEARUSDT IGNORE skipped: both below upgrade threshold
+2026-03-24 20:39:17,409 - crypto_bot - INFO - [STATE] ARIAUSDT IGNORE skipped: reversal blocked
+2026-03-24 20:39:17,409 - crypto_bot - WARNING - [WARNING] HIGH CONF SIGNAL NOT IN ANALYTICS | symbol=AAVEUSDT | conf=0.72 | action=IGNORE
+2026-03-24 20:39:17,409 - crypto_bot - INFO - [STATE] AAVEUSDT IGNORE skipped: no significant improvement
+2026-03-24 20:39:17,410 - crypto_bot - INFO - [STATE] TRUMPUSDT IGNORE skipped: no significant improvement
+2026-03-24 20:39:17,411 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-24 20:39:17,411 - crypto_bot - INFO - [TRADE OPEN] symbol=WLDUSDT dir=SHORT entry=0.3152 tp=0.3097005714285714 sl=0.31863714285714284 conf=0.72
+2026-03-24 20:39:17,411 - crypto_bot - INFO - [ANALYTICS] ADD SIGNAL | symbol=WLDUSDT | score=5.2 | conf=0.722222 | stars=⭐⭐⭐⭐
+2026-03-24 20:39:17,411 - crypto_bot - INFO - [DEBUG] NEW SIGNAL | id=WLDUSDT_30m_SHORT_2026-03-24 17:00:00+00:00 | fp=d916c77d01ed84d9
+2026-03-24 20:39:17,413 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    WLDUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 0.315200
+🎯 TP:    0.309701
+🛑 SL:    0.318637
+RR:    1.60
+
+Score:      5.20 / 7.20
+⭐ Confidence: 0.72 ⭐⭐⭐⭐
+
+Passed: SMA, MACD, BODY, VOLUME
+Failed: EMA, RSI
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 17:00:00+00:00
+Fingerprint: d916c77d01ed84d9
+2026-03-24 20:39:17,413 - crypto_bot - INFO - [STATE] WLFIUSDT IGNORE skipped: reversal blocked
+2026-03-24 20:39:17,414 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-24 20:39:17,415 - crypto_bot - INFO - [TRADE OPEN] symbol=NAORISUSDT dir=SHORT entry=0.058125 tp=0.051885240000000006 sl=0.06258197142857143 conf=0.44
+2026-03-24 20:39:17,415 - crypto_bot - INFO - [ANALYTICS] ADD SIGNAL | symbol=NAORISUSDT | score=3.2 | conf=0.444444 | stars=⭐⭐⭐
+2026-03-24 20:39:17,415 - crypto_bot - INFO - [DEBUG] NEW SIGNAL | id=NAORISUSDT_30m_SHORT_2026-03-24 17:00:00+00:00 | fp=939afdd09234ab77
+2026-03-24 20:39:17,416 - crypto_bot - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    NAORISUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 0.058125
+🎯 TP:    0.051885
+🛑 SL:    0.062582
+RR:    1.40
+
+Score:      3.20 / 7.20
+⭐ Confidence: 0.44 ⭐⭐⭐
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 17:00:00+00:00
+Fingerprint: 939afdd09234ab77
+2026-03-24 20:39:17,417 - crypto_bot - INFO - ⏳ Sleeping for 180 seconds
+2026-03-24 20:42:17,418 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-24 20:42:17,877 - crypto_bot - INFO - [MARKET] get_top_usdt_pairs prepared 546 liquid swap symbols
+2026-03-24 20:42:17,877 - crypto_bot - INFO - [LIGHT] 📈 Top-50 symbols fetched: 50
+2026-03-24 20:42:17,877 - crypto_bot - INFO - [LIGHT] 🔥 Active symbols after filter: 38 / 50
+2026-03-24 20:42:17,877 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BTC/USDT:USDT
+2026-03-24 20:42:18,093 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: BTCUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:42:18,093 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ETH/USDT:USDT
+2026-03-24 20:42:18,308 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: ETHUSDT | LIGHT_LONG | tf=30m
+2026-03-24 20:42:18,308 - crypto_bot - INFO - [LIGHT] 🔍 Scanning SOL/USDT:USDT
+2026-03-24 20:42:18,525 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: SOLUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:42:18,526 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XRP/USDT:USDT
+2026-03-24 20:42:18,741 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: XRPUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:42:18,741 - crypto_bot - INFO - [LIGHT] 🔍 Scanning TAO/USDT:USDT
+2026-03-24 20:42:18,954 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: TAOUSDT | LIGHT_LONG | tf=30m
+2026-03-24 20:42:18,955 - crypto_bot - INFO - [LIGHT] 🔍 Scanning HYPE/USDT:USDT
+2026-03-24 20:42:19,171 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: HYPEUSDT | LIGHT_LONG | tf=30m
+2026-03-24 20:42:19,171 - crypto_bot - INFO - [LIGHT] 🔍 Scanning RIVER/USDT:USDT
+2026-03-24 20:42:19,385 - crypto_bot - INFO - [LIGHT] ❌ No signal: RIVERUSDT
+2026-03-24 20:42:19,386 - crypto_bot - INFO - [LIGHT] 🔍 Scanning DOGE/USDT:USDT
+2026-03-24 20:42:19,598 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: DOGEUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:42:19,598 - crypto_bot - INFO - [LIGHT] 🔍 Scanning SIREN/USDT:USDT
+2026-03-24 20:42:19,822 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: SIRENUSDT | LIGHT_LONG | tf=30m
+2026-03-24 20:42:19,823 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ONT/USDT:USDT
+2026-03-24 20:42:20,037 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: ONTUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:42:20,037 - crypto_bot - INFO - [LIGHT] 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-24 20:42:20,279 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: FARTCOINUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:42:20,279 - crypto_bot - INFO - [LIGHT] 🔍 Scanning 1000PEPE/USDT:USDT
+2026-03-24 20:42:20,493 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: 1000PEPEUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:42:20,493 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ADA/USDT:USDT
+2026-03-24 20:42:20,708 - crypto_bot - INFO - [LIGHT] ❌ No signal: ADAUSDT
+2026-03-24 20:42:20,709 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ENA/USDT:USDT
+2026-03-24 20:42:20,922 - crypto_bot - INFO - [LIGHT] ❌ No signal: ENAUSDT
+2026-03-24 20:42:20,923 - crypto_bot - INFO - [LIGHT] 🔍 Scanning APT/USDT:USDT
+2026-03-24 20:42:21,148 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: APTUSDT | LIGHT_LONG | tf=30m
+2026-03-24 20:42:21,148 - crypto_bot - INFO - [LIGHT] 🔍 Scanning SUI/USDT:USDT
+2026-03-24 20:42:21,520 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: SUIUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:42:21,520 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAU/USDT:USDT
+2026-03-24 20:42:21,734 - crypto_bot - INFO - [LIGHT] ❌ No signal: XAUUSDT
+2026-03-24 20:42:21,735 - crypto_bot - INFO - [LIGHT] 🔍 Scanning JTO/USDT:USDT
+2026-03-24 20:42:21,951 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: JTOUSDT | LIGHT_LONG | tf=30m
+2026-03-24 20:42:21,951 - crypto_bot - INFO - [LIGHT] 🔍 Scanning LIGHT/USDT:USDT
+2026-03-24 20:42:22,165 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: LIGHTUSDT | LIGHT_LONG | tf=30m
+2026-03-24 20:42:22,166 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ZEC/USDT:USDT
+2026-03-24 20:42:22,380 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: ZECUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:42:22,380 - crypto_bot - INFO - [LIGHT] 🔍 Scanning DOT/USDT:USDT
+2026-03-24 20:42:22,611 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: DOTUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:42:22,611 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BTR/USDT:USDT
+2026-03-24 20:42:22,983 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: BTRUSDT | LIGHT_LONG | tf=30m
+2026-03-24 20:42:22,984 - crypto_bot - INFO - [LIGHT] 🔍 Scanning PIPPIN/USDT:USDT
+2026-03-24 20:42:23,211 - crypto_bot - INFO - [LIGHT] ❌ No signal: PIPPINUSDT
+2026-03-24 20:42:23,211 - crypto_bot - INFO - [LIGHT] 🔍 Scanning JCT/USDT:USDT
+2026-03-24 20:42:23,431 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: JCTUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:42:23,431 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BR/USDT:USDT
+2026-03-24 20:42:23,829 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: BRUSDT | LIGHT_LONG | tf=30m
+2026-03-24 20:42:23,829 - crypto_bot - INFO - [LIGHT] 🔍 Scanning PAXG/USDT:USDT
+2026-03-24 20:42:24,045 - crypto_bot - INFO - [LIGHT] ❌ No signal: PAXGUSDT
+2026-03-24 20:42:24,045 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BNB/USDT:USDT
+2026-03-24 20:42:24,323 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: BNBUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:42:24,323 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ZRO/USDT:USDT
+2026-03-24 20:42:24,538 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: ZROUSDT | LIGHT_LONG | tf=30m
+2026-03-24 20:42:24,538 - crypto_bot - INFO - [LIGHT] 🔍 Scanning AVAX/USDT:USDT
+2026-03-24 20:42:24,911 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: AVAXUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:42:24,912 - crypto_bot - INFO - [LIGHT] 🔍 Scanning LYN/USDT:USDT
+2026-03-24 20:42:25,126 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: LYNUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:42:25,126 - crypto_bot - INFO - [LIGHT] 🔍 Scanning NEAR/USDT:USDT
+2026-03-24 20:42:25,367 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: NEARUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:42:25,367 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ARIA/USDT:USDT
+2026-03-24 20:42:25,581 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: ARIAUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:42:25,582 - crypto_bot - INFO - [LIGHT] 🔍 Scanning AAVE/USDT:USDT
+2026-03-24 20:42:25,795 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: AAVEUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:42:25,795 - crypto_bot - INFO - [LIGHT] 🔍 Scanning TRUMP/USDT:USDT
+2026-03-24 20:42:26,008 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: TRUMPUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:42:26,008 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WLD/USDT:USDT
+2026-03-24 20:42:26,235 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: WLDUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:42:26,235 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WLFI/USDT:USDT
+2026-03-24 20:42:26,453 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: WLFIUSDT | LIGHT_LONG | tf=30m
+2026-03-24 20:42:26,453 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BCH/USDT:USDT
+2026-03-24 20:42:26,668 - crypto_bot - INFO - [LIGHT] ❌ No signal: BCHUSDT
+2026-03-24 20:42:26,668 - crypto_bot - INFO - [LIGHT] 🔍 Scanning NAORIS/USDT:USDT
+2026-03-24 20:42:26,884 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: NAORISUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 20:42:26,884 - crypto_bot - INFO - [LIGHT] 📊 Total signals after scan: 31
+2026-03-24 20:42:26,884 - crypto_bot - INFO - 📊 Signals found: 31
+2026-03-24 20:42:26,885 - crypto_bot - WARNING - [WARNING] HIGH CONF SIGNAL NOT IN ANALYTICS | symbol=BTCUSDT | conf=0.72 | action=IGNORE
+2026-03-24 20:42:26,885 - crypto_bot - INFO - [STATE] BTCUSDT IGNORE skipped: no significant improvement
+2026-03-24 20:42:26,885 - crypto_bot - INFO - [STATE] ETHUSDT IGNORE skipped: reversal blocked
+2026-03-24 20:42:26,885 - crypto_bot - INFO - [STATE] SOLUSDT IGNORE skipped: no significant improvement
+2026-03-24 20:42:26,885 - crypto_bot - INFO - [STATE] XRPUSDT IGNORE skipped: no significant improvement
+2026-03-24 20:42:26,885 - crypto_bot - INFO - [STATE] TAOUSDT IGNORE skipped: both below upgrade threshold
+2026-03-24 20:42:26,885 - crypto_bot - INFO - [STATE] HYPEUSDT IGNORE skipped: no significant improvement
+2026-03-24 20:42:26,886 - crypto_bot - INFO - [STATE] DOGEUSDT IGNORE skipped: no significant improvement
+2026-03-24 20:42:26,886 - crypto_bot - INFO - [STATE] SIRENUSDT IGNORE skipped: both below upgrade threshold
+2026-03-24 20:42:26,886 - crypto_bot - INFO - [STATE] ONTUSDT IGNORE skipped: both below upgrade threshold
+2026-03-24 20:42:26,886 - crypto_bot - INFO - [STATE] FARTCOINUSDT IGNORE skipped: both below upgrade threshold
+2026-03-24 20:42:26,886 - crypto_bot - INFO - [STATE] 1000PEPEUSDT IGNORE skipped: no significant improvement
+2026-03-24 20:42:26,887 - crypto_bot - INFO - [STATE] APTUSDT IGNORE skipped: both below upgrade threshold
+2026-03-24 20:42:26,887 - crypto_bot - WARNING - [WARNING] HIGH CONF SIGNAL NOT IN ANALYTICS | symbol=SUIUSDT | conf=0.72 | action=IGNORE
+2026-03-24 20:42:26,887 - crypto_bot - INFO - [STATE] SUIUSDT IGNORE skipped: no significant improvement
+2026-03-24 20:42:26,887 - crypto_bot - INFO - [STATE] JTOUSDT IGNORE skipped: both below upgrade threshold
+2026-03-24 20:42:26,887 - crypto_bot - INFO - [STATE] LIGHTUSDT IGNORE skipped: both below upgrade threshold
+2026-03-24 20:42:26,887 - crypto_bot - INFO - [STATE] ZECUSDT IGNORE skipped: no significant improvement
+2026-03-24 20:42:26,888 - crypto_bot - INFO - [STATE] DOTUSDT IGNORE skipped: no significant improvement
+2026-03-24 20:42:26,888 - crypto_bot - INFO - [STATE] BTRUSDT IGNORE skipped: no significant improvement
+2026-03-24 20:42:26,888 - crypto_bot - INFO - [STATE] JCTUSDT IGNORE skipped: both below upgrade threshold
+2026-03-24 20:42:26,888 - crypto_bot - INFO - [STATE] BRUSDT IGNORE skipped: both below upgrade threshold
+2026-03-24 20:42:26,888 - crypto_bot - INFO - [STATE] BNBUSDT IGNORE skipped: no significant improvement
+2026-03-24 20:42:26,888 - crypto_bot - INFO - [STATE] ZROUSDT IGNORE skipped: no significant improvement
+2026-03-24 20:42:26,888 - crypto_bot - INFO - [STATE] AVAXUSDT IGNORE skipped: both below upgrade threshold
+2026-03-24 20:42:26,889 - crypto_bot - INFO - [STATE] LYNUSDT IGNORE skipped: no significant improvement
+2026-03-24 20:42:26,889 - crypto_bot - INFO - [STATE] NEARUSDT IGNORE skipped: both below upgrade threshold
+2026-03-24 20:42:26,889 - crypto_bot - INFO - [STATE] ARIAUSDT IGNORE skipped: reversal blocked
+2026-03-24 20:42:26,889 - crypto_bot - WARNING - [WARNING] HIGH CONF SIGNAL NOT IN ANALYTICS | symbol=AAVEUSDT | conf=0.72 | action=IGNORE
+2026-03-24 20:42:26,889 - crypto_bot - INFO - [STATE] AAVEUSDT IGNORE skipped: no significant improvement
+2026-03-24 20:42:26,889 - crypto_bot - INFO - [STATE] TRUMPUSDT IGNORE skipped: no significant improvement
+2026-03-24 20:42:26,889 - crypto_bot - WARNING - [WARNING] HIGH CONF SIGNAL NOT IN ANALYTICS | symbol=WLDUSDT | conf=0.72 | action=IGNORE
+2026-03-24 20:42:26,890 - crypto_bot - INFO - [STATE] WLDUSDT IGNORE skipped: no significant improvement
+2026-03-24 20:42:26,891 - crypto_bot - INFO - [STATE] WLFIUSDT IGNORE skipped: reversal blocked
+2026-03-24 20:42:26,891 - crypto_bot - INFO - [STATE] NAORISUSDT IGNORE skipped: both below upgrade threshold
+2026-03-24 20:42:26,891 - crypto_bot - INFO - ⏳ Sleeping for 180 seconds
+2026-03-24 20:43:26,121 - crypto_bot - INFO - 🛑 Остановка по KeyboardInterrupt

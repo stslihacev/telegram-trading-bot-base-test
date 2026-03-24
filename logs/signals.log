@@ -6919,3 +6919,123 @@ Failed: EMA, MACD, VOLUME
 🧠 Regime: LIGHT_RANGE
 🕒 Time:   2026-03-24 16:30:00+00:00
 Fingerprint: d068b86e12bceda4
+2026-03-24 20:39:17,393 - INFO - [REVERSAL] [LIGHT] 📡 SIGNAL
+
+Symbol:    FARTCOINUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 0.174960
+🎯 TP:    0.170296
+🛑 SL:    0.178292
+RR:    1.40
+
+Score:      3.20 / 7.20
+⭐ Confidence: 0.44 ⭐⭐⭐
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 17:00:00+00:00
+Fingerprint: 2ae84a216282e203
+2026-03-24 20:39:17,398 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    APTUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 1.047900
+🎯 TP:    1.070256
+🛑 SL:    1.031931
+RR:    1.40
+
+Score:      3.20 / 7.20
+⭐ Confidence: 0.44 ⭐⭐⭐
+
+Passed: SMA, VOLUME
+Failed: EMA, RSI, MACD, BODY
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 17:00:00+00:00
+Fingerprint: 05315e31980bbc7f
+2026-03-24 20:39:17,400 - INFO - [UPDATE] [LIGHT] 📡 SIGNAL
+
+Symbol:    SUIUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 0.929800
+🎯 TP:    0.916593
+🛑 SL:    0.938054
+RR:    1.60
+
+Score:      5.20 / 7.20
+⭐ Confidence: 0.72 ⭐⭐⭐⭐
+
+Passed: SMA, MACD, BODY, VOLUME
+Failed: EMA, RSI
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 17:00:00+00:00
+Fingerprint: 6ef7fbfd6d72e86e
+2026-03-24 20:39:17,409 - INFO - [REVERSAL] [LIGHT] 📡 SIGNAL
+
+Symbol:    AVAXUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 9.379000
+🎯 TP:    9.266543
+🛑 SL:    9.449286
+RR:    1.60
+
+Score:      4.40 / 7.20
+⭐ Confidence: 0.61 ⭐⭐⭐⭐
+
+Passed: SMA, MACD, VOLUME
+Failed: EMA, RSI, BODY
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 17:00:00+00:00
+Fingerprint: 9037c05d1192cfc6
+2026-03-24 20:39:17,413 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    WLDUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 0.315200
+🎯 TP:    0.309701
+🛑 SL:    0.318637
+RR:    1.60
+
+Score:      5.20 / 7.20
+⭐ Confidence: 0.72 ⭐⭐⭐⭐
+
+Passed: SMA, MACD, BODY, VOLUME
+Failed: EMA, RSI
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 17:00:00+00:00
+Fingerprint: d916c77d01ed84d9
+2026-03-24 20:39:17,417 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    NAORISUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 0.058125
+🎯 TP:    0.051885
+🛑 SL:    0.062582
+RR:    1.40
+
+Score:      3.20 / 7.20
+⭐ Confidence: 0.44 ⭐⭐⭐
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 17:00:00+00:00
+Fingerprint: 939afdd09234ab77

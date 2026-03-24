@@ -27,20 +27,6 @@
     "is_reversal": true,
     "passed_filters": []
   },
-  "FARTCOINUSDT": {
-    "symbol": "FARTCOINUSDT",
-    "direction": "LONG",
-    "entry": 0.17788,
-    "tp": 0.1824388,
-    "sl": 0.1746237142857143,
-    "open_time": "2026-03-24T14:30:00+00:00",
-    "signal_id": "FARTCOINUSDT_30m_LONG_2026-03-24 14:30:00+00:00",
-    "confidence": 0.555556,
-    "score": 4.0,
-    "mode": "LIGHT",
-    "is_reversal": true,
-    "passed_filters": []
-  },
   "VIRTUALUSDT": {
     "symbol": "VIRTUALUSDT",
     "direction": "SHORT",
@@ -140,34 +126,6 @@
     "signal_id": "JTOUSDT_30m_LONG_2026-03-24 16:00:00+00:00",
     "confidence": 0.611111,
     "score": 4.4,
-    "mode": "LIGHT",
-    "is_reversal": false,
-    "passed_filters": []
-  },
-  "XAUUSDT": {
-    "symbol": "XAUUSDT",
-    "direction": "LONG",
-    "entry": 4423.68,
-    "tp": 4475.305200000001,
-    "sl": 4386.804857142857,
-    "open_time": "2026-03-24T16:00:00+00:00",
-    "signal_id": "XAUUSDT_30m_LONG_2026-03-24 16:00:00+00:00",
-    "confidence": 0.444444,
-    "score": 3.2,
-    "mode": "LIGHT",
-    "is_reversal": false,
-    "passed_filters": []
-  },
-  "PAXGUSDT": {
-    "symbol": "PAXGUSDT",
-    "direction": "LONG",
-    "entry": 4428.3,
-    "tp": 4478.868,
-    "sl": 4392.18,
-    "open_time": "2026-03-24T16:00:00+00:00",
-    "signal_id": "PAXGUSDT_30m_LONG_2026-03-24 16:00:00+00:00",
-    "confidence": 0.444444,
-    "score": 3.2,
     "mode": "LIGHT",
     "is_reversal": false,
     "passed_filters": []
@@ -367,21 +325,91 @@
       "VOLUME"
     ]
   },
+  "FARTCOINUSDT": {
+    "symbol": "FARTCOINUSDT",
+    "direction": "SHORT",
+    "entry": 0.17496,
+    "tp": 0.1702956,
+    "sl": 0.1782917142857143,
+    "open_time": "2026-03-24T17:00:00+00:00",
+    "signal_id": "FARTCOINUSDT_30m_SHORT_2026-03-24 17:00:00+00:00",
+    "confidence": 0.444444,
+    "score": 3.2,
+    "mode": "LIGHT",
+    "is_reversal": true,
+    "passed_filters": [
+      "MACD",
+      "BODY"
+    ]
+  },
+  "APTUSDT": {
+    "symbol": "APTUSDT",
+    "direction": "LONG",
+    "entry": 1.0479,
+    "tp": 1.0702560000000003,
+    "sl": 1.0319314285714285,
+    "open_time": "2026-03-24T17:00:00+00:00",
+    "signal_id": "APTUSDT_30m_LONG_2026-03-24 17:00:00+00:00",
+    "confidence": 0.444444,
+    "score": 3.2,
+    "mode": "LIGHT",
+    "is_reversal": false,
+    "passed_filters": [
+      "SMA",
+      "VOLUME"
+    ]
+  },
   "AVAXUSDT": {
     "symbol": "AVAXUSDT",
-    "direction": "LONG",
-    "entry": 9.401,
-    "tp": 9.49748,
-    "sl": 9.332085714285714,
-    "open_time": "2026-03-24T16:30:00+00:00",
-    "signal_id": "AVAXUSDT_30m_LONG_2026-03-24 16:30:00+00:00",
-    "confidence": 0.527778,
-    "score": 3.8,
+    "direction": "SHORT",
+    "entry": 9.379,
+    "tp": 9.266542857142856,
+    "sl": 9.449285714285715,
+    "open_time": "2026-03-24T17:00:00+00:00",
+    "signal_id": "AVAXUSDT_30m_SHORT_2026-03-24 17:00:00+00:00",
+    "confidence": 0.611111,
+    "score": 4.4,
     "mode": "LIGHT",
     "is_reversal": true,
     "passed_filters": [
       "SMA",
-      "RSI",
+      "MACD",
+      "VOLUME"
+    ]
+  },
+  "WLDUSDT": {
+    "symbol": "WLDUSDT",
+    "direction": "SHORT",
+    "entry": 0.3152,
+    "tp": 0.3097005714285714,
+    "sl": 0.31863714285714284,
+    "open_time": "2026-03-24T17:00:00+00:00",
+    "signal_id": "WLDUSDT_30m_SHORT_2026-03-24 17:00:00+00:00",
+    "confidence": 0.722222,
+    "score": 5.2,
+    "mode": "LIGHT",
+    "is_reversal": false,
+    "passed_filters": [
+      "SMA",
+      "MACD",
+      "BODY",
+      "VOLUME"
+    ]
+  },
+  "NAORISUSDT": {
+    "symbol": "NAORISUSDT",
+    "direction": "SHORT",
+    "entry": 0.058125,
+    "tp": 0.051885240000000006,
+    "sl": 0.06258197142857143,
+    "open_time": "2026-03-24T17:00:00+00:00",
+    "signal_id": "NAORISUSDT_30m_SHORT_2026-03-24 17:00:00+00:00",
+    "confidence": 0.444444,
+    "score": 3.2,
+    "mode": "LIGHT",
+    "is_reversal": false,
+    "passed_filters": [
+      "MACD",
       "BODY"
     ]
   }
