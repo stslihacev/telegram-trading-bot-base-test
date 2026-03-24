@@ -36066,3 +36066,93 @@ Fingerprint: ef92d97fe7922f6d
 2026-03-24 14:58:58,798 - crypto_bot - INFO - 📊 Signals found: 0
 2026-03-24 14:58:58,798 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
 2026-03-24 15:01:34,260 - crypto_bot - INFO - 🛑 Остановка по KeyboardInterrupt
+2026-03-24 15:45:40,668 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-24 15:45:40,668 - crypto_bot - WARNING - TELEGRAM_TOKEN не задан — бот запустится в режиме scanner + GUI без Telegram polling
+2026-03-24 15:45:40,672 - crypto_bot - INFO - [LIGHT] scanner initialized | mode=LIGHT | timeframe=30m | candle_limit=220 | execution_tfs=30m, 1h
+2026-03-24 15:45:40,964 - crypto_bot - INFO - 🖥️ Signal GUI thread started
+2026-03-24 15:45:40,964 - crypto_bot - INFO - ✅ Telegram отключён: инициализированы scanner + GUI режим
+2026-03-24 15:45:40,965 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-24 15:45:40,965 - crypto_bot - INFO - 📡 Telegram polling disabled, running standalone scan loop
+2026-03-24 15:45:40,966 - crypto_bot - INFO - 🚀 SCAN LOOP STARTED
+2026-03-24 15:45:40,966 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-24 15:45:48,014 - crypto_bot - INFO - [LIGHT] 📈 Top-50 symbols fetched: 50
+2026-03-24 15:45:51,069 - crypto_bot - INFO - [LIGHT] 🔥 Active symbols after filter: 34 / 50
+2026-03-24 15:45:51,069 - crypto_bot - INFO - [LIGHT] 🔍 Scanning SOL/USDT:USDT
+2026-03-24 15:45:51,288 - crypto_bot - INFO - [LIGHT] ❌ No signal: SOLUSDT
+2026-03-24 15:45:51,289 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAUT/USDT:USDT
+2026-03-24 15:45:51,503 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: XAUTUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 15:45:51,503 - crypto_bot - INFO - [LIGHT] 🔍 Scanning TAO/USDT:USDT
+2026-03-24 15:45:51,717 - crypto_bot - INFO - [LIGHT] ❌ No signal: TAOUSDT
+2026-03-24 15:45:51,717 - crypto_bot - INFO - [LIGHT] 🔍 Scanning DOGE/USDT:USDT
+2026-03-24 15:45:51,931 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: DOGEUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 15:45:51,931 - crypto_bot - INFO - [LIGHT] 🔍 Scanning RIVER/USDT:USDT
+2026-03-24 15:45:52,143 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: RIVERUSDT | LIGHT_LONG | tf=30m
+2026-03-24 15:45:52,143 - crypto_bot - INFO - [LIGHT] 🔍 Scanning SIREN/USDT:USDT
+2026-03-24 15:45:52,358 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: SIRENUSDT | LIGHT_LONG | tf=30m
+2026-03-24 15:45:52,358 - crypto_bot - INFO - [LIGHT] 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-24 15:45:52,573 - crypto_bot - INFO - [LIGHT] ❌ No signal: FARTCOINUSDT
+2026-03-24 15:45:52,573 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BTR/USDT:USDT
+2026-03-24 15:45:52,786 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: BTRUSDT | LIGHT_LONG | tf=30m
+2026-03-24 15:45:52,786 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ENA/USDT:USDT
+2026-03-24 15:45:52,999 - crypto_bot - INFO - [LIGHT] ❌ No signal: ENAUSDT
+2026-03-24 15:45:53,000 - crypto_bot - INFO - [LIGHT] 🔍 Scanning XAU/USDT:USDT
+2026-03-24 15:45:53,213 - crypto_bot - INFO - [LIGHT] ❌ No signal: XAUUSDT
+2026-03-24 15:45:53,214 - crypto_bot - INFO - [LIGHT] 🔍 Scanning JTO/USDT:USDT
+2026-03-24 15:45:53,429 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: JTOUSDT | LIGHT_LONG | tf=30m
+2026-03-24 15:45:53,429 - crypto_bot - INFO - [LIGHT] 🔍 Scanning APT/USDT:USDT
+2026-03-24 15:45:53,642 - crypto_bot - INFO - [LIGHT] ❌ No signal: APTUSDT
+2026-03-24 15:45:53,642 - crypto_bot - INFO - [LIGHT] 🔍 Scanning LINK/USDT:USDT
+2026-03-24 15:45:53,869 - crypto_bot - INFO - [LIGHT] ❌ No signal: LINKUSDT
+2026-03-24 15:45:53,869 - crypto_bot - INFO - [LIGHT] 🔍 Scanning JCT/USDT:USDT
+2026-03-24 15:45:54,084 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: JCTUSDT | LIGHT_LONG | tf=30m
+2026-03-24 15:45:54,084 - crypto_bot - INFO - [LIGHT] 🔍 Scanning LIGHT/USDT:USDT
+2026-03-24 15:45:54,314 - crypto_bot - INFO - [LIGHT] ❌ No signal: LIGHTUSDT
+2026-03-24 15:45:54,314 - crypto_bot - INFO - [LIGHT] 🔍 Scanning PAXG/USDT:USDT
+2026-03-24 15:45:54,530 - crypto_bot - INFO - [LIGHT] ❌ No signal: PAXGUSDT
+2026-03-24 15:45:54,530 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BNB/USDT:USDT
+2026-03-24 15:45:54,742 - crypto_bot - INFO - [LIGHT] ❌ No signal: BNBUSDT
+2026-03-24 15:45:54,742 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ONT/USDT:USDT
+2026-03-24 15:45:54,959 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: ONTUSDT | LIGHT_LONG | tf=30m
+2026-03-24 15:45:54,959 - crypto_bot - INFO - [LIGHT] 🔍 Scanning PIPPIN/USDT:USDT
+2026-03-24 15:45:55,174 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: PIPPINUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 15:45:55,175 - crypto_bot - INFO - [LIGHT] 🔍 Scanning DOT/USDT:USDT
+2026-03-24 15:45:55,388 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: DOTUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 15:45:55,388 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WIF/USDT:USDT
+2026-03-24 15:45:55,603 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: WIFUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 15:45:55,603 - crypto_bot - INFO - [LIGHT] 🔍 Scanning LYN/USDT:USDT
+2026-03-24 15:45:55,819 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: LYNUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 15:45:55,819 - crypto_bot - INFO - [LIGHT] 🔍 Scanning VIRTUAL/USDT:USDT
+2026-03-24 15:45:56,039 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: VIRTUALUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 15:45:56,039 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BR/USDT:USDT
+2026-03-24 15:45:56,432 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: BRUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 15:45:56,432 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ASTER/USDT:USDT
+2026-03-24 15:45:56,658 - crypto_bot - INFO - [LIGHT] ❌ No signal: ASTERUSDT
+2026-03-24 15:45:56,658 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ZRO/USDT:USDT
+2026-03-24 15:45:56,871 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: ZROUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 15:45:56,871 - crypto_bot - INFO - [LIGHT] 🔍 Scanning WLD/USDT:USDT
+2026-03-24 15:45:57,102 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: WLDUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 15:45:57,102 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BANANAS31/USDT:USDT
+2026-03-24 15:45:57,315 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: BANANAS31USDT | LIGHT_SHORT | tf=30m
+2026-03-24 15:45:57,315 - crypto_bot - INFO - [LIGHT] 🔍 Scanning AERO/USDT:USDT
+2026-03-24 15:45:57,527 - crypto_bot - INFO - [LIGHT] ✅ Signal generated: AEROUSDT | LIGHT_SHORT | tf=30m
+2026-03-24 15:45:57,527 - crypto_bot - INFO - [LIGHT] 🔍 Scanning CRV/USDT:USDT
+2026-03-24 15:45:57,753 - crypto_bot - INFO - [LIGHT] ❌ No signal: CRVUSDT
+2026-03-24 15:45:57,753 - crypto_bot - INFO - [LIGHT] 🔍 Scanning GALA/USDT:USDT
+2026-03-24 15:45:57,966 - crypto_bot - INFO - [LIGHT] ❌ No signal: GALAUSDT
+2026-03-24 15:45:57,966 - crypto_bot - INFO - [LIGHT] 🔍 Scanning RENDER/USDT:USDT
+2026-03-24 15:45:58,184 - crypto_bot - INFO - [LIGHT] ❌ No signal: RENDERUSDT
+2026-03-24 15:45:58,184 - crypto_bot - INFO - [LIGHT] 🔍 Scanning BCH/USDT:USDT
+2026-03-24 15:45:58,411 - crypto_bot - INFO - [LIGHT] ❌ No signal: BCHUSDT
+2026-03-24 15:45:58,411 - crypto_bot - INFO - [LIGHT] 🔍 Scanning ARIA/USDT:USDT
+2026-03-24 15:45:58,626 - crypto_bot - INFO - [LIGHT] ❌ No signal: ARIAUSDT
+2026-03-24 15:45:58,626 - crypto_bot - INFO - [LIGHT] 📊 Total signals after scan: 18
+2026-03-24 15:45:58,626 - crypto_bot - INFO - 📊 Signals found: 18
+2026-03-24 15:45:58,627 - crypto_bot - ERROR - scan_loop error
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 325, in scan_loop
+    self.signal_analytics.register_trade(enriched_signal, state_action)
+  File "C:\Users\user\Desktop\crypto_botV2\services\signal_analytics.py", line 156, in register_trade
+    logger.info(
+    ^^^^^^
+NameError: name 'logger' is not defined
+2026-03-24 15:46:04,175 - crypto_bot - INFO - 🛑 Остановка по KeyboardInterrupt

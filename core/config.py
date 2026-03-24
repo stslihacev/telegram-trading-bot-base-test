@@ -15,7 +15,7 @@ TOP_N = 50
 # ============================================================
 # Live mode selection
 # ============================================================
-LIVE_MODE = "SCALPING"
+LIVE_MODE = "LIGHT"
 # OPTIONS: "MAIN", "SCALPING", "LIGHT".
 # MAIN сохраняет текущую live-логику без изменений.
 # SCALPING включает отдельный набор параметров для более коротких сетапов.
@@ -28,7 +28,7 @@ ENABLE_SIGNAL_SCORING = True
 # Включает weighted scoring для live-сигналов.
 # При False используется текущая строгая логика без изменений.
 
-SIGNAL_LOG_MODE = "COMPACT"
+SIGNAL_LOG_MODE = "FULL"
 # Режим логирования сигналов: "FULL" (многострочный) или "COMPACT" (одна строка).
 
 MIN_SCORE_THRESHOLD_MAIN = 5.0

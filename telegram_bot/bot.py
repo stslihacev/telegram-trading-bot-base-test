@@ -311,12 +311,18 @@ class TelegramTradingBot:
 
                 for signal in signals:
                     enriched_signal = self._enrich_signal(signal)
+                    self.signal_analytics.check_trade_exits(
+                        current_price=enriched_signal.get("entry"),
+                        symbol=str(enriched_signal.get("symbol") or ""),
+                        timestamp=enriched_signal.get("timestamp"),
+                    )
                     self.signal_state.maybe_register_exit(enriched_signal)
                     state_action, state_reason = self.signal_state.evaluate_signal(enriched_signal)
 
                     analytics_added = False
                     if state_action in {"NEW", "UPDATE", "REVERSAL"}:
                         self.signal_analytics.collect_signal(enriched_signal, is_duplicate=False)
+                        self.signal_analytics.register_trade(enriched_signal, state_action)
                         analytics_added = True
                         try:
                             confidence_value = float(enriched_signal.get("confidence") or 0.0)
