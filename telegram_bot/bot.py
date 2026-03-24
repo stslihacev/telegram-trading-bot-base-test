@@ -37,7 +37,7 @@ from execution.signal_dispatcher import SignalDispatcher
 from scanner.market_scanner import MarketScanner
 from services.signal_analytics import SignalAnalytics
 from services.signal_deduplicator import SignalDeduplicator
-from services.signal_formatter import format_signal_compact, format_signal_full
+from services.signal_formatter import format_signal_compact, format_signal_full, get_stars
 from services.signal_state import SignalStateService, parse_datetime_utc
 from scanner.volume_scanner import get_top_usdt_pairs
 from telegram_bot.handlers.callbacks import callback_handler
@@ -81,6 +81,8 @@ if not any(
     analytics_file_handler.setLevel(logging.INFO)
     analytics_file_handler.setFormatter(logging.Formatter("%(asctime)s - %(message)s"))
     analytics_logger.addHandler(analytics_file_handler)
+
+ANALYTICS_SNAPSHOT_PATH = LOG_DIR / "analytics_snapshot.log"
 
 class TelegramTradingBot:
     """Оркестратор Telegram + сканер + диспетчер сигналов."""
@@ -282,7 +284,9 @@ class TelegramTradingBot:
         return enriched
 
     def generate_analytics_report(self) -> str:
-        return self.signal_analytics.generate_report()
+        report = self.signal_analytics.generate_report()
+        ANALYTICS_SNAPSHOT_PATH.write_text(report + "\n", encoding="utf-8")
+        return report
 
     async def scan_loop(self, interval_sec: int | None = None) -> None:
         logger.info("🚀 SCAN LOOP STARTED")
@@ -309,7 +313,34 @@ class TelegramTradingBot:
                     enriched_signal = self._enrich_signal(signal)
                     self.signal_state.maybe_register_exit(enriched_signal)
                     state_action, state_reason = self.signal_state.evaluate_signal(enriched_signal)
+
+                    analytics_added = False
+                    if state_action in {"NEW", "UPDATE", "REVERSAL"}:
+                        self.signal_analytics.collect_signal(enriched_signal, is_duplicate=False)
+                        analytics_added = True
+                        try:
+                            confidence_value = float(enriched_signal.get("confidence") or 0.0)
+                        except (TypeError, ValueError):
+                            confidence_value = 0.0
+                        logger.info(
+                            "[ANALYTICS] ADD SIGNAL | symbol=%s | score=%s | conf=%s | stars=%s",
+                            enriched_signal.get("symbol"),
+                            enriched_signal.get("score"),
+                            enriched_signal.get("confidence"),
+                            get_stars(confidence_value),
+                        )
+
                     if state_action in {"IGNORE", "COOLDOWN"}:
+                        try:
+                            if float(enriched_signal.get("confidence") or 0.0) >= 0.7 and not analytics_added:
+                                logger.warning(
+                                    "[WARNING] HIGH CONF SIGNAL NOT IN ANALYTICS | symbol=%s | conf=%.2f | action=%s",
+                                    enriched_signal.get("symbol"),
+                                    float(enriched_signal.get("confidence") or 0.0),
+                                    state_action,
+                                )
+                        except (TypeError, ValueError):
+                            pass
                         logger.info(
                             "[STATE] %s %s skipped: %s",
                             enriched_signal.get("symbol"),
@@ -325,9 +356,9 @@ class TelegramTradingBot:
                         is_duplicate, signal_id = self.signal_deduplicator.mark_and_check(enriched_signal)
                         if is_duplicate:
                             logger.info("[DEBUG] DUPLICATE SIGNAL | id=%s | fp=%s", signal_id, enriched_signal["fingerprint"])
+                            self.signal_analytics.mark_duplicate()
                         else:
                             logger.info("[DEBUG] NEW SIGNAL | id=%s | fp=%s", signal_id, enriched_signal["fingerprint"])
-                        self.signal_analytics.collect_signal(enriched_signal, is_duplicate=is_duplicate)
                         if is_duplicate:
                             continue
                     else:
@@ -337,7 +368,17 @@ class TelegramTradingBot:
                             signal_id,
                             state_reason,
                         )
-                        self.signal_analytics.collect_signal(enriched_signal, is_duplicate=False)
+                        
+                    try:
+                        if float(enriched_signal.get("confidence") or 0.0) >= 0.7 and not analytics_added:
+                            logger.warning(
+                                "[WARNING] HIGH CONF SIGNAL NOT IN ANALYTICS | symbol=%s | conf=%.2f | action=%s",
+                                enriched_signal.get("symbol"),
+                                float(enriched_signal.get("confidence") or 0.0),
+                                state_action,
+                            )
+                    except (TypeError, ValueError):
+                        pass
 
                     self.signal_state.upsert_active(enriched_signal, status="OPEN")
                     self.signal_state.mark_seen(signal_id, datetime.now(timezone.utc).isoformat())

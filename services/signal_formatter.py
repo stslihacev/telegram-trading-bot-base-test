@@ -43,6 +43,11 @@ def get_stars(confidence: float) -> str:
         return "⭐⭐"
     return "⭐"
 
+def get_stars_bucket(confidence: float) -> int:
+    """Return numeric stars bucket for confidence based on get_stars mapping."""
+    stars = get_stars(confidence)
+    return len(stars)
+
 def format_signal_full(signal: dict) -> str:
     """Return multi-line pretty signal representation for logs."""
     mode = str(signal.get("label_prefix") or signal.get("live_mode") or "[MAIN]").strip()

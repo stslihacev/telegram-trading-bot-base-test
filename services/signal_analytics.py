@@ -8,6 +8,7 @@ from datetime import datetime, timedelta, timezone
 from typing import Any
 
 import core.config as config
+from services.signal_formatter import get_stars_bucket
 
 @dataclass
 class SignalAnalytics:
@@ -38,12 +39,8 @@ class SignalAnalytics:
         try:
             confidence_f = float(confidence)
             self.confidence_sum += confidence_f
-            if confidence_f >= 0.8:
-                self.quality_counter["⭐⭐⭐⭐"] += 1
-            elif confidence_f >= 0.6:
-                self.quality_counter["⭐⭐⭐"] += 1
-            else:
-                self.quality_counter["⭐⭐"] += 1
+            stars_bucket = get_stars_bucket(confidence_f)
+            self.quality_counter["⭐" * stars_bucket] += 1
         except (TypeError, ValueError):
             pass
 
@@ -59,6 +56,19 @@ class SignalAnalytics:
             if name:
                 self.filter_pass_counter[name] += 1
 
+    def mark_duplicate(self) -> None:
+        """Adjust dedup counters when duplicate detected after analytics ingestion."""
+        self.duplicates += 1
+        if self.unique_signals > 0:
+            self.unique_signals -= 1
+
+    def _filter_pass_rate(self, total: int, aliases: tuple[str, ...]) -> float:
+        passed = 0
+        for name, count in self.filter_pass_counter.items():
+            if any(alias in name for alias in aliases):
+                passed += count
+        return passed / max(total, 1)
+
     def should_emit_report(self, signals_step: int = 20, minutes_step: int = 10) -> bool:
         by_count = self.total_signals > 0 and self.total_signals % max(1, signals_step) == 0
         by_time = (datetime.now(timezone.utc) - self.last_report_at) >= timedelta(minutes=max(1, minutes_step))
@@ -71,13 +81,21 @@ class SignalAnalytics:
             recommendations.append("Низкая активность (возможно рынок спокойный). Накопите больше сигналов перед изменением настроек.")
             return recommendations
         total = max(self.total_signals, 1)
+        main_enabled = str(config.get_live_mode()).upper() == "MAIN"
         main_ratio = self.mode_counter.get("MAIN", 0) / total
-        if main_ratio < 0.1:
+        if main_enabled and self.mode_counter.get("MAIN", 0) == 0:
+            recommendations.append("MAIN не даёт сигналов — проверьте, не завышен ли score threshold для MAIN.")
+        elif main_enabled and main_ratio < 0.1:
             recommendations.append("MAIN-режим даёт мало сигналов: возможно, threshold для MAIN слишком высокий.")
-        rsi_pass = self.filter_pass_counter.get("RSI", 0) / total
+        ema_pass = self._filter_pass_rate(total, ("EMA",))
+        if ema_pass < 0.25:
+            recommendations.append(f"EMA проходит только в {ema_pass * 100:.0f}% случаев — фильтр слишком строгий.")
+
+        rsi_pass = self._filter_pass_rate(total, ("RSI",))
         if rsi_pass < 0.15:
-            recommendations.append("RSI редко проходит: стоит смягчить RSI-пороги или увеличить TF.")
-        macd_pass = self.filter_pass_counter.get("MACD", 0) / total
+            recommendations.append("RSI почти не проходит — возможно пороги слишком жёсткие.")
+
+        macd_pass = self._filter_pass_rate(total, ("MACD",))
         if macd_pass < 0.15:
             recommendations.append("MACD почти не подтверждает сигналы: проверьте быстрые/медленные периоды.")
         if self.duplicates / total > 0.35:
@@ -117,9 +135,11 @@ class SignalAnalytics:
             f"Средний confidence: {avg_confidence:.2f}\n"
             f"Средний score: {avg_score:.2f}\n\n"
             "Качество:\n"
+            f"⭐⭐⭐⭐⭐: {self.quality_counter.get('⭐⭐⭐⭐⭐', 0)}\n"
             f"⭐⭐⭐⭐: {self.quality_counter.get('⭐⭐⭐⭐', 0)}\n"
             f"⭐⭐⭐: {self.quality_counter.get('⭐⭐⭐', 0)}\n"
-            f"⭐⭐: {self.quality_counter.get('⭐⭐', 0)}\n\n"
+            f"⭐⭐: {self.quality_counter.get('⭐⭐', 0)}\n"
+            f"⭐: {self.quality_counter.get('⭐', 0)}\n\n"
             "Топ фильтров:\n"
             f"{filters_text}\n\n"
             "--------------------------------\n\n"
