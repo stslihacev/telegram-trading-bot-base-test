@@ -5119,3 +5119,1063 @@ Failed: EMA, RSI, BODY, VOLUME
 🧠 Regime: LIGHT_RANGE
 🕒 Time:   2026-03-23 19:30:00+00:00
 Fingerprint: ef92d97fe7922f6d
+2026-03-24 16:10:23,466 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    XAUTUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 4380.500000
+🎯 TP:    4320.746857
+🛑 SL:    4417.845714
+RR:    1.60
+
+Score:      5.20 / 7.20
+⭐ Confidence: 0.72 ⭐⭐⭐⭐
+
+Passed: SMA, MACD, BODY, VOLUME
+Failed: EMA, RSI
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 12:30:00+00:00
+Fingerprint: 66f25521e4d958de
+2026-03-24 16:10:23,471 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    FARTCOINUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 0.178650
+🎯 TP:    0.174844
+🛑 SL:    0.181369
+RR:    1.40
+
+Score:      3.20 / 7.20
+⭐ Confidence: 0.44 ⭐⭐⭐
+
+Passed: SMA, VOLUME
+Failed: EMA, RSI, MACD, BODY
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 12:30:00+00:00
+Fingerprint: a02c929d887daa0e
+2026-03-24 16:10:23,475 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    BTRUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 0.040390
+🎯 TP:    0.043203
+🛑 SL:    0.038381
+RR:    1.40
+
+Score:      3.00 / 7.20
+⭐ Confidence: 0.42 ⭐⭐⭐
+
+Passed: RSI, BODY
+Failed: EMA, SMA, MACD, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 12:30:00+00:00
+Fingerprint: b57d0533045f388d
+2026-03-24 16:10:23,478 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    XAUUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 4382.560000
+🎯 TP:    4321.338057
+🛑 SL:    4420.823714
+RR:    1.60
+
+Score:      5.20 / 7.20
+⭐ Confidence: 0.72 ⭐⭐⭐⭐
+
+Passed: SMA, MACD, BODY, VOLUME
+Failed: EMA, RSI
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 12:30:00+00:00
+Fingerprint: b00f3c9de23ebff4
+2026-03-24 16:10:23,482 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    APTUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 1.046300
+🎯 TP:    1.014140
+🛑 SL:    1.069271
+RR:    1.40
+
+Score:      3.20 / 7.20
+⭐ Confidence: 0.44 ⭐⭐⭐
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 12:30:00+00:00
+Fingerprint: 035ca959a2590e8a
+2026-03-24 16:10:23,485 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    JCTUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 0.003717
+🎯 TP:    0.004186
+🛑 SL:    0.003382
+RR:    1.40
+
+Score:      3.20 / 7.20
+⭐ Confidence: 0.44 ⭐⭐⭐
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 12:30:00+00:00
+Fingerprint: a5a03260706dbe06
+2026-03-24 16:10:23,488 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    ONTUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 0.066060
+🎯 TP:    0.071740
+🛑 SL:    0.062510
+RR:    1.60
+
+Score:      5.20 / 7.20
+⭐ Confidence: 0.72 ⭐⭐⭐⭐
+
+Passed: SMA, MACD, BODY, VOLUME
+Failed: EMA, RSI
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 12:30:00+00:00
+Fingerprint: d0910a9f83728dd1
+2026-03-24 16:10:23,491 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    PAXGUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 4385.400000
+🎯 TP:    4325.400000
+🛑 SL:    4422.900000
+RR:    1.60
+
+Score:      5.20 / 7.20
+⭐ Confidence: 0.72 ⭐⭐⭐⭐
+
+Passed: SMA, MACD, BODY, VOLUME
+Failed: EMA, RSI
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 12:30:00+00:00
+Fingerprint: ab5dafdce82c003a
+2026-03-24 16:10:23,494 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    PIPPINUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 0.084160
+🎯 TP:    0.079970
+🛑 SL:    0.087153
+RR:    1.40
+
+Score:      3.20 / 7.20
+⭐ Confidence: 0.44 ⭐⭐⭐
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 12:30:00+00:00
+Fingerprint: 25e31c67e2ed039b
+2026-03-24 16:10:23,496 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    WIFUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 0.187080
+🎯 TP:    0.183811
+🛑 SL:    0.189415
+RR:    1.40
+
+Score:      3.20 / 7.20
+⭐ Confidence: 0.44 ⭐⭐⭐
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 12:30:00+00:00
+Fingerprint: b21beef017f686df
+2026-03-24 16:10:23,498 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    DOTUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 1.391200
+🎯 TP:    1.373644
+🛑 SL:    1.403740
+RR:    1.40
+
+Score:      4.00 / 7.20
+⭐ Confidence: 0.56 ⭐⭐⭐
+
+Passed: SMA, MACD, BODY
+Failed: EMA, RSI, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 12:30:00+00:00
+Fingerprint: c9d518eda4ceda53
+2026-03-24 16:10:23,500 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    BRUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 0.121070
+🎯 TP:    0.093570
+🛑 SL:    0.140713
+RR:    1.40
+
+Score:      3.20 / 7.20
+⭐ Confidence: 0.44 ⭐⭐⭐
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 12:30:00+00:00
+Fingerprint: 7cc5f7d8f989d4c2
+2026-03-24 16:10:23,503 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    WLDUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 0.319900
+🎯 TP:    0.315808
+🛑 SL:    0.322823
+RR:    1.40
+
+Score:      4.00 / 7.20
+⭐ Confidence: 0.56 ⭐⭐⭐
+
+Passed: SMA, BODY, VOLUME
+Failed: EMA, RSI, MACD
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 12:30:00+00:00
+Fingerprint: d8d5c26e519e3242
+2026-03-24 16:10:23,505 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    AEROUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 0.322700
+🎯 TP:    0.315116
+🛑 SL:    0.327440
+RR:    1.60
+
+Score:      4.40 / 7.20
+⭐ Confidence: 0.61 ⭐⭐⭐⭐
+
+Passed: SMA, MACD, VOLUME
+Failed: EMA, RSI, BODY
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 12:30:00+00:00
+Fingerprint: 61f58cc9cfa645bb
+2026-03-24 16:10:23,506 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    CRVUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 0.226500
+🎯 TP:    0.229500
+🛑 SL:    0.224357
+RR:    1.40
+
+Score:      3.20 / 7.20
+⭐ Confidence: 0.44 ⭐⭐⭐
+
+Passed: SMA, MACD
+Failed: EMA, RSI, BODY, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 12:30:00+00:00
+Fingerprint: 6cd7715bf8d916ce
+2026-03-24 16:10:23,509 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    GALAUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 0.003211
+🎯 TP:    0.003255
+🛑 SL:    0.003179
+RR:    1.40
+
+Score:      4.00 / 7.20
+⭐ Confidence: 0.56 ⭐⭐⭐
+
+Passed: SMA, BODY, VOLUME
+Failed: EMA, RSI, MACD
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 12:30:00+00:00
+Fingerprint: 417b26b0553f4cab
+2026-03-24 16:10:23,510 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    BCHUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 472.800000
+🎯 TP:    468.756000
+🛑 SL:    475.688571
+RR:    1.40
+
+Score:      3.20 / 7.20
+⭐ Confidence: 0.44 ⭐⭐⭐
+
+Passed: SMA, VOLUME
+Failed: EMA, RSI, MACD, BODY
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 12:30:00+00:00
+Fingerprint: e381c66c745380a8
+2026-03-24 16:22:54,243 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    XRPUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 1.415700
+🎯 TP:    1.402896
+🛑 SL:    1.424846
+RR:    1.40
+
+Score:      3.80 / 7.20
+⭐ Confidence: 0.53 ⭐⭐⭐
+
+Passed: EMA, SMA, BODY
+Failed: RSI, MACD, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 12:30:00+00:00
+Fingerprint: 4b497172b75a8ac4
+2026-03-24 16:26:03,195 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    ZECUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 228.850000
+🎯 TP:    225.239200
+🛑 SL:    231.429143
+RR:    1.40
+
+Score:      3.20 / 7.20
+⭐ Confidence: 0.44 ⭐⭐⭐
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 12:30:00+00:00
+Fingerprint: 602a80fdcf83c7fb
+2026-03-24 16:32:18,442 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    SOLUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 91.050000
+🎯 TP:    89.858229
+🛑 SL:    91.794857
+RR:    1.60
+
+Score:      4.40 / 7.20
+⭐ Confidence: 0.61 ⭐⭐⭐⭐
+
+Passed: MACD, BODY, VOLUME
+Failed: EMA, SMA, RSI
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 13:00:00+00:00
+Fingerprint: a330690cb9b2491b
+2026-03-24 16:32:18,444 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    TAOUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 310.650000
+🎯 TP:    299.941200
+🛑 SL:    318.299143
+RR:    1.40
+
+Score:      3.20 / 7.20
+⭐ Confidence: 0.44 ⭐⭐⭐
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 13:00:00+00:00
+Fingerprint: 215149372592b0ee
+2026-03-24 16:32:18,446 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    SIRENUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 1.013240
+🎯 TP:    1.086492
+🛑 SL:    0.960917
+RR:    1.40
+
+Score:      3.00 / 7.20
+⭐ Confidence: 0.42 ⭐⭐⭐
+
+Passed: RSI, BODY
+Failed: EMA, SMA, MACD, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 13:00:00+00:00
+Fingerprint: 90556f98d98ce295
+2026-03-24 16:32:18,448 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    1000PEPEUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 0.003431
+🎯 TP:    0.003386
+🛑 SL:    0.003463
+RR:    1.40
+
+Score:      3.20 / 7.20
+⭐ Confidence: 0.44 ⭐⭐⭐
+
+Passed: SMA, VOLUME
+Failed: EMA, RSI, MACD, BODY
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 13:00:00+00:00
+Fingerprint: 4a13c2f75dc74ff2
+2026-03-24 16:32:18,451 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    LINKUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 9.182000
+🎯 TP:    9.084680
+🛑 SL:    9.251514
+RR:    1.40
+
+Score:      3.20 / 7.20
+⭐ Confidence: 0.44 ⭐⭐⭐
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 13:00:00+00:00
+Fingerprint: 4d35193ae6ef7224
+2026-03-24 16:32:18,453 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    LIGHTUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 0.260000
+🎯 TP:    0.291620
+🛑 SL:    0.237414
+RR:    1.40
+
+Score:      4.20 / 7.20
+⭐ Confidence: 0.58 ⭐⭐⭐
+
+Passed: RSI, BODY, VOLUME
+Failed: EMA, SMA, MACD
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 13:00:00+00:00
+Fingerprint: b574ef1f4ed348f0
+2026-03-24 16:32:18,455 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    BNBUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 635.500000
+🎯 TP:    630.976000
+🛑 SL:    638.731429
+RR:    1.40
+
+Score:      4.00 / 7.20
+⭐ Confidence: 0.56 ⭐⭐⭐
+
+Passed: SMA, BODY, VOLUME
+Failed: EMA, RSI, MACD
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 13:00:00+00:00
+Fingerprint: a88f60c4c610cac5
+2026-03-24 16:32:18,457 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    LYNUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 0.071580
+🎯 TP:    0.067087
+🛑 SL:    0.074789
+RR:    1.40
+
+Score:      4.00 / 7.20
+⭐ Confidence: 0.56 ⭐⭐⭐
+
+Passed: SMA, BODY, VOLUME
+Failed: EMA, RSI, MACD
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 13:00:00+00:00
+Fingerprint: 1abb42d41215ac58
+2026-03-24 16:32:18,459 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    ZROUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 2.154600
+🎯 TP:    2.104284
+🛑 SL:    2.190540
+RR:    1.40
+
+Score:      3.60 / 7.20
+⭐ Confidence: 0.50 ⭐⭐⭐
+
+Passed: MACD, VOLUME
+Failed: EMA, SMA, RSI, BODY
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 13:00:00+00:00
+Fingerprint: 73dfe8f9c044a9fd
+2026-03-24 16:32:18,461 - INFO - [UPDATE] [LIGHT] 📡 SIGNAL
+
+Symbol:    AEROUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 0.324200
+🎯 TP:    0.316342
+🛑 SL:    0.329111
+RR:    1.60
+
+Score:      5.20 / 7.20
+⭐ Confidence: 0.72 ⭐⭐⭐⭐
+
+Passed: SMA, MACD, BODY, VOLUME
+Failed: EMA, RSI
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 13:00:00+00:00
+Fingerprint: daaa18730b3deba7
+2026-03-24 16:32:18,464 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    RENDERUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 1.729900
+🎯 TP:    1.689520
+🛑 SL:    1.758743
+RR:    1.40
+
+Score:      3.20 / 7.20
+⭐ Confidence: 0.44 ⭐⭐⭐
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 13:00:00+00:00
+Fingerprint: 90153fe2b84f7330
+2026-03-24 16:35:27,490 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    HYPEUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 38.619000
+🎯 TP:    39.147600
+🛑 SL:    38.241429
+RR:    1.40
+
+Score:      3.20 / 7.20
+⭐ Confidence: 0.44 ⭐⭐⭐
+
+Passed: SMA, VOLUME
+Failed: EMA, RSI, MACD, BODY
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 13:00:00+00:00
+Fingerprint: f7bd3acf3e0a0ab8
+2026-03-24 17:30:48,458 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    BTCUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 69967.800000
+🎯 TP:    69300.720000
+🛑 SL:    70444.285714
+RR:    1.40
+
+Score:      3.60 / 7.20
+⭐ Confidence: 0.50 ⭐⭐⭐
+
+Passed: MACD, VOLUME
+Failed: EMA, SMA, RSI, BODY
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 14:00:00+00:00
+Fingerprint: c93ec183805509d1
+2026-03-24 17:30:48,466 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    ETHUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 2132.560000
+🎯 TP:    2103.537829
+🛑 SL:    2150.698857
+RR:    1.60
+
+Score:      4.60 / 7.20
+⭐ Confidence: 0.64 ⭐⭐⭐⭐
+
+Passed: EMA, MACD, VOLUME
+Failed: SMA, RSI, BODY
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 14:00:00+00:00
+Fingerprint: 3f7575f5b8b3c48b
+2026-03-24 17:30:48,470 - INFO - [UPDATE] [LIGHT] 📡 SIGNAL
+
+Symbol:    SOLUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 89.440000
+🎯 TP:    88.048000
+🛑 SL:    90.310000
+RR:    1.60
+
+Score:      5.40 / 7.20
+⭐ Confidence: 0.75 ⭐⭐⭐⭐
+
+Passed: EMA, MACD, BODY, VOLUME
+Failed: SMA, RSI
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 14:00:00+00:00
+Fingerprint: df556f195ac19510
+2026-03-24 17:30:48,473 - INFO - [UPDATE] [LIGHT] 📡 SIGNAL
+
+Symbol:    1000PEPEUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 0.003397
+🎯 TP:    0.003343
+🛑 SL:    0.003431
+RR:    1.60
+
+Score:      5.20 / 7.20
+⭐ Confidence: 0.72 ⭐⭐⭐⭐
+
+Passed: SMA, MACD, BODY, VOLUME
+Failed: EMA, RSI
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 14:00:00+00:00
+Fingerprint: b267310dfd590be8
+2026-03-24 17:30:48,480 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    ENAUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 0.092720
+🎯 TP:    0.091058
+🛑 SL:    0.093907
+RR:    1.40
+
+Score:      3.20 / 7.20
+⭐ Confidence: 0.44 ⭐⭐⭐
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 14:00:00+00:00
+Fingerprint: 560d4513ee88bf02
+2026-03-24 17:30:48,484 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    SUIUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 0.940300
+🎯 TP:    0.927326
+🛑 SL:    0.948409
+RR:    1.60
+
+Score:      4.40 / 7.20
+⭐ Confidence: 0.61 ⭐⭐⭐⭐
+
+Passed: SMA, MACD, VOLUME
+Failed: EMA, RSI, BODY
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 14:00:00+00:00
+Fingerprint: 0774e03012e04db5
+2026-03-24 17:30:48,487 - INFO - [REVERSAL] [LIGHT] 📡 SIGNAL
+
+Symbol:    JCTUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 0.003197
+🎯 TP:    0.002786
+🛑 SL:    0.003490
+RR:    1.40
+
+Score:      4.00 / 7.20
+⭐ Confidence: 0.56 ⭐⭐⭐
+
+Passed: SMA, BODY, VOLUME
+Failed: EMA, RSI, MACD
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 14:00:00+00:00
+Fingerprint: 786a20f95a454bd4
+2026-03-24 17:30:48,489 - INFO - [UPDATE] [LIGHT] 📡 SIGNAL
+
+Symbol:    ZECUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 225.480000
+🎯 TP:    221.365714
+🛑 SL:    228.051429
+RR:    1.60
+
+Score:      5.20 / 7.20
+⭐ Confidence: 0.72 ⭐⭐⭐⭐
+
+Passed: SMA, MACD, BODY, VOLUME
+Failed: EMA, RSI
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 14:00:00+00:00
+Fingerprint: 46eeca865eaf7b1a
+2026-03-24 17:30:48,492 - INFO - [UPDATE] [LIGHT] 📡 SIGNAL
+
+Symbol:    BNBUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 630.900000
+🎯 TP:    625.153714
+🛑 SL:    634.491429
+RR:    1.60
+
+Score:      5.40 / 7.20
+⭐ Confidence: 0.75 ⭐⭐⭐⭐
+
+Passed: EMA, SMA, MACD, VOLUME
+Failed: RSI, BODY
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 14:00:00+00:00
+Fingerprint: 681dd5bb2926567b
+2026-03-24 17:30:48,495 - INFO - [REVERSAL] [LIGHT] 📡 SIGNAL
+
+Symbol:    LYNUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 0.068840
+🎯 TP:    0.073556
+🛑 SL:    0.065471
+RR:    1.40
+
+Score:      4.00 / 7.20
+⭐ Confidence: 0.56 ⭐⭐⭐
+
+Passed: SMA, BODY, VOLUME
+Failed: EMA, RSI, MACD
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 14:00:00+00:00
+Fingerprint: e4a7d4dfad810a2d
+2026-03-24 17:30:48,498 - INFO - [REVERSAL] [LIGHT] 📡 SIGNAL
+
+Symbol:    WIFUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 0.188040
+🎯 TP:    0.191434
+🛑 SL:    0.185616
+RR:    1.40
+
+Score:      4.00 / 7.20
+⭐ Confidence: 0.56 ⭐⭐⭐
+
+Passed: SMA, BODY, VOLUME
+Failed: EMA, RSI, MACD
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 14:00:00+00:00
+Fingerprint: 6aff3f793c5e3701
+2026-03-24 17:30:48,500 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    AVAXUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 9.443000
+🎯 TP:    9.344600
+🛑 SL:    9.513286
+RR:    1.40
+
+Score:      3.60 / 7.20
+⭐ Confidence: 0.50 ⭐⭐⭐
+
+Passed: MACD, VOLUME
+Failed: EMA, SMA, RSI, BODY
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 14:00:00+00:00
+Fingerprint: d16b48c02dfad59e
+2026-03-24 17:30:48,503 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    NEARUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 1.288600
+🎯 TP:    1.269578
+🛑 SL:    1.300489
+RR:    1.60
+
+Score:      4.40 / 7.20
+⭐ Confidence: 0.61 ⭐⭐⭐⭐
+
+Passed: SMA, MACD, VOLUME
+Failed: EMA, RSI, BODY
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 14:00:00+00:00
+Fingerprint: 680a69be7f235ee8
+2026-03-24 17:30:48,505 - INFO - [REVERSAL] [LIGHT] 📡 SIGNAL
+
+Symbol:    ZROUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 2.178000
+🎯 TP:    2.223000
+🛑 SL:    2.145857
+RR:    1.40
+
+Score:      3.80 / 7.20
+⭐ Confidence: 0.53 ⭐⭐⭐
+
+Passed: EMA, SMA, BODY
+Failed: RSI, MACD, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 14:00:00+00:00
+Fingerprint: 059dcf6f82a0a8cc
+2026-03-24 17:30:48,506 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    AAVEUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 108.710000
+🎯 TP:    106.742000
+🛑 SL:    109.694000
+RR:    2.00
+
+Score:      6.20 / 7.20
+⭐ Confidence: 0.86 ⭐⭐⭐⭐⭐
+
+Passed: EMA, SMA, MACD, BODY, VOLUME
+Failed: RSI
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 14:00:00+00:00
+Fingerprint: 3f2311f3819b6a0d
+2026-03-24 17:30:48,510 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    ARIAUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 0.317930
+🎯 TP:    0.344781
+🛑 SL:    0.301148
+RR:    1.60
+
+Score:      5.20 / 7.20
+⭐ Confidence: 0.72 ⭐⭐⭐⭐
+
+Passed: SMA, MACD, BODY, VOLUME
+Failed: EMA, RSI
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 14:00:00+00:00
+Fingerprint: f35a7d7210084ea1
+2026-03-24 17:33:59,570 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    BANANAS31USDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 0.014697
+🎯 TP:    0.015174
+🛑 SL:    0.014356
+RR:    1.40
+
+Score:      3.20 / 7.20
+⭐ Confidence: 0.44 ⭐⭐⭐
+
+Passed: MACD, BODY
+Failed: EMA, SMA, RSI, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 14:00:00+00:00
+Fingerprint: b5a9b8defe19b672
+2026-03-24 17:40:22,120 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    DOGEUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 0.093390
+🎯 TP:    0.092112
+🛑 SL:    0.094189
+RR:    1.60
+
+Score:      5.40 / 7.20
+⭐ Confidence: 0.75 ⭐⭐⭐⭐
+
+Passed: EMA, SMA, MACD, VOLUME
+Failed: RSI, BODY
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 14:00:00+00:00
+Fingerprint: c364dbe27a631621
+2026-03-24 17:40:22,125 - INFO - [REVERSAL] [LIGHT] 📡 SIGNAL
+
+Symbol:    HYPEUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 38.356000
+🎯 TP:    37.634080
+🛑 SL:    38.807200
+RR:    1.60
+
+Score:      4.40 / 7.20
+⭐ Confidence: 0.61 ⭐⭐⭐⭐
+
+Passed: MACD, BODY, VOLUME
+Failed: EMA, SMA, RSI
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 14:00:00+00:00
+Fingerprint: 32e5609a99c7dd81
+2026-03-24 17:40:22,129 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    ADAUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 0.260700
+🎯 TP:    0.257376
+🛑 SL:    0.263074
+RR:    1.40
+
+Score:      3.40 / 7.20
+⭐ Confidence: 0.47 ⭐⭐⭐
+
+Passed: EMA, MACD
+Failed: SMA, RSI, BODY, VOLUME
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 14:00:00+00:00
+Fingerprint: a7b12503450196b8
+2026-03-24 17:40:22,136 - INFO - [REVERSAL] [LIGHT] 📡 SIGNAL
+
+Symbol:    CRVUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 0.222200
+🎯 TP:    0.218387
+🛑 SL:    0.224583
+RR:    1.60
+
+Score:      4.40 / 7.20
+⭐ Confidence: 0.61 ⭐⭐⭐⭐
+
+Passed: MACD, BODY, VOLUME
+Failed: EMA, SMA, RSI
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 14:00:00+00:00
+Fingerprint: d7d3ef72a7e5df66
+2026-03-24 17:46:46,434 - INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    TRUMPUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 3.261000
+🎯 TP:    3.221229
+🛑 SL:    3.285857
+RR:    1.60
+
+Score:      5.40 / 7.20
+⭐ Confidence: 0.75 ⭐⭐⭐⭐
+
+Passed: EMA, SMA, MACD, VOLUME
+Failed: RSI, BODY
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-03-24 14:00:00+00:00
+Fingerprint: 46b8a770f6b4210b

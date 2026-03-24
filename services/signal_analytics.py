@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from collections import Counter
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
@@ -9,6 +10,10 @@ from typing import Any
 
 import core.config as config
 from services.signal_formatter import get_stars_bucket
+from utils.logger import logger
+
+if "logger" not in globals():
+    logger = logging.getLogger("crypto_bot")
 
 @dataclass
 class SignalAnalytics:
@@ -26,6 +31,12 @@ class SignalAnalytics:
     last_report_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     active_trades: dict[str, dict[str, Any]] = field(default_factory=dict)
     closed_trades: list[dict[str, Any]] = field(default_factory=list)
+
+    def __post_init__(self) -> None:
+        try:
+            logger.info("[ANALYTICS INIT] trade tracking enabled")
+        except Exception:
+            pass
 
     def collect_signal(self, signal: dict[str, Any], is_duplicate: bool = False) -> None:
         self.total_signals += 1
@@ -89,6 +100,8 @@ class SignalAnalytics:
             return default
 
     def _close_trade(self, symbol: str, exit_price: float, timestamp: Any, result: str) -> None:
+        if symbol not in self.active_trades:
+            return
         trade = self.active_trades.pop(symbol, None)
         if not trade:
             return
@@ -99,7 +112,10 @@ class SignalAnalytics:
         sl = self._safe_float(trade.get("sl"))
         open_time = self._parse_timestamp(trade.get("open_time"))
         close_time = self._parse_timestamp(timestamp)
-        duration_sec = max((close_time - open_time).total_seconds(), 0.0)
+        try:
+            duration_sec = max((close_time - open_time).total_seconds(), 0.0)
+        except Exception:
+            duration_sec = 0.0
         risk = abs(entry - sl)
         rr = abs(exit_price - entry) / risk if risk > 0 else 0.0
 
@@ -119,25 +135,41 @@ class SignalAnalytics:
             "is_reversal": bool(trade.get("is_reversal", False)),
         }
         self.closed_trades.append(closed)
-        logger.info(
-            "[TRADE CLOSED] symbol=%s result=%s rr=%.2f duration=%.0fs",
-            symbol,
-            result,
-            rr,
-            duration_sec,
-        )
+        try:
+            logger.info(
+                "[TRADE CLOSED] symbol=%s result=%s rr=%.2f duration=%.0fs",
+                symbol,
+                result,
+                rr,
+                duration_sec,
+            )
+            logger.info("[TRADE DEBUG] active_trades size=%s", len(self.active_trades))
+        except Exception:
+            pass
 
     def register_trade(self, signal: dict[str, Any], action: str) -> None:
+        if not signal:
+            return
+        if "symbol" not in signal:
+            return
         action_upper = str(action or "").upper()
+        if action_upper == "UPDATE":
+            return
         if action_upper not in {"NEW", "REVERSAL"}:
             return
         symbol = str(signal.get("symbol") or "").strip()
         if not symbol:
             return
+        entry_raw = signal.get("entry")
+        tp_raw = signal.get("tp")
+        sl_raw = signal.get("sl")
+        if entry_raw is None or tp_raw is None or sl_raw is None:
+            return
         entry = self._safe_float(signal.get("entry"))
         timestamp = self._parse_timestamp(signal.get("timestamp"))
-        if action_upper == "REVERSAL" and symbol in self.active_trades:
-            self._close_trade(symbol, entry, timestamp, result="REVERSAL_EXIT")
+        if action_upper == "REVERSAL":
+            if symbol in self.active_trades:
+                self._close_trade(symbol, entry, timestamp, result="REVERSAL_EXIT")
 
         trade = {
             "symbol": symbol,
@@ -153,19 +185,27 @@ class SignalAnalytics:
             "is_reversal": action_upper == "REVERSAL" or bool(signal.get("is_reversal", False)),
         }
         self.active_trades[symbol] = trade
-        logger.info(
-            "[TRADE OPEN] symbol=%s dir=%s entry=%s tp=%s sl=%s conf=%.2f",
-            symbol,
-            trade["direction"],
-            trade["entry"],
-            trade["tp"],
-            trade["sl"],
-            trade["confidence"],
-        )
+        try:
+            logger.info(
+                "[TRADE OPEN] symbol=%s dir=%s entry=%s tp=%s sl=%s conf=%.2f",
+                symbol,
+                trade["direction"],
+                trade["entry"],
+                trade["tp"],
+                trade["sl"],
+                trade["confidence"],
+            )
+            logger.info("[TRADE DEBUG] active_trades size=%s", len(self.active_trades))
+        except Exception:
+            pass
 
     def check_trade_exits(self, current_price: Any, symbol: str, timestamp: Any) -> None:
         symbol_key = str(symbol or "").strip()
         if not symbol_key:
+            return
+        if symbol_key not in self.active_trades:
+            return
+        if current_price is None:
             return
         trade = self.active_trades.get(symbol_key)
         if not trade:
@@ -257,7 +297,10 @@ class SignalAnalytics:
         reversal_wins = sum(
             1 for trade in self.closed_trades if trade.get("is_reversal") and trade.get("result") == "TP"
         )
-        winrate = (tp_count / trades_total * 100) if trades_total else 0.0
+        if trades_total == 0:
+            winrate = 0.0
+        else:
+            winrate = tp_count / trades_total * 100
         reversal_winrate = (reversal_wins / reversal_count * 100) if reversal_count else 0.0
         avg_rr = (
             sum(self._safe_float(trade.get("rr")) for trade in self.closed_trades) / trades_total
