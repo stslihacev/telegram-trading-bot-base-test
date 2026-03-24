@@ -3,9 +3,13 @@
 from __future__ import annotations
 
 import logging
+import json
+import os
+import threading
 from collections import Counter
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
+from pathlib import Path
 from typing import Any
 
 import core.config as config
@@ -31,12 +35,15 @@ class SignalAnalytics:
     last_report_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     active_trades: dict[str, dict[str, Any]] = field(default_factory=dict)
     closed_trades: list[dict[str, Any]] = field(default_factory=list)
+    trades_path: Path = field(default_factory=lambda: Path("data") / "active_trades.json")
+    _io_lock: threading.RLock = field(default_factory=threading.RLock, init=False, repr=False)
 
     def __post_init__(self) -> None:
         try:
             logger.info("[ANALYTICS INIT] trade tracking enabled")
         except Exception:
             pass
+        self._load_active_trades()
 
     def collect_signal(self, signal: dict[str, Any], is_duplicate: bool = False) -> None:
         self.total_signals += 1
@@ -99,6 +106,117 @@ class SignalAnalytics:
         except (TypeError, ValueError):
             return default
 
+    @staticmethod
+    def _serialize_trade(trade: dict[str, Any]) -> dict[str, Any]:
+        serialized = dict(trade)
+        open_time = serialized.get("open_time")
+        if isinstance(open_time, datetime):
+            serialized["open_time"] = open_time.astimezone(timezone.utc).isoformat()
+        elif open_time is not None:
+            serialized["open_time"] = str(open_time)
+        return serialized
+
+    def _sanitize_trade_payload(self, symbol: str, payload: dict[str, Any]) -> dict[str, Any] | None:
+        required_fields = ("direction", "entry", "tp", "sl")
+        if not isinstance(payload, dict):
+            return None
+        if any(payload.get(field) is None for field in required_fields):
+            return None
+
+        normalized_symbol = str(payload.get("symbol") or symbol or "").strip()
+        if not normalized_symbol:
+            return None
+
+        open_time = self._parse_timestamp(payload.get("open_time"))
+        trade = {
+            "symbol": normalized_symbol,
+            "direction": str(payload.get("direction") or "").upper(),
+            "entry": self._safe_float(payload.get("entry")),
+            "tp": self._safe_float(payload.get("tp")),
+            "sl": self._safe_float(payload.get("sl")),
+            "open_time": open_time,
+            "signal_id": str(payload.get("signal_id") or ""),
+            "confidence": self._safe_float(payload.get("confidence")),
+            "score": self._safe_float(payload.get("score")),
+            "mode": str(payload.get("mode") or "UNKNOWN").upper().strip("[]"),
+            "is_reversal": bool(payload.get("is_reversal", False)),
+        }
+        if trade["direction"] not in {"LONG", "SHORT"}:
+            return None
+        return trade
+
+    def _save_active_trades(self) -> None:
+        with self._io_lock:
+            self.trades_path.parent.mkdir(parents=True, exist_ok=True)
+            payload = {
+                symbol: self._serialize_trade(trade)
+                for symbol, trade in self.active_trades.items()
+                if isinstance(trade, dict)
+            }
+            tmp_path = self.trades_path.with_suffix(f"{self.trades_path.suffix}.tmp")
+            tmp_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+            os.replace(tmp_path, self.trades_path)
+        try:
+            logger.info("[PERSISTENCE] saved trades")
+        except Exception:
+            pass
+
+    def _reset_persistence_file(self) -> None:
+        with self._io_lock:
+            self.active_trades = {}
+            self.trades_path.parent.mkdir(parents=True, exist_ok=True)
+            tmp_path = self.trades_path.with_suffix(f"{self.trades_path.suffix}.tmp")
+            tmp_path.write_text("{}", encoding="utf-8")
+            os.replace(tmp_path, self.trades_path)
+
+    def _reset_corrupted_persistence(self) -> None:
+        self._reset_persistence_file()
+        try:
+            logger.warning("[PERSISTENCE] file corrupted → reset")
+        except Exception:
+            pass
+
+    def _load_active_trades(self) -> None:
+        self.trades_path.parent.mkdir(parents=True, exist_ok=True)
+        if not self.trades_path.exists():
+            self._reset_persistence_file()
+            try:
+                logger.info("[PERSISTENCE] loaded trades: 0")
+            except Exception:
+                pass
+            return
+
+        with self._io_lock:
+            try:
+                raw_payload = json.loads(self.trades_path.read_text(encoding="utf-8"))
+            except (json.JSONDecodeError, OSError):
+                self._reset_corrupted_persistence()
+                try:
+                    logger.info("[PERSISTENCE] loaded trades: 0")
+                except Exception:
+                    pass
+                return
+
+            if not isinstance(raw_payload, dict):
+                self._reset_corrupted_persistence()
+                try:
+                    logger.info("[PERSISTENCE] loaded trades: 0")
+                except Exception:
+                    pass
+                return
+
+            restored: dict[str, dict[str, Any]] = {}
+            for symbol, trade_payload in raw_payload.items():
+                trade = self._sanitize_trade_payload(str(symbol), trade_payload)
+                if not trade:
+                    continue
+                restored[trade["symbol"]] = trade
+            self.active_trades = restored
+        try:
+            logger.info("[PERSISTENCE] loaded trades: %s", len(self.active_trades))
+        except Exception:
+            pass
+
     def _close_trade(self, symbol: str, exit_price: float, timestamp: Any, result: str) -> None:
         if symbol not in self.active_trades:
             return
@@ -135,6 +253,7 @@ class SignalAnalytics:
             "is_reversal": bool(trade.get("is_reversal", False)),
         }
         self.closed_trades.append(closed)
+        self._save_active_trades()
         try:
             logger.info(
                 "[TRADE CLOSED] symbol=%s result=%s rr=%.2f duration=%.0fs",
@@ -153,9 +272,7 @@ class SignalAnalytics:
         if "symbol" not in signal:
             return
         action_upper = str(action or "").upper()
-        if action_upper == "UPDATE":
-            return
-        if action_upper not in {"NEW", "REVERSAL"}:
+        if action_upper not in {"NEW", "REVERSAL", "UPDATE"}:
             return
         symbol = str(signal.get("symbol") or "").strip()
         if not symbol:
@@ -167,6 +284,19 @@ class SignalAnalytics:
             return
         entry = self._safe_float(signal.get("entry"))
         timestamp = self._parse_timestamp(signal.get("timestamp"))
+        if action_upper == "UPDATE":
+            trade = self.active_trades.get(symbol)
+            if not trade:
+                return
+            trade["entry"] = entry
+            trade["tp"] = self._safe_float(signal.get("tp"))
+            trade["sl"] = self._safe_float(signal.get("sl"))
+            trade["confidence"] = self._safe_float(signal.get("confidence"))
+            trade["score"] = self._safe_float(signal.get("score"))
+            trade["mode"] = str(signal.get("live_mode") or signal.get("label_prefix") or "UNKNOWN").upper().strip("[]")
+            self.active_trades[symbol] = trade
+            self._save_active_trades()
+            return
         if action_upper == "REVERSAL":
             if symbol in self.active_trades:
                 self._close_trade(symbol, entry, timestamp, result="REVERSAL_EXIT")
@@ -185,6 +315,7 @@ class SignalAnalytics:
             "is_reversal": action_upper == "REVERSAL" or bool(signal.get("is_reversal", False)),
         }
         self.active_trades[symbol] = trade
+        self._save_active_trades()
         try:
             logger.info(
                 "[TRADE OPEN] symbol=%s dir=%s entry=%s tp=%s sl=%s conf=%.2f",

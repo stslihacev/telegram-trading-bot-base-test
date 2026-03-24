@@ -111,7 +111,7 @@ class TelegramTradingBot:
 
         self.dispatcher = SignalDispatcher(dedup_minutes=60)
         self.signal_deduplicator = SignalDeduplicator(ttl_seconds=3600)
-        self.signal_analytics = SignalAnalytics()
+        self.signal_analytics = SignalAnalytics(trades_path=BASE_DIR / "data" / "active_trades.json")
         self.signal_state = SignalStateService(
             state_path=BASE_DIR / "data" / "runtime_state.json",
             min_upgrade_score=MIN_UPGRADE_SCORE,
