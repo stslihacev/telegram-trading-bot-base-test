@@ -187,7 +187,7 @@ class TelegramTradingBot:
 
                 top_frame = ttk.Frame(root)
                 top_frame.pack(fill=tk.X, padx=12, pady=(12, 6))
-                mode_stats_var = tk.StringVar(value="Modes: loading...")
+                mode_stats_var = tk.StringVar(value="Winrate: - | Profit Factor: -")
                 last_trade_var = tk.StringVar(value="Last close: -")
                 ttk.Label(top_frame, textvariable=mode_stats_var, justify=tk.LEFT).pack(anchor=tk.W)
                 ttk.Label(top_frame, textvariable=last_trade_var, justify=tk.LEFT).pack(anchor=tk.W, pady=(4, 0))
@@ -197,15 +197,15 @@ class TelegramTradingBot:
 
                 def poll_queue() -> None:
                     try:
-                        while True:
+                        while not self.signal_queue.empty():
                             signal_message = self.signal_queue.get_nowait()
                             text_widget.configure(state=tk.NORMAL)
                             text_widget.insert(tk.END, f"{signal_message}\n")
                             text_widget.see(tk.END)
                             text_widget.configure(state=tk.DISABLED)
-                        while True:
+                        while not self.gui_summary_queue.empty():
                             summary = self.gui_summary_queue.get_nowait()
-                            mode_stats_var.set(summary.get("modes", "Modes: -"))
+                            mode_stats_var.set(summary.get("profitability", "Winrate: - | Profit Factor: -"))
                             last_trade_var.set(summary.get("last_trade", "Last close: -"))
                     except queue.Empty:
                         pass
@@ -455,7 +455,7 @@ class TelegramTradingBot:
                         self.signal_queue.put(f"[CLOSED] {self.signal_analytics.get_last_closed_trade_brief()}")
                     self.gui_summary_queue.put(
                         {
-                            "modes": " | ".join(self.signal_analytics.get_mode_stats_compact()),
+                            "profitability": self.signal_analytics.get_profitability_compact(),
                             "last_trade": self.signal_analytics.get_last_closed_trade_brief(),
                         }
                     )

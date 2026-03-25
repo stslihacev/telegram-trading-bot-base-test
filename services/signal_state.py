@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import os
+import threading
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -46,8 +47,13 @@ class SignalStateService:
     seen_signals: dict[str, str] = field(default_factory=dict)
     failed_signals: dict[str, str] = field(default_factory=dict)
     last_reversal_at: dict[str, str] = field(default_factory=dict)
+    _lock: threading.RLock = field(default_factory=threading.RLock, init=False, repr=False)
 
     def load(self) -> None:
+        with self._lock:
+            self._load_unlocked()
+
+    def _load_unlocked(self) -> None:
         self.state_path.parent.mkdir(parents=True, exist_ok=True)
         if not self.state_path.exists():
             self.save()
@@ -65,6 +71,10 @@ class SignalStateService:
         self.cleanup_stale()
 
     def save(self) -> None:
+        with self._lock:
+            self._save_unlocked()
+
+    def _save_unlocked(self) -> None:
         payload = {
             "version": self.schema_version,
             "active_signals": self.active_signals,
@@ -78,6 +88,10 @@ class SignalStateService:
         os.replace(tmp_path, self.state_path)
 
     def cleanup_stale(self) -> None:
+        with self._lock:
+            self._cleanup_stale_unlocked()
+
+    def _cleanup_stale_unlocked(self) -> None:
         now = _utc_now()
         ttl = timedelta(hours=self.stale_hours)
         for storage in (self.active_signals, self.seen_signals, self.failed_signals, self.last_reversal_at):
@@ -92,15 +106,18 @@ class SignalStateService:
 
     def mark_seen(self, signal_id: str, timestamp: str) -> None:
         normalized = _to_dt(timestamp)
-        self.seen_signals[signal_id] = (normalized or _utc_now()).isoformat()
+        with self._lock:
+            self.seen_signals[signal_id] = (normalized or _utc_now()).isoformat()
 
     def register_failed_signal(self, symbol: str, timestamp: str | None = None) -> None:
         ts = timestamp or _utc_now().isoformat()
-        self.failed_signals[symbol] = ts
+        with self._lock:
+            self.failed_signals[symbol] = ts
 
     def is_cooldown_active(self, symbol: str, now: datetime | None = None) -> bool:
         now = now or _utc_now()
-        failed_at = _to_dt(self.failed_signals.get(symbol))
+        with self._lock:
+            failed_at = _to_dt(self.failed_signals.get(symbol))
         if failed_at is None:
             return False
         return now - failed_at < timedelta(minutes=self.failed_cooldown_minutes)
@@ -113,9 +130,11 @@ class SignalStateService:
         status = str(signal.get("status") or "").upper()
         if close_reason in {"SL", "STOP_LOSS", "LOSS"} or status == "SL":
             self.register_failed_signal(symbol, str(signal.get("timestamp") or _utc_now().isoformat()))
-            self.active_signals.pop(symbol, None)
+            with self._lock:
+                self.active_signals.pop(symbol, None)
         elif close_reason in {"TP", "TAKE_PROFIT", "WIN"}:
-            self.active_signals.pop(symbol, None)
+            with self._lock:
+                self.active_signals.pop(symbol, None)
 
     def evaluate_signal(self, signal: dict[str, Any]) -> tuple[str, str]:
         """
@@ -139,7 +158,8 @@ class SignalStateService:
         if cooldown_active and score >= self.cooldown_override_score:
             return "NEW", "cooldown overridden by strong score"
 
-        current = self.active_signals.get(symbol)
+        with self._lock:
+            current = self.active_signals.get(symbol)
 
         if not current:
             return "NEW", "no active signal"
@@ -159,11 +179,13 @@ class SignalStateService:
         old_is_weak = old_score < self.min_upgrade_score
         new_is_much_stronger = score > old_score + self.min_score_diff
         if old_is_weak or new_is_much_stronger:
-            last_reversal = _to_dt(self.last_reversal_at.get(symbol))
+            with self._lock:
+                last_reversal = _to_dt(self.last_reversal_at.get(symbol))
             interval = timedelta(minutes=self.min_reversal_interval_minutes)
             if last_reversal is not None and now - last_reversal < interval:
                 return "IGNORE", "reversal blocked by minimum interval"
-            self.last_reversal_at[symbol] = now.isoformat()
+            with self._lock:
+                self.last_reversal_at[symbol] = now.isoformat()
             return "REVERSAL", "direction changed with stronger setup"
         return "IGNORE", "reversal blocked"
 
@@ -171,13 +193,14 @@ class SignalStateService:
         symbol = str(signal.get("symbol") or "").strip()
         if not symbol:
             return
-        self.active_signals[symbol] = {
-            "direction": signal.get("direction"),
-            "entry": float(signal.get("entry") or 0.0),
-            "sl": float(signal.get("sl") or 0.0),
-            "tp": float(signal.get("tp") or 0.0),
-            "score": float(signal.get("score") or 0.0),
-            "confidence": float(signal.get("confidence") or 0.0),
-            "status": status,
-            "timestamp": str(signal.get("timestamp") or _utc_now().isoformat()),
-        }
+        with self._lock:
+            self.active_signals[symbol] = {
+                "direction": signal.get("direction"),
+                "entry": float(signal.get("entry") or 0.0),
+                "sl": float(signal.get("sl") or 0.0),
+                "tp": float(signal.get("tp") or 0.0),
+                "score": float(signal.get("score") or 0.0),
+                "confidence": float(signal.get("confidence") or 0.0),
+                "status": status,
+                "timestamp": str(signal.get("timestamp") or _utc_now().isoformat()),
+            }

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+import math
 import threading
 import time
 from dataclasses import dataclass
@@ -73,9 +74,17 @@ class BybitRequestManager:
                 return fn()
             except Exception as exc:
                 if not _is_rate_limit_error(exc):
+                    logger.error("[BYBIT ERROR] endpoint=%s failed without retry: %s", endpoint, exc)
                     raise
                 self._record_rate_limit_hit()
                 if attempt >= max_attempts - 1:
+                    logger.error(
+                        "[BYBIT ERROR] endpoint=%s exhausted retries (%s/%s): %s",
+                        endpoint,
+                        attempt + 1,
+                        max_attempts,
+                        exc,
+                    )
                     raise
                 backoff = 0.5 * (2 ** attempt)
                 logger.debug(
@@ -87,6 +96,34 @@ class BybitRequestManager:
                 )
                 time.sleep(backoff)
         raise RuntimeError(f"retry exhausted for endpoint={endpoint}")
+
+    @staticmethod
+    def _timeframe_to_seconds(timeframe: str) -> int:
+        raw = str(timeframe or "").strip().lower()
+        if not raw:
+            return 60
+        units = {"m": 60, "h": 3600, "d": 86400, "w": 604800}
+        suffix = raw[-1]
+        multiplier = units.get(suffix)
+        if multiplier is None:
+            return 60
+        try:
+            value = int(raw[:-1] or "1")
+        except ValueError:
+            return 60
+        return max(60, value * multiplier)
+
+    def _resolve_ohlcv_ttl_sec(self, timeframe: str, ttl_sec: float | None) -> float:
+        if ttl_sec is not None:
+            try:
+                ttl_value = float(ttl_sec)
+            except (TypeError, ValueError):
+                ttl_value = float("nan")
+            if math.isfinite(ttl_value):
+                return max(1.0, ttl_value)
+        tf_seconds = self._timeframe_to_seconds(timeframe)
+        # Окно кэша = 20% таймфрейма, но не меньше 3 сек и не больше 90 сек.
+        return float(max(3, min(90, int(tf_seconds * 0.2))))
 
     def _get_cached(self, key: tuple[Any, ...]) -> Any | None:
         with self._cache_lock:
@@ -136,9 +173,10 @@ class BybitRequestManager:
         symbol: str,
         timeframe: str,
         limit: int,
-        ttl_sec: float = 30.0,
+        ttl_sec: float | None = None,
     ) -> Any:
         exchange_id = getattr(exchange, "id", "bybit")
+        resolved_ttl = self._resolve_ohlcv_ttl_sec(timeframe=timeframe, ttl_sec=ttl_sec)
         key = ("ohlcv", exchange_id, symbol, timeframe, int(limit))
         cached = self._get_cached(key)
         if cached is not None:
@@ -152,7 +190,7 @@ class BybitRequestManager:
                 endpoint=f"fetch_ohlcv:{symbol}:{timeframe}",
             ),
         )
-        return self._set_cached(key, payload, ttl_sec=ttl_sec)
+        return self._set_cached(key, payload, ttl_sec=resolved_ttl)
 
 
 _BYBIT_MANAGER = BybitRequestManager()

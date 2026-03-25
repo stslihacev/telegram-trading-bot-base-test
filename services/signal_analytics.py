@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import logging
 import json
+import math
 import os
 import threading
 from collections import Counter
@@ -22,6 +23,7 @@ if "logger" not in globals():
 
 @dataclass
 class SignalAnalytics:
+    high_conf_threshold: float = 0.7
     total_signals: int = 0
     unique_signals: int = 0
     duplicates: int = 0
@@ -113,7 +115,10 @@ class SignalAnalytics:
     @staticmethod
     def _safe_float(value: Any, default: float = 0.0) -> float:
         try:
-            return float(value)
+            parsed = float(value)
+            if not math.isfinite(parsed):
+                return default
+            return parsed
         except (TypeError, ValueError):
             return default
 
@@ -170,6 +175,9 @@ class SignalAnalytics:
             ],
         }
         if trade["direction"] not in {"LONG", "SHORT"}:
+            return None
+        numeric_values = [self._safe_float(trade.get(field), default=float("nan")) for field in ("entry", "tp", "sl")]
+        if any((not math.isfinite(value)) or value <= 0 for value in numeric_values):
             return None
         return trade
 
@@ -304,7 +312,7 @@ class SignalAnalytics:
             self.mode_rr_sum[mode] += rr
             if result_bucket == "PROFIT":
                 self.mode_win_counter[mode] += 1
-            if result_bucket == "LOSS" and self._safe_float(trade.get("confidence")) >= 0.7:
+            if result_bucket == "LOSS" and self._safe_float(trade.get("confidence")) >= self.high_conf_threshold:
                 self.high_conf_loss_counter += 1
             for filter_name in closed.get("passed_filters") or []:
                 bucket = self.filter_result_counter.setdefault(str(filter_name), Counter())
@@ -357,6 +365,25 @@ class SignalAnalytics:
             for trade in serialized_trades:
                 writer.writerow({name: trade.get(name) for name in fieldnames})
         os.replace(csv_tmp, self.trade_results_snapshot_csv_path)
+        self._validate_snapshot_sync(expected=len(serialized_trades))
+
+    def _validate_snapshot_sync(self, expected: int) -> None:
+        try:
+            if not self.trade_results_log_path.exists():
+                return
+            log_lines = 0
+            with self.trade_results_log_path.open("r", encoding="utf-8") as log_file:
+                for row in log_file:
+                    if row.strip():
+                        log_lines += 1
+            if log_lines < expected:
+                logger.warning(
+                    "[PERSISTENCE WARNING] snapshot/log mismatch | snapshot=%s log=%s",
+                    expected,
+                    log_lines,
+                )
+        except Exception:
+            logger.debug("[PERSISTENCE] snapshot sync check skipped", exc_info=True)
 
     def register_trade(self, signal: dict[str, Any], action: str) -> None:
         if not signal:
@@ -374,15 +401,20 @@ class SignalAnalytics:
         sl_raw = signal.get("sl")
         if entry_raw is None or tp_raw is None or sl_raw is None:
             return
-        entry = self._safe_float(signal.get("entry"))
+        entry = self._safe_float(signal.get("entry"), default=float("nan"))
+        tp_value = self._safe_float(signal.get("tp"), default=float("nan"))
+        sl_value = self._safe_float(signal.get("sl"), default=float("nan"))
+        if any(not math.isfinite(value) or value <= 0 for value in (entry, tp_value, sl_value)):
+            logger.warning("[TRADE SKIP] invalid payload | symbol=%s | action=%s", symbol, action_upper)
+            return
         timestamp = self._parse_timestamp(signal.get("timestamp"))
         if action_upper == "UPDATE":
             trade = self.active_trades.get(symbol)
             if not trade:
                 return
             trade["entry"] = entry
-            trade["tp"] = self._safe_float(signal.get("tp"))
-            trade["sl"] = self._safe_float(signal.get("sl"))
+            trade["tp"] = tp_value
+            trade["sl"] = sl_value
             trade["confidence"] = self._safe_float(signal.get("confidence"))
             trade["score"] = self._safe_float(signal.get("score"))
             trade["mode"] = str(signal.get("live_mode") or signal.get("label_prefix") or "UNKNOWN").upper().strip("[]")
@@ -402,8 +434,8 @@ class SignalAnalytics:
             "symbol": symbol,
             "direction": str(signal.get("direction") or "").upper(),
             "entry": entry,
-            "tp": self._safe_float(signal.get("tp")),
-            "sl": self._safe_float(signal.get("sl")),
+            "tp": tp_value,
+            "sl": sl_value,
             "open_time": timestamp,
             "signal_id": str(signal.get("signal_id") or ""),
             "confidence": self._safe_float(signal.get("confidence")),
@@ -469,6 +501,76 @@ class SignalAnalytics:
                 passed += count
         return passed / max(total, 1)
 
+    def _build_profitability_metrics(self) -> dict[str, Any]:
+        with self._io_lock:
+            closed_trades = list(self.closed_trades)
+        total_trades = len(closed_trades)
+        wins = sum(1 for trade in closed_trades if str(trade.get("result_bucket")).upper() == "PROFIT")
+        losses = sum(1 for trade in closed_trades if str(trade.get("result_bucket")).upper() == "LOSS")
+        r_values = [self._safe_float(trade.get("r_multiple")) for trade in closed_trades]
+        total_profit_r = sum(value for value in r_values if value > 0)
+        total_loss_r_abs = abs(sum(value for value in r_values if value < 0))
+        profit_factor = (total_profit_r / total_loss_r_abs) if total_loss_r_abs > 0 else (float("inf") if total_profit_r > 0 else 0.0)
+        avg_r = sum(r_values) / total_trades if total_trades else 0.0
+        winrate_pct = (wins / total_trades * 100) if total_trades else 0.0
+
+        mode_breakdown: dict[str, dict[str, float | int]] = {}
+        for mode_name in ("LIGHT", "MAIN", "SCALPING"):
+            mode_trades = [trade for trade in closed_trades if str(trade.get("mode") or "").upper() == mode_name]
+            mode_total = len(mode_trades)
+            mode_wins = sum(1 for trade in mode_trades if str(trade.get("result_bucket")).upper() == "PROFIT")
+            mode_losses = sum(1 for trade in mode_trades if str(trade.get("result_bucket")).upper() == "LOSS")
+            mode_r_values = [self._safe_float(trade.get("r_multiple")) for trade in mode_trades]
+            mode_profit_r = sum(value for value in mode_r_values if value > 0)
+            mode_loss_r_abs = abs(sum(value for value in mode_r_values if value < 0))
+            mode_breakdown[mode_name] = {
+                "trades": mode_total,
+                "wins": mode_wins,
+                "losses": mode_losses,
+                "winrate": (mode_wins / mode_total * 100) if mode_total else 0.0,
+                "avg_r": (sum(mode_r_values) / mode_total) if mode_total else 0.0,
+                "profit_factor": (
+                    mode_profit_r / mode_loss_r_abs
+                    if mode_loss_r_abs > 0
+                    else (float("inf") if mode_profit_r > 0 else 0.0)
+                ),
+            }
+
+        high_conf_trades = [
+            trade
+            for trade in closed_trades
+            if self._safe_float(trade.get("confidence")) >= self.high_conf_threshold
+        ]
+        high_conf_total = len(high_conf_trades)
+        high_conf_wins = sum(1 for trade in high_conf_trades if str(trade.get("result_bucket")).upper() == "PROFIT")
+        high_conf_avg_r = (
+            sum(self._safe_float(trade.get("r_multiple")) for trade in high_conf_trades) / high_conf_total
+            if high_conf_total
+            else 0.0
+        )
+        high_conf_winrate = (high_conf_wins / high_conf_total * 100) if high_conf_total else 0.0
+
+        return {
+            "trades": total_trades,
+            "wins": wins,
+            "losses": losses,
+            "winrate": winrate_pct,
+            "avg_r": avg_r,
+            "profit_factor": profit_factor,
+            "mode_breakdown": mode_breakdown,
+            "high_conf": {
+                "trades": high_conf_total,
+                "winrate": high_conf_winrate,
+                "avg_r": high_conf_avg_r,
+            },
+        }
+
+    @staticmethod
+    def _format_pf(value: float) -> str:
+        if value == float("inf"):
+            return "∞"
+        return f"{value:.2f}"
+
     def should_emit_report(self, signals_step: int = 20, minutes_step: int = 10) -> bool:
         by_count = self.total_signals > 0 and self.total_signals % max(1, signals_step) == 0
         by_time = (datetime.now(timezone.utc) - self.last_report_at) >= timedelta(minutes=max(1, minutes_step))
@@ -523,12 +625,14 @@ class SignalAnalytics:
 
         recommendations = "\n".join(f"- {row}" for row in self._build_recommendations())
 
-        trades_total = len(self.closed_trades)
-        tp_count = sum(1 for trade in self.closed_trades if trade.get("result") == "TP")
-        sl_count = sum(1 for trade in self.closed_trades if trade.get("result") == "SL")
-        reversal_count = sum(1 for trade in self.closed_trades if trade.get("is_reversal"))
+        with self._io_lock:
+            closed_trades = list(self.closed_trades)
+        trades_total = len(closed_trades)
+        tp_count = sum(1 for trade in closed_trades if trade.get("result") == "TP")
+        sl_count = sum(1 for trade in closed_trades if trade.get("result") == "SL")
+        reversal_count = sum(1 for trade in closed_trades if trade.get("is_reversal"))
         reversal_wins = sum(
-            1 for trade in self.closed_trades if trade.get("is_reversal") and trade.get("result") == "TP"
+            1 for trade in closed_trades if trade.get("is_reversal") and trade.get("result") == "TP"
         )
         if trades_total == 0:
             winrate = 0.0
@@ -536,20 +640,30 @@ class SignalAnalytics:
             winrate = tp_count / trades_total * 100
         reversal_winrate = (reversal_wins / reversal_count * 100) if reversal_count else 0.0
         avg_rr = (
-            sum(self._safe_float(trade.get("rr")) for trade in self.closed_trades) / trades_total
+            sum(self._safe_float(trade.get("rr")) for trade in closed_trades) / trades_total
             if trades_total
             else 0.0
         )
         avg_duration = (
-            sum(self._safe_float(trade.get("duration_sec")) for trade in self.closed_trades) / trades_total
+            sum(self._safe_float(trade.get("duration_sec")) for trade in closed_trades) / trades_total
             if trades_total
             else 0.0
         )
         avg_r = (
-            sum(self._safe_float(trade.get("r_multiple")) for trade in self.closed_trades) / trades_total
+            sum(self._safe_float(trade.get("r_multiple")) for trade in closed_trades) / trades_total
             if trades_total
             else 0.0
         )
+        profitability = self._build_profitability_metrics()
+        mode_profitability_lines = []
+        for mode_name in ("LIGHT", "MAIN", "SCALPING"):
+            mode_stats = profitability["mode_breakdown"][mode_name]
+            mode_profitability_lines.append(
+                f"{mode_name}: trades={mode_stats['trades']}, wins={mode_stats['wins']}, losses={mode_stats['losses']}, "
+                f"winrate={mode_stats['winrate']:.1f}%, avgR={mode_stats['avg_r']:.2f}, PF={self._format_pf(float(mode_stats['profit_factor']))}"
+            )
+        mode_profitability_text = "\n".join(mode_profitability_lines)
+        high_conf = profitability["high_conf"]
         mode_lines = []
         for mode_name in ("LIGHT", "MAIN", "SCALPING"):
             signals_count = self.mode_counter.get(mode_name, 0)
@@ -571,6 +685,13 @@ class SignalAnalytics:
                 f"{filter_name}: profit={profit}, loss={loss}, winrate={profit / total_filter * 100:.1f}%"
             )
         filter_breakdown_text = "\n".join(filter_breakdown_lines[:8]) if filter_breakdown_lines else "-"
+        logger.info(
+            "[ANALYTICS SUMMARY]\nTrades: %s\nWinrate: %.2f%%\nProfit Factor: %s\nAvg R: %.2f",
+            profitability["trades"],
+            profitability["winrate"],
+            self._format_pf(float(profitability["profit_factor"])),
+            profitability["avg_r"],
+        )
 
         return (
             "📊 SIGNAL ANALYTICS\n\n"
@@ -596,6 +717,18 @@ class SignalAnalytics:
             f"TP: {tp_count}\n"
             f"SL: {sl_count}\n"
             f"Winrate: {winrate:.2f}%\n\n"
+            "💹 PROFITABILITY SUMMARY\n"
+            f"Trades: {profitability['trades']}\n"
+            f"Wins/Losses: {profitability['wins']}/{profitability['losses']}\n"
+            f"Winrate: {profitability['winrate']:.2f}%\n"
+            f"Profit Factor: {self._format_pf(float(profitability['profit_factor']))}\n"
+            f"Avg R: {profitability['avg_r']:.2f}\n\n"
+            "📌 PROFITABILITY BY MODE\n"
+            f"{mode_profitability_text}\n\n"
+            f"🎯 HIGH-CONFIDENCE (conf ≥ {self.high_conf_threshold:.2f})\n"
+            f"Trades: {high_conf['trades']}\n"
+            f"Winrate: {high_conf['winrate']:.2f}%\n"
+            f"Avg R: {high_conf['avg_r']:.2f}\n\n"
             f"Reversal trades: {reversal_count}\n"
             f"Reversal winrate: {reversal_winrate:.2f}%\n\n"
             f"Avg RR: {avg_rr:.2f}\n"
@@ -612,12 +745,16 @@ class SignalAnalytics:
         )
 
     def get_mode_stats_compact(self) -> list[str]:
+        profitability = self._build_profitability_metrics()
+        global_winrate = profitability["winrate"]
+        global_pf = self._format_pf(float(profitability["profit_factor"]))
         rows: list[str] = []
         for mode_name in ("LIGHT", "MAIN", "SCALPING"):
             closed_count = self.mode_closed_counter.get(mode_name, 0)
             wins = self.mode_win_counter.get(mode_name, 0)
             winrate = (wins / closed_count * 100) if closed_count else 0.0
             rows.append(f"{mode_name}: sig={self.mode_counter.get(mode_name, 0)} close={closed_count} win={winrate:.0f}%")
+        rows.append(f"Total winrate={global_winrate:.1f}% PF={global_pf}")
         return rows
 
     def get_last_closed_trade_brief(self) -> str:
@@ -628,4 +765,11 @@ class SignalAnalytics:
             f"{trade.get('symbol')} {trade.get('result_bucket')} "
             f"RR {self._safe_float(trade.get('rr')):.2f} "
             f"Duration: {trade.get('duration_hm', '-')}"
+        )
+
+    def get_profitability_compact(self) -> str:
+        profitability = self._build_profitability_metrics()
+        return (
+            f"Winrate: {profitability['winrate']:.1f}% | "
+            f"Profit Factor: {self._format_pf(float(profitability['profit_factor']))}"
         )

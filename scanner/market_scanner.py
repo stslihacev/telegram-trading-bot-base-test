@@ -26,7 +26,8 @@ class MarketScanner:
         self.strategy = build_live_strategy()
         self.exchange = ccxt.bybit({"enableRateLimit": True, "options": {"defaultType": "swap"}})
         self.request_manager = get_bybit_request_manager()
-        self.ohlcv_cache_ttl_sec = int(getattr(config, "OHLCV_CACHE_TTL_SEC", 30))
+        configured_ttl = getattr(config, "OHLCV_CACHE_TTL_SEC", None)
+        self.ohlcv_cache_ttl_sec = int(configured_ttl) if configured_ttl is not None else None
         self._forced_test_signal_sent = False
         logger.info(
             "%s scanner initialized | mode=%s | timeframe=%s | candle_limit=%s | execution_tfs=%s",
