@@ -2167,3 +2167,233 @@ VOLUME: profit=11, loss=17, winrate=39.3%
 - EMA проходит только в 13% случаев — фильтр слишком строгий.
 - RSI почти не проходит — возможно пороги слишком жёсткие.
 
+2026-03-26 23:48:32,429 - 
+📊 SIGNAL ANALYTICS
+
+📊 СТАТИСТИКА СИГНАЛОВ
+
+Всего сигналов: 20
+Уникальных: 20
+Дубликатов: 0
+
+LIGHT: 20
+MAIN: 0
+SCALPING: 0
+
+Средний confidence: 0.60
+Средний score: 4.23
+
+Качество:
+⭐⭐⭐⭐⭐: 0
+⭐⭐⭐⭐: 13
+⭐⭐⭐: 7
+⭐⭐: 0
+⭐: 0
+
+Топ фильтров:
+BODY: 100.0%
+MACD: 80.0%
+VOLUME: 80.0%
+RSI: 10.0%
+SMA: 10.0%
+
+📈 TRADE OUTCOME ANALYTICS
+
+Trades total: 0
+TP: 0
+SL: 0
+Winrate: 0.00%
+
+💹 PROFITABILITY SUMMARY
+Trades: 0
+Wins/Losses: 0/0
+Winrate: 0.00%
+Profit Factor: 0.00
+Avg R: 0.00
+
+📌 PROFITABILITY BY MODE
+LIGHT: trades=0, wins=0, losses=0, winrate=0.0%, avgR=0.00, PF=0.00
+MAIN: trades=0, wins=0, losses=0, winrate=0.0%, avgR=0.00, PF=0.00
+SCALPING: trades=0, wins=0, losses=0, winrate=0.0%, avgR=0.00, PF=0.00
+
+🎯 HIGH-CONFIDENCE (conf ≥ 0.70)
+Trades: 0
+Winrate: 0.00%
+Avg R: 0.00
+
+Reversal trades: 0
+Reversal winrate: 0.00%
+
+Avg RR: 0.00
+Avg R: 0.00
+Avg duration: 0h 0m
+High-conf losses: 0
+
+📌 MODE TRADE STATS
+LIGHT: signals=20, closed=0, winrate=0.0%, avgRR=0.00
+MAIN: signals=0, closed=0, winrate=0.0%, avgRR=0.00
+SCALPING: signals=0, closed=0, winrate=0.0%, avgRR=0.00
+
+🧪 FILTER OUTCOME BREAKDOWN
+-
+
+--------------------------------
+
+⚠️ РЕКОМЕНДАЦИИ
+
+- EMA проходит только в 0% случаев — фильтр слишком строгий.
+- RSI почти не проходит — возможно пороги слишком жёсткие.
+
+2026-03-26 23:48:32,521 - 
+📊 SIGNAL ANALYTICS
+
+📊 СТАТИСТИКА СИГНАЛОВ
+
+Всего сигналов: 40
+Уникальных: 40
+Дубликатов: 0
+
+LIGHT: 40
+MAIN: 0
+SCALPING: 0
+
+Средний confidence: 0.61
+Средний score: 4.31
+
+Качество:
+⭐⭐⭐⭐⭐: 0
+⭐⭐⭐⭐: 26
+⭐⭐⭐: 14
+⭐⭐: 0
+⭐: 0
+
+Топ фильтров:
+BODY: 100.0%
+VOLUME: 85.0%
+MACD: 75.0%
+RSI: 15.0%
+SMA: 12.5%
+
+📈 TRADE OUTCOME ANALYTICS
+
+Trades total: 0
+TP: 0
+SL: 0
+Winrate: 0.00%
+
+💹 PROFITABILITY SUMMARY
+Trades: 0
+Wins/Losses: 0/0
+Winrate: 0.00%
+Profit Factor: 0.00
+Avg R: 0.00
+
+📌 PROFITABILITY BY MODE
+LIGHT: trades=0, wins=0, losses=0, winrate=0.0%, avgR=0.00, PF=0.00
+MAIN: trades=0, wins=0, losses=0, winrate=0.0%, avgR=0.00, PF=0.00
+SCALPING: trades=0, wins=0, losses=0, winrate=0.0%, avgR=0.00, PF=0.00
+
+🎯 HIGH-CONFIDENCE (conf ≥ 0.70)
+Trades: 0
+Winrate: 0.00%
+Avg R: 0.00
+
+Reversal trades: 0
+Reversal winrate: 0.00%
+
+Avg RR: 0.00
+Avg R: 0.00
+Avg duration: 0h 0m
+High-conf losses: 0
+
+📌 MODE TRADE STATS
+LIGHT: signals=40, closed=0, winrate=0.0%, avgRR=0.00
+MAIN: signals=0, closed=0, winrate=0.0%, avgRR=0.00
+SCALPING: signals=0, closed=0, winrate=0.0%, avgRR=0.00
+
+🧪 FILTER OUTCOME BREAKDOWN
+-
+
+--------------------------------
+
+⚠️ РЕКОМЕНДАЦИИ
+
+- EMA проходит только в 2% случаев — фильтр слишком строгий.
+
+2026-03-27 00:01:16,611 - 
+📊 SIGNAL ANALYTICS
+
+📊 СТАТИСТИКА СИГНАЛОВ
+
+Всего сигналов: 41
+Уникальных: 41
+Дубликатов: 0
+
+LIGHT: 41
+MAIN: 0
+SCALPING: 0
+
+Средний confidence: 0.61
+Средний score: 4.30
+
+Качество:
+⭐⭐⭐⭐⭐: 0
+⭐⭐⭐⭐: 26
+⭐⭐⭐: 15
+⭐⭐: 0
+⭐: 0
+
+Топ фильтров:
+BODY: 100.0%
+VOLUME: 82.9%
+MACD: 75.6%
+RSI: 14.6%
+SMA: 14.6%
+
+📈 TRADE OUTCOME ANALYTICS
+
+Trades total: 0
+TP: 0
+SL: 0
+Winrate: 0.00%
+
+💹 PROFITABILITY SUMMARY
+Trades: 0
+Wins/Losses: 0/0
+Winrate: 0.00%
+Profit Factor: 0.00
+Avg R: 0.00
+
+📌 PROFITABILITY BY MODE
+LIGHT: trades=0, wins=0, losses=0, winrate=0.0%, avgR=0.00, PF=0.00
+MAIN: trades=0, wins=0, losses=0, winrate=0.0%, avgR=0.00, PF=0.00
+SCALPING: trades=0, wins=0, losses=0, winrate=0.0%, avgR=0.00, PF=0.00
+
+🎯 HIGH-CONFIDENCE (conf ≥ 0.70)
+Trades: 0
+Winrate: 0.00%
+Avg R: 0.00
+
+Reversal trades: 0
+Reversal winrate: 0.00%
+
+Avg RR: 0.00
+Avg R: 0.00
+Avg duration: 0h 0m
+High-conf losses: 0
+
+📌 MODE TRADE STATS
+LIGHT: signals=41, closed=0, winrate=0.0%, avgRR=0.00
+MAIN: signals=0, closed=0, winrate=0.0%, avgRR=0.00
+SCALPING: signals=0, closed=0, winrate=0.0%, avgRR=0.00
+
+🧪 FILTER OUTCOME BREAKDOWN
+-
+
+--------------------------------
+
+⚠️ РЕКОМЕНДАЦИИ
+
+- EMA проходит только в 2% случаев — фильтр слишком строгий.
+- RSI почти не проходит — возможно пороги слишком жёсткие.
+

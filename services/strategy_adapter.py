@@ -45,7 +45,7 @@ class BacktestStrategyAdapter:
             return
 
         bos_confidence_threshold = max(
-            float(runtime["confidence_threshold"]) + 0.35,
+            float(runtime["confidence_threshold"]) + float(runtime.get("bos_confidence_offset", 0.15)),
             float(runtime["confidence_threshold"]),
         )
         original_values = {
@@ -55,6 +55,9 @@ class BacktestStrategyAdapter:
             "MAX_RR": backtest_engine.MAX_RR,
             "CFG_CONFIDENCE_THRESHOLD_BACKTEST": backtest_engine.CFG_CONFIDENCE_THRESHOLD_BACKTEST,
             "CFG_BOS_CONFIDENCE_THRESHOLD": backtest_engine.CFG_BOS_CONFIDENCE_THRESHOLD,
+            "MTF_FILTER_LOGIC": backtest_engine.MTF_FILTER_LOGIC,
+            "MTF_FILTER_ADX_MIN_1H": backtest_engine.MTF_FILTER_ADX_MIN_1H,
+            "MTF_FILTER_ADX_MIN_4H": backtest_engine.MTF_FILTER_ADX_MIN_4H,
             "swing_high_defaults": analysis_levels.find_swing_highs.__defaults__,
             "swing_low_defaults": analysis_levels.find_swing_lows.__defaults__,
         }
@@ -65,6 +68,9 @@ class BacktestStrategyAdapter:
         backtest_engine.MAX_RR = float(runtime["max_rr"])
         backtest_engine.CFG_CONFIDENCE_THRESHOLD_BACKTEST = float(runtime["confidence_threshold"])
         backtest_engine.CFG_BOS_CONFIDENCE_THRESHOLD = bos_confidence_threshold
+        backtest_engine.MTF_FILTER_LOGIC = str(runtime.get("mtf_filter_logic", backtest_engine.MTF_FILTER_LOGIC)).upper()
+        backtest_engine.MTF_FILTER_ADX_MIN_1H = float(runtime.get("mtf_adx_min_1h", backtest_engine.MTF_FILTER_ADX_MIN_1H))
+        backtest_engine.MTF_FILTER_ADX_MIN_4H = float(runtime.get("mtf_adx_min_4h", backtest_engine.MTF_FILTER_ADX_MIN_4H))
         analysis_levels.find_swing_highs.__defaults__ = (int(runtime["swing_window"]),)
         analysis_levels.find_swing_lows.__defaults__ = (int(runtime["swing_window"]),)
 
@@ -77,6 +83,9 @@ class BacktestStrategyAdapter:
             backtest_engine.MAX_RR = original_values["MAX_RR"]
             backtest_engine.CFG_CONFIDENCE_THRESHOLD_BACKTEST = original_values["CFG_CONFIDENCE_THRESHOLD_BACKTEST"]
             backtest_engine.CFG_BOS_CONFIDENCE_THRESHOLD = original_values["CFG_BOS_CONFIDENCE_THRESHOLD"]
+            backtest_engine.MTF_FILTER_LOGIC = original_values["MTF_FILTER_LOGIC"]
+            backtest_engine.MTF_FILTER_ADX_MIN_1H = original_values["MTF_FILTER_ADX_MIN_1H"]
+            backtest_engine.MTF_FILTER_ADX_MIN_4H = original_values["MTF_FILTER_ADX_MIN_4H"]
             analysis_levels.find_swing_highs.__defaults__ = original_values["swing_high_defaults"]
             analysis_levels.find_swing_lows.__defaults__ = original_values["swing_low_defaults"]
 
@@ -202,7 +211,7 @@ class BacktestStrategyAdapter:
                 arrays = self._build_arrays(df)
                 swing_indices = self._build_swing_indices(df)
                 df_4h = build_4h_frame(df)
-                i = len(df) - 1
+                i = len(df) - 2
 
                 if config.DEBUG_MODE:
                     debug_stage(
@@ -221,8 +230,10 @@ class BacktestStrategyAdapter:
                 )
 
                 if not signal:
+                    reason = str(self.strategy.last_rejection_reason or "unknown")
+                    details = str(self.strategy.last_rejection_message or "no details")
                     if config.DEBUG_MODE:
-                        reject(symbol, "STRATEGY", "no entry conditions met")
+                        reject(symbol, "STRATEGY", f"no entry conditions met ({reason})", extra={"details": details})
                     return None
 
                 if config.DEBUG_MODE:
@@ -293,6 +304,16 @@ class BacktestStrategyAdapter:
                                 extra={"score": score, "max_score": max_score, "threshold": score_threshold},
                             )
                         return None
+
+                if bool(getattr(config, "HIGH_CONF_ONLY", False)) and confidence < float(getattr(config, "HIGH_CONFIDENCE_THRESHOLD", 0.7)):
+                    if config.DEBUG_MODE:
+                        reject(
+                            symbol,
+                            "SCORING",
+                            "high confidence gate blocked",
+                            extra={"confidence": round(confidence, 4), "threshold": float(getattr(config, "HIGH_CONFIDENCE_THRESHOLD", 0.7))},
+                        )
+                    return None
 
                 return {
                     "symbol": signal["symbol"],

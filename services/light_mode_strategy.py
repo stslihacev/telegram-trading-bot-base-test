@@ -179,6 +179,8 @@ class LightModeStrategy:
                             "score": selected.score,
                             "max_score": selected.max_score,
                             "threshold": min_score_threshold,
+                            "failed_filters": selected.failed_filters,
+                            "passed_filters": selected.passed_filters,
                         },
                     )
                 return None
@@ -196,6 +198,20 @@ class LightModeStrategy:
                 direction = "SHORT"
                 signal_type = "LIGHT_SHORT"
                 selected = short_breakdown
+
+        if bool(getattr(config, "HIGH_CONF_ONLY", False)) and float(selected.confidence) < float(getattr(config, "HIGH_CONFIDENCE_THRESHOLD", 0.7)):
+            if config.DEBUG_MODE:
+                reject(
+                    symbol,
+                    "LIGHT",
+                    "high confidence gate blocked",
+                    extra={
+                        "confidence": round(float(selected.confidence), 4),
+                        "threshold": float(getattr(config, "HIGH_CONFIDENCE_THRESHOLD", 0.7)),
+                        "failed_filters": selected.failed_filters,
+                    },
+                )
+            return None
 
         if not self._probability_allows_signal():
             if config.DEBUG_MODE:

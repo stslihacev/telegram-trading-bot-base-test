@@ -2,79 +2,74 @@
 
 📊 СТАТИСТИКА СИГНАЛОВ
 
-Всего сигналов: 60
-Уникальных: 60
+Всего сигналов: 41
+Уникальных: 41
 Дубликатов: 0
 
-LIGHT: 60
+LIGHT: 41
 MAIN: 0
 SCALPING: 0
 
-Средний confidence: 0.55
-Средний score: 3.99
+Средний confidence: 0.61
+Средний score: 4.30
 
 Качество:
 ⭐⭐⭐⭐⭐: 0
-⭐⭐⭐⭐: 15
-⭐⭐⭐: 45
+⭐⭐⭐⭐: 26
+⭐⭐⭐: 15
 ⭐⭐: 0
 ⭐: 0
 
 Топ фильтров:
-BODY: 91.7%
-VOLUME: 61.7%
-MACD: 60.0%
-SMA: 50.0%
-EMA: 13.3%
+BODY: 100.0%
+VOLUME: 82.9%
+MACD: 75.6%
+RSI: 14.6%
+SMA: 14.6%
 
 📈 TRADE OUTCOME ANALYTICS
 
-Trades total: 41
-TP: 15
-SL: 7
-Winrate: 36.59%
+Trades total: 0
+TP: 0
+SL: 0
+Winrate: 0.00%
 
 💹 PROFITABILITY SUMMARY
-Trades: 41
-Wins/Losses: 17/24
-Winrate: 41.46%
-Profit Factor: 2.95
-Avg R: 0.94
+Trades: 0
+Wins/Losses: 0/0
+Winrate: 0.00%
+Profit Factor: 0.00
+Avg R: 0.00
 
 📌 PROFITABILITY BY MODE
-LIGHT: trades=41, wins=17, losses=24, winrate=41.5%, avgR=0.94, PF=2.95
+LIGHT: trades=0, wins=0, losses=0, winrate=0.0%, avgR=0.00, PF=0.00
 MAIN: trades=0, wins=0, losses=0, winrate=0.0%, avgR=0.00, PF=0.00
 SCALPING: trades=0, wins=0, losses=0, winrate=0.0%, avgR=0.00, PF=0.00
 
 🎯 HIGH-CONFIDENCE (conf ≥ 0.70)
-Trades: 8
-Winrate: 75.00%
-Avg R: 1.45
+Trades: 0
+Winrate: 0.00%
+Avg R: 0.00
 
-Reversal trades: 12
-Reversal winrate: 58.33%
+Reversal trades: 0
+Reversal winrate: 0.00%
 
-Avg RR: 1.91
-Avg R: 0.94
-Avg duration: 9h 36m
-High-conf losses: 2
+Avg RR: 0.00
+Avg R: 0.00
+Avg duration: 0h 0m
+High-conf losses: 0
 
 📌 MODE TRADE STATS
-LIGHT: signals=60, closed=41, winrate=41.5%, avgRR=1.91
+LIGHT: signals=41, closed=0, winrate=0.0%, avgRR=0.00
 MAIN: signals=0, closed=0, winrate=0.0%, avgRR=0.00
 SCALPING: signals=0, closed=0, winrate=0.0%, avgRR=0.00
 
 🧪 FILTER OUTCOME BREAKDOWN
-BODY: profit=14, loss=23, winrate=37.8%
-EMA: profit=3, loss=2, winrate=60.0%
-MACD: profit=12, loss=7, winrate=63.2%
-RSI: profit=2, loss=2, winrate=50.0%
-SMA: profit=7, loss=18, winrate=28.0%
-VOLUME: profit=11, loss=17, winrate=39.3%
+-
 
 --------------------------------
 
 ⚠️ РЕКОМЕНДАЦИИ
 
-- EMA проходит только в 13% случаев — фильтр слишком строгий.
+- EMA проходит только в 2% случаев — фильтр слишком строгий.
 - RSI почти не проходит — возможно пороги слишком жёсткие.

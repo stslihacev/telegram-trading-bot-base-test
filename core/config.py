@@ -31,10 +31,10 @@ ENABLE_SIGNAL_SCORING = True
 SIGNAL_LOG_MODE = "FULL"
 # Режим логирования сигналов: "FULL" (многострочный) или "COMPACT" (одна строка).
 
-MIN_SCORE_THRESHOLD_MAIN = 5.0
+MIN_SCORE_THRESHOLD_MAIN = 4.2
 # MAIN: максимально строгий порог 6.0 (фактически требует совпадения всех фильтров).
 
-MIN_SCORE_THRESHOLD_SCALPING = 4.0
+MIN_SCORE_THRESHOLD_SCALPING = 3.8
 # SCALPING: средний порог 4.0 для более частых, но всё ещё фильтрованных сигналов.
 
 MIN_SCORE_THRESHOLD_LIGHT = 3.0
@@ -42,9 +42,9 @@ MIN_SCORE_THRESHOLD_LIGHT = 3.0
 
 FILTER_WEIGHTS = {
     "ema": 1.0,
-    "sma": 0.8,
+    "sma": 0.5,
     "rsi": 1.0,
-    "macd": 1.2,
+    "macd": 1.4,
     "volume": 1.2,
     "body": 0.8,
 }
@@ -139,6 +139,15 @@ MAX_RR_SCALPING = 2.0
 # Верхняя граница RR для скальпинга: отсеивает слишком дальние TP для коротких движений.
 # ==============================================================
 
+SCALPING_MTF_FILTER_LOGIC = "OR"
+# Скальпинг использует OR вместо AND для 1H/4H MTF подтверждения.
+
+SCALPING_MTF_ADX_MIN_1H = 16.0
+SCALPING_MTF_ADX_MIN_4H = 14.0
+# Чуть мягче MTF ADX-порогов, чтобы убрать «нулевой поток» сигналов.
+
+SCALPING_BOS_CONFIDENCE_OFFSET = 0.15
+# Добавка к confidence-порогу для BOS в скальпинге (раньше было +0.35 в адаптере).
 
 # ============================================================
 # Отдельные live-настройки для режима LIGHT (signal-only).
@@ -182,8 +191,8 @@ LIGHT_SMA_LONG_PERIOD = 50
 
 LIGHT_RSI_ENABLED = True
 LIGHT_RSI_PERIOD = 14
-LIGHT_RSI_OVERSOLD = 35
-LIGHT_RSI_OVERBOUGHT = 65
+LIGHT_RSI_OVERSOLD = 40
+LIGHT_RSI_OVERBOUGHT = 60
 # Порог можно расширять/сужать под более редкие или частые сигналы.
 
 LIGHT_MACD_ENABLED = True
@@ -214,6 +223,11 @@ LIGHT_SL_ATR_MULTIPLIER = 1.2
 LIGHT_TP_ATR_MULTIPLIER = 1.8
 # ATR-множители для расчёта signal-only TP/SL.
 
+HIGH_CONF_ONLY = False
+# Если True — отправляем только сигналы с confidence >= HIGH_CONFIDENCE_THRESHOLD.
+
+HIGH_CONFIDENCE_THRESHOLD = 0.70
+# Унифицированный порог high-confidence режима для LIGHT/MAIN/SCALPING.
 
 # ============================================================
 # Correlation
@@ -597,6 +611,10 @@ def get_live_runtime_settings() -> dict:
             "max_rr": MAX_RR_SCALPING,
             "signal_prefix": SCALPING_SIGNAL_PREFIX,
             "min_score_threshold": MIN_SCORE_THRESHOLD_SCALPING,
+            "mtf_filter_logic": SCALPING_MTF_FILTER_LOGIC,
+            "mtf_adx_min_1h": SCALPING_MTF_ADX_MIN_1H,
+            "mtf_adx_min_4h": SCALPING_MTF_ADX_MIN_4H,
+            "bos_confidence_offset": SCALPING_BOS_CONFIDENCE_OFFSET,
         }
 
     if mode == "LIGHT":
@@ -617,6 +635,10 @@ def get_live_runtime_settings() -> dict:
             "max_rr": MAX_RR_LIGHT,
             "signal_prefix": LIGHT_SIGNAL_PREFIX,
             "min_score_threshold": MIN_SCORE_THRESHOLD_LIGHT,
+            "mtf_filter_logic": MTF_FILTER_LOGIC,
+            "mtf_adx_min_1h": MTF_FILTER_ADX_MIN_1H,
+            "mtf_adx_min_4h": MTF_FILTER_ADX_MIN_4H,
+            "bos_confidence_offset": 0.0,
         }
 
     return {
