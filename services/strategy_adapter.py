@@ -20,7 +20,7 @@ from backtest.backtest_engine import (
 )
 from core.debug import debug_stage, reject
 from services.light_mode_strategy import LightModeStrategy
-from services.signal_scoring import get_mode_threshold
+from services.signal_scoring import build_breakdown, get_mode_threshold
 from utils.logger import logger
 
 class BacktestStrategyAdapter:
@@ -29,6 +29,7 @@ class BacktestStrategyAdapter:
     def __init__(self, min_rr: float | None = None):
         self.strategy = BosStrategy()
         self.diagnostics = Diagnostics()
+        self.last_signal_diagnostics: dict[str, object] = {}
         runtime = config.get_live_runtime_settings()
         self.min_rr = float(runtime["min_signal_rr"] if min_rr is None else min_rr)
         self.max_rr = float(runtime["max_rr"])
@@ -195,6 +196,108 @@ class BacktestStrategyAdapter:
         confidence = 0.0 if max_score <= 0 else score / max_score
         return score, max_score, confidence
 
+    def _build_relaxed_signal(self, symbol: str, df: pd.DataFrame, runtime: dict) -> dict | None:
+        if len(df) < 60:
+            self.last_signal_diagnostics = {
+                "mode": runtime["mode"],
+                "score": 0.0,
+                "passed_filters": [],
+                "failed_filters": ["DATA"],
+                "rejection_reason": "not enough candles for relaxed scoring",
+            }
+            return None
+
+        last = df.iloc[-2]
+        close = float(last["close"])
+        ema50 = float(last["ema50"])
+        ema200 = float(last["ema200"])
+        atr = float(np.nan_to_num(last.get("atr", np.nan), nan=0.0))
+        adx = float(np.nan_to_num(last.get("adx", np.nan), nan=0.0))
+        plus_di = float(np.nan_to_num(last.get("plus_di", np.nan), nan=0.0))
+        minus_di = float(np.nan_to_num(last.get("minus_di", np.nan), nan=0.0))
+        rsi = float(np.nan_to_num(last.get("rsi", np.nan), nan=50.0))
+        direction = "LONG" if ema50 >= ema200 else "SHORT"
+        trend_ok = (close >= ema200 and direction == "LONG") or (close <= ema200 and direction == "SHORT")
+
+        recent = df.iloc[max(0, len(df) - 22):-2]
+        recent_high = float(recent["high"].max()) if len(recent) else close
+        recent_low = float(recent["low"].min()) if len(recent) else close
+        structure_ok = (direction == "LONG" and close >= recent_high) or (direction == "SHORT" and close <= recent_low)
+
+        volume_ma = float(df["volume"].astype(float).rolling(20).mean().iloc[-2] or 0.0)
+        volume_now = float(last.get("volume", 0.0) or 0.0)
+        ema_fast = df["close"].astype(float).ewm(span=12, adjust=False).mean()
+        ema_slow = df["close"].astype(float).ewm(span=26, adjust=False).mean()
+        macd = ema_fast - ema_slow
+        macd_signal = macd.ewm(span=9, adjust=False).mean()
+        macd_hist = float((macd - macd_signal).iloc[-2])
+
+        optional_checks = {
+            "rsi": (direction == "LONG" and rsi < 65.0) or (direction == "SHORT" and rsi > 35.0),
+            "macd": (direction == "LONG" and macd_hist > 0) or (direction == "SHORT" and macd_hist < 0),
+            "volume_threshold": volume_now >= volume_ma if volume_ma > 0 else False,
+            "adx": adx >= max(12.0, float(runtime.get("mtf_adx_min_1h", 15.0)) * 0.7),
+            "di": (direction == "LONG" and plus_di >= minus_di) or (direction == "SHORT" and minus_di >= plus_di),
+        }
+        required_checks = {"trend": trend_ok, "structure": structure_ok}
+        combined_checks = {**required_checks, **optional_checks}
+        _ = build_breakdown(combined_checks)
+        optional_score = sum(1 for ok in optional_checks.values() if ok)
+        score_threshold = max(1.0, get_mode_threshold(runtime["mode"]))
+        required_ok = all(required_checks.values())
+        total_score = float(optional_score)
+
+        passed = [name.upper() for name, ok in combined_checks.items() if ok]
+        failed = [name.upper() for name, ok in combined_checks.items() if not ok]
+        rejection_reason = None
+        if not required_ok:
+            rejection_reason = "required filters failed"
+        elif total_score < score_threshold:
+            rejection_reason = f"optional score below threshold ({total_score:.2f} < {score_threshold:.2f})"
+
+        self.last_signal_diagnostics = {
+            "mode": runtime["mode"],
+            "score": total_score,
+            "passed_filters": passed,
+            "failed_filters": failed,
+            "rejection_reason": rejection_reason,
+        }
+        if rejection_reason:
+            return None
+        if atr <= 0:
+            self.last_signal_diagnostics["rejection_reason"] = "atr unavailable"
+            return None
+
+        entry = close
+        sl = entry - atr if direction == "LONG" else entry + atr
+        rr_target = 1.4 if runtime.get("is_scalping") else 1.8
+        tp = entry + (entry - sl) * rr_target if direction == "LONG" else entry - (sl - entry) * rr_target
+        rr = self._calculate_rr(entry, tp, sl)
+        return {
+            "symbol": symbol,
+            "signal_type": f"{runtime['mode']}_RELAXED",
+            "direction": direction,
+            "entry": float(entry),
+            "tp": float(tp),
+            "sl": float(sl),
+            "rr": float(rr),
+            "confidence": float(max(0.0, min(1.0, total_score / max(5.0, score_threshold + 1.0)))),
+            "score": float(total_score),
+            "max_score": float(max(5.0, score_threshold + 1.0)),
+            "passed_filters": passed,
+            "failed_filters": failed,
+            "regime": str(last.get("regime", "N/A")),
+            "timestamp": str(df.index[-2]),
+            "tf": runtime["scan_timeframe"],
+            "trade_type": "signal_only",
+            "position_size": 0.0,
+            "trade_risk": 0.0,
+            "live_mode": runtime["mode"],
+            "label_prefix": runtime["signal_prefix"],
+            "execution_timeframes": tuple(runtime["execution_timeframes"]),
+            "signal_only": True,
+        }
+
     def generate_signal(self, symbol: str, candles: pd.DataFrame) -> dict | None:
         """Генерирует сигнал в telegram-формате только если backtest-логика даёт сделку."""
         runtime = self._runtime_settings()
@@ -232,6 +335,26 @@ class BacktestStrategyAdapter:
                 if not signal:
                     reason = str(self.strategy.last_rejection_reason or "unknown")
                     details = str(self.strategy.last_rejection_message or "no details")
+                    relaxed_signal = self._build_relaxed_signal(symbol, df, runtime)
+                    if relaxed_signal:
+                        if config.DEBUG_MODE:
+                            debug_stage(
+                                "SCORING",
+                                symbol,
+                                f"mode={runtime['mode']} score={relaxed_signal['score']:.2f} "
+                                f"passed={relaxed_signal.get('passed_filters')} "
+                                f"failed={relaxed_signal.get('failed_filters')} "
+                                f"fallback=relaxed",
+                            )
+                        return relaxed_signal
+                    if not self.last_signal_diagnostics:
+                        self.last_signal_diagnostics = {
+                            "mode": runtime["mode"],
+                            "score": 0.0,
+                            "passed_filters": [],
+                            "failed_filters": [],
+                            "rejection_reason": f"{reason}: {details}",
+                        }
                     if config.DEBUG_MODE:
                         reject(symbol, "STRATEGY", f"no entry conditions met ({reason})", extra={"details": details})
                     return None
@@ -264,6 +387,13 @@ class BacktestStrategyAdapter:
                 if config.DEBUG_MODE:
                     debug_stage("RR", symbol, f"rr={rr:.4f}, min_rr={rr_min:.4f}, max_rr={rr_max:.4f}")
                 if rr < rr_min:
+                    self.last_signal_diagnostics = {
+                        "mode": runtime["mode"],
+                        "score": score,
+                        "passed_filters": [],
+                        "failed_filters": ["RR"],
+                        "rejection_reason": "rr below live minimum",
+                    }
                     if config.DEBUG_MODE:
                         reject(
                             symbol,
@@ -273,6 +403,13 @@ class BacktestStrategyAdapter:
                         )
                     return None
                 if runtime.get("is_scalping") and rr > rr_max:
+                    self.last_signal_diagnostics = {
+                        "mode": runtime["mode"],
+                        "score": score,
+                        "passed_filters": [],
+                        "failed_filters": ["RR"],
+                        "rejection_reason": "rr above scalping maximum",
+                    }
                     if config.DEBUG_MODE:
                         reject(
                             symbol,
@@ -296,6 +433,13 @@ class BacktestStrategyAdapter:
                 if config.ENABLE_SIGNAL_SCORING:
                     score_threshold = get_mode_threshold(runtime["mode"])
                     if score < score_threshold:
+                        self.last_signal_diagnostics = {
+                            "mode": runtime["mode"],
+                            "score": score,
+                            "passed_filters": [],
+                            "failed_filters": ["SCORING"],
+                            "rejection_reason": "score below threshold",
+                        }
                         if config.DEBUG_MODE:
                             reject(
                                 symbol,
@@ -306,6 +450,13 @@ class BacktestStrategyAdapter:
                         return None
 
                 if bool(getattr(config, "HIGH_CONF_ONLY", False)) and confidence < float(getattr(config, "HIGH_CONFIDENCE_THRESHOLD", 0.7)):
+                    self.last_signal_diagnostics = {
+                        "mode": runtime["mode"],
+                        "score": score,
+                        "passed_filters": [],
+                        "failed_filters": ["CONFIDENCE"],
+                        "rejection_reason": "high confidence gate blocked",
+                    }
                     if config.DEBUG_MODE:
                         reject(
                             symbol,
@@ -315,7 +466,7 @@ class BacktestStrategyAdapter:
                         )
                     return None
 
-                return {
+                payload = {
                     "symbol": signal["symbol"],
                     "signal_type": signal["signal_type"],
                     "direction": signal["direction"],
@@ -338,9 +489,24 @@ class BacktestStrategyAdapter:
                     "label_prefix": runtime["signal_prefix"],
                     "execution_timeframes": tuple(runtime["execution_timeframes"]),
                 }
+                self.last_signal_diagnostics = {
+                    "mode": runtime["mode"],
+                    "score": payload["score"],
+                    "passed_filters": payload["passed_filters"],
+                    "failed_filters": payload["failed_filters"],
+                    "rejection_reason": None,
+                }
+                return payload
 
         except Exception as exc:
             logger.exception("Ошибка адаптера backtest-стратегии для %s: %s", symbol, exc)
+            self.last_signal_diagnostics = {
+                "mode": runtime["mode"] if "runtime" in locals() else "MAIN",
+                "score": 0.0,
+                "passed_filters": [],
+                "failed_filters": [],
+                "rejection_reason": str(exc),
+            }
             return None
 
 def build_live_strategy(min_rr: float | None = None):

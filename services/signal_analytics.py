@@ -16,6 +16,7 @@ from typing import Any
 
 import core.config as config
 from services.signal_formatter import get_stars_bucket
+from services.trade_registry import TradeRegistry
 from utils.logger import logger
 
 if "logger" not in globals():
@@ -50,12 +51,14 @@ class SignalAnalytics:
     filter_result_counter: dict[str, Counter[str]] = field(default_factory=dict)
     _closed_trade_keys: set[str] = field(default_factory=set, init=False, repr=False)
     _io_lock: threading.RLock = field(default_factory=threading.RLock, init=False, repr=False)
+    trade_registry: TradeRegistry | None = field(default=None, init=False)
 
     def __post_init__(self) -> None:
         try:
             logger.info("[ANALYTICS INIT] trade tracking enabled")
         except Exception:
             pass
+        self.trade_registry = TradeRegistry(path=Path("data") / "trades.json")
         self._load_active_trades()
 
     def collect_signal(self, signal: dict[str, Any], is_duplicate: bool = False) -> None:
@@ -319,6 +322,9 @@ class SignalAnalytics:
                 bucket[result_bucket] += 1
 
             self._save_active_trades()
+            if self.trade_registry and trade.get("registry_id"):
+                status = "TP_HIT" if str(result).upper() == "TP" else "SL_HIT" if str(result).upper() == "SL" else str(result).upper()
+                self.trade_registry.update_trade_status(str(trade.get("registry_id")), status)
             self._append_closed_trade_log(closed)
             self._write_closed_trade_snapshots()
         try:
@@ -448,6 +454,10 @@ class SignalAnalytics:
                 if str(name).strip()
             ],
         }
+        if self.trade_registry:
+            version = str(getattr(config, "STRATEGY_VERSION", "v1"))
+            registry_trade = self.trade_registry.register_signal_trade(signal, strategy_version=version, status="OPEN")
+            trade["registry_id"] = registry_trade.get("id")
         self.active_trades[symbol] = trade
         self._save_active_trades()
         try:
@@ -493,6 +503,11 @@ class SignalAnalytics:
                 self._close_trade(symbol_key, price, timestamp, result="TP")
             elif price >= sl:
                 self._close_trade(symbol_key, price, timestamp, result="SL")
+
+    def group_registry_trades_by_mode(self) -> dict[str, list[dict[str, Any]]]:
+        if not self.trade_registry:
+            return {}
+        return self.trade_registry.group_trades_by_mode()
 
     def _filter_pass_rate(self, total: int, aliases: tuple[str, ...]) -> float:
         passed = 0

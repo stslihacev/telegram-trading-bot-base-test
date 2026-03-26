@@ -163,12 +163,26 @@ class MarketScanner:
             if config.DEBUG_MODE:
                 debug_stage("STRATEGY", clean_symbol, f"calling strategy adapter | mode={self.runtime['mode']}")
             signal = self.strategy.generate_signal(clean_symbol, df)
+            diagnostics = getattr(self.strategy, "last_signal_diagnostics", {}) or {}
             if signal:
                 label = signal.get("label_prefix") or self.log_prefix
-                logger.info(f"{label} ✅ Signal generated: {clean_symbol} | {signal.get('signal_type')} | tf={signal.get('tf')}".strip())
+                logger.info(
+                    (
+                        f"{label} ✅ Signal generated: {clean_symbol} | {signal.get('signal_type')} | tf={signal.get('tf')} | "
+                        f"mode={diagnostics.get('mode', self.runtime['mode'])} | score={signal.get('score')} | "
+                        f"passed_filters={signal.get('passed_filters', [])} | failed_filters={signal.get('failed_filters', [])}"
+                    ).strip()
+                )
                 signals.append(signal)
             else:
-                logger.info(f"{self.log_prefix} ❌ No signal: {clean_symbol}".strip())
+                logger.info(
+                    (
+                        f"{self.log_prefix} ❌ No signal: {clean_symbol} | mode={diagnostics.get('mode', self.runtime['mode'])} | "
+                        f"score={diagnostics.get('score', 0)} | passed_filters={diagnostics.get('passed_filters', [])} | "
+                        f"failed_filters={diagnostics.get('failed_filters', [])} | "
+                        f"rejection_reason={diagnostics.get('rejection_reason', 'unknown')}"
+                    ).strip()
+                )
         
         if (
             not signals
