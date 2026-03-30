@@ -416,9 +416,18 @@ class BacktestStrategyAdapter:
                             f"| SWEEP={signal.get('signal_type') == 'SWEEP'} "
                             f"| live_mode={runtime['mode']}",
                         )
-                    entry = float(signal["entry"])
-                    tp = float(signal["tp"])
-                    sl = float(signal["sl"])
+                    tp_raw = signal.get("tp")
+                    sl_raw = signal.get("sl")
+                    if tp_raw is None or sl_raw is None:
+                        logger.warning("[SIGNAL ERROR] Missing TP/SL | symbol=%s | signal skipped", symbol)
+                        return None
+                    try:
+                        entry = float(signal["entry"])
+                        tp = float(tp_raw)
+                        sl = float(sl_raw)
+                    except (TypeError, ValueError):
+                        logger.warning("[SIGNAL ERROR] Invalid entry/TP/SL | symbol=%s | signal skipped", symbol)
+                        return None
                     score, max_score, confidence = self._strict_mode_scoring(runtime["mode"])
                     sl, tp = self._refine_risk_levels(
                         signal=signal,
