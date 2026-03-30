@@ -358,18 +358,25 @@ class BacktestStrategyAdapter:
             "rejection_reason": "evaluation_started",
         }
         min_candles = int(runtime["scan_candle_limit"])
+        min_required_candles = max(1, int(min_candles * 0.95))
         if runtime.get("is_scalping"):
             self.min_rr = float(runtime["min_signal_rr"])
         self.max_rr = float(runtime["max_rr"])
-        if candles is None or len(candles) < min_candles:
+        candles_count = 0 if candles is None else len(candles)
+        if candles_count < min_required_candles:
             self.last_signal_diagnostics = {
                 "mode": runtime["mode"],
                 "score": 0.0,
                 "passed_filters": [],
                 "failed_filters": ["DATA"],
-                "rejection_reason": f"not enough candles ({0 if candles is None else len(candles)} < {min_candles})",
+                "rejection_reason": (
+                    f"not enough candles ({candles_count} < {min_required_candles} required, "
+                    f"limit={min_candles})"
+                ),
             }
             return None
+        if candles_count < min_candles:
+            logger.debug("[DATA WARNING] candles below limit but accepted: %s/%s", candles_count, min_candles)
 
         try:
             with self._apply_runtime_overrides(runtime):
