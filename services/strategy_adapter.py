@@ -258,7 +258,8 @@ class BacktestStrategyAdapter:
         combined_checks = {**required_checks, **optional_checks}
         _ = build_breakdown(combined_checks)
         optional_score = sum(1 for ok in optional_checks.values() if ok)
-        score_threshold = max(1.0, get_mode_threshold(runtime["mode"]))
+        base_threshold = max(1.0, get_mode_threshold(runtime["mode"]))
+        score_threshold = max(1.0, base_threshold - 0.3) if fallback_mode else base_threshold
         required_ok = all(required_checks[name] for name in required_filters)
         total_score = float(optional_score)
         logger.info(
