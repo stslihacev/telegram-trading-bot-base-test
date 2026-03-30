@@ -76,6 +76,8 @@ def format_signal_full(signal: dict) -> str:
     regime = str(signal.get("regime") or "N/A")
     timestamp = str(signal.get("timestamp") or "N/A")
     fingerprint = str(signal.get("fingerprint") or "N/A")
+    entry_source = str(signal.get("entry_source") or "strict").lower()
+    rejection_reason = str(signal.get("rejection_reason") or "-")
 
     return (
         f"{mode} 📡 SIGNAL\n\n"
@@ -88,8 +90,10 @@ def format_signal_full(signal: dict) -> str:
         f"RR:    {rr}\n\n"
         f"Score:      {score} / {max_score}\n"
         f"⭐ Confidence: {confidence} {stars}\n\n"
+        f"Entry source: {entry_source}\n"
         f"Passed: {passed}\n"
-        f"Failed: {failed}\n\n"
+        f"Failed: {failed}\n"
+        f"Reject reason: {rejection_reason}\n\n"
         f"🧠 Regime: {regime}\n"
         f"🕒 Time:   {timestamp}\n"
         f"Fingerprint: {fingerprint}"

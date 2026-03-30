@@ -30,6 +30,7 @@ class SignalAnalytics:
     duplicates: int = 0
 
     mode_counter: Counter[str] = field(default_factory=Counter)
+    entry_source_counter: Counter[str] = field(default_factory=Counter)
     confidence_sum: float = 0.0
     score_sum: float = 0.0
     scored_count: int = 0
@@ -70,6 +71,8 @@ class SignalAnalytics:
 
         mode = str(signal.get("live_mode") or signal.get("label_prefix") or "UNKNOWN").upper().strip("[]")
         self.mode_counter[mode] += 1
+        entry_source = str(signal.get("entry_source") or "strict").lower()
+        self.entry_source_counter[entry_source if entry_source in {"strict", "relaxed"} else "strict"] += 1
 
         confidence = signal.get("confidence")
         try:
@@ -170,6 +173,7 @@ class SignalAnalytics:
             "confidence": self._safe_float(payload.get("confidence")),
             "score": self._safe_float(payload.get("score")),
             "mode": str(payload.get("mode") or "UNKNOWN").upper().strip("[]"),
+            "entry_source": str(payload.get("entry_source") or "strict").lower(),
             "is_reversal": bool(payload.get("is_reversal", False)),
             "passed_filters": [
                 str(name).upper().strip()
@@ -303,6 +307,7 @@ class SignalAnalytics:
                 "confidence": self._safe_float(trade.get("confidence")),
                 "score": self._safe_float(trade.get("score")),
                 "mode": mode,
+                "entry_source": str(trade.get("entry_source") or "strict").lower(),
                 "is_reversal": bool(trade.get("is_reversal", False)),
                 "open_time": open_time,
                 "close_time": close_time,
@@ -359,7 +364,7 @@ class SignalAnalytics:
         os.replace(json_tmp, self.trade_results_snapshot_json_path)
 
         fieldnames = [
-            "symbol", "mode", "direction", "result", "result_bucket",
+            "symbol", "mode", "entry_source", "direction", "result", "result_bucket",
             "entry", "exit", "tp", "sl", "rr", "RR", "r_multiple", "R", "pnl_points",
             "confidence", "score", "duration_sec", "duration_hm",
             "open_time", "close_time", "is_reversal",
@@ -424,6 +429,7 @@ class SignalAnalytics:
             trade["confidence"] = self._safe_float(signal.get("confidence"))
             trade["score"] = self._safe_float(signal.get("score"))
             trade["mode"] = str(signal.get("live_mode") or signal.get("label_prefix") or "UNKNOWN").upper().strip("[]")
+            trade["entry_source"] = str(signal.get("entry_source") or "strict").lower()
             trade["passed_filters"] = [
                 str(name).upper().strip()
                 for name in (signal.get("passed_filters") or [])
@@ -447,6 +453,7 @@ class SignalAnalytics:
             "confidence": self._safe_float(signal.get("confidence")),
             "score": self._safe_float(signal.get("score")),
             "mode": str(signal.get("live_mode") or signal.get("label_prefix") or "UNKNOWN").upper().strip("[]"),
+            "entry_source": str(signal.get("entry_source") or "strict").lower(),
             "is_reversal": action_upper == "REVERSAL" or bool(signal.get("is_reversal", False)),
             "passed_filters": [
                 str(name).upper().strip()
@@ -509,6 +516,11 @@ class SignalAnalytics:
             return {}
         return self.trade_registry.group_trades_by_mode()
 
+    def group_registry_trades_by_entry_source(self) -> dict[str, list[dict[str, Any]]]:
+        if not self.trade_registry:
+            return {}
+        return self.trade_registry.group_trades_by_entry_source()
+
     def _filter_pass_rate(self, total: int, aliases: tuple[str, ...]) -> float:
         passed = 0
         for name, count in self.filter_pass_counter.items():
@@ -530,6 +542,7 @@ class SignalAnalytics:
         winrate_pct = (wins / total_trades * 100) if total_trades else 0.0
 
         mode_breakdown: dict[str, dict[str, float | int]] = {}
+        source_breakdown: dict[str, dict[str, float | int]] = {}
         for mode_name in ("LIGHT", "MAIN", "SCALPING"):
             mode_trades = [trade for trade in closed_trades if str(trade.get("mode") or "").upper() == mode_name]
             mode_total = len(mode_trades)
@@ -565,6 +578,27 @@ class SignalAnalytics:
         )
         high_conf_winrate = (high_conf_wins / high_conf_total * 100) if high_conf_total else 0.0
 
+        for source_name in ("strict", "relaxed"):
+            source_trades = [trade for trade in closed_trades if str(trade.get("entry_source") or "strict").lower() == source_name]
+            source_total = len(source_trades)
+            source_wins = sum(1 for trade in source_trades if str(trade.get("result_bucket")).upper() == "PROFIT")
+            source_losses = sum(1 for trade in source_trades if str(trade.get("result_bucket")).upper() == "LOSS")
+            source_r_values = [self._safe_float(trade.get("r_multiple")) for trade in source_trades]
+            source_profit_r = sum(value for value in source_r_values if value > 0)
+            source_loss_r_abs = abs(sum(value for value in source_r_values if value < 0))
+            source_breakdown[source_name] = {
+                "trades": source_total,
+                "wins": source_wins,
+                "losses": source_losses,
+                "winrate": (source_wins / source_total * 100) if source_total else 0.0,
+                "avg_r": (sum(source_r_values) / source_total) if source_total else 0.0,
+                "profit_factor": (
+                    source_profit_r / source_loss_r_abs
+                    if source_loss_r_abs > 0
+                    else (float("inf") if source_profit_r > 0 else 0.0)
+                ),
+            }
+
         return {
             "trades": total_trades,
             "wins": wins,
@@ -573,6 +607,7 @@ class SignalAnalytics:
             "avg_r": avg_r,
             "profit_factor": profit_factor,
             "mode_breakdown": mode_breakdown,
+            "entry_source_breakdown": source_breakdown,
             "high_conf": {
                 "trades": high_conf_total,
                 "winrate": high_conf_winrate,
@@ -629,6 +664,8 @@ class SignalAnalytics:
         light = self.mode_counter.get("LIGHT", 0)
         main = self.mode_counter.get("MAIN", 0)
         scalping = self.mode_counter.get("SCALPING", 0)
+        strict_count = self.entry_source_counter.get("strict", 0)
+        relaxed_count = self.entry_source_counter.get("relaxed", 0)
 
         top_filters = self.filter_pass_counter.most_common(5)
         filter_lines = []
@@ -678,6 +715,14 @@ class SignalAnalytics:
                 f"winrate={mode_stats['winrate']:.1f}%, avgR={mode_stats['avg_r']:.2f}, PF={self._format_pf(float(mode_stats['profit_factor']))}"
             )
         mode_profitability_text = "\n".join(mode_profitability_lines)
+        source_profitability_lines = []
+        for source_name in ("strict", "relaxed"):
+            source_stats = profitability["entry_source_breakdown"][source_name]
+            source_profitability_lines.append(
+                f"{source_name}: trades={source_stats['trades']}, wins={source_stats['wins']}, losses={source_stats['losses']}, "
+                f"winrate={source_stats['winrate']:.1f}%, avgR={source_stats['avg_r']:.2f}, PF={self._format_pf(float(source_stats['profit_factor']))}"
+            )
+        source_profitability_text = "\n".join(source_profitability_lines)
         high_conf = profitability["high_conf"]
         mode_lines = []
         for mode_name in ("LIGHT", "MAIN", "SCALPING"):
@@ -717,6 +762,8 @@ class SignalAnalytics:
             f"LIGHT: {light}\n"
             f"MAIN: {main}\n"
             f"SCALPING: {scalping}\n\n"
+            f"strict source: {strict_count}\n"
+            f"relaxed source: {relaxed_count}\n\n"
             f"Средний confidence: {avg_confidence:.2f}\n"
             f"Средний score: {avg_score:.2f}\n\n"
             "Качество:\n"
@@ -740,6 +787,8 @@ class SignalAnalytics:
             f"Avg R: {profitability['avg_r']:.2f}\n\n"
             "📌 PROFITABILITY BY MODE\n"
             f"{mode_profitability_text}\n\n"
+            "🧩 PROFITABILITY BY ENTRY SOURCE\n"
+            f"{source_profitability_text}\n\n"
             f"🎯 HIGH-CONFIDENCE (conf ≥ {self.high_conf_threshold:.2f})\n"
             f"Trades: {high_conf['trades']}\n"
             f"Winrate: {high_conf['winrate']:.2f}%\n"

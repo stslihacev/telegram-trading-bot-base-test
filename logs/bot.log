@@ -59462,3 +59462,712 @@ Fingerprint: f0d638a81e4b406d
 2026-03-27 00:04:27,402 - crypto_bot - INFO - [STATE] WIFUSDT IGNORE skipped: no significant improvement
 2026-03-27 00:04:27,402 - crypto_bot - INFO - ⏳ Sleeping for 180 seconds
 2026-03-27 00:04:57,629 - crypto_bot - INFO - 🛑 Остановка по KeyboardInterrupt
+2026-03-30 20:16:21,668 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-30 20:16:21,669 - crypto_bot - WARNING - TELEGRAM_TOKEN не задан — бот запустится в режиме scanner + GUI без Telegram polling
+2026-03-30 20:16:21,669 - crypto_bot - INFO - [ANALYTICS INIT] trade tracking enabled
+2026-03-30 20:16:21,678 - crypto_bot - INFO - [PERSISTENCE] loaded trades: 43
+2026-03-30 20:16:21,687 - crypto_bot - INFO - [MAIN] scanner initialized | mode=MAIN | timeframe=1h | candle_limit=220 | execution_tfs=4h, 1h, 30m, 15m
+2026-03-30 20:16:22,808 - crypto_bot - INFO - 🖥️ Signal GUI thread started
+2026-03-30 20:16:22,808 - crypto_bot - INFO - ✅ Telegram отключён: инициализированы scanner + GUI режим
+2026-03-30 20:16:22,809 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-30 20:16:22,809 - crypto_bot - INFO - 📡 Telegram polling disabled, running standalone scan loop
+2026-03-30 20:16:22,809 - crypto_bot - INFO - 🚀 SCAN LOOP STARTED
+2026-03-30 20:16:22,810 - crypto_bot - INFO - [STARTUP] reconciling active trades: 43
+2026-03-30 20:16:27,422 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-30 20:16:27,431 - crypto_bot - INFO - [TRADE CLOSED] symbol=1000PEPEUSDT result=SL rr=2.21 duration=93h 16m
+2026-03-30 20:16:27,636 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-30 20:16:27,647 - crypto_bot - INFO - [TRADE CLOSED] symbol=AAVEUSDT result=SL rr=6.73 duration=93h 16m
+2026-03-30 20:16:27,866 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-30 20:16:27,877 - crypto_bot - INFO - [TRADE CLOSED] symbol=ADAUSDT result=SL rr=3.74 duration=93h 16m
+2026-03-30 20:16:28,082 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-30 20:16:28,091 - crypto_bot - INFO - [TRADE CLOSED] symbol=ARIAUSDT result=SL rr=3.09 duration=143h 46m
+2026-03-30 20:16:28,325 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-30 20:16:28,335 - crypto_bot - INFO - [TRADE CLOSED] symbol=AVAXUSDT result=SL rr=2.62 duration=93h 16m
+2026-03-30 20:16:28,566 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-30 20:16:28,577 - crypto_bot - INFO - [TRADE CLOSED] symbol=BNBUSDT result=SL rr=4.25 duration=93h 16m
+2026-03-30 20:16:28,796 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-30 20:16:28,806 - crypto_bot - INFO - [TRADE CLOSED] symbol=BTCUSDT result=SL rr=3.53 duration=93h 16m
+2026-03-30 20:16:29,011 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-30 20:16:29,020 - crypto_bot - INFO - [TRADE CLOSED] symbol=CRVUSDT result=SL rr=1.33 duration=93h 16m
+2026-03-30 20:16:29,243 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-30 20:16:29,254 - crypto_bot - INFO - [TRADE CLOSED] symbol=CUSDT result=SL rr=4.25 duration=121h 16m
+2026-03-30 20:16:29,705 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-30 20:16:29,713 - crypto_bot - INFO - [TRADE CLOSED] symbol=DOTUSDT result=TP rr=4.01 duration=93h 16m
+2026-03-30 20:16:29,935 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-30 20:16:29,945 - crypto_bot - INFO - [TRADE CLOSED] symbol=ENAUSDT result=SL rr=3.09 duration=93h 16m
+2026-03-30 20:16:30,392 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-30 20:16:30,403 - crypto_bot - INFO - [TRADE CLOSED] symbol=FARTCOINUSDT result=SL rr=2.92 duration=93h 16m
+2026-03-30 20:16:30,625 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-30 20:16:30,635 - crypto_bot - INFO - [TRADE CLOSED] symbol=GALAUSDT result=SL rr=5.69 duration=93h 16m
+2026-03-30 20:16:30,855 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-30 20:16:30,865 - crypto_bot - INFO - [TRADE CLOSED] symbol=HYPEUSDT result=TP rr=3.05 duration=93h 16m
+2026-03-30 20:16:31,071 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-30 20:16:31,081 - crypto_bot - INFO - [TRADE CLOSED] symbol=KATUSDT result=TP rr=3.27 duration=93h 16m
+2026-03-30 20:16:31,304 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-30 20:16:31,314 - crypto_bot - INFO - [TRADE CLOSED] symbol=KITEUSDT result=SL rr=8.03 duration=93h 16m
+2026-03-30 20:16:31,536 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-30 20:16:31,545 - crypto_bot - INFO - [TRADE CLOSED] symbol=LINKUSDT result=SL rr=2.01 duration=93h 16m
+2026-03-30 20:16:31,764 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-30 20:16:31,775 - crypto_bot - INFO - [TRADE CLOSED] symbol=LTCUSDT result=SL rr=2.85 duration=93h 16m
+2026-03-30 20:16:31,992 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-30 20:16:32,001 - crypto_bot - INFO - [TRADE CLOSED] symbol=MONUSDT result=SL rr=2.40 duration=93h 16m
+2026-03-30 20:16:32,236 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-30 20:16:32,247 - crypto_bot - INFO - [TRADE CLOSED] symbol=MUSDT result=TP rr=1.96 duration=93h 16m
+2026-03-30 20:16:32,536 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-30 20:16:32,546 - crypto_bot - INFO - [TRADE CLOSED] symbol=NEARUSDT result=SL rr=4.91 duration=93h 16m
+2026-03-30 20:16:33,000 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-30 20:16:33,010 - crypto_bot - INFO - [TRADE CLOSED] symbol=ONTUSDT result=TP rr=33.24 duration=93h 16m
+2026-03-30 20:16:33,218 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-30 20:16:33,229 - crypto_bot - INFO - [TRADE CLOSED] symbol=PAXGUSDT result=SL rr=3.25 duration=93h 16m
+2026-03-30 20:16:33,670 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-30 20:16:33,682 - crypto_bot - INFO - [TRADE CLOSED] symbol=PROVEUSDT result=TP rr=6.34 duration=92h 46m
+2026-03-30 20:16:34,542 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-30 20:16:34,552 - crypto_bot - INFO - [TRADE CLOSED] symbol=SOLUSDT result=SL rr=3.12 duration=93h 16m
+2026-03-30 20:16:34,770 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-30 20:16:34,780 - crypto_bot - INFO - [TRADE CLOSED] symbol=SUIUSDT result=SL rr=6.30 duration=93h 16m
+2026-03-30 20:16:35,010 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-30 20:16:35,019 - crypto_bot - INFO - [TRADE CLOSED] symbol=TAOUSDT result=SL rr=4.39 duration=93h 16m
+2026-03-30 20:16:35,239 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-30 20:16:35,248 - crypto_bot - INFO - [TRADE CLOSED] symbol=TRUMPUSDT result=SL rr=4.54 duration=93h 16m
+2026-03-30 20:16:35,455 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-30 20:16:35,468 - crypto_bot - INFO - [TRADE CLOSED] symbol=VIRTUALUSDT result=SL rr=3.41 duration=93h 16m
+2026-03-30 20:16:35,676 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-30 20:16:35,687 - crypto_bot - INFO - [TRADE CLOSED] symbol=WIFUSDT result=SL rr=4.07 duration=93h 16m
+2026-03-30 20:16:35,991 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-30 20:16:36,004 - crypto_bot - INFO - [TRADE CLOSED] symbol=WLDUSDT result=SL rr=3.52 duration=93h 16m
+2026-03-30 20:16:36,005 - crypto_bot - WARNING - [WARNING] HIGH CONF CLOSED IN LOSS | symbol=WLDUSDT | conf=0.79 | mode=LIGHT
+2026-03-30 20:16:36,212 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-30 20:16:36,223 - crypto_bot - INFO - [TRADE CLOSED] symbol=XAGUSDT result=TP rr=1.77 duration=93h 16m
+2026-03-30 20:16:36,451 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-30 20:16:36,463 - crypto_bot - INFO - [TRADE CLOSED] symbol=XAUTUSDT result=SL rr=3.10 duration=93h 16m
+2026-03-30 20:16:36,673 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-30 20:16:36,685 - crypto_bot - INFO - [TRADE CLOSED] symbol=XAUUSDT result=TP rr=3.84 duration=92h 46m
+2026-03-30 20:16:36,903 - crypto_bot - INFO - [PERSISTENCE] saved trades
+2026-03-30 20:16:36,913 - crypto_bot - INFO - [TRADE CLOSED] symbol=XRPUSDT result=SL rr=1.70 duration=93h 16m
+2026-03-30 20:16:37,137 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-30 20:16:41,984 - crypto_bot - INFO - [MARKET] get_top_usdt_pairs prepared 546 liquid swap symbols
+2026-03-30 20:16:41,984 - crypto_bot - INFO - 📈 Top-50 symbols fetched: 50
+2026-03-30 20:16:41,984 - crypto_bot - INFO - 🔥 Active symbols after filter: 37 / 50
+2026-03-30 20:16:41,984 - crypto_bot - INFO - 🔍 Scanning BTC/USDT:USDT
+2026-03-30 20:16:42,209 - crypto_bot - INFO - ❌ No signal: BTCUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:16:42,209 - crypto_bot - INFO - 🔍 Scanning ETH/USDT:USDT
+2026-03-30 20:16:42,611 - crypto_bot - INFO - ❌ No signal: ETHUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:16:42,611 - crypto_bot - INFO - 🔍 Scanning SOL/USDT:USDT
+2026-03-30 20:16:42,833 - crypto_bot - INFO - ❌ No signal: SOLUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:16:42,833 - crypto_bot - INFO - 🔍 Scanning XRP/USDT:USDT
+2026-03-30 20:16:43,041 - crypto_bot - INFO - ❌ No signal: XRPUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:16:43,041 - crypto_bot - INFO - 🔍 Scanning DOGE/USDT:USDT
+2026-03-30 20:16:43,251 - crypto_bot - INFO - ❌ No signal: DOGEUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:16:43,251 - crypto_bot - INFO - 🔍 Scanning TAO/USDT:USDT
+2026-03-30 20:16:43,484 - crypto_bot - INFO - ❌ No signal: TAOUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:16:43,484 - crypto_bot - INFO - 🔍 Scanning HYPE/USDT:USDT
+2026-03-30 20:16:43,705 - crypto_bot - INFO - ❌ No signal: HYPEUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:16:43,705 - crypto_bot - INFO - 🔍 Scanning ONT/USDT:USDT
+2026-03-30 20:16:43,927 - crypto_bot - INFO - ❌ No signal: ONTUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:16:43,927 - crypto_bot - INFO - 🔍 Scanning RIVER/USDT:USDT
+2026-03-30 20:16:44,175 - crypto_bot - INFO - ❌ No signal: RIVERUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:16:44,175 - crypto_bot - INFO - 🔍 Scanning ADA/USDT:USDT
+2026-03-30 20:16:44,396 - crypto_bot - INFO - ❌ No signal: ADAUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:16:44,396 - crypto_bot - INFO - 🔍 Scanning NOM/USDT:USDT
+2026-03-30 20:16:44,618 - crypto_bot - INFO - ❌ No signal: NOMUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:16:44,618 - crypto_bot - INFO - 🔍 Scanning 1000PEPE/USDT:USDT
+2026-03-30 20:16:44,825 - crypto_bot - INFO - ❌ No signal: 1000PEPEUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:16:44,825 - crypto_bot - INFO - 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-30 20:16:45,047 - crypto_bot - INFO - ❌ No signal: FARTCOINUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:16:45,047 - crypto_bot - INFO - 🔍 Scanning SUI/USDT:USDT
+2026-03-30 20:16:45,255 - crypto_bot - INFO - ❌ No signal: SUIUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:16:45,255 - crypto_bot - INFO - 🔍 Scanning LINK/USDT:USDT
+2026-03-30 20:16:45,481 - crypto_bot - INFO - ❌ No signal: LINKUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:16:45,481 - crypto_bot - INFO - 🔍 Scanning ZEC/USDT:USDT
+2026-03-30 20:16:45,691 - crypto_bot - INFO - ❌ No signal: ZECUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:16:45,691 - crypto_bot - INFO - 🔍 Scanning ENA/USDT:USDT
+2026-03-30 20:16:45,911 - crypto_bot - INFO - ❌ No signal: ENAUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:16:45,912 - crypto_bot - INFO - 🔍 Scanning SIREN/USDT:USDT
+2026-03-30 20:16:46,131 - crypto_bot - INFO - ❌ No signal: SIRENUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:16:46,131 - crypto_bot - INFO - 🔍 Scanning BASED/USDT:USDT
+2026-03-30 20:16:46,349 - crypto_bot - INFO - ❌ No signal: BASEDUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:16:46,349 - crypto_bot - INFO - 🔍 Scanning WLD/USDT:USDT
+2026-03-30 20:16:46,586 - crypto_bot - INFO - ❌ No signal: WLDUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:16:46,586 - crypto_bot - INFO - 🔍 Scanning BCH/USDT:USDT
+2026-03-30 20:16:46,834 - crypto_bot - INFO - ❌ No signal: BCHUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:16:46,834 - crypto_bot - INFO - 🔍 Scanning NEAR/USDT:USDT
+2026-03-30 20:16:47,078 - crypto_bot - INFO - ❌ No signal: NEARUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:16:47,078 - crypto_bot - INFO - 🔍 Scanning LTC/USDT:USDT
+2026-03-30 20:16:47,287 - crypto_bot - INFO - ❌ No signal: LTCUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:16:47,287 - crypto_bot - INFO - 🔍 Scanning BNB/USDT:USDT
+2026-03-30 20:16:47,517 - crypto_bot - INFO - ❌ No signal: BNBUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:16:47,518 - crypto_bot - INFO - 🔍 Scanning AVAX/USDT:USDT
+2026-03-30 20:16:48,321 - crypto_bot - INFO - ❌ No signal: AVAXUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:16:48,321 - crypto_bot - INFO - 🔍 Scanning AAVE/USDT:USDT
+2026-03-30 20:16:48,588 - crypto_bot - INFO - ❌ No signal: AAVEUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:16:48,589 - crypto_bot - INFO - 🔍 Scanning ARIA/USDT:USDT
+2026-03-30 20:16:48,956 - crypto_bot - INFO - ❌ No signal: ARIAUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:16:48,957 - crypto_bot - INFO - 🔍 Scanning ONDO/USDT:USDT
+2026-03-30 20:16:49,735 - crypto_bot - INFO - ❌ No signal: ONDOUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:16:49,735 - crypto_bot - INFO - 🔍 Scanning 1000BONK/USDT:USDT
+2026-03-30 20:16:49,985 - crypto_bot - INFO - ❌ No signal: 1000BONKUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:16:49,985 - crypto_bot - INFO - 🔍 Scanning SENT/USDT:USDT
+2026-03-30 20:16:50,193 - crypto_bot - INFO - ❌ No signal: SENTUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:16:50,193 - crypto_bot - INFO - 🔍 Scanning GALA/USDT:USDT
+2026-03-30 20:16:50,586 - crypto_bot - INFO - ❌ No signal: GALAUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:16:50,586 - crypto_bot - INFO - 🔍 Scanning LDO/USDT:USDT
+2026-03-30 20:16:50,810 - crypto_bot - INFO - ❌ No signal: LDOUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:16:50,810 - crypto_bot - INFO - 🔍 Scanning BEAT/USDT:USDT
+2026-03-30 20:16:51,019 - crypto_bot - INFO - ❌ No signal: BEATUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:16:51,019 - crypto_bot - INFO - 🔍 Scanning ARB/USDT:USDT
+2026-03-30 20:16:51,229 - crypto_bot - INFO - ❌ No signal: ARBUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:16:51,230 - crypto_bot - INFO - 🔍 Scanning STO/USDT:USDT
+2026-03-30 20:16:51,441 - crypto_bot - INFO - ❌ No signal: STOUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:16:51,441 - crypto_bot - INFO - 🔍 Scanning PLAYSOUT/USDT:USDT
+2026-03-30 20:16:51,837 - crypto_bot - INFO - ❌ No signal: PLAYSOUTUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:16:51,837 - crypto_bot - INFO - 🔍 Scanning VIRTUAL/USDT:USDT
+2026-03-30 20:16:52,048 - crypto_bot - INFO - ❌ No signal: VIRTUALUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:16:52,048 - crypto_bot - INFO - 📊 Total signals after scan: 0
+2026-03-30 20:16:52,048 - crypto_bot - INFO - 📊 Signals found: 0
+2026-03-30 20:16:52,049 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
+2026-03-30 20:21:52,034 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-30 20:21:54,149 - crypto_bot - INFO - [MARKET] get_top_usdt_pairs prepared 546 liquid swap symbols
+2026-03-30 20:21:54,149 - crypto_bot - INFO - 📈 Top-50 symbols fetched: 50
+2026-03-30 20:21:54,150 - crypto_bot - INFO - 🔥 Active symbols after filter: 36 / 50
+2026-03-30 20:21:54,150 - crypto_bot - INFO - 🔍 Scanning BTC/USDT:USDT
+2026-03-30 20:21:55,230 - crypto_bot - INFO - ❌ No signal: BTCUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:21:55,231 - crypto_bot - INFO - 🔍 Scanning ETH/USDT:USDT
+2026-03-30 20:21:55,447 - crypto_bot - INFO - ❌ No signal: ETHUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:21:55,447 - crypto_bot - INFO - 🔍 Scanning SOL/USDT:USDT
+2026-03-30 20:21:55,687 - crypto_bot - INFO - ❌ No signal: SOLUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:21:55,687 - crypto_bot - INFO - 🔍 Scanning XRP/USDT:USDT
+2026-03-30 20:21:55,902 - crypto_bot - INFO - ❌ No signal: XRPUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:21:55,902 - crypto_bot - INFO - 🔍 Scanning DOGE/USDT:USDT
+2026-03-30 20:21:56,120 - crypto_bot - INFO - ❌ No signal: DOGEUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:21:56,120 - crypto_bot - INFO - 🔍 Scanning TAO/USDT:USDT
+2026-03-30 20:21:56,357 - crypto_bot - INFO - ❌ No signal: TAOUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:21:56,357 - crypto_bot - INFO - 🔍 Scanning HYPE/USDT:USDT
+2026-03-30 20:21:56,584 - crypto_bot - INFO - ❌ No signal: HYPEUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:21:56,584 - crypto_bot - INFO - 🔍 Scanning ONT/USDT:USDT
+2026-03-30 20:21:56,811 - crypto_bot - INFO - ❌ No signal: ONTUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:21:56,811 - crypto_bot - INFO - 🔍 Scanning RIVER/USDT:USDT
+2026-03-30 20:21:57,039 - crypto_bot - INFO - ❌ No signal: RIVERUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:21:57,040 - crypto_bot - INFO - 🔍 Scanning ADA/USDT:USDT
+2026-03-30 20:21:57,255 - crypto_bot - INFO - ❌ No signal: ADAUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:21:57,255 - crypto_bot - INFO - 🔍 Scanning NOM/USDT:USDT
+2026-03-30 20:21:57,483 - crypto_bot - INFO - ❌ No signal: NOMUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:21:57,483 - crypto_bot - INFO - 🔍 Scanning 1000PEPE/USDT:USDT
+2026-03-30 20:21:57,721 - crypto_bot - INFO - ❌ No signal: 1000PEPEUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:21:57,721 - crypto_bot - INFO - 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-30 20:21:57,949 - crypto_bot - INFO - ❌ No signal: FARTCOINUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:21:57,949 - crypto_bot - INFO - 🔍 Scanning SUI/USDT:USDT
+2026-03-30 20:21:58,166 - crypto_bot - INFO - ❌ No signal: SUIUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:21:58,166 - crypto_bot - INFO - 🔍 Scanning LINK/USDT:USDT
+2026-03-30 20:21:58,392 - crypto_bot - INFO - ❌ No signal: LINKUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:21:58,393 - crypto_bot - INFO - 🔍 Scanning ZEC/USDT:USDT
+2026-03-30 20:21:58,621 - crypto_bot - INFO - ❌ No signal: ZECUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:21:58,621 - crypto_bot - INFO - 🔍 Scanning ENA/USDT:USDT
+2026-03-30 20:21:58,848 - crypto_bot - INFO - ❌ No signal: ENAUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:21:58,848 - crypto_bot - INFO - 🔍 Scanning SIREN/USDT:USDT
+2026-03-30 20:21:59,077 - crypto_bot - INFO - ❌ No signal: SIRENUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:21:59,077 - crypto_bot - INFO - 🔍 Scanning BASED/USDT:USDT
+2026-03-30 20:21:59,285 - crypto_bot - INFO - ❌ No signal: BASEDUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:21:59,285 - crypto_bot - INFO - 🔍 Scanning WLD/USDT:USDT
+2026-03-30 20:21:59,501 - crypto_bot - INFO - ❌ No signal: WLDUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:21:59,501 - crypto_bot - INFO - 🔍 Scanning BCH/USDT:USDT
+2026-03-30 20:21:59,717 - crypto_bot - INFO - ❌ No signal: BCHUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:21:59,717 - crypto_bot - INFO - 🔍 Scanning NEAR/USDT:USDT
+2026-03-30 20:21:59,944 - crypto_bot - INFO - ❌ No signal: NEARUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:21:59,945 - crypto_bot - INFO - 🔍 Scanning LTC/USDT:USDT
+2026-03-30 20:22:00,157 - crypto_bot - INFO - ❌ No signal: LTCUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:22:00,158 - crypto_bot - INFO - 🔍 Scanning BNB/USDT:USDT
+2026-03-30 20:22:00,372 - crypto_bot - INFO - ❌ No signal: BNBUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:22:00,372 - crypto_bot - INFO - 🔍 Scanning AVAX/USDT:USDT
+2026-03-30 20:22:00,585 - crypto_bot - INFO - ❌ No signal: AVAXUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:22:00,586 - crypto_bot - INFO - 🔍 Scanning AAVE/USDT:USDT
+2026-03-30 20:22:00,813 - crypto_bot - INFO - ❌ No signal: AAVEUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:22:00,813 - crypto_bot - INFO - 🔍 Scanning ARIA/USDT:USDT
+2026-03-30 20:22:01,028 - crypto_bot - INFO - ❌ No signal: ARIAUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:22:01,028 - crypto_bot - INFO - 🔍 Scanning 1000BONK/USDT:USDT
+2026-03-30 20:22:01,256 - crypto_bot - INFO - ❌ No signal: 1000BONKUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:22:01,256 - crypto_bot - INFO - 🔍 Scanning ONDO/USDT:USDT
+2026-03-30 20:22:01,475 - crypto_bot - INFO - ❌ No signal: ONDOUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:22:01,475 - crypto_bot - INFO - 🔍 Scanning GALA/USDT:USDT
+2026-03-30 20:22:01,714 - crypto_bot - INFO - ❌ No signal: GALAUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:22:01,715 - crypto_bot - INFO - 🔍 Scanning SENT/USDT:USDT
+2026-03-30 20:22:01,940 - crypto_bot - INFO - ❌ No signal: SENTUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:22:01,940 - crypto_bot - INFO - 🔍 Scanning LDO/USDT:USDT
+2026-03-30 20:22:02,176 - crypto_bot - INFO - ❌ No signal: LDOUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:22:02,176 - crypto_bot - INFO - 🔍 Scanning BEAT/USDT:USDT
+2026-03-30 20:22:02,404 - crypto_bot - INFO - ❌ No signal: BEATUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:22:02,404 - crypto_bot - INFO - 🔍 Scanning ARB/USDT:USDT
+2026-03-30 20:22:02,630 - crypto_bot - INFO - ❌ No signal: ARBUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:22:02,630 - crypto_bot - INFO - 🔍 Scanning STO/USDT:USDT
+2026-03-30 20:22:02,872 - crypto_bot - INFO - ❌ No signal: STOUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:22:02,872 - crypto_bot - INFO - 🔍 Scanning PLAYSOUT/USDT:USDT
+2026-03-30 20:22:03,095 - crypto_bot - INFO - ❌ No signal: PLAYSOUTUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:22:03,095 - crypto_bot - INFO - 📊 Total signals after scan: 0
+2026-03-30 20:22:03,095 - crypto_bot - INFO - 📊 Signals found: 0
+2026-03-30 20:22:03,096 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
+2026-03-30 20:27:03,074 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-30 20:27:04,027 - crypto_bot - INFO - [MARKET] get_top_usdt_pairs prepared 546 liquid swap symbols
+2026-03-30 20:27:04,028 - crypto_bot - INFO - 📈 Top-50 symbols fetched: 50
+2026-03-30 20:27:04,028 - crypto_bot - INFO - 🔥 Active symbols after filter: 35 / 50
+2026-03-30 20:27:04,028 - crypto_bot - INFO - 🔍 Scanning ETH/USDT:USDT
+2026-03-30 20:27:04,566 - crypto_bot - INFO - ❌ No signal: ETHUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:27:04,566 - crypto_bot - INFO - 🔍 Scanning SOL/USDT:USDT
+2026-03-30 20:27:04,786 - crypto_bot - INFO - ❌ No signal: SOLUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:27:04,786 - crypto_bot - INFO - 🔍 Scanning XRP/USDT:USDT
+2026-03-30 20:27:04,999 - crypto_bot - INFO - ❌ No signal: XRPUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:27:04,999 - crypto_bot - INFO - 🔍 Scanning DOGE/USDT:USDT
+2026-03-30 20:27:05,208 - crypto_bot - INFO - ❌ No signal: DOGEUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:27:05,208 - crypto_bot - INFO - 🔍 Scanning TAO/USDT:USDT
+2026-03-30 20:27:05,419 - crypto_bot - INFO - ❌ No signal: TAOUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:27:05,419 - crypto_bot - INFO - 🔍 Scanning HYPE/USDT:USDT
+2026-03-30 20:27:05,628 - crypto_bot - INFO - ❌ No signal: HYPEUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:27:05,629 - crypto_bot - INFO - 🔍 Scanning ONT/USDT:USDT
+2026-03-30 20:27:05,853 - crypto_bot - INFO - ❌ No signal: ONTUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:27:05,853 - crypto_bot - INFO - 🔍 Scanning RIVER/USDT:USDT
+2026-03-30 20:27:06,062 - crypto_bot - INFO - ❌ No signal: RIVERUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:27:06,063 - crypto_bot - INFO - 🔍 Scanning ADA/USDT:USDT
+2026-03-30 20:27:06,272 - crypto_bot - INFO - ❌ No signal: ADAUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:27:06,273 - crypto_bot - INFO - 🔍 Scanning NOM/USDT:USDT
+2026-03-30 20:27:06,483 - crypto_bot - INFO - ❌ No signal: NOMUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:27:06,484 - crypto_bot - INFO - 🔍 Scanning 1000PEPE/USDT:USDT
+2026-03-30 20:27:06,694 - crypto_bot - INFO - ❌ No signal: 1000PEPEUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:27:06,694 - crypto_bot - INFO - 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-30 20:27:06,918 - crypto_bot - INFO - ❌ No signal: FARTCOINUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:27:06,919 - crypto_bot - INFO - 🔍 Scanning LINK/USDT:USDT
+2026-03-30 20:27:07,136 - crypto_bot - INFO - ❌ No signal: LINKUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:27:07,136 - crypto_bot - INFO - 🔍 Scanning SUI/USDT:USDT
+2026-03-30 20:27:07,347 - crypto_bot - INFO - ❌ No signal: SUIUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:27:07,347 - crypto_bot - INFO - 🔍 Scanning ZEC/USDT:USDT
+2026-03-30 20:27:07,561 - crypto_bot - INFO - ❌ No signal: ZECUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:27:07,562 - crypto_bot - INFO - 🔍 Scanning ENA/USDT:USDT
+2026-03-30 20:27:07,773 - crypto_bot - INFO - ❌ No signal: ENAUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:27:07,773 - crypto_bot - INFO - 🔍 Scanning SIREN/USDT:USDT
+2026-03-30 20:27:07,984 - crypto_bot - INFO - ❌ No signal: SIRENUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:27:07,984 - crypto_bot - INFO - 🔍 Scanning BASED/USDT:USDT
+2026-03-30 20:27:08,204 - crypto_bot - INFO - ❌ No signal: BASEDUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:27:08,204 - crypto_bot - INFO - 🔍 Scanning WLD/USDT:USDT
+2026-03-30 20:27:08,428 - crypto_bot - INFO - ❌ No signal: WLDUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:27:08,428 - crypto_bot - INFO - 🔍 Scanning BCH/USDT:USDT
+2026-03-30 20:27:08,652 - crypto_bot - INFO - ❌ No signal: BCHUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:27:08,653 - crypto_bot - INFO - 🔍 Scanning BSB/USDT:USDT
+2026-03-30 20:27:08,873 - crypto_bot - INFO - ❌ No signal: BSBUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:27:08,873 - crypto_bot - INFO - 🔍 Scanning AVAX/USDT:USDT
+2026-03-30 20:27:09,085 - crypto_bot - INFO - ❌ No signal: AVAXUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:27:09,086 - crypto_bot - INFO - 🔍 Scanning AAVE/USDT:USDT
+2026-03-30 20:27:09,296 - crypto_bot - INFO - ❌ No signal: AAVEUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:27:09,296 - crypto_bot - INFO - 🔍 Scanning ARIA/USDT:USDT
+2026-03-30 20:27:09,533 - crypto_bot - INFO - ❌ No signal: ARIAUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:27:09,535 - crypto_bot - INFO - 🔍 Scanning 1000BONK/USDT:USDT
+2026-03-30 20:27:09,746 - crypto_bot - INFO - ❌ No signal: 1000BONKUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:27:09,746 - crypto_bot - INFO - 🔍 Scanning ONDO/USDT:USDT
+2026-03-30 20:27:09,967 - crypto_bot - INFO - ❌ No signal: ONDOUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:27:09,968 - crypto_bot - INFO - 🔍 Scanning GALA/USDT:USDT
+2026-03-30 20:27:10,340 - crypto_bot - INFO - ❌ No signal: GALAUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:27:10,341 - crypto_bot - INFO - 🔍 Scanning SENT/USDT:USDT
+2026-03-30 20:27:10,566 - crypto_bot - INFO - ❌ No signal: SENTUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:27:10,566 - crypto_bot - INFO - 🔍 Scanning LDO/USDT:USDT
+2026-03-30 20:27:10,788 - crypto_bot - INFO - ❌ No signal: LDOUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:27:10,789 - crypto_bot - INFO - 🔍 Scanning BEAT/USDT:USDT
+2026-03-30 20:27:10,998 - crypto_bot - INFO - ❌ No signal: BEATUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:27:10,999 - crypto_bot - INFO - 🔍 Scanning ARB/USDT:USDT
+2026-03-30 20:27:11,391 - crypto_bot - INFO - ❌ No signal: ARBUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:27:11,391 - crypto_bot - INFO - 🔍 Scanning STO/USDT:USDT
+2026-03-30 20:27:11,612 - crypto_bot - INFO - ❌ No signal: STOUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:27:11,612 - crypto_bot - INFO - 🔍 Scanning PLAYSOUT/USDT:USDT
+2026-03-30 20:27:11,838 - crypto_bot - INFO - ❌ No signal: PLAYSOUTUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:27:11,839 - crypto_bot - INFO - 🔍 Scanning CRV/USDT:USDT
+2026-03-30 20:27:12,049 - crypto_bot - INFO - ❌ No signal: CRVUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:27:12,050 - crypto_bot - INFO - 🔍 Scanning WIF/USDT:USDT
+2026-03-30 20:27:12,734 - crypto_bot - INFO - ❌ No signal: WIFUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:27:12,735 - crypto_bot - INFO - 📊 Total signals after scan: 0
+2026-03-30 20:27:12,735 - crypto_bot - INFO - 📊 Signals found: 0
+2026-03-30 20:27:12,735 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
+2026-03-30 20:32:12,721 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-30 20:32:13,705 - crypto_bot - INFO - [MARKET] get_top_usdt_pairs prepared 546 liquid swap symbols
+2026-03-30 20:32:13,705 - crypto_bot - INFO - 📈 Top-50 symbols fetched: 50
+2026-03-30 20:32:13,705 - crypto_bot - INFO - 🔥 Active symbols after filter: 36 / 50
+2026-03-30 20:32:13,705 - crypto_bot - INFO - 🔍 Scanning ETH/USDT:USDT
+2026-03-30 20:32:14,265 - crypto_bot - INFO - ❌ No signal: ETHUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:32:14,266 - crypto_bot - INFO - 🔍 Scanning SOL/USDT:USDT
+2026-03-30 20:32:14,488 - crypto_bot - INFO - ❌ No signal: SOLUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:32:14,488 - crypto_bot - INFO - 🔍 Scanning XRP/USDT:USDT
+2026-03-30 20:32:14,716 - crypto_bot - INFO - ❌ No signal: XRPUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:32:14,717 - crypto_bot - INFO - 🔍 Scanning DOGE/USDT:USDT
+2026-03-30 20:32:14,950 - crypto_bot - INFO - ❌ No signal: DOGEUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:32:14,950 - crypto_bot - INFO - 🔍 Scanning TAO/USDT:USDT
+2026-03-30 20:32:15,165 - crypto_bot - INFO - ❌ No signal: TAOUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:32:15,166 - crypto_bot - INFO - 🔍 Scanning HYPE/USDT:USDT
+2026-03-30 20:32:15,402 - crypto_bot - INFO - ❌ No signal: HYPEUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:32:15,403 - crypto_bot - INFO - 🔍 Scanning ONT/USDT:USDT
+2026-03-30 20:32:15,620 - crypto_bot - INFO - ❌ No signal: ONTUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:32:15,620 - crypto_bot - INFO - 🔍 Scanning RIVER/USDT:USDT
+2026-03-30 20:32:15,870 - crypto_bot - INFO - ❌ No signal: RIVERUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:32:15,870 - crypto_bot - INFO - 🔍 Scanning ADA/USDT:USDT
+2026-03-30 20:32:16,092 - crypto_bot - INFO - ❌ No signal: ADAUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:32:16,093 - crypto_bot - INFO - 🔍 Scanning NOM/USDT:USDT
+2026-03-30 20:32:16,325 - crypto_bot - INFO - ❌ No signal: NOMUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:32:16,325 - crypto_bot - INFO - 🔍 Scanning 1000PEPE/USDT:USDT
+2026-03-30 20:32:16,555 - crypto_bot - INFO - ❌ No signal: 1000PEPEUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:32:16,556 - crypto_bot - INFO - 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-30 20:32:16,776 - crypto_bot - INFO - ❌ No signal: FARTCOINUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:32:16,777 - crypto_bot - INFO - 🔍 Scanning LINK/USDT:USDT
+2026-03-30 20:32:17,003 - crypto_bot - INFO - ❌ No signal: LINKUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:32:17,003 - crypto_bot - INFO - 🔍 Scanning SUI/USDT:USDT
+2026-03-30 20:32:17,235 - crypto_bot - INFO - ❌ No signal: SUIUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:32:17,235 - crypto_bot - INFO - 🔍 Scanning ZEC/USDT:USDT
+2026-03-30 20:32:17,456 - crypto_bot - INFO - ❌ No signal: ZECUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:32:17,456 - crypto_bot - INFO - 🔍 Scanning ENA/USDT:USDT
+2026-03-30 20:32:17,683 - crypto_bot - INFO - ❌ No signal: ENAUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:32:17,685 - crypto_bot - INFO - 🔍 Scanning SIREN/USDT:USDT
+2026-03-30 20:32:17,912 - crypto_bot - INFO - ❌ No signal: SIRENUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:32:17,912 - crypto_bot - INFO - 🔍 Scanning BASED/USDT:USDT
+2026-03-30 20:32:18,133 - crypto_bot - INFO - ❌ No signal: BASEDUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:32:18,134 - crypto_bot - INFO - 🔍 Scanning WLD/USDT:USDT
+2026-03-30 20:32:18,364 - crypto_bot - INFO - ❌ No signal: WLDUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:32:18,364 - crypto_bot - INFO - 🔍 Scanning BCH/USDT:USDT
+2026-03-30 20:32:18,590 - crypto_bot - INFO - ❌ No signal: BCHUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:32:18,590 - crypto_bot - INFO - 🔍 Scanning BSB/USDT:USDT
+2026-03-30 20:32:18,815 - crypto_bot - INFO - ❌ No signal: BSBUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:32:18,815 - crypto_bot - INFO - 🔍 Scanning AVAX/USDT:USDT
+2026-03-30 20:32:19,040 - crypto_bot - INFO - ❌ No signal: AVAXUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:32:19,040 - crypto_bot - INFO - 🔍 Scanning AAVE/USDT:USDT
+2026-03-30 20:32:19,266 - crypto_bot - INFO - ❌ No signal: AAVEUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:32:19,267 - crypto_bot - INFO - 🔍 Scanning ARIA/USDT:USDT
+2026-03-30 20:32:19,508 - crypto_bot - INFO - ❌ No signal: ARIAUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:32:19,508 - crypto_bot - INFO - 🔍 Scanning 1000BONK/USDT:USDT
+2026-03-30 20:32:19,726 - crypto_bot - INFO - ❌ No signal: 1000BONKUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:32:19,726 - crypto_bot - INFO - 🔍 Scanning ONDO/USDT:USDT
+2026-03-30 20:32:19,953 - crypto_bot - INFO - ❌ No signal: ONDOUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:32:19,954 - crypto_bot - INFO - 🔍 Scanning GALA/USDT:USDT
+2026-03-30 20:32:20,179 - crypto_bot - INFO - ❌ No signal: GALAUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:32:20,179 - crypto_bot - INFO - 🔍 Scanning LDO/USDT:USDT
+2026-03-30 20:32:20,408 - crypto_bot - INFO - ❌ No signal: LDOUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:32:20,409 - crypto_bot - INFO - 🔍 Scanning SENT/USDT:USDT
+2026-03-30 20:32:20,623 - crypto_bot - INFO - ❌ No signal: SENTUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:32:20,624 - crypto_bot - INFO - 🔍 Scanning BEAT/USDT:USDT
+2026-03-30 20:32:20,851 - crypto_bot - INFO - ❌ No signal: BEATUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:32:20,851 - crypto_bot - INFO - 🔍 Scanning ARB/USDT:USDT
+2026-03-30 20:32:21,077 - crypto_bot - INFO - ❌ No signal: ARBUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:32:21,078 - crypto_bot - INFO - 🔍 Scanning STO/USDT:USDT
+2026-03-30 20:32:21,302 - crypto_bot - INFO - ❌ No signal: STOUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:32:21,302 - crypto_bot - INFO - 🔍 Scanning PLAYSOUT/USDT:USDT
+2026-03-30 20:32:21,522 - crypto_bot - INFO - ❌ No signal: PLAYSOUTUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:32:21,522 - crypto_bot - INFO - 🔍 Scanning CRV/USDT:USDT
+2026-03-30 20:32:21,895 - crypto_bot - INFO - ❌ No signal: CRVUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:32:21,895 - crypto_bot - INFO - 🔍 Scanning WIF/USDT:USDT
+2026-03-30 20:32:22,117 - crypto_bot - INFO - ❌ No signal: WIFUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:32:22,118 - crypto_bot - INFO - 🔍 Scanning KITE/USDT:USDT
+2026-03-30 20:32:22,345 - crypto_bot - INFO - ❌ No signal: KITEUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:32:22,345 - crypto_bot - INFO - 📊 Total signals after scan: 0
+2026-03-30 20:32:22,345 - crypto_bot - INFO - 📊 Signals found: 0
+2026-03-30 20:32:22,345 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
+2026-03-30 20:37:22,329 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-30 20:37:23,267 - crypto_bot - INFO - [MARKET] get_top_usdt_pairs prepared 546 liquid swap symbols
+2026-03-30 20:37:23,267 - crypto_bot - INFO - 📈 Top-50 symbols fetched: 50
+2026-03-30 20:37:23,267 - crypto_bot - INFO - 🔥 Active symbols after filter: 35 / 50
+2026-03-30 20:37:23,267 - crypto_bot - INFO - 🔍 Scanning ETH/USDT:USDT
+2026-03-30 20:37:23,822 - crypto_bot - INFO - ❌ No signal: ETHUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:37:23,822 - crypto_bot - INFO - 🔍 Scanning SOL/USDT:USDT
+2026-03-30 20:37:24,043 - crypto_bot - INFO - ❌ No signal: SOLUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:37:24,043 - crypto_bot - INFO - 🔍 Scanning XRP/USDT:USDT
+2026-03-30 20:37:24,259 - crypto_bot - INFO - ❌ No signal: XRPUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:37:24,261 - crypto_bot - INFO - 🔍 Scanning DOGE/USDT:USDT
+2026-03-30 20:37:24,481 - crypto_bot - INFO - ❌ No signal: DOGEUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:37:24,481 - crypto_bot - INFO - 🔍 Scanning TAO/USDT:USDT
+2026-03-30 20:37:24,698 - crypto_bot - INFO - ❌ No signal: TAOUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:37:24,698 - crypto_bot - INFO - 🔍 Scanning HYPE/USDT:USDT
+2026-03-30 20:37:24,919 - crypto_bot - INFO - ❌ No signal: HYPEUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:37:24,919 - crypto_bot - INFO - 🔍 Scanning ONT/USDT:USDT
+2026-03-30 20:37:25,146 - crypto_bot - INFO - ❌ No signal: ONTUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:37:25,146 - crypto_bot - INFO - 🔍 Scanning RIVER/USDT:USDT
+2026-03-30 20:37:25,361 - crypto_bot - INFO - ❌ No signal: RIVERUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:37:25,361 - crypto_bot - INFO - 🔍 Scanning ADA/USDT:USDT
+2026-03-30 20:37:25,587 - crypto_bot - INFO - ❌ No signal: ADAUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:37:25,587 - crypto_bot - INFO - 🔍 Scanning NOM/USDT:USDT
+2026-03-30 20:37:25,805 - crypto_bot - INFO - ❌ No signal: NOMUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:37:25,806 - crypto_bot - INFO - 🔍 Scanning 1000PEPE/USDT:USDT
+2026-03-30 20:37:26,025 - crypto_bot - INFO - ❌ No signal: 1000PEPEUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:37:26,025 - crypto_bot - INFO - 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-30 20:37:26,243 - crypto_bot - INFO - ❌ No signal: FARTCOINUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:37:26,244 - crypto_bot - INFO - 🔍 Scanning LINK/USDT:USDT
+2026-03-30 20:37:26,990 - crypto_bot - INFO - ❌ No signal: LINKUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:37:26,990 - crypto_bot - INFO - 🔍 Scanning SUI/USDT:USDT
+2026-03-30 20:37:27,212 - crypto_bot - INFO - ❌ No signal: SUIUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:37:27,212 - crypto_bot - INFO - 🔍 Scanning ZEC/USDT:USDT
+2026-03-30 20:37:27,981 - crypto_bot - INFO - ❌ No signal: ZECUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:37:27,981 - crypto_bot - INFO - 🔍 Scanning ENA/USDT:USDT
+2026-03-30 20:37:28,929 - crypto_bot - INFO - ❌ No signal: ENAUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:37:28,929 - crypto_bot - INFO - 🔍 Scanning SIREN/USDT:USDT
+2026-03-30 20:37:29,467 - crypto_bot - INFO - ❌ No signal: SIRENUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:37:29,467 - crypto_bot - INFO - 🔍 Scanning BASED/USDT:USDT
+2026-03-30 20:37:29,708 - crypto_bot - INFO - ❌ No signal: BASEDUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:37:29,708 - crypto_bot - INFO - 🔍 Scanning WLD/USDT:USDT
+2026-03-30 20:37:29,947 - crypto_bot - INFO - ❌ No signal: WLDUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:37:29,947 - crypto_bot - INFO - 🔍 Scanning BCH/USDT:USDT
+2026-03-30 20:37:30,715 - crypto_bot - INFO - ❌ No signal: BCHUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:37:30,715 - crypto_bot - INFO - 🔍 Scanning BSB/USDT:USDT
+2026-03-30 20:37:30,956 - crypto_bot - INFO - ❌ No signal: BSBUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:37:30,956 - crypto_bot - INFO - 🔍 Scanning AVAX/USDT:USDT
+2026-03-30 20:37:31,728 - crypto_bot - INFO - ❌ No signal: AVAXUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:37:31,729 - crypto_bot - INFO - 🔍 Scanning AAVE/USDT:USDT
+2026-03-30 20:37:32,471 - crypto_bot - INFO - ❌ No signal: AAVEUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:37:32,472 - crypto_bot - INFO - 🔍 Scanning ARIA/USDT:USDT
+2026-03-30 20:37:32,693 - crypto_bot - INFO - ❌ No signal: ARIAUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:37:32,693 - crypto_bot - INFO - 🔍 Scanning 1000BONK/USDT:USDT
+2026-03-30 20:37:32,930 - crypto_bot - INFO - ❌ No signal: 1000BONKUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:37:32,930 - crypto_bot - INFO - 🔍 Scanning GALA/USDT:USDT
+2026-03-30 20:37:33,670 - crypto_bot - INFO - ❌ No signal: GALAUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:37:33,671 - crypto_bot - INFO - 🔍 Scanning ONDO/USDT:USDT
+2026-03-30 20:37:33,899 - crypto_bot - INFO - ❌ No signal: ONDOUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:37:33,900 - crypto_bot - INFO - 🔍 Scanning LDO/USDT:USDT
+2026-03-30 20:37:34,646 - crypto_bot - INFO - ❌ No signal: LDOUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:37:34,646 - crypto_bot - INFO - 🔍 Scanning SENT/USDT:USDT
+2026-03-30 20:37:34,863 - crypto_bot - INFO - ❌ No signal: SENTUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:37:34,863 - crypto_bot - INFO - 🔍 Scanning BEAT/USDT:USDT
+2026-03-30 20:37:35,083 - crypto_bot - INFO - ❌ No signal: BEATUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:37:35,083 - crypto_bot - INFO - 🔍 Scanning ARB/USDT:USDT
+2026-03-30 20:37:35,826 - crypto_bot - INFO - ❌ No signal: ARBUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:37:35,826 - crypto_bot - INFO - 🔍 Scanning STO/USDT:USDT
+2026-03-30 20:37:36,053 - crypto_bot - INFO - ❌ No signal: STOUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:37:36,053 - crypto_bot - INFO - 🔍 Scanning CRV/USDT:USDT
+2026-03-30 20:37:36,274 - crypto_bot - INFO - ❌ No signal: CRVUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:37:36,274 - crypto_bot - INFO - 🔍 Scanning PLAYSOUT/USDT:USDT
+2026-03-30 20:37:37,016 - crypto_bot - INFO - ❌ No signal: PLAYSOUTUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:37:37,017 - crypto_bot - INFO - 🔍 Scanning WIF/USDT:USDT
+2026-03-30 20:37:37,242 - crypto_bot - INFO - ❌ No signal: WIFUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:37:37,242 - crypto_bot - INFO - 📊 Total signals after scan: 0
+2026-03-30 20:37:37,242 - crypto_bot - INFO - 📊 Signals found: 0
+2026-03-30 20:37:37,243 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
+2026-03-30 20:42:37,228 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-30 20:42:38,328 - crypto_bot - INFO - [MARKET] get_top_usdt_pairs prepared 546 liquid swap symbols
+2026-03-30 20:42:38,329 - crypto_bot - INFO - 📈 Top-50 symbols fetched: 50
+2026-03-30 20:42:38,329 - crypto_bot - INFO - 🔥 Active symbols after filter: 32 / 50
+2026-03-30 20:42:38,329 - crypto_bot - INFO - 🔍 Scanning ETH/USDT:USDT
+2026-03-30 20:42:38,868 - crypto_bot - INFO - ❌ No signal: ETHUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:42:38,868 - crypto_bot - INFO - 🔍 Scanning SOL/USDT:USDT
+2026-03-30 20:42:39,094 - crypto_bot - INFO - ❌ No signal: SOLUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:42:39,094 - crypto_bot - INFO - 🔍 Scanning DOGE/USDT:USDT
+2026-03-30 20:42:39,321 - crypto_bot - INFO - ❌ No signal: DOGEUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:42:39,321 - crypto_bot - INFO - 🔍 Scanning TAO/USDT:USDT
+2026-03-30 20:42:39,536 - crypto_bot - INFO - ❌ No signal: TAOUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:42:39,536 - crypto_bot - INFO - 🔍 Scanning HYPE/USDT:USDT
+2026-03-30 20:42:39,764 - crypto_bot - INFO - ❌ No signal: HYPEUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:42:39,764 - crypto_bot - INFO - 🔍 Scanning ONT/USDT:USDT
+2026-03-30 20:42:39,988 - crypto_bot - INFO - ❌ No signal: ONTUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:42:39,988 - crypto_bot - INFO - 🔍 Scanning RIVER/USDT:USDT
+2026-03-30 20:42:40,202 - crypto_bot - INFO - ❌ No signal: RIVERUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:42:40,202 - crypto_bot - INFO - 🔍 Scanning ADA/USDT:USDT
+2026-03-30 20:42:40,442 - crypto_bot - INFO - ❌ No signal: ADAUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:42:40,442 - crypto_bot - INFO - 🔍 Scanning NOM/USDT:USDT
+2026-03-30 20:42:40,664 - crypto_bot - INFO - ❌ No signal: NOMUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:42:40,664 - crypto_bot - INFO - 🔍 Scanning 1000PEPE/USDT:USDT
+2026-03-30 20:42:40,894 - crypto_bot - INFO - ❌ No signal: 1000PEPEUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:42:40,894 - crypto_bot - INFO - 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-30 20:42:41,128 - crypto_bot - INFO - ❌ No signal: FARTCOINUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:42:41,128 - crypto_bot - INFO - 🔍 Scanning LINK/USDT:USDT
+2026-03-30 20:42:41,874 - crypto_bot - INFO - ❌ No signal: LINKUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:42:41,875 - crypto_bot - INFO - 🔍 Scanning SUI/USDT:USDT
+2026-03-30 20:42:42,099 - crypto_bot - INFO - ❌ No signal: SUIUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:42:42,099 - crypto_bot - INFO - 🔍 Scanning ZEC/USDT:USDT
+2026-03-30 20:42:42,312 - crypto_bot - INFO - ❌ No signal: ZECUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:42:42,312 - crypto_bot - INFO - 🔍 Scanning ENA/USDT:USDT
+2026-03-30 20:42:43,044 - crypto_bot - INFO - ❌ No signal: ENAUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:42:43,045 - crypto_bot - INFO - 🔍 Scanning BASED/USDT:USDT
+2026-03-30 20:42:43,568 - crypto_bot - INFO - ❌ No signal: BASEDUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:42:43,568 - crypto_bot - INFO - 🔍 Scanning BCH/USDT:USDT
+2026-03-30 20:42:44,302 - crypto_bot - INFO - ❌ No signal: BCHUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:42:44,302 - crypto_bot - INFO - 🔍 Scanning BSB/USDT:USDT
+2026-03-30 20:42:44,524 - crypto_bot - INFO - ❌ No signal: BSBUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:42:44,524 - crypto_bot - INFO - 🔍 Scanning AVAX/USDT:USDT
+2026-03-30 20:42:44,893 - crypto_bot - INFO - ❌ No signal: AVAXUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:42:44,894 - crypto_bot - INFO - 🔍 Scanning AAVE/USDT:USDT
+2026-03-30 20:42:45,119 - crypto_bot - INFO - ❌ No signal: AAVEUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:42:45,119 - crypto_bot - INFO - 🔍 Scanning ARIA/USDT:USDT
+2026-03-30 20:42:45,331 - crypto_bot - INFO - ❌ No signal: ARIAUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:42:45,332 - crypto_bot - INFO - 🔍 Scanning 1000BONK/USDT:USDT
+2026-03-30 20:42:46,079 - crypto_bot - INFO - ❌ No signal: 1000BONKUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:42:46,080 - crypto_bot - INFO - 🔍 Scanning GALA/USDT:USDT
+2026-03-30 20:42:46,496 - crypto_bot - INFO - ❌ No signal: GALAUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:42:46,497 - crypto_bot - INFO - 🔍 Scanning ONDO/USDT:USDT
+2026-03-30 20:42:46,711 - crypto_bot - INFO - ❌ No signal: ONDOUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:42:46,711 - crypto_bot - INFO - 🔍 Scanning LDO/USDT:USDT
+2026-03-30 20:42:47,082 - crypto_bot - INFO - ❌ No signal: LDOUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:42:47,082 - crypto_bot - INFO - 🔍 Scanning BEAT/USDT:USDT
+2026-03-30 20:42:47,309 - crypto_bot - INFO - ❌ No signal: BEATUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:42:47,310 - crypto_bot - INFO - 🔍 Scanning SENT/USDT:USDT
+2026-03-30 20:42:47,993 - crypto_bot - INFO - ❌ No signal: SENTUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:42:47,993 - crypto_bot - INFO - 🔍 Scanning ARB/USDT:USDT
+2026-03-30 20:42:48,207 - crypto_bot - INFO - ❌ No signal: ARBUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:42:48,208 - crypto_bot - INFO - 🔍 Scanning STO/USDT:USDT
+2026-03-30 20:42:48,421 - crypto_bot - INFO - ❌ No signal: STOUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:42:48,421 - crypto_bot - INFO - 🔍 Scanning WIF/USDT:USDT
+2026-03-30 20:42:48,647 - crypto_bot - INFO - ❌ No signal: WIFUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:42:48,647 - crypto_bot - INFO - 🔍 Scanning CRV/USDT:USDT
+2026-03-30 20:42:48,875 - crypto_bot - INFO - ❌ No signal: CRVUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:42:48,876 - crypto_bot - INFO - 🔍 Scanning PLAYSOUT/USDT:USDT
+2026-03-30 20:42:49,100 - crypto_bot - INFO - ❌ No signal: PLAYSOUTUSDT | mode=MAIN | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:42:49,100 - crypto_bot - INFO - 📊 Total signals after scan: 0
+2026-03-30 20:42:49,101 - crypto_bot - INFO - 📊 Signals found: 0
+2026-03-30 20:42:49,101 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
+2026-03-30 20:45:40,784 - crypto_bot - INFO - 🛑 Остановка по KeyboardInterrupt
+2026-03-30 20:45:49,947 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-30 20:45:49,947 - crypto_bot - WARNING - TELEGRAM_TOKEN не задан — бот запустится в режиме scanner + GUI без Telegram polling
+2026-03-30 20:45:49,947 - crypto_bot - INFO - [ANALYTICS INIT] trade tracking enabled
+2026-03-30 20:45:49,955 - crypto_bot - INFO - [PERSISTENCE] loaded trades: 8
+2026-03-30 20:45:49,960 - crypto_bot - INFO - [SCALP] scanner initialized | mode=SCALPING | timeframe=30m | candle_limit=120 | execution_tfs=30m, 15m
+2026-03-30 20:45:49,990 - crypto_bot - INFO - 🖥️ Signal GUI thread started
+2026-03-30 20:45:49,991 - crypto_bot - INFO - ✅ Telegram отключён: инициализированы scanner + GUI режим
+2026-03-30 20:45:49,991 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-30 20:45:49,991 - crypto_bot - INFO - 📡 Telegram polling disabled, running standalone scan loop
+2026-03-30 20:45:49,992 - crypto_bot - INFO - 🚀 SCAN LOOP STARTED
+2026-03-30 20:45:49,992 - crypto_bot - INFO - [STARTUP] reconciling active trades: 8
+2026-03-30 20:45:54,783 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-30 20:46:00,191 - crypto_bot - INFO - [MARKET] get_top_usdt_pairs prepared 546 liquid swap symbols
+2026-03-30 20:46:00,192 - crypto_bot - INFO - [SCALP] 📈 Top-50 symbols fetched: 50
+2026-03-30 20:46:00,192 - crypto_bot - INFO - [SCALP] 🔥 Active symbols after filter: 35 / 50
+2026-03-30 20:46:00,192 - crypto_bot - INFO - [SCALP] 🔍 Scanning ETH/USDT:USDT
+2026-03-30 20:46:00,734 - crypto_bot - INFO - [SCALP] ❌ No signal: ETHUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:46:00,734 - crypto_bot - INFO - [SCALP] 🔍 Scanning SOL/USDT:USDT
+2026-03-30 20:46:00,949 - crypto_bot - INFO - [SCALP] ❌ No signal: SOLUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:46:00,950 - crypto_bot - INFO - [SCALP] 🔍 Scanning XRP/USDT:USDT
+2026-03-30 20:46:01,164 - crypto_bot - INFO - [SCALP] ❌ No signal: XRPUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:46:01,164 - crypto_bot - INFO - [SCALP] 🔍 Scanning DOGE/USDT:USDT
+2026-03-30 20:46:01,386 - crypto_bot - INFO - [SCALP] ❌ No signal: DOGEUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:46:01,386 - crypto_bot - INFO - [SCALP] 🔍 Scanning TAO/USDT:USDT
+2026-03-30 20:46:01,599 - crypto_bot - INFO - [SCALP] ❌ No signal: TAOUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:46:01,599 - crypto_bot - INFO - [SCALP] 🔍 Scanning HYPE/USDT:USDT
+2026-03-30 20:46:01,809 - crypto_bot - INFO - [SCALP] ❌ No signal: HYPEUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:46:01,809 - crypto_bot - INFO - [SCALP] 🔍 Scanning ONT/USDT:USDT
+2026-03-30 20:46:02,019 - crypto_bot - INFO - [SCALP] ❌ No signal: ONTUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:46:02,019 - crypto_bot - INFO - [SCALP] 🔍 Scanning RIVER/USDT:USDT
+2026-03-30 20:46:02,238 - crypto_bot - INFO - [SCALP] ❌ No signal: RIVERUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:46:02,238 - crypto_bot - INFO - [SCALP] 🔍 Scanning ADA/USDT:USDT
+2026-03-30 20:46:02,456 - crypto_bot - INFO - [SCALP] ❌ No signal: ADAUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:46:02,458 - crypto_bot - INFO - [SCALP] 🔍 Scanning NOM/USDT:USDT
+2026-03-30 20:46:02,676 - crypto_bot - INFO - [SCALP] ❌ No signal: NOMUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:46:02,676 - crypto_bot - INFO - [SCALP] 🔍 Scanning 1000PEPE/USDT:USDT
+2026-03-30 20:46:02,887 - crypto_bot - INFO - [SCALP] ❌ No signal: 1000PEPEUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:46:02,887 - crypto_bot - INFO - [SCALP] 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-30 20:46:03,110 - crypto_bot - INFO - [SCALP] ❌ No signal: FARTCOINUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:46:03,110 - crypto_bot - INFO - [SCALP] 🔍 Scanning LINK/USDT:USDT
+2026-03-30 20:46:03,328 - crypto_bot - INFO - [SCALP] ❌ No signal: LINKUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:46:03,328 - crypto_bot - INFO - [SCALP] 🔍 Scanning SUI/USDT:USDT
+2026-03-30 20:46:03,550 - crypto_bot - INFO - [SCALP] ❌ No signal: SUIUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:46:03,551 - crypto_bot - INFO - [SCALP] 🔍 Scanning ZEC/USDT:USDT
+2026-03-30 20:46:03,765 - crypto_bot - INFO - [SCALP] ❌ No signal: ZECUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:46:03,765 - crypto_bot - INFO - [SCALP] 🔍 Scanning ENA/USDT:USDT
+2026-03-30 20:46:03,988 - crypto_bot - INFO - [SCALP] ❌ No signal: ENAUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:46:03,988 - crypto_bot - INFO - [SCALP] 🔍 Scanning SIREN/USDT:USDT
+2026-03-30 20:46:04,202 - crypto_bot - INFO - [SCALP] ❌ No signal: SIRENUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:46:04,202 - crypto_bot - INFO - [SCALP] 🔍 Scanning BASED/USDT:USDT
+2026-03-30 20:46:04,409 - crypto_bot - INFO - [SCALP] ❌ No signal: BASEDUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:46:04,410 - crypto_bot - INFO - [SCALP] 🔍 Scanning WLD/USDT:USDT
+2026-03-30 20:46:04,631 - crypto_bot - INFO - [SCALP] ❌ No signal: WLDUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:46:04,632 - crypto_bot - INFO - [SCALP] 🔍 Scanning BCH/USDT:USDT
+2026-03-30 20:46:04,842 - crypto_bot - INFO - [SCALP] ❌ No signal: BCHUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:46:04,842 - crypto_bot - INFO - [SCALP] 🔍 Scanning BSB/USDT:USDT
+2026-03-30 20:46:05,063 - crypto_bot - INFO - [SCALP] ❌ No signal: BSBUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:46:05,063 - crypto_bot - INFO - [SCALP] 🔍 Scanning AVAX/USDT:USDT
+2026-03-30 20:46:05,276 - crypto_bot - INFO - [SCALP] ❌ No signal: AVAXUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:46:05,276 - crypto_bot - INFO - [SCALP] 🔍 Scanning AAVE/USDT:USDT
+2026-03-30 20:46:05,500 - crypto_bot - INFO - [SCALP] ❌ No signal: AAVEUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:46:05,500 - crypto_bot - INFO - [SCALP] 🔍 Scanning XAG/USDT:USDT
+2026-03-30 20:46:05,726 - crypto_bot - INFO - [SCALP] ❌ No signal: XAGUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:46:05,726 - crypto_bot - INFO - [SCALP] 🔍 Scanning 1000BONK/USDT:USDT
+2026-03-30 20:46:05,938 - crypto_bot - INFO - [SCALP] ❌ No signal: 1000BONKUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:46:05,938 - crypto_bot - INFO - [SCALP] 🔍 Scanning GALA/USDT:USDT
+2026-03-30 20:46:06,166 - crypto_bot - INFO - [SCALP] ❌ No signal: GALAUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:46:06,166 - crypto_bot - INFO - [SCALP] 🔍 Scanning ONDO/USDT:USDT
+2026-03-30 20:46:06,382 - crypto_bot - INFO - [SCALP] ❌ No signal: ONDOUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:46:06,382 - crypto_bot - INFO - [SCALP] 🔍 Scanning LDO/USDT:USDT
+2026-03-30 20:46:06,604 - crypto_bot - INFO - [SCALP] ❌ No signal: LDOUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:46:06,604 - crypto_bot - INFO - [SCALP] 🔍 Scanning BEAT/USDT:USDT
+2026-03-30 20:46:06,825 - crypto_bot - INFO - [SCALP] ❌ No signal: BEATUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:46:06,825 - crypto_bot - INFO - [SCALP] 🔍 Scanning SENT/USDT:USDT
+2026-03-30 20:46:07,049 - crypto_bot - INFO - [SCALP] ❌ No signal: SENTUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:46:07,049 - crypto_bot - INFO - [SCALP] 🔍 Scanning ARB/USDT:USDT
+2026-03-30 20:46:07,263 - crypto_bot - INFO - [SCALP] ❌ No signal: ARBUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:46:07,264 - crypto_bot - INFO - [SCALP] 🔍 Scanning STO/USDT:USDT
+2026-03-30 20:46:07,488 - crypto_bot - INFO - [SCALP] ❌ No signal: STOUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:46:07,488 - crypto_bot - INFO - [SCALP] 🔍 Scanning CRV/USDT:USDT
+2026-03-30 20:46:07,702 - crypto_bot - INFO - [SCALP] ❌ No signal: CRVUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:46:07,703 - crypto_bot - INFO - [SCALP] 🔍 Scanning WIF/USDT:USDT
+2026-03-30 20:46:07,918 - crypto_bot - INFO - [SCALP] ❌ No signal: WIFUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:46:07,918 - crypto_bot - INFO - [SCALP] 🔍 Scanning PLAYSOUT/USDT:USDT
+2026-03-30 20:46:08,136 - crypto_bot - INFO - [SCALP] ❌ No signal: PLAYSOUTUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:46:08,136 - crypto_bot - INFO - [SCALP] 📊 Total signals after scan: 0
+2026-03-30 20:46:08,136 - crypto_bot - INFO - 📊 Signals found: 0
+2026-03-30 20:46:08,136 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
+2026-03-30 20:51:08,122 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-30 20:51:09,155 - crypto_bot - INFO - [MARKET] get_top_usdt_pairs prepared 546 liquid swap symbols
+2026-03-30 20:51:09,155 - crypto_bot - INFO - [SCALP] 📈 Top-50 symbols fetched: 50
+2026-03-30 20:51:09,155 - crypto_bot - INFO - [SCALP] 🔥 Active symbols after filter: 33 / 50
+2026-03-30 20:51:09,155 - crypto_bot - INFO - [SCALP] 🔍 Scanning ETH/USDT:USDT
+2026-03-30 20:51:09,740 - crypto_bot - INFO - [SCALP] ❌ No signal: ETHUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:51:09,740 - crypto_bot - INFO - [SCALP] 🔍 Scanning SOL/USDT:USDT
+2026-03-30 20:51:09,974 - crypto_bot - INFO - [SCALP] ❌ No signal: SOLUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:51:09,974 - crypto_bot - INFO - [SCALP] 🔍 Scanning DOGE/USDT:USDT
+2026-03-30 20:51:10,200 - crypto_bot - INFO - [SCALP] ❌ No signal: DOGEUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:51:10,200 - crypto_bot - INFO - [SCALP] 🔍 Scanning TAO/USDT:USDT
+2026-03-30 20:51:10,425 - crypto_bot - INFO - [SCALP] ❌ No signal: TAOUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:51:10,425 - crypto_bot - INFO - [SCALP] 🔍 Scanning HYPE/USDT:USDT
+2026-03-30 20:51:10,642 - crypto_bot - INFO - [SCALP] ❌ No signal: HYPEUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:51:10,642 - crypto_bot - INFO - [SCALP] 🔍 Scanning ONT/USDT:USDT
+2026-03-30 20:51:10,867 - crypto_bot - INFO - [SCALP] ❌ No signal: ONTUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:51:10,867 - crypto_bot - INFO - [SCALP] 🔍 Scanning RIVER/USDT:USDT
+2026-03-30 20:51:11,097 - crypto_bot - INFO - [SCALP] ❌ No signal: RIVERUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:51:11,097 - crypto_bot - INFO - [SCALP] 🔍 Scanning ADA/USDT:USDT
+2026-03-30 20:51:11,323 - crypto_bot - INFO - [SCALP] ❌ No signal: ADAUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:51:11,323 - crypto_bot - INFO - [SCALP] 🔍 Scanning NOM/USDT:USDT
+2026-03-30 20:51:11,540 - crypto_bot - INFO - [SCALP] ❌ No signal: NOMUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:51:11,540 - crypto_bot - INFO - [SCALP] 🔍 Scanning 1000PEPE/USDT:USDT
+2026-03-30 20:51:11,757 - crypto_bot - INFO - [SCALP] ❌ No signal: 1000PEPEUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:51:11,757 - crypto_bot - INFO - [SCALP] 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-30 20:51:11,979 - crypto_bot - INFO - [SCALP] ❌ No signal: FARTCOINUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:51:11,979 - crypto_bot - INFO - [SCALP] 🔍 Scanning LINK/USDT:USDT
+2026-03-30 20:51:12,195 - crypto_bot - INFO - [SCALP] ❌ No signal: LINKUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:51:12,196 - crypto_bot - INFO - [SCALP] 🔍 Scanning SUI/USDT:USDT
+2026-03-30 20:51:12,424 - crypto_bot - INFO - [SCALP] ❌ No signal: SUIUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:51:12,424 - crypto_bot - INFO - [SCALP] 🔍 Scanning ZEC/USDT:USDT
+2026-03-30 20:51:12,644 - crypto_bot - INFO - [SCALP] ❌ No signal: ZECUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:51:12,645 - crypto_bot - INFO - [SCALP] 🔍 Scanning ENA/USDT:USDT
+2026-03-30 20:51:12,862 - crypto_bot - INFO - [SCALP] ❌ No signal: ENAUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:51:12,862 - crypto_bot - INFO - [SCALP] 🔍 Scanning SIREN/USDT:USDT
+2026-03-30 20:51:13,075 - crypto_bot - INFO - [SCALP] ❌ No signal: SIRENUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:51:13,076 - crypto_bot - INFO - [SCALP] 🔍 Scanning BASED/USDT:USDT
+2026-03-30 20:51:13,300 - crypto_bot - INFO - [SCALP] ❌ No signal: BASEDUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:51:13,300 - crypto_bot - INFO - [SCALP] 🔍 Scanning BCH/USDT:USDT
+2026-03-30 20:51:13,535 - crypto_bot - INFO - [SCALP] ❌ No signal: BCHUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:51:13,535 - crypto_bot - INFO - [SCALP] 🔍 Scanning BSB/USDT:USDT
+2026-03-30 20:51:13,750 - crypto_bot - INFO - [SCALP] ❌ No signal: BSBUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:51:13,752 - crypto_bot - INFO - [SCALP] 🔍 Scanning AVAX/USDT:USDT
+2026-03-30 20:51:13,969 - crypto_bot - INFO - [SCALP] ❌ No signal: AVAXUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:51:13,969 - crypto_bot - INFO - [SCALP] 🔍 Scanning AAVE/USDT:USDT
+2026-03-30 20:51:14,184 - crypto_bot - INFO - [SCALP] ❌ No signal: AAVEUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:51:14,184 - crypto_bot - INFO - [SCALP] 🔍 Scanning ARIA/USDT:USDT
+2026-03-30 20:51:14,416 - crypto_bot - INFO - [SCALP] ❌ No signal: ARIAUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:51:14,416 - crypto_bot - INFO - [SCALP] 🔍 Scanning 1000BONK/USDT:USDT
+2026-03-30 20:51:14,630 - crypto_bot - INFO - [SCALP] ❌ No signal: 1000BONKUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:51:14,630 - crypto_bot - INFO - [SCALP] 🔍 Scanning GALA/USDT:USDT
+2026-03-30 20:51:14,854 - crypto_bot - INFO - [SCALP] ❌ No signal: GALAUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:51:14,854 - crypto_bot - INFO - [SCALP] 🔍 Scanning ONDO/USDT:USDT
+2026-03-30 20:51:15,079 - crypto_bot - INFO - [SCALP] ❌ No signal: ONDOUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:51:15,080 - crypto_bot - INFO - [SCALP] 🔍 Scanning LDO/USDT:USDT
+2026-03-30 20:51:15,304 - crypto_bot - INFO - [SCALP] ❌ No signal: LDOUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:51:15,304 - crypto_bot - INFO - [SCALP] 🔍 Scanning BEAT/USDT:USDT
+2026-03-30 20:51:15,533 - crypto_bot - INFO - [SCALP] ❌ No signal: BEATUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:51:15,533 - crypto_bot - INFO - [SCALP] 🔍 Scanning SENT/USDT:USDT
+2026-03-30 20:51:15,756 - crypto_bot - INFO - [SCALP] ❌ No signal: SENTUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:51:15,756 - crypto_bot - INFO - [SCALP] 🔍 Scanning ARB/USDT:USDT
+2026-03-30 20:51:15,978 - crypto_bot - INFO - [SCALP] ❌ No signal: ARBUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:51:15,978 - crypto_bot - INFO - [SCALP] 🔍 Scanning STO/USDT:USDT
+2026-03-30 20:51:16,194 - crypto_bot - INFO - [SCALP] ❌ No signal: STOUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:51:16,194 - crypto_bot - INFO - [SCALP] 🔍 Scanning CRV/USDT:USDT
+2026-03-30 20:51:16,412 - crypto_bot - INFO - [SCALP] ❌ No signal: CRVUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:51:16,413 - crypto_bot - INFO - [SCALP] 🔍 Scanning WIF/USDT:USDT
+2026-03-30 20:51:16,627 - crypto_bot - INFO - [SCALP] ❌ No signal: WIFUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:51:16,627 - crypto_bot - INFO - [SCALP] 🔍 Scanning PLAYSOUT/USDT:USDT
+2026-03-30 20:51:16,859 - crypto_bot - INFO - [SCALP] ❌ No signal: PLAYSOUTUSDT | mode=SCALPING | score=0 | passed_filters=[] | failed_filters=[] | rejection_reason=unknown
+2026-03-30 20:51:16,860 - crypto_bot - INFO - [SCALP] 📊 Total signals after scan: 0
+2026-03-30 20:51:16,860 - crypto_bot - INFO - 📊 Signals found: 0
+2026-03-30 20:51:16,860 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
+2026-03-30 20:52:04,102 - crypto_bot - INFO - 🛑 Остановка по KeyboardInterrupt

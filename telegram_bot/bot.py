@@ -40,6 +40,7 @@ from services.signal_analytics import SignalAnalytics
 from services.bybit_request_manager import get_bybit_request_manager
 from services.signal_deduplicator import SignalDeduplicator
 from services.signal_formatter import format_signal_compact, format_signal_full, get_stars
+from services.risk_guard import SignalRiskGuard
 from services.signal_state import SignalStateService, parse_datetime_utc
 from scanner.volume_scanner import get_top_usdt_pairs
 from telegram_bot.handlers.callbacks import callback_handler
@@ -124,6 +125,7 @@ class TelegramTradingBot:
             stale_hours=RUNTIME_STATE_TTL_HOURS,
         )
         self.signal_state.load()
+        self.risk_guard = SignalRiskGuard()
         restored_seen: dict[str, datetime] = {}
         for signal_id, ts in self.signal_state.seen_signals.items():
             parsed = parse_datetime_utc(ts)
@@ -348,6 +350,26 @@ class TelegramTradingBot:
 
                 for signal in signals:
                     enriched_signal = self._enrich_signal(signal)
+                    mode_name = str(enriched_signal.get("live_mode") or "MAIN").upper()
+                    can_pass_symbol_rate, symbol_rate_reason = self.risk_guard.check_symbol_cooldown(
+                        str(enriched_signal.get("symbol") or "")
+                    )
+                    can_pass_open_limits, open_limit_reason = self.risk_guard.check_open_trade_limits(
+                        self.signal_analytics.active_trades,
+                        mode_name,
+                    )
+                    if not can_pass_symbol_rate or not can_pass_open_limits:
+                        reject_reason = symbol_rate_reason or open_limit_reason or "risk guard blocked"
+                        logger.info(
+                            "[SIGNAL REJECTED] symbol=%s mode=%s entry_source=%s score=%s conf=%s reason=%s",
+                            enriched_signal.get("symbol"),
+                            mode_name,
+                            enriched_signal.get("entry_source", "strict"),
+                            enriched_signal.get("score"),
+                            enriched_signal.get("confidence"),
+                            reject_reason,
+                        )
+                        continue
                     self.signal_analytics.check_trade_exits(
                         current_price=enriched_signal.get("entry"),
                         symbol=str(enriched_signal.get("symbol") or ""),
@@ -366,8 +388,10 @@ class TelegramTradingBot:
                         except (TypeError, ValueError):
                             confidence_value = 0.0
                         logger.info(
-                            "[ANALYTICS] ADD SIGNAL | symbol=%s | score=%s | conf=%s | stars=%s",
+                            "[SIGNAL ACCEPTED] symbol=%s mode=%s entry_source=%s score=%s conf=%s stars=%s",
                             enriched_signal.get("symbol"),
+                            mode_name,
+                            enriched_signal.get("entry_source", "strict"),
                             enriched_signal.get("score"),
                             enriched_signal.get("confidence"),
                             get_stars(confidence_value),
@@ -390,8 +414,10 @@ class TelegramTradingBot:
                         except (TypeError, ValueError):
                             pass
                         logger.info(
-                            "[STATE] %s %s skipped: %s",
+                            "[SIGNAL REJECTED] symbol=%s mode=%s entry_source=%s action=%s reason=%s",
                             enriched_signal.get("symbol"),
+                            mode_name,
+                            enriched_signal.get("entry_source", "strict"),
                             state_action,
                             state_reason,
                         )
@@ -434,6 +460,8 @@ class TelegramTradingBot:
                         pass
 
                     self.signal_state.upsert_active(enriched_signal, status="OPEN")
+                    if state_action in {"NEW", "REVERSAL"}:
+                        self.risk_guard.register_symbol_signal(str(enriched_signal.get("symbol") or ""))
                     self.signal_state.mark_seen(signal_id, datetime.now(timezone.utc).isoformat())
                     self.signal_state.cleanup_stale()
                     self.signal_state.save()

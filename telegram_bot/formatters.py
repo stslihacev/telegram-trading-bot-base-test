@@ -20,9 +20,11 @@ def format_signal(signal: dict) -> str:
     score = signal.get("score")
     max_score = signal.get("max_score")
     if score is not None and max_score is not None:
+        entry_source = str(signal.get("entry_source") or "strict").lower()
         confidence_line = (
             f"Confidence: <b>{confidence:.2f}</b> | "
-            f"Score: <b>{float(score):.2f}/{float(max_score):.2f}</b>\n"
+            f"Score: <b>{float(score):.2f}/{float(max_score):.2f}</b> | "
+            f"Source: <b>{entry_source}</b>\n"
         )
     else:
         confidence_line = f"Confidence: <b>{confidence:.2f}</b>\n"

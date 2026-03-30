@@ -197,12 +197,23 @@ class BacktestStrategyAdapter:
         return score, max_score, confidence
 
     def _build_relaxed_signal(self, symbol: str, df: pd.DataFrame, runtime: dict) -> dict | None:
-        if len(df) < 60:
+        if not bool(getattr(config, "ENABLE_RELAXED_SIGNALS", True)):
             self.last_signal_diagnostics = {
                 "mode": runtime["mode"],
                 "score": 0.0,
                 "passed_filters": [],
+                "failed_filters": ["RELAXED_DISABLED"],
+                "rejection_reason": "relaxed signals disabled by config",
+            }
+            return None
+        if len(df) < 3:
+            self.last_signal_diagnostics = {
+                "mode": runtime["mode"],
+                "source": "relaxed",
+                "score": 0.0,
+                "passed_filters": [],
                 "failed_filters": ["DATA"],
+                "required_filters_result": {"trend": False, "structure": False},
                 "rejection_reason": "not enough candles for relaxed scoring",
             }
             return None
@@ -224,7 +235,7 @@ class BacktestStrategyAdapter:
         recent_low = float(recent["low"].min()) if len(recent) else close
         structure_ok = (direction == "LONG" and close >= recent_high) or (direction == "SHORT" and close <= recent_low)
 
-        volume_ma = float(df["volume"].astype(float).rolling(20).mean().iloc[-2] or 0.0)
+        volume_ma = float(df["volume"].astype(float).rolling(20, min_periods=1).mean().iloc[-2] or 0.0)
         volume_now = float(last.get("volume", 0.0) or 0.0)
         ema_fast = df["close"].astype(float).ewm(span=12, adjust=False).mean()
         ema_slow = df["close"].astype(float).ewm(span=26, adjust=False).mean()
@@ -257,11 +268,16 @@ class BacktestStrategyAdapter:
 
         self.last_signal_diagnostics = {
             "mode": runtime["mode"],
+            "source": "relaxed",
             "score": total_score,
             "passed_filters": passed,
             "failed_filters": failed,
+            "required_filters_result": required_checks,
             "rejection_reason": rejection_reason,
         }
+        if not passed and not failed:
+            logger.warning("%s | Relaxed diagnostics are empty; forcing DATA failure marker", symbol)
+            self.last_signal_diagnostics["failed_filters"] = ["DATA"]
         if rejection_reason:
             return None
         if atr <= 0:
@@ -296,6 +312,7 @@ class BacktestStrategyAdapter:
             "label_prefix": runtime["signal_prefix"],
             "execution_timeframes": tuple(runtime["execution_timeframes"]),
             "signal_only": True,
+            "entry_source": "relaxed",
         }
 
     def generate_signal(self, symbol: str, candles: pd.DataFrame) -> dict | None:
@@ -488,6 +505,7 @@ class BacktestStrategyAdapter:
                     "live_mode": runtime["mode"],
                     "label_prefix": runtime["signal_prefix"],
                     "execution_timeframes": tuple(runtime["execution_timeframes"]),
+                    "entry_source": "strict",
                 }
                 self.last_signal_diagnostics = {
                     "mode": runtime["mode"],

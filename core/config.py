@@ -15,7 +15,7 @@ TOP_N = 50
 # ============================================================
 # Live mode selection
 # ============================================================
-LIVE_MODE = "LIGHT"
+LIVE_MODE = "SCALPING"
 # OPTIONS: "MAIN", "SCALPING", "LIGHT".
 # MAIN сохраняет текущую live-логику без изменений.
 # SCALPING включает отдельный набор параметров для более коротких сетапов.
@@ -228,6 +228,9 @@ HIGH_CONF_ONLY = False
 
 HIGH_CONFIDENCE_THRESHOLD = 0.70
 # Унифицированный порог high-confidence режима для LIGHT/MAIN/SCALPING.
+
+ENABLE_RELAXED_SIGNALS = True
+# Разрешать fallback relaxed-сигналы для MAIN/SCALPING, когда strict-ветка не дала вход.
 
 # ============================================================
 # Correlation
@@ -578,6 +581,23 @@ RUNTIME_STATE_TTL_HOURS = 4
 MIN_REVERSAL_INTERVAL_MINUTES = 20
 COOLDOWN_OVERRIDE_SCORE = 6.0
 ANALYTICS_LOW_ACTIVITY_SIGNALS = 10
+
+# ============================================================
+# Live safety guards
+# ============================================================
+SIGNAL_COOLDOWN_WINDOW_MINUTES = 15
+# Окно контроля частоты сигналов по символу.
+
+MAX_SIGNALS_PER_SYMBOL_WINDOW = 2
+# Максимум сигналов по одному символу в окне SIGNAL_COOLDOWN_WINDOW_MINUTES.
+
+MAX_OPEN_TRADES_GLOBAL = 6
+# Максимум одновременно открытых сигналов (всех режимов).
+
+MAX_OPEN_TRADES_LIGHT = 2
+MAX_OPEN_TRADES_MAIN = 3
+MAX_OPEN_TRADES_SCALPING = 2
+# Пер-режимные ограничения по числу открытых сигналов.
 
 def get_live_mode() -> str:
     """Возвращает нормализованный live-режим."""

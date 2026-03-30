@@ -260,6 +260,7 @@ class LightModeStrategy:
             "label_prefix": config.LIGHT_SIGNAL_PREFIX,
             "execution_timeframes": tuple(config.MTF_EXECUTION_TIMEFRAMES_LIGHT),
             "signal_only": True,
+            "entry_source": "strict",
             "alert_text": (
                 f"{config.LIGHT_SIGNAL_PREFIX} ALERT: {symbol} {direction} | "
                 f"EMA/SMA + RSI + MACD + volume filters"

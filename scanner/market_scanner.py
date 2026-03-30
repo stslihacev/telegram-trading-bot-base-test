@@ -170,6 +170,7 @@ class MarketScanner:
                     (
                         f"{label} ✅ Signal generated: {clean_symbol} | {signal.get('signal_type')} | tf={signal.get('tf')} | "
                         f"mode={diagnostics.get('mode', self.runtime['mode'])} | score={signal.get('score')} | "
+                        f"entry_source={signal.get('entry_source', 'strict')} | "
                         f"passed_filters={signal.get('passed_filters', [])} | failed_filters={signal.get('failed_filters', [])}"
                     ).strip()
                 )
