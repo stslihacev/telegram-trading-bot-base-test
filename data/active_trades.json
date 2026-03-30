@@ -1,42 +1,4 @@
 {
-  "ETHUSDT": {
-    "symbol": "ETHUSDT",
-    "direction": "LONG",
-    "entry": 2067.65,
-    "tp": 2100.9908,
-    "sl": 2046.8120000000001,
-    "open_time": "2026-03-26T20:00:00+00:00",
-    "signal_id": "ETHUSDT_30m_LONG_2026-03-26 20:00:00+00:00",
-    "confidence": 0.647887,
-    "score": 4.6,
-    "mode": "LIGHT",
-    "entry_source": "strict",
-    "is_reversal": false,
-    "passed_filters": [
-      "MACD",
-      "BODY",
-      "VOLUME"
-    ]
-  },
-  "DOGEUSDT": {
-    "symbol": "DOGEUSDT",
-    "direction": "LONG",
-    "entry": 0.09208,
-    "tp": 0.09334034285714285,
-    "sl": 0.09129228571428571,
-    "open_time": "2026-03-26T20:00:00+00:00",
-    "signal_id": "DOGEUSDT_30m_LONG_2026-03-26 20:00:00+00:00",
-    "confidence": 0.647887,
-    "score": 4.6,
-    "mode": "LIGHT",
-    "entry_source": "strict",
-    "is_reversal": false,
-    "passed_filters": [
-      "MACD",
-      "BODY",
-      "VOLUME"
-    ]
-  },
   "RIVERUSDT": {
     "symbol": "RIVERUSDT",
     "direction": "LONG",

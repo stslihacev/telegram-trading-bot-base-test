@@ -315,6 +315,27 @@ class BacktestStrategyAdapter:
             "entry_source": "relaxed",
         }
 
+    def _ensure_diagnostics_not_empty(self, symbol: str) -> None:
+        passed = list(self.last_signal_diagnostics.get("passed_filters") or [])
+        failed = list(self.last_signal_diagnostics.get("failed_filters") or [])
+        if passed or failed:
+            return
+        logger.warning("%s | Empty diagnostics detected; forcing UNKNOWN filter marker", symbol)
+        self.last_signal_diagnostics["failed_filters"] = ["UNKNOWN"]
+
+    def _log_execution_trace(self, symbol: str, strict_result: bool, fallback_executed: bool) -> None:
+        diagnostics = self.last_signal_diagnostics or {}
+        logger.info(
+            "%s | signal_trace strict_result=%s fallback_executed=%s required_filters_result=%s "
+            "score=%s rejection_reason=%s",
+            symbol,
+            strict_result,
+            fallback_executed,
+            diagnostics.get("required_filters_result"),
+            diagnostics.get("score"),
+            diagnostics.get("rejection_reason"),
+        )
+
     def generate_signal(self, symbol: str, candles: pd.DataFrame) -> dict | None:
         """Генерирует сигнал в telegram-формате только если backtest-логика даёт сделку."""
         runtime = self._runtime_settings()
@@ -332,6 +353,8 @@ class BacktestStrategyAdapter:
                 swing_indices = self._build_swing_indices(df)
                 df_4h = build_4h_frame(df)
                 i = len(df) - 2
+                strict_rejection_reason: str | None = None
+                strict_rejection_details: str | None = None
 
                 if config.DEBUG_MODE:
                     debug_stage(
@@ -349,107 +372,53 @@ class BacktestStrategyAdapter:
                     df_4h=df_4h,
                 )
 
-                if not signal:
-                    reason = str(self.strategy.last_rejection_reason or "unknown")
-                    details = str(self.strategy.last_rejection_message or "no details")
-                    relaxed_signal = self._build_relaxed_signal(symbol, df, runtime)
-                    if relaxed_signal:
-                        if config.DEBUG_MODE:
-                            debug_stage(
-                                "SCORING",
-                                symbol,
-                                f"mode={runtime['mode']} score={relaxed_signal['score']:.2f} "
-                                f"passed={relaxed_signal.get('passed_filters')} "
-                                f"failed={relaxed_signal.get('failed_filters')} "
-                                f"fallback=relaxed",
-                            )
-                        return relaxed_signal
-                    if not self.last_signal_diagnostics:
+                strict_payload: dict | None = None
+                if signal:
+                    if config.DEBUG_MODE:
+                        debug_stage(
+                            "STRATEGY",
+                            symbol,
+                            "signal detected "
+                            f"| type={signal.get('signal_type')} "
+                            f"| BOS={signal.get('signal_type') == 'BOS'} "
+                            f"| SWEEP={signal.get('signal_type') == 'SWEEP'} "
+                            f"| live_mode={runtime['mode']}",
+                        )
+                    entry = float(signal["entry"])
+                    tp = float(signal["tp"])
+                    sl = float(signal["sl"])
+                    score, max_score, confidence = self._strict_mode_scoring(runtime["mode"])
+                    sl, tp = self._refine_risk_levels(
+                        signal=signal,
+                        entry=entry,
+                        sl=sl,
+                        direction=str(signal.get("direction") or ""),
+                        confidence=confidence,
+                    )
+                    rr = self._calculate_rr(entry=entry, tp=tp, sl=sl)
+                    rr_min = float(self.min_rr)
+                    rr_max = float(self.max_rr)
+                    if config.DEBUG_MODE:
+                        debug_stage("RR", symbol, f"rr={rr:.4f}, min_rr={rr_min:.4f}, max_rr={rr_max:.4f}")
+                    if rr < rr_min:
                         self.last_signal_diagnostics = {
                             "mode": runtime["mode"],
-                            "score": 0.0,
+                            "score": score,
                             "passed_filters": [],
-                            "failed_filters": [],
-                            "rejection_reason": f"{reason}: {details}",
+                            "failed_filters": ["RR"],
+                            "rejection_reason": "rr below live minimum",
                         }
-                    if config.DEBUG_MODE:
-                        reject(symbol, "STRATEGY", f"no entry conditions met ({reason})", extra={"details": details})
-                    return None
-
-                if config.DEBUG_MODE:
-                    debug_stage(
-                        "STRATEGY",
-                        symbol,
-                        "signal detected "
-                        f"| type={signal.get('signal_type')} "
-                        f"| BOS={signal.get('signal_type') == 'BOS'} "
-                        f"| SWEEP={signal.get('signal_type') == 'SWEEP'} "
-                        f"| live_mode={runtime['mode']}",
-                    )
-
-                entry = float(signal["entry"])
-                tp = float(signal["tp"])
-                sl = float(signal["sl"])
-                score, max_score, confidence = self._strict_mode_scoring(runtime["mode"])
-                sl, tp = self._refine_risk_levels(
-                    signal=signal,
-                    entry=entry,
-                    sl=sl,
-                    direction=str(signal.get("direction") or ""),
-                    confidence=confidence,
-                )
-                rr = self._calculate_rr(entry=entry, tp=tp, sl=sl)
-                rr_min = float(self.min_rr)
-                rr_max = float(self.max_rr)
-                if config.DEBUG_MODE:
-                    debug_stage("RR", symbol, f"rr={rr:.4f}, min_rr={rr_min:.4f}, max_rr={rr_max:.4f}")
-                if rr < rr_min:
-                    self.last_signal_diagnostics = {
-                        "mode": runtime["mode"],
-                        "score": score,
-                        "passed_filters": [],
-                        "failed_filters": ["RR"],
-                        "rejection_reason": "rr below live minimum",
-                    }
-                    if config.DEBUG_MODE:
-                        reject(
-                            symbol,
-                            "RR",
-                            "RR below live minimum",
-                            extra={"rr": round(rr, 4), "threshold": rr_min},
-                        )
-                    return None
-                if runtime.get("is_scalping") and rr > rr_max:
-                    self.last_signal_diagnostics = {
-                        "mode": runtime["mode"],
-                        "score": score,
-                        "passed_filters": [],
-                        "failed_filters": ["RR"],
-                        "rejection_reason": "rr above scalping maximum",
-                    }
-                    if config.DEBUG_MODE:
-                        reject(
-                            symbol,
-                            "RR",
-                            "RR above scalping maximum",
-                            extra={"rr": round(rr, 4), "threshold": rr_max},
-                        )
-                    return None
-
-                risk_snapshot = dict(signal)
-                calculate_risk_based_position_size(
-                    risk_snapshot,
-                    capital=config.BACKTEST_INITIAL_CAPITAL,
-                    risk_factor=config.RISK_PER_TRADE,
-                )
-
-                signal_tf = signal.get("tf") or runtime["scan_timeframe"]
-                if runtime.get("is_scalping") and str(signal_tf).lower() == "1h":
-                    signal_tf = runtime["scan_timeframe"]
-
-                if config.ENABLE_SIGNAL_SCORING:
-                    score_threshold = get_mode_threshold(runtime["mode"])
-                    if score < score_threshold:
+                        strict_rejection_reason = "rr below live minimum"
+                    elif runtime.get("is_scalping") and rr > rr_max:
+                        self.last_signal_diagnostics = {
+                            "mode": runtime["mode"],
+                            "score": score,
+                            "passed_filters": [],
+                            "failed_filters": ["RR"],
+                            "rejection_reason": "rr above scalping maximum",
+                        }
+                        strict_rejection_reason = "rr above scalping maximum"
+                    elif config.ENABLE_SIGNAL_SCORING and score < get_mode_threshold(runtime["mode"]):
                         self.last_signal_diagnostics = {
                             "mode": runtime["mode"],
                             "score": score,
@@ -457,64 +426,92 @@ class BacktestStrategyAdapter:
                             "failed_filters": ["SCORING"],
                             "rejection_reason": "score below threshold",
                         }
-                        if config.DEBUG_MODE:
-                            reject(
-                                symbol,
-                                "SCORING",
-                                "score below threshold",
-                                extra={"score": score, "max_score": max_score, "threshold": score_threshold},
-                            )
-                        return None
-
-                if bool(getattr(config, "HIGH_CONF_ONLY", False)) and confidence < float(getattr(config, "HIGH_CONFIDENCE_THRESHOLD", 0.7)):
-                    self.last_signal_diagnostics = {
-                        "mode": runtime["mode"],
-                        "score": score,
-                        "passed_filters": [],
-                        "failed_filters": ["CONFIDENCE"],
-                        "rejection_reason": "high confidence gate blocked",
-                    }
-                    if config.DEBUG_MODE:
-                        reject(
-                            symbol,
-                            "SCORING",
-                            "high confidence gate blocked",
-                            extra={"confidence": round(confidence, 4), "threshold": float(getattr(config, "HIGH_CONFIDENCE_THRESHOLD", 0.7))},
+                        strict_rejection_reason = "score below threshold"
+                    elif bool(getattr(config, "HIGH_CONF_ONLY", False)) and confidence < float(getattr(config, "HIGH_CONFIDENCE_THRESHOLD", 0.7)):
+                        self.last_signal_diagnostics = {
+                            "mode": runtime["mode"],
+                            "score": score,
+                            "passed_filters": [],
+                            "failed_filters": ["CONFIDENCE"],
+                            "rejection_reason": "high confidence gate blocked",
+                        }
+                        strict_rejection_reason = "high confidence gate blocked"
+                    else:
+                        risk_snapshot = dict(signal)
+                        calculate_risk_based_position_size(
+                            risk_snapshot,
+                            capital=config.BACKTEST_INITIAL_CAPITAL,
+                            risk_factor=config.RISK_PER_TRADE,
                         )
-                    return None
 
-                payload = {
-                    "symbol": signal["symbol"],
-                    "signal_type": signal["signal_type"],
-                    "direction": signal["direction"],
-                    "entry": entry,
-                    "tp": tp,
-                    "sl": sl,
-                    "rr": rr,
-                    "confidence": confidence,
-                    "score": score,
-                    "max_score": max_score,
-                    "passed_filters": [name.upper() for name in config.FILTER_WEIGHTS.keys()],
-                    "failed_filters": [],
-                    "regime": signal.get("regime", "N/A"),
-                    "timestamp": str(df.index[i]),
-                    "tf": signal_tf,
-                    "trade_type": signal.get("trade_type", "aligned"),
-                    "position_size": float(risk_snapshot.get("position_size", 0.0)),
-                    "trade_risk": float(risk_snapshot.get("trade_risk", 0.0)),
-                    "live_mode": runtime["mode"],
-                    "label_prefix": runtime["signal_prefix"],
-                    "execution_timeframes": tuple(runtime["execution_timeframes"]),
-                    "entry_source": "strict",
-                }
-                self.last_signal_diagnostics = {
-                    "mode": runtime["mode"],
-                    "score": payload["score"],
-                    "passed_filters": payload["passed_filters"],
-                    "failed_filters": payload["failed_filters"],
-                    "rejection_reason": None,
-                }
-                return payload
+                        signal_tf = signal.get("tf") or runtime["scan_timeframe"]
+                        if runtime.get("is_scalping") and str(signal_tf).lower() == "1h":
+                            signal_tf = runtime["scan_timeframe"]
+                        strict_payload = {
+                            "symbol": signal["symbol"],
+                            "signal_type": signal["signal_type"],
+                            "direction": signal["direction"],
+                            "entry": entry,
+                            "tp": tp,
+                            "sl": sl,
+                            "rr": rr,
+                            "confidence": confidence,
+                            "score": score,
+                            "max_score": max_score,
+                            "passed_filters": [name.upper() for name in config.FILTER_WEIGHTS.keys()],
+                            "failed_filters": [],
+                            "regime": signal.get("regime", "N/A"),
+                            "timestamp": str(df.index[i]),
+                            "tf": signal_tf,
+                            "trade_type": signal.get("trade_type", "aligned"),
+                            "position_size": float(risk_snapshot.get("position_size", 0.0)),
+                            "trade_risk": float(risk_snapshot.get("trade_risk", 0.0)),
+                            "live_mode": runtime["mode"],
+                            "label_prefix": runtime["signal_prefix"],
+                            "execution_timeframes": tuple(runtime["execution_timeframes"]),
+                            "entry_source": "strict",
+                        }
+                        self.last_signal_diagnostics = {
+                            "mode": runtime["mode"],
+                            "score": strict_payload["score"],
+                            "passed_filters": strict_payload["passed_filters"],
+                            "failed_filters": strict_payload["failed_filters"],
+                            "rejection_reason": None,
+                        }
+                else:
+                    strict_rejection_reason = str(self.strategy.last_rejection_reason or "unknown")
+                    strict_rejection_details = str(self.strategy.last_rejection_message or "no details")
+
+                if strict_payload:
+                    self._ensure_diagnostics_not_empty(symbol)
+                    self._log_execution_trace(symbol, strict_result=True, fallback_executed=False)
+                    return strict_payload
+
+                fallback_executed = True
+                relaxed_signal = self._build_relaxed_signal(symbol, df, runtime)
+                if relaxed_signal:
+                    if config.DEBUG_MODE:
+                        debug_stage(
+                            "SCORING",
+                            symbol,
+                            f"mode={runtime['mode']} score={relaxed_signal['score']:.2f} "
+                            f"passed={relaxed_signal.get('passed_filters')} "
+                            f"failed={relaxed_signal.get('failed_filters')} "
+                            f"fallback=relaxed",
+                        )
+                        
+                    self._ensure_diagnostics_not_empty(symbol)
+                    self._log_execution_trace(symbol, strict_result=False, fallback_executed=fallback_executed)
+                    return relaxed_signal
+
+                if strict_rejection_reason and not self.last_signal_diagnostics.get("rejection_reason"):
+                    details_suffix = f": {strict_rejection_details}" if strict_rejection_details else ""
+                    self.last_signal_diagnostics["rejection_reason"] = f"{strict_rejection_reason}{details_suffix}"
+                if config.DEBUG_MODE and strict_rejection_reason:
+                    reject(symbol, "STRATEGY", f"no entry conditions met ({strict_rejection_reason})", extra={"details": strict_rejection_details})
+                self._ensure_diagnostics_not_empty(symbol)
+                self._log_execution_trace(symbol, strict_result=False, fallback_executed=fallback_executed)
+                return None
 
         except Exception as exc:
             logger.exception("Ошибка адаптера backtest-стратегии для %s: %s", symbol, exc)
