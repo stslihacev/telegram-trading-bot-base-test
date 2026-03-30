@@ -37,6 +37,7 @@ class MarketScanner:
             self.candle_limit,
             ", ".join(runtime["execution_timeframes"]),
         )
+        logger.info("DEBUG: SCANNER STRATEGY CLASS | class=%s", self.strategy.__class__.__name__)
 
     async def _fetch_ohlcv(self, symbol: str) -> pd.DataFrame | None:
         try:

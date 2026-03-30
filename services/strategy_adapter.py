@@ -197,6 +197,7 @@ class BacktestStrategyAdapter:
         return score, max_score, confidence
 
     def _build_relaxed_signal(self, symbol: str, df: pd.DataFrame, runtime: dict) -> dict | None:
+        logger.info("DEBUG: FALLBACK EXECUTED")
         if not bool(getattr(config, "ENABLE_RELAXED_SIGNALS", True)):
             self.last_signal_diagnostics = {
                 "mode": runtime["mode"],
@@ -257,6 +258,15 @@ class BacktestStrategyAdapter:
         score_threshold = max(1.0, get_mode_threshold(runtime["mode"]))
         required_ok = all(required_checks.values())
         total_score = float(optional_score)
+        logger.info(
+            "DEBUG: RELAXED FILTERS | symbol=%s | trend=%s | structure=%s | optional_score=%s | threshold=%s | required_ok=%s",
+            symbol,
+            trend_ok,
+            structure_ok,
+            optional_score,
+            score_threshold,
+            required_ok,
+        )
 
         passed = [name.upper() for name, ok in combined_checks.items() if ok]
         failed = [name.upper() for name, ok in combined_checks.items() if not ok]
@@ -339,6 +349,7 @@ class BacktestStrategyAdapter:
     def generate_signal(self, symbol: str, candles: pd.DataFrame) -> dict | None:
         """Генерирует сигнал в telegram-формате только если backtest-логика даёт сделку."""
         runtime = self._runtime_settings()
+        logger.info("DEBUG: ENTER SIGNAL GENERATION | symbol=%s | mode=%s", symbol, runtime["mode"])
         min_candles = int(runtime["scan_candle_limit"])
         if runtime.get("is_scalping"):
             self.min_rr = float(runtime["min_signal_rr"])
@@ -499,7 +510,7 @@ class BacktestStrategyAdapter:
                             f"failed={relaxed_signal.get('failed_filters')} "
                             f"fallback=relaxed",
                         )
-                        
+
                     self._ensure_diagnostics_not_empty(symbol)
                     self._log_execution_trace(symbol, strict_result=False, fallback_executed=fallback_executed)
                     return relaxed_signal
