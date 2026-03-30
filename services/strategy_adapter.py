@@ -215,6 +215,7 @@ class BacktestStrategyAdapter:
                 "passed_filters": [],
                 "failed_filters": ["DATA"],
                 "required_filters_result": {"trend": False, "structure": False},
+                "required_filters": ["trend"],
                 "rejection_reason": "not enough candles for relaxed scoring",
             }
             return None
@@ -251,20 +252,25 @@ class BacktestStrategyAdapter:
             "adx": adx >= max(12.0, float(runtime.get("mtf_adx_min_1h", 15.0)) * 0.7),
             "di": (direction == "LONG" and plus_di >= minus_di) or (direction == "SHORT" and minus_di >= plus_di),
         }
+        fallback_mode = True
+        required_filters = ["trend"] if fallback_mode else ["trend", "structure"]
         required_checks = {"trend": trend_ok, "structure": structure_ok}
         combined_checks = {**required_checks, **optional_checks}
         _ = build_breakdown(combined_checks)
         optional_score = sum(1 for ok in optional_checks.values() if ok)
         score_threshold = max(1.0, get_mode_threshold(runtime["mode"]))
-        required_ok = all(required_checks.values())
+        required_ok = all(required_checks[name] for name in required_filters)
         total_score = float(optional_score)
         logger.info(
-            "DEBUG: RELAXED FILTERS | symbol=%s | trend=%s | structure=%s | optional_score=%s | threshold=%s | required_ok=%s",
+            "DEBUG: RELAXED FILTERS | symbol=%s | trend=%s | structure=%s | optional_score=%s | "
+            "threshold=%s | required_filters=%s | structure_optional_in_fallback=%s | required_ok=%s",
             symbol,
             trend_ok,
             structure_ok,
             optional_score,
             score_threshold,
+            required_filters,
+            fallback_mode,
             required_ok,
         )
 
@@ -283,6 +289,7 @@ class BacktestStrategyAdapter:
             "passed_filters": passed,
             "failed_filters": failed,
             "required_filters_result": required_checks,
+            "required_filters": required_filters,
             "rejection_reason": rejection_reason,
         }
         if not passed and not failed:
@@ -336,11 +343,12 @@ class BacktestStrategyAdapter:
     def _log_execution_trace(self, symbol: str, strict_result: bool, fallback_executed: bool) -> None:
         diagnostics = self.last_signal_diagnostics or {}
         logger.info(
-            "%s | signal_trace strict_result=%s fallback_executed=%s required_filters_result=%s "
+            "%s | signal_trace strict_result=%s fallback_executed=%s required_filters=%s required_filters_result=%s "
             "score=%s rejection_reason=%s",
             symbol,
             strict_result,
             fallback_executed,
+            diagnostics.get("required_filters"),
             diagnostics.get("required_filters_result"),
             diagnostics.get("score"),
             diagnostics.get("rejection_reason"),
