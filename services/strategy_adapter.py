@@ -350,11 +350,25 @@ class BacktestStrategyAdapter:
         """Генерирует сигнал в telegram-формате только если backtest-логика даёт сделку."""
         runtime = self._runtime_settings()
         logger.info("DEBUG: ENTER SIGNAL GENERATION | symbol=%s | mode=%s", symbol, runtime["mode"])
+        self.last_signal_diagnostics = {
+            "mode": runtime["mode"],
+            "score": 0.0,
+            "passed_filters": [],
+            "failed_filters": ["PENDING"],
+            "rejection_reason": "evaluation_started",
+        }
         min_candles = int(runtime["scan_candle_limit"])
         if runtime.get("is_scalping"):
             self.min_rr = float(runtime["min_signal_rr"])
         self.max_rr = float(runtime["max_rr"])
         if candles is None or len(candles) < min_candles:
+            self.last_signal_diagnostics = {
+                "mode": runtime["mode"],
+                "score": 0.0,
+                "passed_filters": [],
+                "failed_filters": ["DATA"],
+                "rejection_reason": f"not enough candles ({0 if candles is None else len(candles)} < {min_candles})",
+            }
             return None
 
         try:
@@ -530,7 +544,7 @@ class BacktestStrategyAdapter:
                 "mode": runtime["mode"] if "runtime" in locals() else "MAIN",
                 "score": 0.0,
                 "passed_filters": [],
-                "failed_filters": [],
+                "failed_filters": ["EXCEPTION"],
                 "rejection_reason": str(exc),
             }
             return None

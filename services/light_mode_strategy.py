@@ -14,6 +14,48 @@ from services.signal_scoring import build_breakdown, get_mode_threshold
 class LightModeStrategy:
     """Signal-only strategy based on EMA/SMA, RSI, MACD, candle impulse and volume filters."""
 
+    def __init__(self) -> None:
+        self.last_signal_diagnostics: dict[str, object] = {}
+
+    def _set_diagnostics(
+        self,
+        *,
+        score: float,
+        max_score: float,
+        passed_filters: list[str],
+        failed_filters: list[str],
+        rejection_reason: str | None,
+        direction: str | None = None,
+    ) -> None:
+        self.last_signal_diagnostics = {
+            "mode": "LIGHT",
+            "score": float(score),
+            "max_score": float(max_score),
+            "passed_filters": list(passed_filters),
+            "failed_filters": list(failed_filters),
+            "rejection_reason": rejection_reason,
+            "direction": direction,
+        }
+
+    def _reject(
+        self,
+        *,
+        rejection_reason: str,
+        score: float = 0.0,
+        max_score: float = 0.0,
+        passed_filters: list[str] | None = None,
+        failed_filters: list[str] | None = None,
+        direction: str | None = None,
+    ) -> None:
+        self._set_diagnostics(
+            score=score,
+            max_score=max_score,
+            passed_filters=passed_filters or [],
+            failed_filters=failed_filters or [],
+            rejection_reason=rejection_reason,
+            direction=direction,
+        )
+
     @staticmethod
     def _ema(series: pd.Series, period: int) -> pd.Series:
         return series.ewm(span=period, adjust=False).mean()
@@ -66,6 +108,7 @@ class LightModeStrategy:
         return 1.4
 
     def generate_signal(self, symbol: str, candles: pd.DataFrame) -> dict | None:
+        self._reject(rejection_reason="evaluation_started", failed_filters=["PENDING"])
         required_period = max(
             config.LIGHT_EMA_LONG_PERIOD,
             config.LIGHT_SMA_LONG_PERIOD,
@@ -76,6 +119,10 @@ class LightModeStrategy:
             int(config.SCAN_CANDLE_LIMIT_LIGHT // 2),
         )
         if candles is None or len(candles) < required_period:
+            self._reject(
+                rejection_reason=f"not enough candles ({0 if candles is None else len(candles)} < {required_period})",
+                failed_filters=["DATA"],
+            )
             return None
 
         df = candles.copy()
@@ -99,6 +146,7 @@ class LightModeStrategy:
         prev = df.iloc[-2]
         price = float(last["close"])
         if not price:
+            self._reject(rejection_reason="price is zero", failed_filters=["DATA"])
             return None
 
         long_checks: dict[str, bool] = {}
@@ -170,6 +218,14 @@ class LightModeStrategy:
 
         if scoring_enabled:
             if selected.score < min_score_threshold:
+                self._reject(
+                    rejection_reason=f"score below threshold ({selected.score:.2f} < {min_score_threshold:.2f})",
+                    score=float(selected.score),
+                    max_score=float(selected.max_score),
+                    passed_filters=selected.passed_filters,
+                    failed_filters=selected.failed_filters or ["SCORING"],
+                    direction=direction,
+                )
                 if config.DEBUG_MODE:
                     reject(
                         symbol,
@@ -185,6 +241,14 @@ class LightModeStrategy:
                     )
                 return None
         elif not strict_legacy_ok:
+            self._reject(
+                rejection_reason="filters not aligned",
+                score=float(selected.score),
+                max_score=float(selected.max_score),
+                passed_filters=selected.passed_filters,
+                failed_filters=selected.failed_filters or ["ALIGNMENT"],
+                direction=direction,
+            )
             if config.DEBUG_MODE:
                 reject(symbol, "LIGHT", "filters not aligned", extra={"checks": reasons})
             return None
@@ -200,6 +264,14 @@ class LightModeStrategy:
                 selected = short_breakdown
 
         if bool(getattr(config, "HIGH_CONF_ONLY", False)) and float(selected.confidence) < float(getattr(config, "HIGH_CONFIDENCE_THRESHOLD", 0.7)):
+            self._reject(
+                rejection_reason="high confidence gate blocked",
+                score=float(selected.score),
+                max_score=float(selected.max_score),
+                passed_filters=selected.passed_filters,
+                failed_filters=selected.failed_filters or ["CONFIDENCE"],
+                direction=direction,
+            )
             if config.DEBUG_MODE:
                 reject(
                     symbol,
@@ -214,6 +286,14 @@ class LightModeStrategy:
             return None
 
         if not self._probability_allows_signal():
+            self._reject(
+                rejection_reason="signal_probability blocked",
+                score=float(selected.score),
+                max_score=float(selected.max_score),
+                passed_filters=selected.passed_filters,
+                failed_filters=selected.failed_filters or ["PROBABILITY"],
+                direction=direction,
+            )
             if config.DEBUG_MODE:
                 reject(
                     symbol,
@@ -225,6 +305,14 @@ class LightModeStrategy:
 
         atr = float(last["atr"]) if pd.notna(last["atr"]) else 0.0
         if atr <= 0:
+            self._reject(
+                rejection_reason="atr unavailable",
+                score=float(selected.score),
+                max_score=float(selected.max_score),
+                passed_filters=selected.passed_filters,
+                failed_filters=selected.failed_filters or ["ATR"],
+                direction=direction,
+            )
             return None
 
         rr_target = self._rr_from_confidence(float(selected.confidence))
@@ -266,6 +354,14 @@ class LightModeStrategy:
                 f"EMA/SMA + RSI + MACD + volume filters"
             ).strip(),
         }
+        self._set_diagnostics(
+            score=float(selected.score),
+            max_score=float(selected.max_score),
+            passed_filters=selected.passed_filters,
+            failed_filters=selected.failed_filters,
+            rejection_reason=None,
+            direction=direction,
+        )
         if config.DEBUG_MODE:
             debug_stage(
                 "SCORING",

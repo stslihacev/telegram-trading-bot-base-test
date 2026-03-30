@@ -133,6 +133,15 @@ class MarketScanner:
                 active.append(symbol)
         return active
 
+    @staticmethod
+    def _normalize_diagnostics(diagnostics: dict | None) -> dict[str, object]:
+        payload = dict(diagnostics or {})
+        payload.setdefault("score", 0.0)
+        payload.setdefault("passed_filters", [])
+        payload.setdefault("failed_filters", [])
+        payload.setdefault("rejection_reason", "unknown")
+        return payload
+
     async def scan(self) -> list[dict]:
         """Возвращает список сигналов после фильтрации рынка и адаптера стратегии."""
         try:
@@ -164,7 +173,7 @@ class MarketScanner:
             if config.DEBUG_MODE:
                 debug_stage("STRATEGY", clean_symbol, f"calling strategy adapter | mode={self.runtime['mode']}")
             signal = self.strategy.generate_signal(clean_symbol, df)
-            diagnostics = getattr(self.strategy, "last_signal_diagnostics", {}) or {}
+            diagnostics = self._normalize_diagnostics(getattr(self.strategy, "last_signal_diagnostics", {}) or {})
             if signal:
                 label = signal.get("label_prefix") or self.log_prefix
                 logger.info(

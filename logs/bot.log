@@ -60359,3 +60359,104 @@ Fingerprint: f0d638a81e4b406d
 2026-03-30 22:17:30,241 - crypto_bot - INFO - 📊 Signals found: 0
 2026-03-30 22:17:30,241 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
 2026-03-30 22:18:15,866 - crypto_bot - INFO - 🛑 Остановка по KeyboardInterrupt
+2026-03-30 22:41:17,909 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-30 22:41:17,909 - crypto_bot - WARNING - TELEGRAM_TOKEN не задан — бот запустится в режиме scanner + GUI без Telegram polling
+2026-03-30 22:41:17,910 - crypto_bot - INFO - [ANALYTICS INIT] trade tracking enabled
+2026-03-30 22:41:17,911 - crypto_bot - INFO - [PERSISTENCE] loaded trades: 6
+2026-03-30 22:41:17,915 - crypto_bot - INFO - [MAIN] scanner initialized | mode=MAIN | timeframe=1h | candle_limit=220 | execution_tfs=4h, 1h, 30m, 15m
+2026-03-30 22:41:17,915 - crypto_bot - INFO - DEBUG: SCANNER STRATEGY CLASS | class=BacktestStrategyAdapter
+2026-03-30 22:41:17,947 - crypto_bot - INFO - 🖥️ Signal GUI thread started
+2026-03-30 22:41:17,947 - crypto_bot - INFO - ✅ Telegram отключён: инициализированы scanner + GUI режим
+2026-03-30 22:41:17,947 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-30 22:41:17,947 - crypto_bot - INFO - 📡 Telegram polling disabled, running standalone scan loop
+2026-03-30 22:41:17,948 - crypto_bot - INFO - 🚀 SCAN LOOP STARTED
+2026-03-30 22:41:17,948 - crypto_bot - INFO - [STARTUP] reconciling active trades: 6
+2026-03-30 22:41:22,450 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-30 22:41:25,652 - crypto_bot - INFO - [MARKET] get_top_usdt_pairs prepared 546 liquid swap symbols
+2026-03-30 22:41:25,652 - crypto_bot - INFO - 📈 Top-50 symbols fetched: 50
+2026-03-30 22:41:25,652 - crypto_bot - INFO - 🔥 Active symbols after filter: 27 / 50
+2026-03-30 22:41:25,652 - crypto_bot - INFO - 🔍 Scanning ETH/USDT:USDT
+2026-03-30 22:41:25,866 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=ETHUSDT | mode=MAIN
+2026-03-30 22:41:25,866 - crypto_bot - INFO - ❌ No signal: ETHUSDT | mode=MAIN | score=0.0 | passed_filters=[] | failed_filters=['DATA'] | rejection_reason=not enough candles (219 < 220)
+2026-03-30 22:41:25,866 - crypto_bot - INFO - 🔍 Scanning HYPE/USDT:USDT
+2026-03-30 22:41:26,089 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=HYPEUSDT | mode=MAIN
+2026-03-30 22:41:26,089 - crypto_bot - INFO - ❌ No signal: HYPEUSDT | mode=MAIN | score=0.0 | passed_filters=[] | failed_filters=['DATA'] | rejection_reason=not enough candles (219 < 220)
+2026-03-30 22:41:26,089 - crypto_bot - INFO - 🔍 Scanning TAO/USDT:USDT
+2026-03-30 22:41:26,305 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=TAOUSDT | mode=MAIN
+2026-03-30 22:41:26,306 - crypto_bot - INFO - ❌ No signal: TAOUSDT | mode=MAIN | score=0.0 | passed_filters=[] | failed_filters=['DATA'] | rejection_reason=not enough candles (219 < 220)
+2026-03-30 22:41:26,306 - crypto_bot - INFO - 🔍 Scanning ONT/USDT:USDT
+2026-03-30 22:41:26,525 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=ONTUSDT | mode=MAIN
+2026-03-30 22:41:26,525 - crypto_bot - INFO - ❌ No signal: ONTUSDT | mode=MAIN | score=0.0 | passed_filters=[] | failed_filters=['DATA'] | rejection_reason=not enough candles (219 < 220)
+2026-03-30 22:41:26,525 - crypto_bot - INFO - 🔍 Scanning RIVER/USDT:USDT
+2026-03-30 22:41:26,737 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=RIVERUSDT | mode=MAIN
+2026-03-30 22:41:26,738 - crypto_bot - INFO - ❌ No signal: RIVERUSDT | mode=MAIN | score=0.0 | passed_filters=[] | failed_filters=['DATA'] | rejection_reason=not enough candles (219 < 220)
+2026-03-30 22:41:26,738 - crypto_bot - INFO - 🔍 Scanning ADA/USDT:USDT
+2026-03-30 22:41:26,961 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=ADAUSDT | mode=MAIN
+2026-03-30 22:41:26,961 - crypto_bot - INFO - ❌ No signal: ADAUSDT | mode=MAIN | score=0.0 | passed_filters=[] | failed_filters=['DATA'] | rejection_reason=not enough candles (219 < 220)
+2026-03-30 22:41:26,962 - crypto_bot - INFO - 🔍 Scanning 1000PEPE/USDT:USDT
+2026-03-30 22:41:27,172 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=1000PEPEUSDT | mode=MAIN
+2026-03-30 22:41:27,172 - crypto_bot - INFO - ❌ No signal: 1000PEPEUSDT | mode=MAIN | score=0.0 | passed_filters=[] | failed_filters=['DATA'] | rejection_reason=not enough candles (219 < 220)
+2026-03-30 22:41:27,172 - crypto_bot - INFO - 🔍 Scanning NOM/USDT:USDT
+2026-03-30 22:41:27,382 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=NOMUSDT | mode=MAIN
+2026-03-30 22:41:27,383 - crypto_bot - INFO - ❌ No signal: NOMUSDT | mode=MAIN | score=0.0 | passed_filters=[] | failed_filters=['DATA'] | rejection_reason=not enough candles (219 < 220)
+2026-03-30 22:41:27,383 - crypto_bot - INFO - 🔍 Scanning LINK/USDT:USDT
+2026-03-30 22:41:27,602 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=LINKUSDT | mode=MAIN
+2026-03-30 22:41:27,603 - crypto_bot - INFO - ❌ No signal: LINKUSDT | mode=MAIN | score=0.0 | passed_filters=[] | failed_filters=['DATA'] | rejection_reason=not enough candles (219 < 220)
+2026-03-30 22:41:27,603 - crypto_bot - INFO - 🔍 Scanning SUI/USDT:USDT
+2026-03-30 22:41:27,815 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=SUIUSDT | mode=MAIN
+2026-03-30 22:41:27,816 - crypto_bot - INFO - ❌ No signal: SUIUSDT | mode=MAIN | score=0.0 | passed_filters=[] | failed_filters=['DATA'] | rejection_reason=not enough candles (219 < 220)
+2026-03-30 22:41:27,816 - crypto_bot - INFO - 🔍 Scanning ZEC/USDT:USDT
+2026-03-30 22:41:28,037 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=ZECUSDT | mode=MAIN
+2026-03-30 22:41:28,037 - crypto_bot - INFO - ❌ No signal: ZECUSDT | mode=MAIN | score=0.0 | passed_filters=[] | failed_filters=['DATA'] | rejection_reason=not enough candles (219 < 220)
+2026-03-30 22:41:28,037 - crypto_bot - INFO - 🔍 Scanning SIREN/USDT:USDT
+2026-03-30 22:41:28,256 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=SIRENUSDT | mode=MAIN
+2026-03-30 22:41:28,256 - crypto_bot - INFO - ❌ No signal: SIRENUSDT | mode=MAIN | score=0.0 | passed_filters=[] | failed_filters=['DATA'] | rejection_reason=not enough candles (219 < 220)
+2026-03-30 22:41:28,257 - crypto_bot - INFO - 🔍 Scanning BASED/USDT:USDT
+2026-03-30 22:41:28,486 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=BASEDUSDT | mode=MAIN
+2026-03-30 22:41:28,486 - crypto_bot - INFO - ❌ No signal: BASEDUSDT | mode=MAIN | score=0.0 | passed_filters=[] | failed_filters=['DATA'] | rejection_reason=not enough candles (11 < 220)
+2026-03-30 22:41:28,487 - crypto_bot - INFO - 🔍 Scanning DOT/USDT:USDT
+2026-03-30 22:41:28,699 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=DOTUSDT | mode=MAIN
+2026-03-30 22:41:28,699 - crypto_bot - INFO - ❌ No signal: DOTUSDT | mode=MAIN | score=0.0 | passed_filters=[] | failed_filters=['DATA'] | rejection_reason=not enough candles (219 < 220)
+2026-03-30 22:41:28,699 - crypto_bot - INFO - 🔍 Scanning AVAX/USDT:USDT
+2026-03-30 22:41:28,918 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=AVAXUSDT | mode=MAIN
+2026-03-30 22:41:28,919 - crypto_bot - INFO - ❌ No signal: AVAXUSDT | mode=MAIN | score=0.0 | passed_filters=[] | failed_filters=['DATA'] | rejection_reason=not enough candles (219 < 220)
+2026-03-30 22:41:28,919 - crypto_bot - INFO - 🔍 Scanning BSB/USDT:USDT
+2026-03-30 22:41:29,128 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=BSBUSDT | mode=MAIN
+2026-03-30 22:41:29,128 - crypto_bot - INFO - ❌ No signal: BSBUSDT | mode=MAIN | score=0.0 | passed_filters=[] | failed_filters=['DATA'] | rejection_reason=not enough candles (110 < 220)
+2026-03-30 22:41:29,128 - crypto_bot - INFO - 🔍 Scanning AAVE/USDT:USDT
+2026-03-30 22:41:29,341 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=AAVEUSDT | mode=MAIN
+2026-03-30 22:41:29,342 - crypto_bot - INFO - ❌ No signal: AAVEUSDT | mode=MAIN | score=0.0 | passed_filters=[] | failed_filters=['DATA'] | rejection_reason=not enough candles (219 < 220)
+2026-03-30 22:41:29,342 - crypto_bot - INFO - 🔍 Scanning BEAT/USDT:USDT
+2026-03-30 22:41:29,561 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=BEATUSDT | mode=MAIN
+2026-03-30 22:41:29,561 - crypto_bot - INFO - ❌ No signal: BEATUSDT | mode=MAIN | score=0.0 | passed_filters=[] | failed_filters=['DATA'] | rejection_reason=not enough candles (219 < 220)
+2026-03-30 22:41:29,561 - crypto_bot - INFO - 🔍 Scanning 1000BONK/USDT:USDT
+2026-03-30 22:41:29,775 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=1000BONKUSDT | mode=MAIN
+2026-03-30 22:41:29,775 - crypto_bot - INFO - ❌ No signal: 1000BONKUSDT | mode=MAIN | score=0.0 | passed_filters=[] | failed_filters=['DATA'] | rejection_reason=not enough candles (219 < 220)
+2026-03-30 22:41:29,775 - crypto_bot - INFO - 🔍 Scanning GALA/USDT:USDT
+2026-03-30 22:41:29,983 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=GALAUSDT | mode=MAIN
+2026-03-30 22:41:29,984 - crypto_bot - INFO - ❌ No signal: GALAUSDT | mode=MAIN | score=0.0 | passed_filters=[] | failed_filters=['DATA'] | rejection_reason=not enough candles (219 < 220)
+2026-03-30 22:41:29,984 - crypto_bot - INFO - 🔍 Scanning ARIA/USDT:USDT
+2026-03-30 22:41:30,194 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=ARIAUSDT | mode=MAIN
+2026-03-30 22:41:30,195 - crypto_bot - INFO - ❌ No signal: ARIAUSDT | mode=MAIN | score=0.0 | passed_filters=[] | failed_filters=['DATA'] | rejection_reason=not enough candles (219 < 220)
+2026-03-30 22:41:30,195 - crypto_bot - INFO - 🔍 Scanning LDO/USDT:USDT
+2026-03-30 22:41:30,417 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=LDOUSDT | mode=MAIN
+2026-03-30 22:41:30,417 - crypto_bot - INFO - ❌ No signal: LDOUSDT | mode=MAIN | score=0.0 | passed_filters=[] | failed_filters=['DATA'] | rejection_reason=not enough candles (219 < 220)
+2026-03-30 22:41:30,417 - crypto_bot - INFO - 🔍 Scanning ARB/USDT:USDT
+2026-03-30 22:41:30,637 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=ARBUSDT | mode=MAIN
+2026-03-30 22:41:30,638 - crypto_bot - INFO - ❌ No signal: ARBUSDT | mode=MAIN | score=0.0 | passed_filters=[] | failed_filters=['DATA'] | rejection_reason=not enough candles (219 < 220)
+2026-03-30 22:41:30,638 - crypto_bot - INFO - 🔍 Scanning APT/USDT:USDT
+2026-03-30 22:41:30,858 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=APTUSDT | mode=MAIN
+2026-03-30 22:41:30,858 - crypto_bot - INFO - ❌ No signal: APTUSDT | mode=MAIN | score=0.0 | passed_filters=[] | failed_filters=['DATA'] | rejection_reason=not enough candles (219 < 220)
+2026-03-30 22:41:30,859 - crypto_bot - INFO - 🔍 Scanning WIF/USDT:USDT
+2026-03-30 22:41:31,119 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=WIFUSDT | mode=MAIN
+2026-03-30 22:41:31,119 - crypto_bot - INFO - ❌ No signal: WIFUSDT | mode=MAIN | score=0.0 | passed_filters=[] | failed_filters=['DATA'] | rejection_reason=not enough candles (219 < 220)
+2026-03-30 22:41:31,119 - crypto_bot - INFO - 🔍 Scanning CRV/USDT:USDT
+2026-03-30 22:41:31,327 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=CRVUSDT | mode=MAIN
+2026-03-30 22:41:31,327 - crypto_bot - INFO - ❌ No signal: CRVUSDT | mode=MAIN | score=0.0 | passed_filters=[] | failed_filters=['DATA'] | rejection_reason=not enough candles (219 < 220)
+2026-03-30 22:41:31,328 - crypto_bot - INFO - 🔍 Scanning TRUMP/USDT:USDT
+2026-03-30 22:41:31,537 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=TRUMPUSDT | mode=MAIN
+2026-03-30 22:41:31,537 - crypto_bot - INFO - ❌ No signal: TRUMPUSDT | mode=MAIN | score=0.0 | passed_filters=[] | failed_filters=['DATA'] | rejection_reason=not enough candles (219 < 220)
+2026-03-30 22:41:31,538 - crypto_bot - INFO - 📊 Total signals after scan: 0
+2026-03-30 22:41:31,538 - crypto_bot - INFO - 📊 Signals found: 0
+2026-03-30 22:41:31,538 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
+2026-03-30 22:41:39,745 - crypto_bot - INFO - 🛑 Остановка по KeyboardInterrupt
