@@ -10599,3 +10599,69 @@ Failed: EMA, SMA, MACD
 🧠 Regime: LIGHT_RANGE
 🕒 Time:   2026-03-26 20:30:00+00:00
 Fingerprint: f0d638a81e4b406d
+2026-03-31 21:38:26,363 - INFO - MAIN 📡 SIGNAL
+
+Symbol:    DOGEUSDT
+Direction: 🔻 SHORT
+Timeframe: 1h
+
+💰 Entry: 0.091480
+🎯 TP:    0.089746
+🛑 SL:    0.092444
+RR:    1.80
+
+Score:      4.20 / 7.60
+⭐ Confidence: 0.84 ⭐⭐⭐⭐⭐
+
+Entry source: relaxed
+Passed: TREND, RSI, VOLUME, ADX
+Failed: STRUCTURE, MACD, DI
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-03-31 16:00:00+00:00
+Fingerprint: 9ca9c58ccd9989b5
+2026-03-31 21:38:26,368 - INFO - MAIN 📡 SIGNAL
+
+Symbol:    HYPEUSDT
+Direction: 🔻 SHORT
+Timeframe: 1h
+
+💰 Entry: 36.889000
+🎯 TP:    35.943100
+🛑 SL:    37.414500
+RR:    1.80
+
+Score:      5.20 / 7.60
+⭐ Confidence: 1.00 ⭐⭐⭐⭐⭐
+
+Entry source: relaxed
+Passed: TREND, RSI, VOLUME, ADX, DI
+Failed: STRUCTURE, MACD
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-03-31 16:00:00+00:00
+Fingerprint: 6284b8dc76452e85
+2026-03-31 21:38:26,372 - INFO - MAIN 📡 SIGNAL
+
+Symbol:    XAUTUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 4618.100000
+🎯 TP:    4667.870000
+🛑 SL:    4590.450000
+RR:    1.80
+
+Score:      6.60 / 7.60
+⭐ Confidence: 1.00 ⭐⭐⭐⭐⭐
+
+Entry source: relaxed
+Passed: TREND, STRUCTURE, MACD, VOLUME, ADX, DI
+Failed: RSI
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-03-31 16:00:00+00:00
+Fingerprint: 3014186e6db6640f

@@ -53,6 +53,10 @@ class SignalAnalytics:
     _closed_trade_keys: set[str] = field(default_factory=set, init=False, repr=False)
     _io_lock: threading.RLock = field(default_factory=threading.RLock, init=False, repr=False)
     trade_registry: TradeRegistry | None = field(default=None, init=False)
+    initial_deposit: float = field(default_factory=lambda: float(getattr(config, "BACKTEST_INITIAL_CAPITAL", 1000.0)))
+    risk_per_trade_pct: float = field(default_factory=lambda: float(getattr(config, "RISK_PER_TRADE", 0.01)))
+    fee_rate: float = field(default_factory=lambda: float(getattr(config, "SIMULATION_FEE_RATE", 0.0004)))
+    equity_curve: list[dict[str, Any]] = field(default_factory=list)
 
     def __post_init__(self) -> None:
         try:
@@ -61,6 +65,7 @@ class SignalAnalytics:
             pass
         self.trade_registry = TradeRegistry(path=Path("data") / "trades.json")
         self._load_active_trades()
+        self.equity_curve = [{"timestamp": datetime.now(timezone.utc).isoformat(), "equity": float(self.initial_deposit), "pnl": 0.0}]
 
     def collect_signal(self, signal: dict[str, Any], is_duplicate: bool = False) -> None:
         self.total_signals += 1
@@ -304,9 +309,13 @@ class SignalAnalytics:
                 "r_multiple": rr if result_bucket == "PROFIT" else -rr,
                 "R": rr if result_bucket == "PROFIT" else -rr,
                 "pnl_points": pnl,
+                "position_notional": 0.0,
+                "fee_paid": 0.0,
+                "pnl_net": 0.0,
                 "confidence": self._safe_float(trade.get("confidence")),
                 "score": self._safe_float(trade.get("score")),
                 "mode": mode,
+                "registry_id": str(trade.get("registry_id") or ""),
                 "entry_source": str(trade.get("entry_source") or "strict").lower(),
                 "is_reversal": bool(trade.get("is_reversal", False)),
                 "open_time": open_time,
@@ -314,6 +323,26 @@ class SignalAnalytics:
                 "passed_filters": list(trade.get("passed_filters") or []),
                 "close_event_key": close_event_key,
             }
+            risk_budget = float(self.initial_deposit) * max(0.0, float(self.risk_per_trade_pct))
+            risk_abs = max(abs(entry - sl), 1e-9)
+            position_size = risk_budget / risk_abs if risk_budget > 0 else 0.0
+            gross_pnl = pnl * position_size
+            notional = abs(entry * position_size)
+            fee_paid = notional * max(0.0, float(self.fee_rate))
+            net_pnl = gross_pnl - fee_paid
+            closed["position_notional"] = notional
+            closed["fee_paid"] = fee_paid
+            closed["pnl_net"] = net_pnl
+            prev_equity = float(self.equity_curve[-1]["equity"]) if self.equity_curve else float(self.initial_deposit)
+            self.equity_curve.append(
+                {
+                    "timestamp": close_time.isoformat(),
+                    "equity": prev_equity + net_pnl,
+                    "pnl": net_pnl,
+                    "symbol": symbol,
+                    "result": result,
+                }
+            )
             self.closed_trades.append(closed)
             self.last_closed_trade = closed
             self.mode_closed_counter[mode] += 1
@@ -455,6 +484,11 @@ class SignalAnalytics:
             "mode": str(signal.get("live_mode") or signal.get("label_prefix") or "UNKNOWN").upper().strip("[]"),
             "entry_source": str(signal.get("entry_source") or "strict").lower(),
             "is_reversal": action_upper == "REVERSAL" or bool(signal.get("is_reversal", False)),
+            "pending_since": signal.get("pending_since"),
+            "confirmation_reason": signal.get("confirmation_reason"),
+            "rejection_reason": signal.get("rejection_reason"),
+            "opened_at": signal.get("opened_at"),
+            "closed_at": signal.get("closed_at"),
             "passed_filters": [
                 str(name).upper().strip()
                 for name in (signal.get("passed_filters") or [])
@@ -599,21 +633,55 @@ class SignalAnalytics:
                 ),
             }
 
+        expectancy = avg_r
+        relaxed_pct = (source_breakdown["relaxed"]["trades"] / total_trades * 100) if total_trades else 0.0
+        drawdown_max = 0.0
+        peak = None
+        for point in self.equity_curve:
+            equity = self._safe_float(point.get("equity"), default=self.initial_deposit)
+            peak = equity if peak is None else max(peak, equity)
+            if peak > 0:
+                drawdown_max = max(drawdown_max, (peak - equity) / peak * 100)
+
         return {
             "trades": total_trades,
             "wins": wins,
             "losses": losses,
             "winrate": winrate_pct,
             "avg_r": avg_r,
+            "expectancy": expectancy,
             "profit_factor": profit_factor,
+            "max_drawdown_pct": drawdown_max,
+            "relaxed_share_pct": relaxed_pct,
             "mode_breakdown": mode_breakdown,
             "entry_source_breakdown": source_breakdown,
+            "equity_curve": list(self.equity_curve),
             "high_conf": {
                 "trades": high_conf_total,
                 "winrate": high_conf_winrate,
                 "avg_r": high_conf_avg_r,
             },
         }
+
+    def reconcile_trade_state(self) -> list[str]:
+        issues: list[str] = []
+        with self._io_lock:
+            active_symbols = set(self.active_trades.keys())
+            closed_registry_ids = {str(t.get("registry_id")) for t in self.closed_trades if t.get("registry_id")}
+        registry_trades = list((self.trade_registry.trades if self.trade_registry else []))
+        for trade in registry_trades:
+            symbol = str(trade.get("symbol") or "").strip()
+            status = str(trade.get("status") or "").upper()
+            trade_id = str(trade.get("id") or "")
+            if status == "OPEN" and symbol and symbol not in active_symbols:
+                issues.append(f"registry_open_without_active:{symbol}:{trade_id}")
+            if status in {"TP_HIT", "SL_HIT", "CLOSED", "REVERSAL_EXIT"} and trade_id and trade_id not in closed_registry_ids:
+                issues.append(f"registry_closed_missing_snapshot:{symbol}:{trade_id}")
+        if issues:
+            logger.warning("[RECONCILE] issues=%s", issues)
+        else:
+            logger.info("[RECONCILE] no issues found")
+        return issues
 
     @staticmethod
     def _format_pf(value: float) -> str:
@@ -785,6 +853,9 @@ class SignalAnalytics:
             f"Winrate: {profitability['winrate']:.2f}%\n"
             f"Profit Factor: {self._format_pf(float(profitability['profit_factor']))}\n"
             f"Avg R: {profitability['avg_r']:.2f}\n\n"
+            f"Expectancy: {profitability['expectancy']:.2f}R\n"
+            f"Max drawdown: {profitability['max_drawdown_pct']:.2f}%\n"
+            f"Relaxed share: {profitability['relaxed_share_pct']:.2f}%\n\n"
             "📌 PROFITABILITY BY MODE\n"
             f"{mode_profitability_text}\n\n"
             "🧩 PROFITABILITY BY ENTRY SOURCE\n"

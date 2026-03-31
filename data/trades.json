@@ -1,1 +1,41 @@
-[]
+[
+  {
+    "id": "00577e29762d4c19bf0babb939afb413",
+    "symbol": "DOGEUSDT",
+    "mode": "MAIN",
+    "strategy_version": "v1",
+    "entry_price": 0.09148,
+    "tp": 0.08974557142857144,
+    "sl": 0.09244357142857143,
+    "status": "OPEN",
+    "confidence": 0.8400000000000001,
+    "timestamp": "2026-03-31T16:00:00+00:00",
+    "entry_source": "relaxed"
+  },
+  {
+    "id": "ce573ef672b84b6b968d2da71de7e282",
+    "symbol": "HYPEUSDT",
+    "mode": "MAIN",
+    "strategy_version": "v1",
+    "entry_price": 36.889,
+    "tp": 35.9431,
+    "sl": 37.414500000000004,
+    "status": "OPEN",
+    "confidence": 1.0,
+    "timestamp": "2026-03-31T16:00:00+00:00",
+    "entry_source": "relaxed"
+  },
+  {
+    "id": "b9de1d5406594539908bd0ca875672f2",
+    "symbol": "XAUTUSDT",
+    "mode": "MAIN",
+    "strategy_version": "v1",
+    "entry_price": 4618.1,
+    "tp": 4667.87,
+    "sl": 4590.450000000001,
+    "status": "OPEN",
+    "confidence": 1.0,
+    "timestamp": "2026-03-31T16:00:00+00:00",
+    "entry_source": "relaxed"
+  }
+]

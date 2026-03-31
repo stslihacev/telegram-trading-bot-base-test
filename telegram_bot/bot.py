@@ -307,6 +307,7 @@ class TelegramTradingBot:
 
     async def _reconcile_active_trades_on_startup(self) -> None:
         active_symbols = sorted(self.signal_analytics.active_trades.keys())
+        self.signal_analytics.reconcile_trade_state()
         if not active_symbols:
             return
         logger.info("[STARTUP] reconciling active trades: %s", len(active_symbols))
@@ -377,6 +378,9 @@ class TelegramTradingBot:
                     )
                     self.signal_state.maybe_register_exit(enriched_signal)
                     state_action, state_reason = self.signal_state.evaluate_signal(enriched_signal)
+                    enriched_signal["pending_since"] = enriched_signal.get("timestamp")
+                    if state_action in {"NEW", "UPDATE", "REVERSAL"}:
+                        enriched_signal["confirmation_reason"] = state_reason
 
                     analytics_added = False
                     if state_action in {"NEW", "UPDATE", "REVERSAL"}:
@@ -398,6 +402,10 @@ class TelegramTradingBot:
                         )
 
                     if state_action in {"IGNORE", "COOLDOWN"}:
+                        self.signal_state.upsert_active(
+                            {**enriched_signal, "rejection_reason": state_reason},
+                            status="REJECTED",
+                        )
                         try:
                             if float(enriched_signal.get("confidence") or 0.0) >= 0.7 and not analytics_added:
                                 warning_text = (
@@ -459,7 +467,18 @@ class TelegramTradingBot:
                     except (TypeError, ValueError):
                         pass
 
-                    self.signal_state.upsert_active(enriched_signal, status="OPEN")
+                    self.signal_state.upsert_active(enriched_signal, status="PENDING")
+                    self.signal_state.transition_signal(
+                        symbol=str(enriched_signal.get("symbol") or ""),
+                        status="CONFIRMED",
+                        reason=state_reason,
+                        timestamp=str(enriched_signal.get("timestamp") or datetime.now(timezone.utc).isoformat()),
+                    )
+                    self.signal_state.transition_signal(
+                        symbol=str(enriched_signal.get("symbol") or ""),
+                        status="OPEN",
+                        timestamp=str(enriched_signal.get("timestamp") or datetime.now(timezone.utc).isoformat()),
+                    )
                     if state_action in {"NEW", "REVERSAL"}:
                         self.risk_guard.register_symbol_signal(str(enriched_signal.get("symbol") or ""))
                     self.signal_state.mark_seen(signal_id, datetime.now(timezone.utc).isoformat())

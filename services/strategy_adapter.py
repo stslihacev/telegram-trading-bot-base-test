@@ -189,12 +189,11 @@ class BacktestStrategyAdapter:
         return float(refined_sl), float(refined_tp)
 
     @staticmethod
-    def _strict_mode_scoring(_mode: str) -> tuple[float, float, float]:
+    def _strict_mode_scoring() -> tuple[float, float, float, list[str], list[str]]:
         weights = getattr(config, "FILTER_WEIGHTS", {}) or {}
-        max_score = float(sum(float(v) for v in weights.values()) or 1.0)
-        score = max_score
-        confidence = 0.0 if max_score <= 0 else score / max_score
-        return score, max_score, confidence
+        strict_checks = {name: True for name in weights.keys()}
+        breakdown = build_breakdown(strict_checks)
+        return breakdown.score, breakdown.max_score, breakdown.confidence, breakdown.passed_filters, breakdown.failed_filters
 
     def _build_relaxed_signal(self, symbol: str, df: pd.DataFrame, runtime: dict) -> dict | None:
         logger.info("DEBUG: FALLBACK EXECUTED")
@@ -256,27 +255,26 @@ class BacktestStrategyAdapter:
         required_filters = ["trend"] if fallback_mode else ["trend", "structure"]
         required_checks = {"trend": trend_ok, "structure": structure_ok}
         combined_checks = {**required_checks, **optional_checks}
-        _ = build_breakdown(combined_checks)
-        optional_score = sum(1 for ok in optional_checks.values() if ok)
+        breakdown = build_breakdown(combined_checks)
         base_threshold = max(1.0, get_mode_threshold(runtime["mode"]))
         score_threshold = max(1.0, base_threshold - 0.3) if fallback_mode else base_threshold
         required_ok = all(required_checks[name] for name in required_filters)
-        total_score = float(optional_score)
+        total_score = float(breakdown.score)
         logger.info(
             "DEBUG: RELAXED FILTERS | symbol=%s | trend=%s | structure=%s | optional_score=%s | "
             "threshold=%s | required_filters=%s | structure_optional_in_fallback=%s | required_ok=%s",
             symbol,
             trend_ok,
             structure_ok,
-            optional_score,
+            total_score,
             score_threshold,
             required_filters,
             fallback_mode,
             required_ok,
         )
 
-        passed = [name.upper() for name, ok in combined_checks.items() if ok]
-        failed = [name.upper() for name, ok in combined_checks.items() if not ok]
+        passed = list(breakdown.passed_filters)
+        failed = list(breakdown.failed_filters)
         rejection_reason = None
         if not required_ok:
             rejection_reason = "required filters failed"
@@ -317,7 +315,7 @@ class BacktestStrategyAdapter:
             "rr": float(rr),
             "confidence": float(max(0.0, min(1.0, total_score / max(5.0, score_threshold + 1.0)))),
             "score": float(total_score),
-            "max_score": float(max(5.0, score_threshold + 1.0)),
+            "max_score": float(breakdown.max_score or max(5.0, score_threshold + 1.0)),
             "passed_filters": passed,
             "failed_filters": failed,
             "regime": str(last.get("regime", "N/A")),
@@ -437,7 +435,7 @@ class BacktestStrategyAdapter:
                     except (TypeError, ValueError):
                         logger.warning("[SIGNAL ERROR] Invalid entry/TP/SL | symbol=%s | signal skipped", symbol)
                         return None
-                    score, max_score, confidence = self._strict_mode_scoring(runtime["mode"])
+                    score, max_score, confidence, strict_passed, strict_failed = self._strict_mode_scoring()
                     sl, tp = self._refine_risk_levels(
                         signal=signal,
                         entry=entry,
@@ -508,8 +506,8 @@ class BacktestStrategyAdapter:
                             "confidence": confidence,
                             "score": score,
                             "max_score": max_score,
-                            "passed_filters": [name.upper() for name in config.FILTER_WEIGHTS.keys()],
-                            "failed_filters": [],
+                            "passed_filters": strict_passed,
+                            "failed_filters": strict_failed,
                             "regime": signal.get("regime", "N/A"),
                             "timestamp": str(df.index[i]),
                             "tf": signal_tf,

@@ -1,22 +1,4 @@
 {
-  "RIVERUSDT": {
-    "symbol": "RIVERUSDT",
-    "direction": "LONG",
-    "entry": 16.06,
-    "tp": 17.404839999999997,
-    "sl": 15.0994,
-    "open_time": "2026-03-26T20:00:00+00:00",
-    "signal_id": "RIVERUSDT_30m_LONG_2026-03-26 20:00:00+00:00",
-    "confidence": 0.422535,
-    "score": 3.0,
-    "mode": "LIGHT",
-    "entry_source": "strict",
-    "is_reversal": false,
-    "passed_filters": [
-      "RSI",
-      "BODY"
-    ]
-  },
   "PIPPINUSDT": {
     "symbol": "PIPPINUSDT",
     "direction": "SHORT",
@@ -33,25 +15,6 @@
     "passed_filters": [
       "MACD",
       "BODY"
-    ]
-  },
-  "ZECUSDT": {
-    "symbol": "ZECUSDT",
-    "direction": "LONG",
-    "entry": 223.77,
-    "tp": 227.94325714285714,
-    "sl": 221.1617142857143,
-    "open_time": "2026-03-26T20:00:00+00:00",
-    "signal_id": "ZECUSDT_30m_LONG_2026-03-26 20:00:00+00:00",
-    "confidence": 0.647887,
-    "score": 4.6,
-    "mode": "LIGHT",
-    "entry_source": "strict",
-    "is_reversal": false,
-    "passed_filters": [
-      "MACD",
-      "BODY",
-      "VOLUME"
     ]
   },
   "ONDOUSDT": {
@@ -92,23 +55,85 @@
       "BODY"
     ]
   },
-  "SIRENUSDT": {
-    "symbol": "SIRENUSDT",
+  "DOGEUSDT": {
+    "symbol": "DOGEUSDT",
     "direction": "SHORT",
-    "entry": 1.65882,
-    "tp": 1.4203032000000002,
-    "sl": 1.8291891428571427,
-    "open_time": "2026-03-26T20:30:00+00:00",
-    "signal_id": "SIRENUSDT_30m_SHORT_2026-03-26 20:30:00+00:00",
-    "confidence": 0.549296,
-    "score": 3.9,
-    "mode": "LIGHT",
-    "entry_source": "strict",
+    "entry": 0.09148,
+    "tp": 0.08974557142857144,
+    "sl": 0.09244357142857143,
+    "open_time": "2026-03-31T16:00:00+00:00",
+    "signal_id": "DOGEUSDT_1h_SHORT_2026-03-31 16:00:00+00:00",
+    "confidence": 0.8400000000000001,
+    "score": 4.2,
+    "mode": "MAIN",
+    "entry_source": "relaxed",
     "is_reversal": false,
+    "pending_since": "2026-03-31 16:00:00+00:00",
+    "confirmation_reason": "no active signal",
+    "rejection_reason": null,
+    "opened_at": null,
+    "closed_at": null,
     "passed_filters": [
-      "SMA",
+      "TREND",
+      "RSI",
+      "VOLUME",
+      "ADX"
+    ],
+    "registry_id": "00577e29762d4c19bf0babb939afb413"
+  },
+  "HYPEUSDT": {
+    "symbol": "HYPEUSDT",
+    "direction": "SHORT",
+    "entry": 36.889,
+    "tp": 35.9431,
+    "sl": 37.414500000000004,
+    "open_time": "2026-03-31T16:00:00+00:00",
+    "signal_id": "HYPEUSDT_1h_SHORT_2026-03-31 16:00:00+00:00",
+    "confidence": 1.0,
+    "score": 5.2,
+    "mode": "MAIN",
+    "entry_source": "relaxed",
+    "is_reversal": false,
+    "pending_since": "2026-03-31 16:00:00+00:00",
+    "confirmation_reason": "no active signal",
+    "rejection_reason": null,
+    "opened_at": null,
+    "closed_at": null,
+    "passed_filters": [
+      "TREND",
+      "RSI",
+      "VOLUME",
+      "ADX",
+      "DI"
+    ],
+    "registry_id": "ce573ef672b84b6b968d2da71de7e282"
+  },
+  "XAUTUSDT": {
+    "symbol": "XAUTUSDT",
+    "direction": "LONG",
+    "entry": 4618.1,
+    "tp": 4667.87,
+    "sl": 4590.450000000001,
+    "open_time": "2026-03-31T16:00:00+00:00",
+    "signal_id": "XAUTUSDT_1h_LONG_2026-03-31 16:00:00+00:00",
+    "confidence": 1.0,
+    "score": 6.6,
+    "mode": "MAIN",
+    "entry_source": "relaxed",
+    "is_reversal": false,
+    "pending_since": "2026-03-31 16:00:00+00:00",
+    "confirmation_reason": "no active signal",
+    "rejection_reason": null,
+    "opened_at": null,
+    "closed_at": null,
+    "passed_filters": [
+      "TREND",
+      "STRUCTURE",
       "MACD",
-      "BODY"
-    ]
+      "VOLUME",
+      "ADX",
+      "DI"
+    ],
+    "registry_id": "b9de1d5406594539908bd0ca875672f2"
   }
 }

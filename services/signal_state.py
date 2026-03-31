@@ -48,6 +48,7 @@ class SignalStateService:
     failed_signals: dict[str, str] = field(default_factory=dict)
     last_reversal_at: dict[str, str] = field(default_factory=dict)
     _lock: threading.RLock = field(default_factory=threading.RLock, init=False, repr=False)
+    _terminal_statuses: tuple[str, ...] = field(default=("CLOSED", "REJECTED"), init=False, repr=False)
 
     def load(self) -> None:
         with self._lock:
@@ -193,6 +194,31 @@ class SignalStateService:
         symbol = str(signal.get("symbol") or "").strip()
         if not symbol:
             return
+
+        timestamp = str(signal.get("timestamp") or _utc_now().isoformat())
+        existing = self.active_signals.get(symbol) or {}
+        normalized_status = str(status or "OPEN").upper()
+        lifecycle = {
+            "pending_since": existing.get("pending_since"),
+            "confirmation_reason": existing.get("confirmation_reason"),
+            "rejection_reason": existing.get("rejection_reason"),
+            "opened_at": existing.get("opened_at"),
+            "closed_at": existing.get("closed_at"),
+        }
+        if normalized_status == "PENDING":
+            lifecycle["pending_since"] = lifecycle["pending_since"] or timestamp
+        elif normalized_status == "CONFIRMED":
+            lifecycle["confirmation_reason"] = str(signal.get("confirmation_reason") or existing.get("confirmation_reason") or "state_confirmed")
+            lifecycle["rejection_reason"] = None
+        elif normalized_status == "REJECTED":
+            lifecycle["rejection_reason"] = str(signal.get("rejection_reason") or "state_rejected")
+            lifecycle["closed_at"] = timestamp
+        elif normalized_status == "OPEN":
+            lifecycle["opened_at"] = lifecycle["opened_at"] or timestamp
+            lifecycle["rejection_reason"] = None
+        elif normalized_status == "CLOSED":
+            lifecycle["closed_at"] = timestamp
+
         with self._lock:
             self.active_signals[symbol] = {
                 "direction": signal.get("direction"),
@@ -201,6 +227,32 @@ class SignalStateService:
                 "tp": float(signal.get("tp") or 0.0),
                 "score": float(signal.get("score") or 0.0),
                 "confidence": float(signal.get("confidence") or 0.0),
-                "status": status,
-                "timestamp": str(signal.get("timestamp") or _utc_now().isoformat()),
+                "status": normalized_status,
+                "timestamp": timestamp,
+                **lifecycle,
             }
+
+    def transition_signal(self, symbol: str, status: str, reason: str | None = None, timestamp: str | None = None) -> None:
+        normalized_symbol = str(symbol or "").strip()
+        if not normalized_symbol:
+            return
+        ts = str(timestamp or _utc_now().isoformat())
+        target_status = str(status or "").upper()
+        with self._lock:
+            current = dict(self.active_signals.get(normalized_symbol) or {})
+            if not current:
+                return
+            current["status"] = target_status
+            current["timestamp"] = ts
+            if target_status == "CONFIRMED":
+                current["confirmation_reason"] = reason or current.get("confirmation_reason") or "state_confirmed"
+                current["rejection_reason"] = None
+            elif target_status == "REJECTED":
+                current["rejection_reason"] = reason or current.get("rejection_reason") or "state_rejected"
+                current["closed_at"] = ts
+            elif target_status == "OPEN":
+                current["opened_at"] = current.get("opened_at") or ts
+                current["rejection_reason"] = None
+            elif target_status == "CLOSED":
+                current["closed_at"] = ts
+            self.active_signals[normalized_symbol] = current
