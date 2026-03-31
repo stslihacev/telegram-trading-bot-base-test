@@ -62031,3 +62031,569 @@ Fingerprint: 3014186e6db6640f
 2026-03-31 21:46:58,261 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=CRVUSDT mode=LIGHT entry_source=strict score=3.4 conf=0.478873 reason=global open trades limit reached (6/6)
 2026-03-31 21:46:58,262 - crypto_bot - INFO - ⏳ Sleeping for 180 seconds
 2026-03-31 21:49:20,942 - crypto_bot - INFO - 🛑 Остановка по KeyboardInterrupt
+2026-03-31 22:15:54,400 - crypto_bot - INFO - 🚀 Starting bot...
+2026-03-31 22:15:54,400 - crypto_bot - WARNING - TELEGRAM_TOKEN не задан — бот запустится в режиме scanner + GUI без Telegram polling
+2026-03-31 22:15:54,400 - crypto_bot - INFO - [ANALYTICS INIT] trade tracking enabled
+2026-03-31 22:15:54,401 - crypto_bot - INFO - [PERSISTENCE] loaded trades: 6
+2026-03-31 22:15:54,406 - crypto_bot - INFO - [MAIN] scanner initialized | mode=MAIN | timeframe=1h | candle_limit=220 | execution_tfs=4h, 1h, 30m, 15m
+2026-03-31 22:15:54,406 - crypto_bot - INFO - DEBUG: SCANNER STRATEGY CLASS | class=BacktestStrategyAdapter
+2026-03-31 22:15:54,436 - crypto_bot - INFO - 🖥️ Signal GUI thread started
+2026-03-31 22:15:54,437 - crypto_bot - INFO - ✅ Telegram отключён: инициализированы scanner + GUI режим
+2026-03-31 22:15:54,440 - crypto_bot - INFO - 📡 Starting polling...
+2026-03-31 22:15:54,441 - crypto_bot - INFO - 📡 Telegram polling disabled, running standalone scan loop
+2026-03-31 22:15:54,442 - crypto_bot - INFO - 🚀 SCAN LOOP STARTED
+2026-03-31 22:15:54,443 - crypto_bot - INFO - [RECONCILE] no issues found
+2026-03-31 22:15:54,443 - crypto_bot - INFO - [STARTUP] reconciling active trades: 6
+2026-03-31 22:15:59,370 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-31 22:16:03,303 - crypto_bot - INFO - [MARKET] get_top_usdt_pairs prepared 547 liquid swap symbols
+2026-03-31 22:16:03,303 - crypto_bot - INFO - 📈 Top-50 symbols fetched: 50
+2026-03-31 22:16:03,303 - crypto_bot - INFO - 🔥 Active symbols after filter: 38 / 50
+2026-03-31 22:16:03,303 - crypto_bot - INFO - 🔍 Scanning BTC/USDT:USDT
+2026-03-31 22:16:04,013 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=BTCUSDT | mode=MAIN
+2026-03-31 22:16:04,031 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:16:04,033 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=BTCUSDT | trend=True | structure=False | optional_score=3.2 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:16:04,034 - crypto_bot - INFO - BTCUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=3.2 rejection_reason=optional score below threshold (3.20 < 3.90)
+2026-03-31 22:16:04,034 - crypto_bot - INFO - ❌ No signal: BTCUSDT | mode=MAIN | score=3.2 | passed_filters=['TREND', 'RSI', 'VOLUME'] | failed_filters=['STRUCTURE', 'MACD', 'ADX', 'DI'] | rejection_reason=optional score below threshold (3.20 < 3.90)
+2026-03-31 22:16:04,035 - crypto_bot - INFO - 🔍 Scanning ETH/USDT:USDT
+2026-03-31 22:16:04,252 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=ETHUSDT | mode=MAIN
+2026-03-31 22:16:04,268 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:16:04,269 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=ETHUSDT | trend=False | structure=False | optional_score=3.2 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=False
+2026-03-31 22:16:04,270 - crypto_bot - INFO - ETHUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': False, 'structure': False} score=3.2 rejection_reason=required filters failed
+2026-03-31 22:16:04,270 - crypto_bot - INFO - ❌ No signal: ETHUSDT | mode=MAIN | score=3.2 | passed_filters=['RSI', 'VOLUME', 'ADX'] | failed_filters=['TREND', 'STRUCTURE', 'MACD', 'DI'] | rejection_reason=required filters failed
+2026-03-31 22:16:04,270 - crypto_bot - INFO - 🔍 Scanning XRP/USDT:USDT
+2026-03-31 22:16:04,654 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=XRPUSDT | mode=MAIN
+2026-03-31 22:16:04,673 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:16:04,674 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=XRPUSDT | trend=True | structure=False | optional_score=4.2 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:16:04,674 - crypto_bot - INFO - XRPUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=4.2 rejection_reason=None
+2026-03-31 22:16:04,674 - crypto_bot - INFO - ✅ Signal generated: XRPUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=4.2 | entry_source=relaxed | passed_filters=['TREND', 'RSI', 'VOLUME', 'ADX'] | failed_filters=['STRUCTURE', 'MACD', 'DI']
+2026-03-31 22:16:04,674 - crypto_bot - INFO - 🔍 Scanning DOGE/USDT:USDT
+2026-03-31 22:16:04,892 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=DOGEUSDT | mode=MAIN
+2026-03-31 22:16:04,908 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:16:04,909 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=DOGEUSDT | trend=True | structure=False | optional_score=4.2 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:16:04,910 - crypto_bot - INFO - DOGEUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=4.2 rejection_reason=None
+2026-03-31 22:16:04,910 - crypto_bot - INFO - ✅ Signal generated: DOGEUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=4.2 | entry_source=relaxed | passed_filters=['TREND', 'RSI', 'VOLUME', 'ADX'] | failed_filters=['STRUCTURE', 'MACD', 'DI']
+2026-03-31 22:16:04,910 - crypto_bot - INFO - 🔍 Scanning XAUT/USDT:USDT
+2026-03-31 22:16:05,126 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=XAUTUSDT | mode=MAIN
+2026-03-31 22:16:05,144 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:16:05,145 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=XAUTUSDT | trend=True | structure=True | optional_score=6.6 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:16:05,146 - crypto_bot - INFO - XAUTUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': True} score=6.6 rejection_reason=None
+2026-03-31 22:16:05,146 - crypto_bot - INFO - ✅ Signal generated: XAUTUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=6.6 | entry_source=relaxed | passed_filters=['TREND', 'STRUCTURE', 'MACD', 'VOLUME', 'ADX', 'DI'] | failed_filters=['RSI']
+2026-03-31 22:16:05,146 - crypto_bot - INFO - 🔍 Scanning ZEC/USDT:USDT
+2026-03-31 22:16:05,523 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=ZECUSDT | mode=MAIN
+2026-03-31 22:16:05,542 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:16:05,543 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=ZECUSDT | trend=True | structure=False | optional_score=5.6 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:16:05,544 - crypto_bot - INFO - ZECUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=5.6 rejection_reason=None
+2026-03-31 22:16:05,545 - crypto_bot - INFO - ✅ Signal generated: ZECUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=5.6 | entry_source=relaxed | passed_filters=['TREND', 'MACD', 'VOLUME', 'ADX', 'DI'] | failed_filters=['STRUCTURE', 'RSI']
+2026-03-31 22:16:05,545 - crypto_bot - INFO - 🔍 Scanning RIVER/USDT:USDT
+2026-03-31 22:16:05,922 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=RIVERUSDT | mode=MAIN
+2026-03-31 22:16:05,937 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:16:05,939 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=RIVERUSDT | trend=True | structure=False | optional_score=4.4 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:16:05,939 - crypto_bot - INFO - RIVERUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=4.4 rejection_reason=None
+2026-03-31 22:16:05,940 - crypto_bot - INFO - ✅ Signal generated: RIVERUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=4.4 | entry_source=relaxed | passed_filters=['TREND', 'RSI', 'MACD', 'ADX'] | failed_filters=['STRUCTURE', 'VOLUME', 'DI']
+2026-03-31 22:16:05,940 - crypto_bot - INFO - 🔍 Scanning ADA/USDT:USDT
+2026-03-31 22:16:06,322 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=ADAUSDT | mode=MAIN
+2026-03-31 22:16:06,339 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:16:06,340 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=ADAUSDT | trend=True | structure=False | optional_score=5.6 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:16:06,340 - crypto_bot - INFO - ADAUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=5.6 rejection_reason=None
+2026-03-31 22:16:06,341 - crypto_bot - INFO - ✅ Signal generated: ADAUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=5.6 | entry_source=relaxed | passed_filters=['TREND', 'MACD', 'VOLUME', 'ADX', 'DI'] | failed_filters=['STRUCTURE', 'RSI']
+2026-03-31 22:16:06,341 - crypto_bot - INFO - 🔍 Scanning SIREN/USDT:USDT
+2026-03-31 22:16:06,719 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=SIRENUSDT | mode=MAIN
+2026-03-31 22:16:06,738 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=SIRENUSDT | signal skipped
+2026-03-31 22:16:06,738 - crypto_bot - INFO - ❌ No signal: SIRENUSDT | mode=MAIN | score=0.0 | passed_filters=[] | failed_filters=['PENDING'] | rejection_reason=evaluation_started
+2026-03-31 22:16:06,738 - crypto_bot - INFO - 🔍 Scanning KERNEL/USDT:USDT
+2026-03-31 22:16:07,118 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=KERNELUSDT | mode=MAIN
+2026-03-31 22:16:07,133 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:16:07,134 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=KERNELUSDT | trend=True | structure=False | optional_score=5.6 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:16:07,135 - crypto_bot - INFO - KERNELUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=5.6 rejection_reason=None
+2026-03-31 22:16:07,135 - crypto_bot - INFO - ✅ Signal generated: KERNELUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=5.6 | entry_source=relaxed | passed_filters=['TREND', 'MACD', 'VOLUME', 'ADX', 'DI'] | failed_filters=['STRUCTURE', 'RSI']
+2026-03-31 22:16:07,135 - crypto_bot - INFO - 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-31 22:16:07,351 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=FARTCOINUSDT | mode=MAIN
+2026-03-31 22:16:07,368 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:16:07,369 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=FARTCOINUSDT | trend=True | structure=False | optional_score=5.2 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:16:07,369 - crypto_bot - INFO - FARTCOINUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=5.2 rejection_reason=None
+2026-03-31 22:16:07,369 - crypto_bot - INFO - ✅ Signal generated: FARTCOINUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=5.2 | entry_source=relaxed | passed_filters=['TREND', 'RSI', 'VOLUME', 'ADX', 'DI'] | failed_filters=['STRUCTURE', 'MACD']
+2026-03-31 22:16:07,370 - crypto_bot - INFO - 🔍 Scanning ONT/USDT:USDT
+2026-03-31 22:16:07,587 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=ONTUSDT | mode=MAIN
+2026-03-31 22:16:07,606 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:16:07,607 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=ONTUSDT | trend=True | structure=False | optional_score=3.0 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:16:07,607 - crypto_bot - INFO - ONTUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=3.0 rejection_reason=optional score below threshold (3.00 < 3.90)
+2026-03-31 22:16:07,608 - crypto_bot - INFO - ❌ No signal: ONTUSDT | mode=MAIN | score=3.0 | passed_filters=['TREND', 'RSI', 'ADX'] | failed_filters=['STRUCTURE', 'MACD', 'VOLUME', 'DI'] | rejection_reason=optional score below threshold (3.00 < 3.90)
+2026-03-31 22:16:07,608 - crypto_bot - INFO - 🔍 Scanning 1000PEPE/USDT:USDT
+2026-03-31 22:16:07,825 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=1000PEPEUSDT | mode=MAIN
+2026-03-31 22:16:07,844 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:16:07,845 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=1000PEPEUSDT | trend=False | structure=False | optional_score=2.2 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=False
+2026-03-31 22:16:07,845 - crypto_bot - INFO - 1000PEPEUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': False, 'structure': False} score=2.2 rejection_reason=required filters failed
+2026-03-31 22:16:07,845 - crypto_bot - INFO - ❌ No signal: 1000PEPEUSDT | mode=MAIN | score=2.2 | passed_filters=['RSI', 'VOLUME'] | failed_filters=['TREND', 'STRUCTURE', 'MACD', 'ADX', 'DI'] | rejection_reason=required filters failed
+2026-03-31 22:16:07,846 - crypto_bot - INFO - 🔍 Scanning LINK/USDT:USDT
+2026-03-31 22:16:08,063 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=LINKUSDT | mode=MAIN
+2026-03-31 22:16:08,081 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:16:08,082 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=LINKUSDT | trend=False | structure=False | optional_score=2.2 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=False
+2026-03-31 22:16:08,082 - crypto_bot - INFO - LINKUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': False, 'structure': False} score=2.2 rejection_reason=required filters failed
+2026-03-31 22:16:08,082 - crypto_bot - INFO - ❌ No signal: LINKUSDT | mode=MAIN | score=2.2 | passed_filters=['RSI', 'VOLUME'] | failed_filters=['TREND', 'STRUCTURE', 'MACD', 'ADX', 'DI'] | rejection_reason=required filters failed
+2026-03-31 22:16:08,083 - crypto_bot - INFO - 🔍 Scanning SUI/USDT:USDT
+2026-03-31 22:16:08,297 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=SUIUSDT | mode=MAIN
+2026-03-31 22:16:08,316 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:16:08,317 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=SUIUSDT | trend=True | structure=False | optional_score=3.2 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:16:08,318 - crypto_bot - INFO - SUIUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=3.2 rejection_reason=optional score below threshold (3.20 < 3.90)
+2026-03-31 22:16:08,318 - crypto_bot - INFO - ❌ No signal: SUIUSDT | mode=MAIN | score=3.2 | passed_filters=['TREND', 'RSI', 'VOLUME'] | failed_filters=['STRUCTURE', 'MACD', 'ADX', 'DI'] | rejection_reason=optional score below threshold (3.20 < 3.90)
+2026-03-31 22:16:08,318 - crypto_bot - INFO - 🔍 Scanning ENA/USDT:USDT
+2026-03-31 22:16:08,697 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=ENAUSDT | mode=MAIN
+2026-03-31 22:16:08,712 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:16:08,714 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=ENAUSDT | trend=True | structure=False | optional_score=6.6 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:16:08,714 - crypto_bot - INFO - ENAUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=6.6 rejection_reason=None
+2026-03-31 22:16:08,714 - crypto_bot - INFO - ✅ Signal generated: ENAUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=6.6 | entry_source=relaxed | passed_filters=['TREND', 'RSI', 'MACD', 'VOLUME', 'ADX', 'DI'] | failed_filters=['STRUCTURE']
+2026-03-31 22:16:08,714 - crypto_bot - INFO - 🔍 Scanning PIPPIN/USDT:USDT
+2026-03-31 22:16:08,931 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=PIPPINUSDT | mode=MAIN
+2026-03-31 22:16:08,948 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:16:08,949 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=PIPPINUSDT | trend=True | structure=False | optional_score=4.4 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:16:08,950 - crypto_bot - INFO - PIPPINUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=4.4 rejection_reason=None
+2026-03-31 22:16:08,950 - crypto_bot - INFO - ✅ Signal generated: PIPPINUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=4.4 | entry_source=relaxed | passed_filters=['TREND', 'MACD', 'ADX', 'DI'] | failed_filters=['STRUCTURE', 'RSI', 'VOLUME']
+2026-03-31 22:16:08,950 - crypto_bot - INFO - 🔍 Scanning DOT/USDT:USDT
+2026-03-31 22:16:09,166 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=DOTUSDT | mode=MAIN
+2026-03-31 22:16:09,182 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:16:09,183 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=DOTUSDT | trend=True | structure=False | optional_score=4.2 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:16:09,184 - crypto_bot - INFO - DOTUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=4.2 rejection_reason=None
+2026-03-31 22:16:09,184 - crypto_bot - INFO - ✅ Signal generated: DOTUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=4.2 | entry_source=relaxed | passed_filters=['TREND', 'RSI', 'VOLUME', 'ADX'] | failed_filters=['STRUCTURE', 'MACD', 'DI']
+2026-03-31 22:16:09,184 - crypto_bot - INFO - 🔍 Scanning BNB/USDT:USDT
+2026-03-31 22:16:09,566 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=BNBUSDT | mode=MAIN
+2026-03-31 22:16:09,583 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:16:09,585 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=BNBUSDT | trend=True | structure=False | optional_score=4.2 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:16:09,586 - crypto_bot - INFO - BNBUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=4.2 rejection_reason=None
+2026-03-31 22:16:09,586 - crypto_bot - INFO - ✅ Signal generated: BNBUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=4.2 | entry_source=relaxed | passed_filters=['TREND', 'RSI', 'VOLUME', 'ADX'] | failed_filters=['STRUCTURE', 'MACD', 'DI']
+2026-03-31 22:16:09,586 - crypto_bot - INFO - 🔍 Scanning NEAR/USDT:USDT
+2026-03-31 22:16:09,806 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=NEARUSDT | mode=MAIN
+2026-03-31 22:16:09,823 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:16:09,825 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=NEARUSDT | trend=True | structure=False | optional_score=4.2 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:16:09,825 - crypto_bot - INFO - NEARUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=4.2 rejection_reason=None
+2026-03-31 22:16:09,825 - crypto_bot - INFO - ✅ Signal generated: NEARUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=4.2 | entry_source=relaxed | passed_filters=['TREND', 'RSI', 'VOLUME', 'ADX'] | failed_filters=['STRUCTURE', 'MACD', 'DI']
+2026-03-31 22:16:09,825 - crypto_bot - INFO - 🔍 Scanning NOM/USDT:USDT
+2026-03-31 22:16:10,040 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=NOMUSDT | mode=MAIN
+2026-03-31 22:16:10,057 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:16:10,058 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=NOMUSDT | trend=True | structure=False | optional_score=5.6 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:16:10,058 - crypto_bot - INFO - NOMUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=5.6 rejection_reason=None
+2026-03-31 22:16:10,059 - crypto_bot - INFO - ✅ Signal generated: NOMUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=5.6 | entry_source=relaxed | passed_filters=['TREND', 'MACD', 'VOLUME', 'ADX', 'DI'] | failed_filters=['STRUCTURE', 'RSI']
+2026-03-31 22:16:10,059 - crypto_bot - INFO - 🔍 Scanning BCH/USDT:USDT
+2026-03-31 22:16:10,438 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=BCHUSDT | mode=MAIN
+2026-03-31 22:16:10,456 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:16:10,457 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=BCHUSDT | trend=False | structure=False | optional_score=3.2 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=False
+2026-03-31 22:16:10,458 - crypto_bot - INFO - BCHUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': False, 'structure': False} score=3.2 rejection_reason=required filters failed
+2026-03-31 22:16:10,458 - crypto_bot - INFO - ❌ No signal: BCHUSDT | mode=MAIN | score=3.2 | passed_filters=['RSI', 'VOLUME', 'ADX'] | failed_filters=['TREND', 'STRUCTURE', 'MACD', 'DI'] | rejection_reason=required filters failed
+2026-03-31 22:16:10,458 - crypto_bot - INFO - 🔍 Scanning XAG/USDT:USDT
+2026-03-31 22:16:10,674 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=XAGUSDT | mode=MAIN
+2026-03-31 22:16:10,690 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:16:10,691 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=XAGUSDT | trend=True | structure=False | optional_score=4.4 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:16:10,692 - crypto_bot - INFO - XAGUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=4.4 rejection_reason=None
+2026-03-31 22:16:10,692 - crypto_bot - INFO - ✅ Signal generated: XAGUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=4.4 | entry_source=relaxed | passed_filters=['TREND', 'MACD', 'ADX', 'DI'] | failed_filters=['STRUCTURE', 'RSI', 'VOLUME']
+2026-03-31 22:16:10,692 - crypto_bot - INFO - 🔍 Scanning AAVE/USDT:USDT
+2026-03-31 22:16:10,908 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=AAVEUSDT | mode=MAIN
+2026-03-31 22:16:10,925 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:16:10,926 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=AAVEUSDT | trend=True | structure=False | optional_score=4.2 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:16:10,926 - crypto_bot - INFO - AAVEUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=4.2 rejection_reason=None
+2026-03-31 22:16:10,927 - crypto_bot - INFO - ✅ Signal generated: AAVEUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=4.2 | entry_source=relaxed | passed_filters=['TREND', 'RSI', 'VOLUME', 'DI'] | failed_filters=['STRUCTURE', 'MACD', 'ADX']
+2026-03-31 22:16:10,927 - crypto_bot - INFO - 🔍 Scanning AVAX/USDT:USDT
+2026-03-31 22:16:11,144 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=AVAXUSDT | mode=MAIN
+2026-03-31 22:16:11,162 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:16:11,163 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=AVAXUSDT | trend=True | structure=False | optional_score=4.6 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:16:11,164 - crypto_bot - INFO - AVAXUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=4.6 rejection_reason=None
+2026-03-31 22:16:11,164 - crypto_bot - INFO - ✅ Signal generated: AVAXUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=4.6 | entry_source=relaxed | passed_filters=['TREND', 'RSI', 'MACD', 'VOLUME'] | failed_filters=['STRUCTURE', 'ADX', 'DI']
+2026-03-31 22:16:11,164 - crypto_bot - INFO - 🔍 Scanning CL/USDT:USDT
+2026-03-31 22:16:11,380 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=CLUSDT | mode=MAIN
+2026-03-31 22:16:11,380 - crypto_bot - INFO - ❌ No signal: CLUSDT | mode=MAIN | score=0.0 | passed_filters=[] | failed_filters=['DATA'] | rejection_reason=not enough candles (179 < 209 required, limit=220)
+2026-03-31 22:16:11,380 - crypto_bot - INFO - 🔍 Scanning EDGE/USDT:USDT
+2026-03-31 22:16:11,598 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=EDGEUSDT | mode=MAIN
+2026-03-31 22:16:11,616 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:16:11,617 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=EDGEUSDT | trend=False | structure=False | optional_score=2.0 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=False
+2026-03-31 22:16:11,617 - crypto_bot - INFO - EDGEUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': False, 'structure': False} score=2.0 rejection_reason=required filters failed
+2026-03-31 22:16:11,617 - crypto_bot - INFO - ❌ No signal: EDGEUSDT | mode=MAIN | score=2.0 | passed_filters=['RSI', 'ADX'] | failed_filters=['TREND', 'STRUCTURE', 'MACD', 'VOLUME', 'DI'] | rejection_reason=required filters failed
+2026-03-31 22:16:11,618 - crypto_bot - INFO - 🔍 Scanning TRUMP/USDT:USDT
+2026-03-31 22:16:11,833 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=TRUMPUSDT | mode=MAIN
+2026-03-31 22:16:11,851 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:16:11,852 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=TRUMPUSDT | trend=True | structure=False | optional_score=5.6 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:16:11,852 - crypto_bot - INFO - TRUMPUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=5.6 rejection_reason=None
+2026-03-31 22:16:11,852 - crypto_bot - INFO - ✅ Signal generated: TRUMPUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=5.6 | entry_source=relaxed | passed_filters=['TREND', 'RSI', 'MACD', 'VOLUME', 'ADX'] | failed_filters=['STRUCTURE', 'DI']
+2026-03-31 22:16:11,853 - crypto_bot - INFO - 🔍 Scanning XAU/USDT:USDT
+2026-03-31 22:16:12,069 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=XAUUSDT | mode=MAIN
+2026-03-31 22:16:12,087 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:16:12,088 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=XAUUSDT | trend=True | structure=True | optional_score=6.6 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:16:12,088 - crypto_bot - INFO - XAUUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': True} score=6.6 rejection_reason=None
+2026-03-31 22:16:12,088 - crypto_bot - INFO - ✅ Signal generated: XAUUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=6.6 | entry_source=relaxed | passed_filters=['TREND', 'STRUCTURE', 'MACD', 'VOLUME', 'ADX', 'DI'] | failed_filters=['RSI']
+2026-03-31 22:16:12,088 - crypto_bot - INFO - 🔍 Scanning LTC/USDT:USDT
+2026-03-31 22:16:12,466 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=LTCUSDT | mode=MAIN
+2026-03-31 22:16:12,484 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:16:12,485 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=LTCUSDT | trend=True | structure=False | optional_score=3.2 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:16:12,485 - crypto_bot - INFO - LTCUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=3.2 rejection_reason=optional score below threshold (3.20 < 3.90)
+2026-03-31 22:16:12,485 - crypto_bot - INFO - ❌ No signal: LTCUSDT | mode=MAIN | score=3.2 | passed_filters=['TREND', 'RSI', 'VOLUME'] | failed_filters=['STRUCTURE', 'MACD', 'ADX', 'DI'] | rejection_reason=optional score below threshold (3.20 < 3.90)
+2026-03-31 22:16:12,485 - crypto_bot - INFO - 🔍 Scanning ZBT/USDT:USDT
+2026-03-31 22:16:12,702 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=ZBTUSDT | mode=MAIN
+2026-03-31 22:16:12,717 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:16:12,718 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=ZBTUSDT | trend=True | structure=False | optional_score=5.6 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:16:12,719 - crypto_bot - INFO - ZBTUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=5.6 rejection_reason=None
+2026-03-31 22:16:12,719 - crypto_bot - INFO - ✅ Signal generated: ZBTUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=5.6 | entry_source=relaxed | passed_filters=['TREND', 'MACD', 'VOLUME', 'ADX', 'DI'] | failed_filters=['STRUCTURE', 'RSI']
+2026-03-31 22:16:12,719 - crypto_bot - INFO - 🔍 Scanning WLD/USDT:USDT
+2026-03-31 22:16:13,108 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=WLDUSDT | mode=MAIN
+2026-03-31 22:16:13,125 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:16:13,126 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=WLDUSDT | trend=True | structure=False | optional_score=4.2 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:16:13,127 - crypto_bot - INFO - WLDUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=4.2 rejection_reason=None
+2026-03-31 22:16:13,127 - crypto_bot - INFO - ✅ Signal generated: WLDUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=4.2 | entry_source=relaxed | passed_filters=['TREND', 'RSI', 'VOLUME', 'ADX'] | failed_filters=['STRUCTURE', 'MACD', 'DI']
+2026-03-31 22:16:13,127 - crypto_bot - INFO - 🔍 Scanning PAXG/USDT:USDT
+2026-03-31 22:16:13,347 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=PAXGUSDT | mode=MAIN
+2026-03-31 22:16:13,365 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:16:13,366 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=PAXGUSDT | trend=True | structure=True | optional_score=6.6 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:16:13,367 - crypto_bot - INFO - PAXGUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': True} score=6.6 rejection_reason=None
+2026-03-31 22:16:13,367 - crypto_bot - INFO - ✅ Signal generated: PAXGUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=6.6 | entry_source=relaxed | passed_filters=['TREND', 'STRUCTURE', 'MACD', 'VOLUME', 'ADX', 'DI'] | failed_filters=['RSI']
+2026-03-31 22:16:13,367 - crypto_bot - INFO - 🔍 Scanning WIF/USDT:USDT
+2026-03-31 22:16:13,583 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=WIFUSDT | mode=MAIN
+2026-03-31 22:16:13,601 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:16:13,602 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=WIFUSDT | trend=False | structure=False | optional_score=2.2 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=False
+2026-03-31 22:16:13,602 - crypto_bot - INFO - WIFUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': False, 'structure': False} score=2.2 rejection_reason=required filters failed
+2026-03-31 22:16:13,603 - crypto_bot - INFO - ❌ No signal: WIFUSDT | mode=MAIN | score=2.2 | passed_filters=['RSI', 'VOLUME'] | failed_filters=['TREND', 'STRUCTURE', 'MACD', 'ADX', 'DI'] | rejection_reason=required filters failed
+2026-03-31 22:16:13,603 - crypto_bot - INFO - 🔍 Scanning GALA/USDT:USDT
+2026-03-31 22:16:13,819 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=GALAUSDT | mode=MAIN
+2026-03-31 22:16:13,837 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:16:13,838 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=GALAUSDT | trend=True | structure=False | optional_score=3.2 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:16:13,839 - crypto_bot - INFO - GALAUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=3.2 rejection_reason=optional score below threshold (3.20 < 3.90)
+2026-03-31 22:16:13,839 - crypto_bot - INFO - ❌ No signal: GALAUSDT | mode=MAIN | score=3.2 | passed_filters=['TREND', 'RSI', 'VOLUME'] | failed_filters=['STRUCTURE', 'MACD', 'ADX', 'DI'] | rejection_reason=optional score below threshold (3.20 < 3.90)
+2026-03-31 22:16:13,839 - crypto_bot - INFO - 🔍 Scanning ALGO/USDT:USDT
+2026-03-31 22:16:14,056 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=ALGOUSDT | mode=MAIN
+2026-03-31 22:16:14,073 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:16:14,074 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=ALGOUSDT | trend=True | structure=False | optional_score=5.6 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:16:14,074 - crypto_bot - INFO - ALGOUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=5.6 rejection_reason=None
+2026-03-31 22:16:14,074 - crypto_bot - INFO - ✅ Signal generated: ALGOUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=5.6 | entry_source=relaxed | passed_filters=['TREND', 'MACD', 'VOLUME', 'ADX', 'DI'] | failed_filters=['STRUCTURE', 'RSI']
+2026-03-31 22:16:14,075 - crypto_bot - INFO - 🔍 Scanning BEAT/USDT:USDT
+2026-03-31 22:16:14,290 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=BEATUSDT | mode=MAIN
+2026-03-31 22:16:14,308 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:16:14,309 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=BEATUSDT | trend=True | structure=False | optional_score=4.4 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:16:14,309 - crypto_bot - INFO - BEATUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=4.4 rejection_reason=None
+2026-03-31 22:16:14,309 - crypto_bot - INFO - ✅ Signal generated: BEATUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=4.4 | entry_source=relaxed | passed_filters=['TREND', 'MACD', 'ADX', 'DI'] | failed_filters=['STRUCTURE', 'RSI', 'VOLUME']
+2026-03-31 22:16:14,310 - crypto_bot - INFO - 🔍 Scanning CRV/USDT:USDT
+2026-03-31 22:16:14,526 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=CRVUSDT | mode=MAIN
+2026-03-31 22:16:14,543 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:16:14,545 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=CRVUSDT | trend=True | structure=False | optional_score=5.2 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:16:14,545 - crypto_bot - INFO - CRVUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=5.2 rejection_reason=None
+2026-03-31 22:16:14,545 - crypto_bot - INFO - ✅ Signal generated: CRVUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=5.2 | entry_source=relaxed | passed_filters=['TREND', 'RSI', 'VOLUME', 'ADX', 'DI'] | failed_filters=['STRUCTURE', 'MACD']
+2026-03-31 22:16:14,545 - crypto_bot - INFO - 📊 Total signals after scan: 25
+2026-03-31 22:16:14,546 - crypto_bot - INFO - 📊 Signals found: 25
+2026-03-31 22:16:14,546 - crypto_bot - INFO - SIGNAL_DECISION: symbol=XRPUSDT mode=MAIN status=REJECTED score=4.20 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'RSI', 'VOLUME', 'ADX'] failed_filters=['STRUCTURE', 'MACD', 'DI'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:16:14,547 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=XRPUSDT mode=MAIN entry_source=relaxed score=4.2 conf=0.8400000000000001 reason=global open trades limit reached (6/6)
+2026-03-31 22:16:14,547 - crypto_bot - INFO - SIGNAL_DECISION: symbol=DOGEUSDT mode=MAIN status=REJECTED score=4.20 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'RSI', 'VOLUME', 'ADX'] failed_filters=['STRUCTURE', 'MACD', 'DI'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:16:14,547 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=DOGEUSDT mode=MAIN entry_source=relaxed score=4.2 conf=0.8400000000000001 reason=global open trades limit reached (6/6)
+2026-03-31 22:16:14,548 - crypto_bot - INFO - SIGNAL_DECISION: symbol=XAUTUSDT mode=MAIN status=REJECTED score=6.60 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'STRUCTURE', 'MACD', 'VOLUME', 'ADX', 'DI'] failed_filters=['RSI'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:16:14,548 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=XAUTUSDT mode=MAIN entry_source=relaxed score=6.6 conf=1.0 reason=global open trades limit reached (6/6)
+2026-03-31 22:16:14,548 - crypto_bot - INFO - SIGNAL_DECISION: symbol=ZECUSDT mode=MAIN status=REJECTED score=5.60 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'MACD', 'VOLUME', 'ADX', 'DI'] failed_filters=['STRUCTURE', 'RSI'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:16:14,548 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=ZECUSDT mode=MAIN entry_source=relaxed score=5.6 conf=1.0 reason=global open trades limit reached (6/6)
+2026-03-31 22:16:14,548 - crypto_bot - INFO - SIGNAL_DECISION: symbol=RIVERUSDT mode=MAIN status=REJECTED score=4.40 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'RSI', 'MACD', 'ADX'] failed_filters=['STRUCTURE', 'VOLUME', 'DI'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:16:14,549 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=RIVERUSDT mode=MAIN entry_source=relaxed score=4.4 conf=0.8800000000000001 reason=global open trades limit reached (6/6)
+2026-03-31 22:16:14,549 - crypto_bot - INFO - SIGNAL_DECISION: symbol=ADAUSDT mode=MAIN status=REJECTED score=5.60 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'MACD', 'VOLUME', 'ADX', 'DI'] failed_filters=['STRUCTURE', 'RSI'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:16:14,549 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=ADAUSDT mode=MAIN entry_source=relaxed score=5.6 conf=1.0 reason=global open trades limit reached (6/6)
+2026-03-31 22:16:14,549 - crypto_bot - INFO - SIGNAL_DECISION: symbol=KERNELUSDT mode=MAIN status=REJECTED score=5.60 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'MACD', 'VOLUME', 'ADX', 'DI'] failed_filters=['STRUCTURE', 'RSI'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:16:14,549 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=KERNELUSDT mode=MAIN entry_source=relaxed score=5.6 conf=1.0 reason=global open trades limit reached (6/6)
+2026-03-31 22:16:14,549 - crypto_bot - INFO - SIGNAL_DECISION: symbol=FARTCOINUSDT mode=MAIN status=REJECTED score=5.20 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'RSI', 'VOLUME', 'ADX', 'DI'] failed_filters=['STRUCTURE', 'MACD'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:16:14,549 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=FARTCOINUSDT mode=MAIN entry_source=relaxed score=5.2 conf=1.0 reason=global open trades limit reached (6/6)
+2026-03-31 22:16:14,550 - crypto_bot - INFO - SIGNAL_DECISION: symbol=ENAUSDT mode=MAIN status=REJECTED score=6.60 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'RSI', 'MACD', 'VOLUME', 'ADX', 'DI'] failed_filters=['STRUCTURE'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:16:14,550 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=ENAUSDT mode=MAIN entry_source=relaxed score=6.6 conf=1.0 reason=global open trades limit reached (6/6)
+2026-03-31 22:16:14,550 - crypto_bot - INFO - SIGNAL_DECISION: symbol=PIPPINUSDT mode=MAIN status=REJECTED score=4.40 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'MACD', 'ADX', 'DI'] failed_filters=['STRUCTURE', 'RSI', 'VOLUME'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:16:14,550 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=PIPPINUSDT mode=MAIN entry_source=relaxed score=4.4 conf=0.8800000000000001 reason=global open trades limit reached (6/6)
+2026-03-31 22:16:14,550 - crypto_bot - INFO - SIGNAL_DECISION: symbol=DOTUSDT mode=MAIN status=REJECTED score=4.20 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'RSI', 'VOLUME', 'ADX'] failed_filters=['STRUCTURE', 'MACD', 'DI'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:16:14,550 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=DOTUSDT mode=MAIN entry_source=relaxed score=4.2 conf=0.8400000000000001 reason=global open trades limit reached (6/6)
+2026-03-31 22:16:14,551 - crypto_bot - INFO - SIGNAL_DECISION: symbol=BNBUSDT mode=MAIN status=REJECTED score=4.20 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'RSI', 'VOLUME', 'ADX'] failed_filters=['STRUCTURE', 'MACD', 'DI'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:16:14,551 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=BNBUSDT mode=MAIN entry_source=relaxed score=4.2 conf=0.8400000000000001 reason=global open trades limit reached (6/6)
+2026-03-31 22:16:14,551 - crypto_bot - INFO - SIGNAL_DECISION: symbol=NEARUSDT mode=MAIN status=REJECTED score=4.20 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'RSI', 'VOLUME', 'ADX'] failed_filters=['STRUCTURE', 'MACD', 'DI'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:16:14,551 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=NEARUSDT mode=MAIN entry_source=relaxed score=4.2 conf=0.8400000000000001 reason=global open trades limit reached (6/6)
+2026-03-31 22:16:14,551 - crypto_bot - INFO - SIGNAL_DECISION: symbol=NOMUSDT mode=MAIN status=REJECTED score=5.60 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'MACD', 'VOLUME', 'ADX', 'DI'] failed_filters=['STRUCTURE', 'RSI'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:16:14,551 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=NOMUSDT mode=MAIN entry_source=relaxed score=5.6 conf=1.0 reason=global open trades limit reached (6/6)
+2026-03-31 22:16:14,551 - crypto_bot - INFO - SIGNAL_DECISION: symbol=XAGUSDT mode=MAIN status=REJECTED score=4.40 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'MACD', 'ADX', 'DI'] failed_filters=['STRUCTURE', 'RSI', 'VOLUME'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:16:14,552 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=XAGUSDT mode=MAIN entry_source=relaxed score=4.4 conf=0.8800000000000001 reason=global open trades limit reached (6/6)
+2026-03-31 22:16:14,552 - crypto_bot - INFO - SIGNAL_DECISION: symbol=AAVEUSDT mode=MAIN status=REJECTED score=4.20 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'RSI', 'VOLUME', 'DI'] failed_filters=['STRUCTURE', 'MACD', 'ADX'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:16:14,552 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=AAVEUSDT mode=MAIN entry_source=relaxed score=4.2 conf=0.8400000000000001 reason=global open trades limit reached (6/6)
+2026-03-31 22:16:14,552 - crypto_bot - INFO - SIGNAL_DECISION: symbol=AVAXUSDT mode=MAIN status=REJECTED score=4.60 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'RSI', 'MACD', 'VOLUME'] failed_filters=['STRUCTURE', 'ADX', 'DI'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:16:14,552 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=AVAXUSDT mode=MAIN entry_source=relaxed score=4.6 conf=0.9199999999999999 reason=global open trades limit reached (6/6)
+2026-03-31 22:16:14,552 - crypto_bot - INFO - SIGNAL_DECISION: symbol=TRUMPUSDT mode=MAIN status=REJECTED score=5.60 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'RSI', 'MACD', 'VOLUME', 'ADX'] failed_filters=['STRUCTURE', 'DI'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:16:14,552 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=TRUMPUSDT mode=MAIN entry_source=relaxed score=5.6 conf=1.0 reason=global open trades limit reached (6/6)
+2026-03-31 22:16:14,552 - crypto_bot - INFO - SIGNAL_DECISION: symbol=XAUUSDT mode=MAIN status=REJECTED score=6.60 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'STRUCTURE', 'MACD', 'VOLUME', 'ADX', 'DI'] failed_filters=['RSI'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:16:14,552 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=XAUUSDT mode=MAIN entry_source=relaxed score=6.6 conf=1.0 reason=global open trades limit reached (6/6)
+2026-03-31 22:16:14,553 - crypto_bot - INFO - SIGNAL_DECISION: symbol=ZBTUSDT mode=MAIN status=REJECTED score=5.60 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'MACD', 'VOLUME', 'ADX', 'DI'] failed_filters=['STRUCTURE', 'RSI'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:16:14,553 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=ZBTUSDT mode=MAIN entry_source=relaxed score=5.6 conf=1.0 reason=global open trades limit reached (6/6)
+2026-03-31 22:16:14,553 - crypto_bot - INFO - SIGNAL_DECISION: symbol=WLDUSDT mode=MAIN status=REJECTED score=4.20 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'RSI', 'VOLUME', 'ADX'] failed_filters=['STRUCTURE', 'MACD', 'DI'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:16:14,553 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=WLDUSDT mode=MAIN entry_source=relaxed score=4.2 conf=0.8400000000000001 reason=global open trades limit reached (6/6)
+2026-03-31 22:16:14,553 - crypto_bot - INFO - SIGNAL_DECISION: symbol=PAXGUSDT mode=MAIN status=REJECTED score=6.60 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'STRUCTURE', 'MACD', 'VOLUME', 'ADX', 'DI'] failed_filters=['RSI'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:16:14,553 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=PAXGUSDT mode=MAIN entry_source=relaxed score=6.6 conf=1.0 reason=global open trades limit reached (6/6)
+2026-03-31 22:16:14,553 - crypto_bot - INFO - SIGNAL_DECISION: symbol=ALGOUSDT mode=MAIN status=REJECTED score=5.60 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'MACD', 'VOLUME', 'ADX', 'DI'] failed_filters=['STRUCTURE', 'RSI'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:16:14,554 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=ALGOUSDT mode=MAIN entry_source=relaxed score=5.6 conf=1.0 reason=global open trades limit reached (6/6)
+2026-03-31 22:16:14,554 - crypto_bot - INFO - SIGNAL_DECISION: symbol=BEATUSDT mode=MAIN status=REJECTED score=4.40 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'MACD', 'ADX', 'DI'] failed_filters=['STRUCTURE', 'RSI', 'VOLUME'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:16:14,554 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=BEATUSDT mode=MAIN entry_source=relaxed score=4.4 conf=0.8800000000000001 reason=global open trades limit reached (6/6)
+2026-03-31 22:16:14,554 - crypto_bot - INFO - SIGNAL_DECISION: symbol=CRVUSDT mode=MAIN status=REJECTED score=5.20 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'RSI', 'VOLUME', 'ADX', 'DI'] failed_filters=['STRUCTURE', 'MACD'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:16:14,554 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=CRVUSDT mode=MAIN entry_source=relaxed score=5.2 conf=1.0 reason=global open trades limit reached (6/6)
+2026-03-31 22:16:14,555 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
+2026-03-31 22:21:14,565 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-03-31 22:21:15,513 - crypto_bot - INFO - [MARKET] get_top_usdt_pairs prepared 547 liquid swap symbols
+2026-03-31 22:21:15,513 - crypto_bot - INFO - 📈 Top-50 symbols fetched: 50
+2026-03-31 22:21:15,514 - crypto_bot - INFO - 🔥 Active symbols after filter: 37 / 50
+2026-03-31 22:21:15,514 - crypto_bot - INFO - 🔍 Scanning BTC/USDT:USDT
+2026-03-31 22:21:16,491 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=BTCUSDT | mode=MAIN
+2026-03-31 22:21:16,509 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:21:16,510 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=BTCUSDT | trend=True | structure=False | optional_score=3.2 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:21:16,510 - crypto_bot - INFO - BTCUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=3.2 rejection_reason=optional score below threshold (3.20 < 3.90)
+2026-03-31 22:21:16,510 - crypto_bot - INFO - ❌ No signal: BTCUSDT | mode=MAIN | score=3.2 | passed_filters=['TREND', 'RSI', 'VOLUME'] | failed_filters=['STRUCTURE', 'MACD', 'ADX', 'DI'] | rejection_reason=optional score below threshold (3.20 < 3.90)
+2026-03-31 22:21:16,510 - crypto_bot - INFO - 🔍 Scanning ETH/USDT:USDT
+2026-03-31 22:21:16,719 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=ETHUSDT | mode=MAIN
+2026-03-31 22:21:16,736 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:21:16,737 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=ETHUSDT | trend=False | structure=False | optional_score=3.2 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=False
+2026-03-31 22:21:16,737 - crypto_bot - INFO - ETHUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': False, 'structure': False} score=3.2 rejection_reason=required filters failed
+2026-03-31 22:21:16,737 - crypto_bot - INFO - ❌ No signal: ETHUSDT | mode=MAIN | score=3.2 | passed_filters=['RSI', 'VOLUME', 'ADX'] | failed_filters=['TREND', 'STRUCTURE', 'MACD', 'DI'] | rejection_reason=required filters failed
+2026-03-31 22:21:16,737 - crypto_bot - INFO - 🔍 Scanning XRP/USDT:USDT
+2026-03-31 22:21:17,487 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=XRPUSDT | mode=MAIN
+2026-03-31 22:21:17,503 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:21:17,504 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=XRPUSDT | trend=True | structure=False | optional_score=4.2 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:21:17,504 - crypto_bot - INFO - XRPUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=4.2 rejection_reason=None
+2026-03-31 22:21:17,505 - crypto_bot - INFO - ✅ Signal generated: XRPUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=4.2 | entry_source=relaxed | passed_filters=['TREND', 'RSI', 'VOLUME', 'ADX'] | failed_filters=['STRUCTURE', 'MACD', 'DI']
+2026-03-31 22:21:17,505 - crypto_bot - INFO - 🔍 Scanning DOGE/USDT:USDT
+2026-03-31 22:21:17,728 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=DOGEUSDT | mode=MAIN
+2026-03-31 22:21:17,744 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:21:17,745 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=DOGEUSDT | trend=True | structure=False | optional_score=4.2 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:21:17,745 - crypto_bot - INFO - DOGEUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=4.2 rejection_reason=None
+2026-03-31 22:21:17,745 - crypto_bot - INFO - ✅ Signal generated: DOGEUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=4.2 | entry_source=relaxed | passed_filters=['TREND', 'RSI', 'VOLUME', 'ADX'] | failed_filters=['STRUCTURE', 'MACD', 'DI']
+2026-03-31 22:21:17,746 - crypto_bot - INFO - 🔍 Scanning XAUT/USDT:USDT
+2026-03-31 22:21:17,953 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=XAUTUSDT | mode=MAIN
+2026-03-31 22:21:17,970 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:21:17,971 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=XAUTUSDT | trend=True | structure=True | optional_score=6.6 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:21:17,971 - crypto_bot - INFO - XAUTUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': True} score=6.6 rejection_reason=None
+2026-03-31 22:21:17,971 - crypto_bot - INFO - ✅ Signal generated: XAUTUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=6.6 | entry_source=relaxed | passed_filters=['TREND', 'STRUCTURE', 'MACD', 'VOLUME', 'ADX', 'DI'] | failed_filters=['RSI']
+2026-03-31 22:21:17,971 - crypto_bot - INFO - 🔍 Scanning ZEC/USDT:USDT
+2026-03-31 22:21:18,179 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=ZECUSDT | mode=MAIN
+2026-03-31 22:21:18,197 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:21:18,198 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=ZECUSDT | trend=True | structure=False | optional_score=5.6 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:21:18,198 - crypto_bot - INFO - ZECUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=5.6 rejection_reason=None
+2026-03-31 22:21:18,198 - crypto_bot - INFO - ✅ Signal generated: ZECUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=5.6 | entry_source=relaxed | passed_filters=['TREND', 'MACD', 'VOLUME', 'ADX', 'DI'] | failed_filters=['STRUCTURE', 'RSI']
+2026-03-31 22:21:18,198 - crypto_bot - INFO - 🔍 Scanning RIVER/USDT:USDT
+2026-03-31 22:21:18,405 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=RIVERUSDT | mode=MAIN
+2026-03-31 22:21:18,422 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:21:18,423 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=RIVERUSDT | trend=True | structure=False | optional_score=4.4 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:21:18,423 - crypto_bot - INFO - RIVERUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=4.4 rejection_reason=None
+2026-03-31 22:21:18,423 - crypto_bot - INFO - ✅ Signal generated: RIVERUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=4.4 | entry_source=relaxed | passed_filters=['TREND', 'RSI', 'MACD', 'ADX'] | failed_filters=['STRUCTURE', 'VOLUME', 'DI']
+2026-03-31 22:21:18,424 - crypto_bot - INFO - 🔍 Scanning ADA/USDT:USDT
+2026-03-31 22:21:18,632 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=ADAUSDT | mode=MAIN
+2026-03-31 22:21:18,649 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:21:18,652 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=ADAUSDT | trend=True | structure=False | optional_score=5.6 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:21:18,652 - crypto_bot - INFO - ADAUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=5.6 rejection_reason=None
+2026-03-31 22:21:18,652 - crypto_bot - INFO - ✅ Signal generated: ADAUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=5.6 | entry_source=relaxed | passed_filters=['TREND', 'MACD', 'VOLUME', 'ADX', 'DI'] | failed_filters=['STRUCTURE', 'RSI']
+2026-03-31 22:21:18,652 - crypto_bot - INFO - 🔍 Scanning SIREN/USDT:USDT
+2026-03-31 22:21:18,862 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=SIRENUSDT | mode=MAIN
+2026-03-31 22:21:19,239 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=SIRENUSDT | signal skipped
+2026-03-31 22:21:19,239 - crypto_bot - INFO - ❌ No signal: SIRENUSDT | mode=MAIN | score=0.0 | passed_filters=[] | failed_filters=['PENDING'] | rejection_reason=evaluation_started
+2026-03-31 22:21:19,239 - crypto_bot - INFO - 🔍 Scanning KERNEL/USDT:USDT
+2026-03-31 22:21:19,629 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=KERNELUSDT | mode=MAIN
+2026-03-31 22:21:19,646 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:21:19,647 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=KERNELUSDT | trend=True | structure=False | optional_score=5.6 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:21:19,647 - crypto_bot - INFO - KERNELUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=5.6 rejection_reason=None
+2026-03-31 22:21:19,648 - crypto_bot - INFO - ✅ Signal generated: KERNELUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=5.6 | entry_source=relaxed | passed_filters=['TREND', 'MACD', 'VOLUME', 'ADX', 'DI'] | failed_filters=['STRUCTURE', 'RSI']
+2026-03-31 22:21:19,648 - crypto_bot - INFO - 🔍 Scanning FARTCOIN/USDT:USDT
+2026-03-31 22:21:20,396 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=FARTCOINUSDT | mode=MAIN
+2026-03-31 22:21:20,491 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:21:20,493 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=FARTCOINUSDT | trend=True | structure=False | optional_score=5.2 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:21:20,493 - crypto_bot - INFO - FARTCOINUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=5.2 rejection_reason=None
+2026-03-31 22:21:20,493 - crypto_bot - INFO - ✅ Signal generated: FARTCOINUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=5.2 | entry_source=relaxed | passed_filters=['TREND', 'RSI', 'VOLUME', 'ADX', 'DI'] | failed_filters=['STRUCTURE', 'MACD']
+2026-03-31 22:21:20,493 - crypto_bot - INFO - 🔍 Scanning ONT/USDT:USDT
+2026-03-31 22:21:21,250 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=ONTUSDT | mode=MAIN
+2026-03-31 22:21:21,266 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:21:21,267 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=ONTUSDT | trend=True | structure=False | optional_score=3.0 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:21:21,267 - crypto_bot - INFO - ONTUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=3.0 rejection_reason=optional score below threshold (3.00 < 3.90)
+2026-03-31 22:21:21,268 - crypto_bot - INFO - ❌ No signal: ONTUSDT | mode=MAIN | score=3.0 | passed_filters=['TREND', 'RSI', 'ADX'] | failed_filters=['STRUCTURE', 'MACD', 'VOLUME', 'DI'] | rejection_reason=optional score below threshold (3.00 < 3.90)
+2026-03-31 22:21:21,268 - crypto_bot - INFO - 🔍 Scanning 1000PEPE/USDT:USDT
+2026-03-31 22:21:21,476 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=1000PEPEUSDT | mode=MAIN
+2026-03-31 22:21:21,494 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:21:21,497 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=1000PEPEUSDT | trend=False | structure=False | optional_score=2.2 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=False
+2026-03-31 22:21:21,497 - crypto_bot - INFO - 1000PEPEUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': False, 'structure': False} score=2.2 rejection_reason=required filters failed
+2026-03-31 22:21:21,497 - crypto_bot - INFO - ❌ No signal: 1000PEPEUSDT | mode=MAIN | score=2.2 | passed_filters=['RSI', 'VOLUME'] | failed_filters=['TREND', 'STRUCTURE', 'MACD', 'ADX', 'DI'] | rejection_reason=required filters failed
+2026-03-31 22:21:21,497 - crypto_bot - INFO - 🔍 Scanning LINK/USDT:USDT
+2026-03-31 22:21:21,707 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=LINKUSDT | mode=MAIN
+2026-03-31 22:21:21,724 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:21:21,725 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=LINKUSDT | trend=False | structure=False | optional_score=2.2 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=False
+2026-03-31 22:21:21,725 - crypto_bot - INFO - LINKUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': False, 'structure': False} score=2.2 rejection_reason=required filters failed
+2026-03-31 22:21:21,725 - crypto_bot - INFO - ❌ No signal: LINKUSDT | mode=MAIN | score=2.2 | passed_filters=['RSI', 'VOLUME'] | failed_filters=['TREND', 'STRUCTURE', 'MACD', 'ADX', 'DI'] | rejection_reason=required filters failed
+2026-03-31 22:21:21,726 - crypto_bot - INFO - 🔍 Scanning SUI/USDT:USDT
+2026-03-31 22:21:21,934 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=SUIUSDT | mode=MAIN
+2026-03-31 22:21:21,950 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:21:21,952 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=SUIUSDT | trend=True | structure=False | optional_score=3.2 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:21:21,952 - crypto_bot - INFO - SUIUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=3.2 rejection_reason=optional score below threshold (3.20 < 3.90)
+2026-03-31 22:21:21,952 - crypto_bot - INFO - ❌ No signal: SUIUSDT | mode=MAIN | score=3.2 | passed_filters=['TREND', 'RSI', 'VOLUME'] | failed_filters=['STRUCTURE', 'MACD', 'ADX', 'DI'] | rejection_reason=optional score below threshold (3.20 < 3.90)
+2026-03-31 22:21:21,952 - crypto_bot - INFO - 🔍 Scanning ENA/USDT:USDT
+2026-03-31 22:21:22,162 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=ENAUSDT | mode=MAIN
+2026-03-31 22:21:22,178 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:21:22,179 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=ENAUSDT | trend=True | structure=False | optional_score=6.6 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:21:22,180 - crypto_bot - INFO - ENAUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=6.6 rejection_reason=None
+2026-03-31 22:21:22,180 - crypto_bot - INFO - ✅ Signal generated: ENAUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=6.6 | entry_source=relaxed | passed_filters=['TREND', 'RSI', 'MACD', 'VOLUME', 'ADX', 'DI'] | failed_filters=['STRUCTURE']
+2026-03-31 22:21:22,180 - crypto_bot - INFO - 🔍 Scanning PIPPIN/USDT:USDT
+2026-03-31 22:21:22,388 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=PIPPINUSDT | mode=MAIN
+2026-03-31 22:21:22,406 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:21:22,407 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=PIPPINUSDT | trend=True | structure=False | optional_score=4.4 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:21:22,408 - crypto_bot - INFO - PIPPINUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=4.4 rejection_reason=None
+2026-03-31 22:21:22,408 - crypto_bot - INFO - ✅ Signal generated: PIPPINUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=4.4 | entry_source=relaxed | passed_filters=['TREND', 'MACD', 'ADX', 'DI'] | failed_filters=['STRUCTURE', 'RSI', 'VOLUME']
+2026-03-31 22:21:22,408 - crypto_bot - INFO - 🔍 Scanning DOT/USDT:USDT
+2026-03-31 22:21:22,618 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=DOTUSDT | mode=MAIN
+2026-03-31 22:21:22,641 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:21:22,643 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=DOTUSDT | trend=True | structure=False | optional_score=4.2 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:21:22,644 - crypto_bot - INFO - DOTUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=4.2 rejection_reason=None
+2026-03-31 22:21:22,644 - crypto_bot - INFO - ✅ Signal generated: DOTUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=4.2 | entry_source=relaxed | passed_filters=['TREND', 'RSI', 'VOLUME', 'ADX'] | failed_filters=['STRUCTURE', 'MACD', 'DI']
+2026-03-31 22:21:22,644 - crypto_bot - INFO - 🔍 Scanning NOM/USDT:USDT
+2026-03-31 22:21:23,031 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=NOMUSDT | mode=MAIN
+2026-03-31 22:21:23,048 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:21:23,050 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=NOMUSDT | trend=True | structure=False | optional_score=5.6 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:21:23,050 - crypto_bot - INFO - NOMUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=5.6 rejection_reason=None
+2026-03-31 22:21:23,050 - crypto_bot - INFO - ✅ Signal generated: NOMUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=5.6 | entry_source=relaxed | passed_filters=['TREND', 'MACD', 'VOLUME', 'ADX', 'DI'] | failed_filters=['STRUCTURE', 'RSI']
+2026-03-31 22:21:23,050 - crypto_bot - INFO - 🔍 Scanning NEAR/USDT:USDT
+2026-03-31 22:21:23,440 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=NEARUSDT | mode=MAIN
+2026-03-31 22:21:23,457 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:21:23,458 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=NEARUSDT | trend=True | structure=False | optional_score=4.2 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:21:23,459 - crypto_bot - INFO - NEARUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=4.2 rejection_reason=None
+2026-03-31 22:21:23,459 - crypto_bot - INFO - ✅ Signal generated: NEARUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=4.2 | entry_source=relaxed | passed_filters=['TREND', 'RSI', 'VOLUME', 'ADX'] | failed_filters=['STRUCTURE', 'MACD', 'DI']
+2026-03-31 22:21:23,459 - crypto_bot - INFO - 🔍 Scanning BCH/USDT:USDT
+2026-03-31 22:21:24,210 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=BCHUSDT | mode=MAIN
+2026-03-31 22:21:24,226 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:21:24,227 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=BCHUSDT | trend=False | structure=False | optional_score=3.2 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=False
+2026-03-31 22:21:24,227 - crypto_bot - INFO - BCHUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': False, 'structure': False} score=3.2 rejection_reason=required filters failed
+2026-03-31 22:21:24,228 - crypto_bot - INFO - ❌ No signal: BCHUSDT | mode=MAIN | score=3.2 | passed_filters=['RSI', 'VOLUME', 'ADX'] | failed_filters=['TREND', 'STRUCTURE', 'MACD', 'DI'] | rejection_reason=required filters failed
+2026-03-31 22:21:24,228 - crypto_bot - INFO - 🔍 Scanning XAG/USDT:USDT
+2026-03-31 22:21:24,436 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=XAGUSDT | mode=MAIN
+2026-03-31 22:21:24,453 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:21:24,454 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=XAGUSDT | trend=True | structure=False | optional_score=4.4 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:21:24,455 - crypto_bot - INFO - XAGUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=4.4 rejection_reason=None
+2026-03-31 22:21:24,455 - crypto_bot - INFO - ✅ Signal generated: XAGUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=4.4 | entry_source=relaxed | passed_filters=['TREND', 'MACD', 'ADX', 'DI'] | failed_filters=['STRUCTURE', 'RSI', 'VOLUME']
+2026-03-31 22:21:24,455 - crypto_bot - INFO - 🔍 Scanning AAVE/USDT:USDT
+2026-03-31 22:21:24,845 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=AAVEUSDT | mode=MAIN
+2026-03-31 22:21:24,867 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:21:24,868 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=AAVEUSDT | trend=True | structure=False | optional_score=4.2 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:21:24,868 - crypto_bot - INFO - AAVEUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=4.2 rejection_reason=None
+2026-03-31 22:21:24,869 - crypto_bot - INFO - ✅ Signal generated: AAVEUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=4.2 | entry_source=relaxed | passed_filters=['TREND', 'RSI', 'VOLUME', 'DI'] | failed_filters=['STRUCTURE', 'MACD', 'ADX']
+2026-03-31 22:21:24,869 - crypto_bot - INFO - 🔍 Scanning AVAX/USDT:USDT
+2026-03-31 22:21:25,281 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=AVAXUSDT | mode=MAIN
+2026-03-31 22:21:25,297 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:21:25,298 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=AVAXUSDT | trend=True | structure=False | optional_score=4.6 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:21:25,299 - crypto_bot - INFO - AVAXUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=4.6 rejection_reason=None
+2026-03-31 22:21:25,299 - crypto_bot - INFO - ✅ Signal generated: AVAXUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=4.6 | entry_source=relaxed | passed_filters=['TREND', 'RSI', 'MACD', 'VOLUME'] | failed_filters=['STRUCTURE', 'ADX', 'DI']
+2026-03-31 22:21:25,299 - crypto_bot - INFO - 🔍 Scanning CL/USDT:USDT
+2026-03-31 22:21:25,698 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=CLUSDT | mode=MAIN
+2026-03-31 22:21:25,698 - crypto_bot - INFO - ❌ No signal: CLUSDT | mode=MAIN | score=0.0 | passed_filters=[] | failed_filters=['DATA'] | rejection_reason=not enough candles (179 < 209 required, limit=220)
+2026-03-31 22:21:25,698 - crypto_bot - INFO - 🔍 Scanning EDGE/USDT:USDT
+2026-03-31 22:21:25,907 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=EDGEUSDT | mode=MAIN
+2026-03-31 22:21:25,925 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:21:25,926 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=EDGEUSDT | trend=False | structure=False | optional_score=2.0 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=False
+2026-03-31 22:21:25,926 - crypto_bot - INFO - EDGEUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': False, 'structure': False} score=2.0 rejection_reason=required filters failed
+2026-03-31 22:21:25,926 - crypto_bot - INFO - ❌ No signal: EDGEUSDT | mode=MAIN | score=2.0 | passed_filters=['RSI', 'ADX'] | failed_filters=['TREND', 'STRUCTURE', 'MACD', 'VOLUME', 'DI'] | rejection_reason=required filters failed
+2026-03-31 22:21:25,926 - crypto_bot - INFO - 🔍 Scanning TRUMP/USDT:USDT
+2026-03-31 22:21:26,133 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=TRUMPUSDT | mode=MAIN
+2026-03-31 22:21:26,149 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:21:26,150 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=TRUMPUSDT | trend=True | structure=False | optional_score=5.6 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:21:26,150 - crypto_bot - INFO - TRUMPUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=5.6 rejection_reason=None
+2026-03-31 22:21:26,150 - crypto_bot - INFO - ✅ Signal generated: TRUMPUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=5.6 | entry_source=relaxed | passed_filters=['TREND', 'RSI', 'MACD', 'VOLUME', 'ADX'] | failed_filters=['STRUCTURE', 'DI']
+2026-03-31 22:21:26,151 - crypto_bot - INFO - 🔍 Scanning XAU/USDT:USDT
+2026-03-31 22:21:26,538 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=XAUUSDT | mode=MAIN
+2026-03-31 22:21:26,555 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:21:26,556 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=XAUUSDT | trend=True | structure=True | optional_score=6.6 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:21:26,556 - crypto_bot - INFO - XAUUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': True} score=6.6 rejection_reason=None
+2026-03-31 22:21:26,557 - crypto_bot - INFO - ✅ Signal generated: XAUUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=6.6 | entry_source=relaxed | passed_filters=['TREND', 'STRUCTURE', 'MACD', 'VOLUME', 'ADX', 'DI'] | failed_filters=['RSI']
+2026-03-31 22:21:26,557 - crypto_bot - INFO - 🔍 Scanning LTC/USDT:USDT
+2026-03-31 22:21:26,764 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=LTCUSDT | mode=MAIN
+2026-03-31 22:21:26,781 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:21:26,782 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=LTCUSDT | trend=True | structure=False | optional_score=3.2 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:21:26,782 - crypto_bot - INFO - LTCUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=3.2 rejection_reason=optional score below threshold (3.20 < 3.90)
+2026-03-31 22:21:26,783 - crypto_bot - INFO - ❌ No signal: LTCUSDT | mode=MAIN | score=3.2 | passed_filters=['TREND', 'RSI', 'VOLUME'] | failed_filters=['STRUCTURE', 'MACD', 'ADX', 'DI'] | rejection_reason=optional score below threshold (3.20 < 3.90)
+2026-03-31 22:21:26,783 - crypto_bot - INFO - 🔍 Scanning ZBT/USDT:USDT
+2026-03-31 22:21:26,992 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=ZBTUSDT | mode=MAIN
+2026-03-31 22:21:27,017 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:21:27,018 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=ZBTUSDT | trend=True | structure=False | optional_score=5.6 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:21:27,018 - crypto_bot - INFO - ZBTUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=5.6 rejection_reason=None
+2026-03-31 22:21:27,019 - crypto_bot - INFO - ✅ Signal generated: ZBTUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=5.6 | entry_source=relaxed | passed_filters=['TREND', 'MACD', 'VOLUME', 'ADX', 'DI'] | failed_filters=['STRUCTURE', 'RSI']
+2026-03-31 22:21:27,019 - crypto_bot - INFO - 🔍 Scanning WLD/USDT:USDT
+2026-03-31 22:21:27,407 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=WLDUSDT | mode=MAIN
+2026-03-31 22:21:27,426 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:21:27,427 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=WLDUSDT | trend=True | structure=False | optional_score=4.2 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:21:27,427 - crypto_bot - INFO - WLDUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=4.2 rejection_reason=None
+2026-03-31 22:21:27,427 - crypto_bot - INFO - ✅ Signal generated: WLDUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=4.2 | entry_source=relaxed | passed_filters=['TREND', 'RSI', 'VOLUME', 'ADX'] | failed_filters=['STRUCTURE', 'MACD', 'DI']
+2026-03-31 22:21:27,428 - crypto_bot - INFO - 🔍 Scanning PAXG/USDT:USDT
+2026-03-31 22:21:27,638 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=PAXGUSDT | mode=MAIN
+2026-03-31 22:21:27,656 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:21:27,657 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=PAXGUSDT | trend=True | structure=True | optional_score=6.6 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:21:27,657 - crypto_bot - INFO - PAXGUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': True} score=6.6 rejection_reason=None
+2026-03-31 22:21:27,658 - crypto_bot - INFO - ✅ Signal generated: PAXGUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=6.6 | entry_source=relaxed | passed_filters=['TREND', 'STRUCTURE', 'MACD', 'VOLUME', 'ADX', 'DI'] | failed_filters=['RSI']
+2026-03-31 22:21:27,658 - crypto_bot - INFO - 🔍 Scanning WIF/USDT:USDT
+2026-03-31 22:21:28,047 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=WIFUSDT | mode=MAIN
+2026-03-31 22:21:28,066 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:21:28,067 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=WIFUSDT | trend=False | structure=False | optional_score=2.2 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=False
+2026-03-31 22:21:28,067 - crypto_bot - INFO - WIFUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': False, 'structure': False} score=2.2 rejection_reason=required filters failed
+2026-03-31 22:21:28,067 - crypto_bot - INFO - ❌ No signal: WIFUSDT | mode=MAIN | score=2.2 | passed_filters=['RSI', 'VOLUME'] | failed_filters=['TREND', 'STRUCTURE', 'MACD', 'ADX', 'DI'] | rejection_reason=required filters failed
+2026-03-31 22:21:28,067 - crypto_bot - INFO - 🔍 Scanning GALA/USDT:USDT
+2026-03-31 22:21:28,276 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=GALAUSDT | mode=MAIN
+2026-03-31 22:21:28,295 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:21:28,296 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=GALAUSDT | trend=True | structure=False | optional_score=3.2 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:21:28,297 - crypto_bot - INFO - GALAUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=3.2 rejection_reason=optional score below threshold (3.20 < 3.90)
+2026-03-31 22:21:28,297 - crypto_bot - INFO - ❌ No signal: GALAUSDT | mode=MAIN | score=3.2 | passed_filters=['TREND', 'RSI', 'VOLUME'] | failed_filters=['STRUCTURE', 'MACD', 'ADX', 'DI'] | rejection_reason=optional score below threshold (3.20 < 3.90)
+2026-03-31 22:21:28,297 - crypto_bot - INFO - 🔍 Scanning ALGO/USDT:USDT
+2026-03-31 22:21:28,505 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=ALGOUSDT | mode=MAIN
+2026-03-31 22:21:28,522 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:21:28,523 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=ALGOUSDT | trend=True | structure=False | optional_score=5.6 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:21:28,523 - crypto_bot - INFO - ALGOUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=5.6 rejection_reason=None
+2026-03-31 22:21:28,524 - crypto_bot - INFO - ✅ Signal generated: ALGOUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=5.6 | entry_source=relaxed | passed_filters=['TREND', 'MACD', 'VOLUME', 'ADX', 'DI'] | failed_filters=['STRUCTURE', 'RSI']
+2026-03-31 22:21:28,524 - crypto_bot - INFO - 🔍 Scanning BEAT/USDT:USDT
+2026-03-31 22:21:28,732 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=BEATUSDT | mode=MAIN
+2026-03-31 22:21:28,749 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:21:28,750 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=BEATUSDT | trend=True | structure=False | optional_score=4.4 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:21:28,750 - crypto_bot - INFO - BEATUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=4.4 rejection_reason=None
+2026-03-31 22:21:28,750 - crypto_bot - INFO - ✅ Signal generated: BEATUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=4.4 | entry_source=relaxed | passed_filters=['TREND', 'MACD', 'ADX', 'DI'] | failed_filters=['STRUCTURE', 'RSI', 'VOLUME']
+2026-03-31 22:21:28,750 - crypto_bot - INFO - 🔍 Scanning CRV/USDT:USDT
+2026-03-31 22:21:28,959 - crypto_bot - INFO - DEBUG: ENTER SIGNAL GENERATION | symbol=CRVUSDT | mode=MAIN
+2026-03-31 22:21:28,975 - crypto_bot - INFO - DEBUG: FALLBACK EXECUTED
+2026-03-31 22:21:28,977 - crypto_bot - INFO - DEBUG: RELAXED FILTERS | symbol=CRVUSDT | trend=True | structure=False | optional_score=5.2 | threshold=3.9000000000000004 | required_filters=['trend'] | structure_optional_in_fallback=True | required_ok=True
+2026-03-31 22:21:28,977 - crypto_bot - INFO - CRVUSDT | signal_trace strict_result=False fallback_executed=True required_filters=['trend'] required_filters_result={'trend': True, 'structure': False} score=5.2 rejection_reason=None
+2026-03-31 22:21:28,977 - crypto_bot - INFO - ✅ Signal generated: CRVUSDT | MAIN_RELAXED | tf=1h | mode=MAIN | score=5.2 | entry_source=relaxed | passed_filters=['TREND', 'RSI', 'VOLUME', 'ADX', 'DI'] | failed_filters=['STRUCTURE', 'MACD']
+2026-03-31 22:21:28,977 - crypto_bot - INFO - 📊 Total signals after scan: 24
+2026-03-31 22:21:28,978 - crypto_bot - INFO - 📊 Signals found: 24
+2026-03-31 22:21:28,978 - crypto_bot - INFO - SIGNAL_DECISION: symbol=XRPUSDT mode=MAIN status=REJECTED score=4.20 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'RSI', 'VOLUME', 'ADX'] failed_filters=['STRUCTURE', 'MACD', 'DI'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:21:28,978 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=XRPUSDT mode=MAIN entry_source=relaxed score=4.2 conf=0.8400000000000001 reason=global open trades limit reached (6/6)
+2026-03-31 22:21:28,978 - crypto_bot - INFO - SIGNAL_DECISION: symbol=DOGEUSDT mode=MAIN status=REJECTED score=4.20 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'RSI', 'VOLUME', 'ADX'] failed_filters=['STRUCTURE', 'MACD', 'DI'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:21:28,978 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=DOGEUSDT mode=MAIN entry_source=relaxed score=4.2 conf=0.8400000000000001 reason=global open trades limit reached (6/6)
+2026-03-31 22:21:28,979 - crypto_bot - INFO - SIGNAL_DECISION: symbol=XAUTUSDT mode=MAIN status=REJECTED score=6.60 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'STRUCTURE', 'MACD', 'VOLUME', 'ADX', 'DI'] failed_filters=['RSI'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:21:28,979 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=XAUTUSDT mode=MAIN entry_source=relaxed score=6.6 conf=1.0 reason=global open trades limit reached (6/6)
+2026-03-31 22:21:28,979 - crypto_bot - INFO - SIGNAL_DECISION: symbol=ZECUSDT mode=MAIN status=REJECTED score=5.60 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'MACD', 'VOLUME', 'ADX', 'DI'] failed_filters=['STRUCTURE', 'RSI'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:21:28,979 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=ZECUSDT mode=MAIN entry_source=relaxed score=5.6 conf=1.0 reason=global open trades limit reached (6/6)
+2026-03-31 22:21:28,979 - crypto_bot - INFO - SIGNAL_DECISION: symbol=RIVERUSDT mode=MAIN status=REJECTED score=4.40 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'RSI', 'MACD', 'ADX'] failed_filters=['STRUCTURE', 'VOLUME', 'DI'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:21:28,980 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=RIVERUSDT mode=MAIN entry_source=relaxed score=4.4 conf=0.8800000000000001 reason=global open trades limit reached (6/6)
+2026-03-31 22:21:28,980 - crypto_bot - INFO - SIGNAL_DECISION: symbol=ADAUSDT mode=MAIN status=REJECTED score=5.60 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'MACD', 'VOLUME', 'ADX', 'DI'] failed_filters=['STRUCTURE', 'RSI'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:21:28,980 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=ADAUSDT mode=MAIN entry_source=relaxed score=5.6 conf=1.0 reason=global open trades limit reached (6/6)
+2026-03-31 22:21:28,980 - crypto_bot - INFO - SIGNAL_DECISION: symbol=KERNELUSDT mode=MAIN status=REJECTED score=5.60 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'MACD', 'VOLUME', 'ADX', 'DI'] failed_filters=['STRUCTURE', 'RSI'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:21:28,981 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=KERNELUSDT mode=MAIN entry_source=relaxed score=5.6 conf=1.0 reason=global open trades limit reached (6/6)
+2026-03-31 22:21:28,981 - crypto_bot - INFO - SIGNAL_DECISION: symbol=FARTCOINUSDT mode=MAIN status=REJECTED score=5.20 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'RSI', 'VOLUME', 'ADX', 'DI'] failed_filters=['STRUCTURE', 'MACD'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:21:28,981 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=FARTCOINUSDT mode=MAIN entry_source=relaxed score=5.2 conf=1.0 reason=global open trades limit reached (6/6)
+2026-03-31 22:21:28,981 - crypto_bot - INFO - SIGNAL_DECISION: symbol=ENAUSDT mode=MAIN status=REJECTED score=6.60 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'RSI', 'MACD', 'VOLUME', 'ADX', 'DI'] failed_filters=['STRUCTURE'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:21:28,981 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=ENAUSDT mode=MAIN entry_source=relaxed score=6.6 conf=1.0 reason=global open trades limit reached (6/6)
+2026-03-31 22:21:28,982 - crypto_bot - INFO - SIGNAL_DECISION: symbol=PIPPINUSDT mode=MAIN status=REJECTED score=4.40 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'MACD', 'ADX', 'DI'] failed_filters=['STRUCTURE', 'RSI', 'VOLUME'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:21:28,982 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=PIPPINUSDT mode=MAIN entry_source=relaxed score=4.4 conf=0.8800000000000001 reason=global open trades limit reached (6/6)
+2026-03-31 22:21:28,982 - crypto_bot - INFO - SIGNAL_DECISION: symbol=DOTUSDT mode=MAIN status=REJECTED score=4.20 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'RSI', 'VOLUME', 'ADX'] failed_filters=['STRUCTURE', 'MACD', 'DI'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:21:28,982 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=DOTUSDT mode=MAIN entry_source=relaxed score=4.2 conf=0.8400000000000001 reason=global open trades limit reached (6/6)
+2026-03-31 22:21:28,982 - crypto_bot - INFO - SIGNAL_DECISION: symbol=NOMUSDT mode=MAIN status=REJECTED score=5.60 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'MACD', 'VOLUME', 'ADX', 'DI'] failed_filters=['STRUCTURE', 'RSI'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:21:28,982 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=NOMUSDT mode=MAIN entry_source=relaxed score=5.6 conf=1.0 reason=global open trades limit reached (6/6)
+2026-03-31 22:21:28,983 - crypto_bot - INFO - SIGNAL_DECISION: symbol=NEARUSDT mode=MAIN status=REJECTED score=4.20 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'RSI', 'VOLUME', 'ADX'] failed_filters=['STRUCTURE', 'MACD', 'DI'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:21:28,983 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=NEARUSDT mode=MAIN entry_source=relaxed score=4.2 conf=0.8400000000000001 reason=global open trades limit reached (6/6)
+2026-03-31 22:21:28,983 - crypto_bot - INFO - SIGNAL_DECISION: symbol=XAGUSDT mode=MAIN status=REJECTED score=4.40 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'MACD', 'ADX', 'DI'] failed_filters=['STRUCTURE', 'RSI', 'VOLUME'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:21:28,983 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=XAGUSDT mode=MAIN entry_source=relaxed score=4.4 conf=0.8800000000000001 reason=global open trades limit reached (6/6)
+2026-03-31 22:21:28,983 - crypto_bot - INFO - SIGNAL_DECISION: symbol=AAVEUSDT mode=MAIN status=REJECTED score=4.20 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'RSI', 'VOLUME', 'DI'] failed_filters=['STRUCTURE', 'MACD', 'ADX'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:21:28,983 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=AAVEUSDT mode=MAIN entry_source=relaxed score=4.2 conf=0.8400000000000001 reason=global open trades limit reached (6/6)
+2026-03-31 22:21:28,984 - crypto_bot - INFO - SIGNAL_DECISION: symbol=AVAXUSDT mode=MAIN status=REJECTED score=4.60 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'RSI', 'MACD', 'VOLUME'] failed_filters=['STRUCTURE', 'ADX', 'DI'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:21:28,984 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=AVAXUSDT mode=MAIN entry_source=relaxed score=4.6 conf=0.9199999999999999 reason=global open trades limit reached (6/6)
+2026-03-31 22:21:28,984 - crypto_bot - INFO - SIGNAL_DECISION: symbol=TRUMPUSDT mode=MAIN status=REJECTED score=5.60 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'RSI', 'MACD', 'VOLUME', 'ADX'] failed_filters=['STRUCTURE', 'DI'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:21:28,984 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=TRUMPUSDT mode=MAIN entry_source=relaxed score=5.6 conf=1.0 reason=global open trades limit reached (6/6)
+2026-03-31 22:21:28,984 - crypto_bot - INFO - SIGNAL_DECISION: symbol=XAUUSDT mode=MAIN status=REJECTED score=6.60 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'STRUCTURE', 'MACD', 'VOLUME', 'ADX', 'DI'] failed_filters=['RSI'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:21:28,984 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=XAUUSDT mode=MAIN entry_source=relaxed score=6.6 conf=1.0 reason=global open trades limit reached (6/6)
+2026-03-31 22:21:28,984 - crypto_bot - INFO - SIGNAL_DECISION: symbol=ZBTUSDT mode=MAIN status=REJECTED score=5.60 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'MACD', 'VOLUME', 'ADX', 'DI'] failed_filters=['STRUCTURE', 'RSI'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:21:28,985 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=ZBTUSDT mode=MAIN entry_source=relaxed score=5.6 conf=1.0 reason=global open trades limit reached (6/6)
+2026-03-31 22:21:28,985 - crypto_bot - INFO - SIGNAL_DECISION: symbol=WLDUSDT mode=MAIN status=REJECTED score=4.20 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'RSI', 'VOLUME', 'ADX'] failed_filters=['STRUCTURE', 'MACD', 'DI'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:21:28,985 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=WLDUSDT mode=MAIN entry_source=relaxed score=4.2 conf=0.8400000000000001 reason=global open trades limit reached (6/6)
+2026-03-31 22:21:28,985 - crypto_bot - INFO - SIGNAL_DECISION: symbol=PAXGUSDT mode=MAIN status=REJECTED score=6.60 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'STRUCTURE', 'MACD', 'VOLUME', 'ADX', 'DI'] failed_filters=['RSI'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:21:28,985 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=PAXGUSDT mode=MAIN entry_source=relaxed score=6.6 conf=1.0 reason=global open trades limit reached (6/6)
+2026-03-31 22:21:28,985 - crypto_bot - INFO - SIGNAL_DECISION: symbol=ALGOUSDT mode=MAIN status=REJECTED score=5.60 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'MACD', 'VOLUME', 'ADX', 'DI'] failed_filters=['STRUCTURE', 'RSI'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:21:28,985 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=ALGOUSDT mode=MAIN entry_source=relaxed score=5.6 conf=1.0 reason=global open trades limit reached (6/6)
+2026-03-31 22:21:28,985 - crypto_bot - INFO - SIGNAL_DECISION: symbol=BEATUSDT mode=MAIN status=REJECTED score=4.40 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'MACD', 'ADX', 'DI'] failed_filters=['STRUCTURE', 'RSI', 'VOLUME'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:21:28,986 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=BEATUSDT mode=MAIN entry_source=relaxed score=4.4 conf=0.8800000000000001 reason=global open trades limit reached (6/6)
+2026-03-31 22:21:28,986 - crypto_bot - INFO - SIGNAL_DECISION: symbol=CRVUSDT mode=MAIN status=REJECTED score=5.20 threshold=4.20 entry_source=relaxed passed_filters=['TREND', 'RSI', 'VOLUME', 'ADX', 'DI'] failed_filters=['STRUCTURE', 'MACD'] reason=POSITION_LIMIT position_block=True
+2026-03-31 22:21:28,986 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=CRVUSDT mode=MAIN entry_source=relaxed score=5.2 conf=1.0 reason=global open trades limit reached (6/6)
+2026-03-31 22:21:28,986 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
+2026-03-31 22:25:10,437 - crypto_bot - INFO - 🛑 Остановка по KeyboardInterrupt

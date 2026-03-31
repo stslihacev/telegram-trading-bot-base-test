@@ -50,12 +50,14 @@ class SignalAnalytics:
     mode_rr_sum: Counter[str] = field(default_factory=Counter)
     high_conf_loss_counter: int = 0
     filter_result_counter: dict[str, Counter[str]] = field(default_factory=dict)
+    rejection_counter: dict[str, Counter[str]] = field(default_factory=dict)
     _closed_trade_keys: set[str] = field(default_factory=set, init=False, repr=False)
     _io_lock: threading.RLock = field(default_factory=threading.RLock, init=False, repr=False)
     trade_registry: TradeRegistry | None = field(default=None, init=False)
     initial_deposit: float = field(default_factory=lambda: float(getattr(config, "BACKTEST_INITIAL_CAPITAL", 1000.0)))
     risk_per_trade_pct: float = field(default_factory=lambda: float(getattr(config, "RISK_PER_TRADE", 0.01)))
     fee_rate: float = field(default_factory=lambda: float(getattr(config, "SIMULATION_FEE_RATE", 0.0004)))
+    execution_mode: str = field(default_factory=lambda: str(getattr(config, "EXECUTION_MODE", "SIMULATION")).upper())
     equity_curve: list[dict[str, Any]] = field(default_factory=list)
 
     def __post_init__(self) -> None:
@@ -99,6 +101,96 @@ class SignalAnalytics:
             name = str(filter_name).upper().strip()
             if name:
                 self.filter_pass_counter[name] += 1
+
+    @staticmethod
+    def _normalize_rejection_reason(reason: Any) -> str:
+        text = str(reason or "").strip().upper()
+        if not text:
+            return "UNKNOWN"
+        aliases = {
+            "SCORE BELOW THRESHOLD": "LOW_SCORE",
+            "OPTIONAL SCORE BELOW THRESHOLD": "LOW_SCORE",
+            "BOTH BELOW UPGRADE THRESHOLD": "LOW_SCORE",
+            "NO SIGNIFICANT IMPROVEMENT": "LOW_SCORE",
+            "REQUIRED FILTERS FAILED": "FILTER_FAIL",
+            "RR BELOW LIVE MINIMUM": "RR_FAIL",
+            "RR ABOVE SCALPING MAXIMUM": "RR_FAIL",
+            "BLOCKED AFTER SL": "COOLDOWN",
+            "REJECTION_STARTED": "UNKNOWN",
+        }
+        for src, target in aliases.items():
+            if text.startswith(src):
+                return target
+        if "LIMIT" in text:
+            return "POSITION_LIMIT"
+        if "DUPLICATE" in text:
+            return "DUPLICATE"
+        if "COOLDOWN" in text:
+            return "COOLDOWN"
+        if "LOW_SCORE" in text:
+            return "LOW_SCORE"
+        return text.replace(" ", "_")
+
+    def register_signal_decision(
+        self,
+        signal: dict[str, Any],
+        *,
+        status: str,
+        reason: str | None = None,
+        position_block: bool = False,
+        threshold: float | None = None,
+    ) -> None:
+        mode = str(signal.get("live_mode") or signal.get("label_prefix") or "UNKNOWN").upper().strip("[]")
+        normalized_status = str(status or "REJECTED").upper()
+        score = self._safe_float(signal.get("score"), default=0.0)
+        normalized_reason = self._normalize_rejection_reason(reason if normalized_status == "REJECTED" else "OPEN")
+        if normalized_status == "REJECTED":
+            bucket = self.rejection_counter.setdefault(mode, Counter())
+            bucket[normalized_reason] += 1
+        logger.info(
+            "SIGNAL_DECISION: symbol=%s mode=%s status=%s score=%.2f threshold=%s entry_source=%s "
+            "passed_filters=%s failed_filters=%s reason=%s position_block=%s",
+            signal.get("symbol"),
+            mode,
+            normalized_status,
+            score,
+            f"{float(threshold):.2f}" if threshold is not None else "n/a",
+            str(signal.get("entry_source") or "strict").lower(),
+            list(signal.get("passed_filters") or []),
+            list(signal.get("failed_filters") or []),
+            normalized_reason,
+            bool(position_block),
+        )
+
+    def format_rejection_stats(self) -> str:
+        if not self.rejection_counter:
+            return "REJECTION_STATS:\n(no rejected signals yet)"
+        lines = ["REJECTION_STATS:"]
+        for mode_name in ("LIGHT", "MAIN", "SCALPING", "UNKNOWN"):
+            counters = self.rejection_counter.get(mode_name)
+            if not counters:
+                continue
+            lines.append(f"{mode_name}:")
+            for reason, count in counters.most_common():
+                lines.append(f"  {reason}: {count}")
+        return "\n".join(lines)
+
+    def _calculate_trade_financials(self, entry: float, sl: float, pnl_points: float) -> dict[str, float]:
+        risk_budget = float(self.initial_deposit) * max(0.0, float(self.risk_per_trade_pct))
+        risk_abs = max(abs(entry - sl), 1e-9)
+        position_size = risk_budget / risk_abs if risk_budget > 0 else 0.0
+        gross_pnl = pnl_points * position_size
+        notional = abs(entry * position_size)
+        fee_paid = 0.0
+        mode = str(self.execution_mode or "SIMULATION").upper()
+        if mode in {"SIMULATION", "PAPER"}:
+            fee_paid = notional * max(0.0, float(self.fee_rate))
+        net_pnl = gross_pnl - fee_paid
+        return {
+            "position_notional": notional,
+            "fee_paid": fee_paid,
+            "pnl_net": net_pnl,
+        }
 
     def mark_duplicate(self) -> None:
         """Adjust dedup counters when duplicate detected after analytics ingestion."""
@@ -323,22 +415,16 @@ class SignalAnalytics:
                 "passed_filters": list(trade.get("passed_filters") or []),
                 "close_event_key": close_event_key,
             }
-            risk_budget = float(self.initial_deposit) * max(0.0, float(self.risk_per_trade_pct))
-            risk_abs = max(abs(entry - sl), 1e-9)
-            position_size = risk_budget / risk_abs if risk_budget > 0 else 0.0
-            gross_pnl = pnl * position_size
-            notional = abs(entry * position_size)
-            fee_paid = notional * max(0.0, float(self.fee_rate))
-            net_pnl = gross_pnl - fee_paid
-            closed["position_notional"] = notional
-            closed["fee_paid"] = fee_paid
-            closed["pnl_net"] = net_pnl
+            financials = self._calculate_trade_financials(entry=entry, sl=sl, pnl_points=pnl)
+            closed["position_notional"] = financials["position_notional"]
+            closed["fee_paid"] = financials["fee_paid"]
+            closed["pnl_net"] = financials["pnl_net"]
             prev_equity = float(self.equity_curve[-1]["equity"]) if self.equity_curve else float(self.initial_deposit)
             self.equity_curve.append(
                 {
                     "timestamp": close_time.isoformat(),
-                    "equity": prev_equity + net_pnl,
-                    "pnl": net_pnl,
+                    "equity": prev_equity + financials["pnl_net"],
+                    "pnl": financials["pnl_net"],
                     "symbol": symbol,
                     "result": result,
                 }
@@ -856,10 +942,14 @@ class SignalAnalytics:
             f"Expectancy: {profitability['expectancy']:.2f}R\n"
             f"Max drawdown: {profitability['max_drawdown_pct']:.2f}%\n"
             f"Relaxed share: {profitability['relaxed_share_pct']:.2f}%\n\n"
+            f"Execution mode: {self.execution_mode}\n"
+            f"Risk per trade: {self.risk_per_trade_pct * 100:.2f}%\n"
+            f"Fee rate: {self.fee_rate * 100:.3f}%\n\n"
             "📌 PROFITABILITY BY MODE\n"
             f"{mode_profitability_text}\n\n"
             "🧩 PROFITABILITY BY ENTRY SOURCE\n"
             f"{source_profitability_text}\n\n"
+            f"{self.format_rejection_stats()}\n\n"
             f"🎯 HIGH-CONFIDENCE (conf ≥ {self.high_conf_threshold:.2f})\n"
             f"Trades: {high_conf['trades']}\n"
             f"Winrate: {high_conf['winrate']:.2f}%\n"

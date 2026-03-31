@@ -15,7 +15,7 @@ TOP_N = 50
 # ============================================================
 # Live mode selection
 # ============================================================
-LIVE_MODE = "LIGHT"
+LIVE_MODE = "MAIN"
 # OPTIONS: "MAIN", "SCALPING", "LIGHT".
 # MAIN сохраняет текущую live-логику без изменений.
 # SCALPING включает отдельный набор параметров для более коротких сетапов.
@@ -598,6 +598,16 @@ MAX_OPEN_TRADES_LIGHT = 2
 MAX_OPEN_TRADES_MAIN = 3
 MAX_OPEN_TRADES_SCALPING = 2
 # Пер-режимные ограничения по числу открытых сигналов.
+
+# ============================================================
+# Execution mode (live runtime)
+# ============================================================
+EXECUTION_MODE = "SIMULATION"
+# Поддерживаемые режимы: SIMULATION / PAPER / DEMO.
+# Сейчас реализован SIMULATION; PAPER/DEMO оставлены как архитектурная заготовка.
+
+SIMULATION_FEE_RATE = 0.0004
+# Комиссия в режиме SIMULATION (доля notional на сделку).
 
 def get_live_mode() -> str:
     """Возвращает нормализованный live-режим."""

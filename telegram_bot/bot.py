@@ -32,6 +32,7 @@ from core.config import (
     TOP_N,
     get_live_runtime_settings,
 )
+from services.signal_scoring import get_mode_threshold
 from core.debug import success
 from core.state_manager import state_manager
 from execution.signal_dispatcher import SignalDispatcher
@@ -352,6 +353,7 @@ class TelegramTradingBot:
                 for signal in signals:
                     enriched_signal = self._enrich_signal(signal)
                     mode_name = str(enriched_signal.get("live_mode") or "MAIN").upper()
+                    score_threshold = float(get_mode_threshold(mode_name))
                     can_pass_symbol_rate, symbol_rate_reason = self.risk_guard.check_symbol_cooldown(
                         str(enriched_signal.get("symbol") or "")
                     )
@@ -361,6 +363,13 @@ class TelegramTradingBot:
                     )
                     if not can_pass_symbol_rate or not can_pass_open_limits:
                         reject_reason = symbol_rate_reason or open_limit_reason or "risk guard blocked"
+                        self.signal_analytics.register_signal_decision(
+                            enriched_signal,
+                            status="REJECTED",
+                            reason=reject_reason,
+                            threshold=score_threshold,
+                            position_block=not can_pass_open_limits,
+                        )
                         logger.info(
                             "[SIGNAL REJECTED] symbol=%s mode=%s entry_source=%s score=%s conf=%s reason=%s",
                             enriched_signal.get("symbol"),
@@ -386,6 +395,13 @@ class TelegramTradingBot:
                     if state_action in {"NEW", "UPDATE", "REVERSAL"}:
                         self.signal_analytics.collect_signal(enriched_signal, is_duplicate=False)
                         self.signal_analytics.register_trade(enriched_signal, state_action)
+                        self.signal_analytics.register_signal_decision(
+                            enriched_signal,
+                            status="OPEN",
+                            reason="OPEN",
+                            threshold=score_threshold,
+                            position_block=False,
+                        )
                         analytics_added = True
                         try:
                             confidence_value = float(enriched_signal.get("confidence") or 0.0)
@@ -402,6 +418,13 @@ class TelegramTradingBot:
                         )
 
                     if state_action in {"IGNORE", "COOLDOWN"}:
+                        self.signal_analytics.register_signal_decision(
+                            enriched_signal,
+                            status="REJECTED",
+                            reason=state_reason,
+                            threshold=score_threshold,
+                            position_block=False,
+                        )
                         self.signal_state.upsert_active(
                             {**enriched_signal, "rejection_reason": state_reason},
                             status="REJECTED",
@@ -439,6 +462,13 @@ class TelegramTradingBot:
                         if is_duplicate:
                             logger.info("[DEBUG] DUPLICATE SIGNAL | id=%s | fp=%s", signal_id, enriched_signal["fingerprint"])
                             self.signal_analytics.mark_duplicate()
+                            self.signal_analytics.register_signal_decision(
+                                enriched_signal,
+                                status="REJECTED",
+                                reason="DUPLICATE",
+                                threshold=score_threshold,
+                                position_block=False,
+                            )
                         else:
                             logger.info("[DEBUG] NEW SIGNAL | id=%s | fp=%s", signal_id, enriched_signal["fingerprint"])
                         if is_duplicate:
