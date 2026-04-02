@@ -594,6 +594,11 @@ MAX_SIGNALS_PER_SYMBOL_WINDOW = 2
 MAX_OPEN_TRADES_GLOBAL = 6
 # Максимум одновременно открытых сигналов (всех режимов).
 
+POSITION_LIMITS = {"MAIN": 6, "SCALPING": 7, "LIGHT": 9}
+# Опциональные пер-режимные лимиты. Пример:
+# {"MAIN": 6, "SCALPING": 3, "LIGHT": 2}
+# Если пусто/не задано — используется только глобальный лимит MAX_OPEN_TRADES_GLOBAL.
+
 MAX_OPEN_TRADES_LIGHT = 2
 MAX_OPEN_TRADES_MAIN = 3
 MAX_OPEN_TRADES_SCALPING = 2

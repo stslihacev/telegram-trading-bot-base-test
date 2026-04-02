@@ -45,23 +45,54 @@ class SignalRiskGuard:
         self._symbol_signal_times[symbol_key].append(now)
 
     @staticmethod
-    def check_open_trade_limits(active_trades: dict[str, dict], mode: str) -> tuple[bool, str | None]:
+    def _get_position_limits() -> dict[str, int]:
+        raw_limits = getattr(config, "POSITION_LIMITS", None)
+        if not isinstance(raw_limits, dict) or not raw_limits:
+            return {}
+        normalized: dict[str, int] = {}
+        for mode, value in raw_limits.items():
+            key = str(mode or "").upper().strip()
+            if not key:
+                continue
+            try:
+                normalized[key] = max(1, int(value))
+            except (TypeError, ValueError):
+                continue
+        return normalized
+
+    @staticmethod
+    def get_open_trade_limit_details(active_trades: dict[str, dict], mode: str) -> dict[str, int | bool]:
         active_items = [trade for trade in (active_trades or {}).values() if isinstance(trade, dict)]
         total_open = len(active_items)
         global_limit = max(1, int(getattr(config, "MAX_OPEN_TRADES_GLOBAL", 6)))
+
+        normalized_mode = str(mode or "").upper()
+        mode_limits = SignalRiskGuard._get_position_limits()
+        mode_limit = mode_limits.get(normalized_mode, global_limit)
+        mode_open = sum(1 for trade in active_items if str(trade.get("mode") or "").upper() == normalized_mode)
+        return {
+            "total_open": total_open,
+            "global_limit": global_limit,
+            "mode_open": mode_open,
+            "mode_limit": mode_limit,
+            "using_mode_limits": bool(mode_limits),
+        }
+
+    @staticmethod
+    def check_open_trade_limits(active_trades: dict[str, dict], mode: str) -> tuple[bool, str | None]:
+        details = SignalRiskGuard.get_open_trade_limit_details(active_trades, mode)
+        total_open = int(details["total_open"])
+        global_limit = int(details["global_limit"])
         if total_open >= global_limit:
             return False, f"global open trades limit reached ({total_open}/{global_limit})"
 
         normalized_mode = str(mode or "").upper()
-        mode_limits = {
-            "LIGHT": max(1, int(getattr(config, "MAX_OPEN_TRADES_LIGHT", 2))),
-            "MAIN": max(1, int(getattr(config, "MAX_OPEN_TRADES_MAIN", 3))),
-            "SCALPING": max(1, int(getattr(config, "MAX_OPEN_TRADES_SCALPING", 2))),
-        }
-        mode_limit = mode_limits.get(normalized_mode)
-        if mode_limit is None:
+        using_mode_limits = bool(details["using_mode_limits"])
+        if not using_mode_limits:
             return True, None
-        mode_open = sum(1 for trade in active_items if str(trade.get("mode") or "").upper() == normalized_mode)
+        
+        mode_open = int(details["mode_open"])
+        mode_limit = int(details["mode_limit"])
         if mode_open >= mode_limit:
             return False, f"{normalized_mode} open trades limit reached ({mode_open}/{mode_limit})"
         return True, None

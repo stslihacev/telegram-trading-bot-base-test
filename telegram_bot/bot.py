@@ -357,6 +357,10 @@ class TelegramTradingBot:
                     can_pass_symbol_rate, symbol_rate_reason = self.risk_guard.check_symbol_cooldown(
                         str(enriched_signal.get("symbol") or "")
                     )
+                    limit_details = self.risk_guard.get_open_trade_limit_details(
+                        self.signal_analytics.active_trades,
+                        mode_name,
+                    )
                     can_pass_open_limits, open_limit_reason = self.risk_guard.check_open_trade_limits(
                         self.signal_analytics.active_trades,
                         mode_name,
@@ -369,6 +373,8 @@ class TelegramTradingBot:
                             reason=reject_reason,
                             threshold=score_threshold,
                             position_block=not can_pass_open_limits,
+                            mode_position_count=int(limit_details.get("mode_open", 0)),
+                            mode_limit=int(limit_details.get("mode_limit", 0)),
                         )
                         logger.info(
                             "[SIGNAL REJECTED] symbol=%s mode=%s entry_source=%s score=%s conf=%s reason=%s",
@@ -401,6 +407,8 @@ class TelegramTradingBot:
                             reason="OPEN",
                             threshold=score_threshold,
                             position_block=False,
+                            mode_position_count=int(limit_details.get("mode_open", 0)),
+                            mode_limit=int(limit_details.get("mode_limit", 0)),
                         )
                         analytics_added = True
                         try:
@@ -424,6 +432,8 @@ class TelegramTradingBot:
                             reason=state_reason,
                             threshold=score_threshold,
                             position_block=False,
+                            mode_position_count=int(limit_details.get("mode_open", 0)),
+                            mode_limit=int(limit_details.get("mode_limit", 0)),
                         )
                         self.signal_state.upsert_active(
                             {**enriched_signal, "rejection_reason": state_reason},
