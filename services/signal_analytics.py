@@ -175,6 +175,12 @@ class SignalAnalytics:
                 lines.append(f"  {reason}: {count}")
         return "\n".join(lines)
 
+    def get_rejection_stats_structured(self) -> dict[str, dict[str, int]]:
+        payload: dict[str, dict[str, int]] = {}
+        for mode, counters in self.rejection_counter.items():
+            payload[mode] = {reason: int(count) for reason, count in counters.items()}
+        return payload
+
     def _calculate_trade_financials(self, entry: float, sl: float, pnl_points: float) -> dict[str, float]:
         risk_budget = float(self.initial_deposit) * max(0.0, float(self.risk_per_trade_pct))
         risk_abs = max(abs(entry - sl), 1e-9)
@@ -428,6 +434,14 @@ class SignalAnalytics:
                     "symbol": symbol,
                     "result": result,
                 }
+            )
+            logger.info(
+                "EQUITY_SNAPSHOT: ts=%s symbol=%s equity=%.2f pnl=%.2f mode=%s",
+                close_time.isoformat(),
+                symbol,
+                prev_equity + financials["pnl_net"],
+                financials["pnl_net"],
+                mode,
             )
             self.closed_trades.append(closed)
             self.last_closed_trade = closed
@@ -763,12 +777,36 @@ class SignalAnalytics:
                 issues.append(f"registry_open_without_active:{symbol}:{trade_id}")
             if status in {"TP_HIT", "SL_HIT", "CLOSED", "REVERSAL_EXIT"} and trade_id and trade_id not in closed_registry_ids:
                 issues.append(f"registry_closed_missing_snapshot:{symbol}:{trade_id}")
+        snapshot_symbols = {str(t.get("symbol") or "").strip() for t in self.closed_trades if t.get("symbol")}
+        for symbol in active_symbols:
+            if symbol in snapshot_symbols:
+                issues.append(f"active_and_closed_conflict:{symbol}")
         if issues:
             logger.warning("[RECONCILE] issues=%s", issues)
         else:
             logger.info("[RECONCILE] no issues found")
         return issues
 
+    def build_codex_analytics_payload(self) -> dict[str, Any]:
+        profitability = self._build_profitability_metrics()
+        return {
+            "signals": {
+                "total": self.total_signals,
+                "unique": self.unique_signals,
+                "duplicates": self.duplicates,
+                "modes": dict(self.mode_counter),
+                "entry_sources": dict(self.entry_source_counter),
+            },
+            "profitability": profitability,
+            "rejections": self.get_rejection_stats_structured(),
+            "reconciliation": self.reconcile_trade_state(),
+            "trade_registry": {
+                "total": len(self.trade_registry.trades) if self.trade_registry else 0,
+                "by_mode": self.group_registry_trades_by_mode(),
+                "by_entry_source": self.group_registry_trades_by_entry_source(),
+            },
+        }
+    
     @staticmethod
     def _format_pf(value: float) -> str:
         if value == float("inf"):
@@ -906,6 +944,7 @@ class SignalAnalytics:
             self._format_pf(float(profitability["profit_factor"])),
             profitability["avg_r"],
         )
+        logger.info("%s", self.format_rejection_stats())
 
         return (
             "📊 SIGNAL ANALYTICS\n\n"
