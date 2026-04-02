@@ -57,7 +57,7 @@ class SignalAnalytics:
     initial_deposit: float = field(default_factory=lambda: float(getattr(config, "BACKTEST_INITIAL_CAPITAL", 1000.0)))
     risk_per_trade_pct: float = field(default_factory=lambda: float(getattr(config, "RISK_PER_TRADE", 0.01)))
     fee_rate: float = field(default_factory=lambda: float(getattr(config, "SIMULATION_FEE_RATE", 0.0004)))
-    execution_mode: str = field(default_factory=lambda: str(getattr(config, "EXECUTION_MODE", "SIMULATION")).upper())
+    execution_mode: str = field(default_factory=lambda: str(getattr(config, "EXECUTION_MODE", "DISABLED")).upper())
     equity_curve: list[dict[str, Any]] = field(default_factory=list)
 
     def __post_init__(self) -> None:
@@ -68,6 +68,15 @@ class SignalAnalytics:
         self.trade_registry = TradeRegistry(path=Path("data") / "trades.json")
         self._load_active_trades()
         self.equity_curve = [{"timestamp": datetime.now(timezone.utc).isoformat(), "equity": float(self.initial_deposit), "pnl": 0.0}]
+
+    def _normalized_execution_mode(self) -> str:
+        mode = str(self.execution_mode or "DISABLED").upper()
+        legacy_map = {"SIMULATION": "PAPER", "DEMO": "PAPER"}
+        mode = legacy_map.get(mode, mode)
+        return mode if mode in {"DISABLED", "PAPER", "LIVE"} else "DISABLED"
+
+    def _is_trade_simulation_enabled(self) -> bool:
+        return self._normalized_execution_mode() == "PAPER"
 
     def collect_signal(self, signal: dict[str, Any], is_duplicate: bool = False) -> None:
         self.total_signals += 1
@@ -188,8 +197,8 @@ class SignalAnalytics:
         gross_pnl = pnl_points * position_size
         notional = abs(entry * position_size)
         fee_paid = 0.0
-        mode = str(self.execution_mode or "SIMULATION").upper()
-        if mode in {"SIMULATION", "PAPER"}:
+        mode = self._normalized_execution_mode()
+        if mode == "PAPER":
             fee_paid = notional * max(0.0, float(self.fee_rate))
         net_pnl = gross_pnl - fee_paid
         return {
@@ -533,6 +542,8 @@ class SignalAnalytics:
         action_upper = str(action or "").upper()
         if action_upper not in {"NEW", "REVERSAL", "UPDATE"}:
             return
+        if not self._is_trade_simulation_enabled():
+            return
         symbol = str(signal.get("symbol") or "").strip()
         if not symbol:
             return
@@ -615,6 +626,8 @@ class SignalAnalytics:
             pass
 
     def check_trade_exits(self, current_price: Any, symbol: str, timestamp: Any) -> None:
+        if not self._is_trade_simulation_enabled():
+            return
         symbol_key = str(symbol or "").strip()
         if not symbol_key:
             return
@@ -763,8 +776,20 @@ class SignalAnalytics:
             },
         }
 
-    def reconcile_trade_state(self) -> list[str]:
-        issues: list[str] = []
+    def get_trade_stats_structured(self) -> dict[str, Any]:
+        with self._io_lock:
+            closed_trades = list(self.closed_trades)
+            active_count = len(self.active_trades)
+        return {
+            "active": active_count,
+            "closed": len(closed_trades),
+            "registry_total": len(self.trade_registry.trades) if self.trade_registry else 0,
+            "registry_by_mode": self.group_registry_trades_by_mode(),
+            "registry_by_entry_source": self.group_registry_trades_by_entry_source(),
+        }
+
+    def get_reconciliation_structured(self) -> dict[str, Any]:
+        issues: list[dict[str, str]] = []
         with self._io_lock:
             active_symbols = set(self.active_trades.keys())
             closed_registry_ids = {str(t.get("registry_id")) for t in self.closed_trades if t.get("registry_id")}
@@ -774,22 +799,55 @@ class SignalAnalytics:
             status = str(trade.get("status") or "").upper()
             trade_id = str(trade.get("id") or "")
             if status == "OPEN" and symbol and symbol not in active_symbols:
-                issues.append(f"registry_open_without_active:{symbol}:{trade_id}")
+                issues.append(
+                    {
+                        "type": "registry_open_without_active",
+                        "symbol": symbol,
+                        "trade_id": trade_id,
+                        "severity": "error",
+                    }
+                )
             if status in {"TP_HIT", "SL_HIT", "CLOSED", "REVERSAL_EXIT"} and trade_id and trade_id not in closed_registry_ids:
-                issues.append(f"registry_closed_missing_snapshot:{symbol}:{trade_id}")
+                issues.append(
+                    {
+                        "type": "registry_closed_missing_snapshot",
+                        "symbol": symbol,
+                        "trade_id": trade_id,
+                        "severity": "warning",
+                    }
+                )
         snapshot_symbols = {str(t.get("symbol") or "").strip() for t in self.closed_trades if t.get("symbol")}
         for symbol in active_symbols:
             if symbol in snapshot_symbols:
-                issues.append(f"active_and_closed_conflict:{symbol}")
+                issues.append(
+                    {
+                        "type": "active_and_closed_conflict",
+                        "symbol": symbol,
+                        "trade_id": "",
+                        "severity": "error",
+                    }
+                )
         if issues:
-            logger.warning("[RECONCILE] issues=%s", issues)
+            logger.warning("[RECONCILE] issues=%s", [f"{i['type']}:{i['symbol']}:{i['trade_id']}" for i in issues])
         else:
             logger.info("[RECONCILE] no issues found")
-        return issues
+        return {
+            "issues": issues,
+            "summary": {
+                "total": len(issues),
+                "warnings": sum(1 for item in issues if item["severity"] == "warning"),
+                "errors": sum(1 for item in issues if item["severity"] == "error"),
+            },
+        }
+
+    def reconcile_trade_state(self) -> list[str]:
+        structured = self.get_reconciliation_structured()
+        return [f"{item['type']}:{item['symbol']}:{item['trade_id']}" for item in structured["issues"]]
 
     def build_codex_analytics_payload(self) -> dict[str, Any]:
-        profitability = self._build_profitability_metrics()
+        performance = self._build_profitability_metrics()
         return {
+            "execution_mode": self._normalized_execution_mode(),
             "signals": {
                 "total": self.total_signals,
                 "unique": self.unique_signals,
@@ -797,13 +855,12 @@ class SignalAnalytics:
                 "modes": dict(self.mode_counter),
                 "entry_sources": dict(self.entry_source_counter),
             },
-            "profitability": profitability,
+            "trades": self.get_trade_stats_structured(),
+            "performance": performance,
             "rejections": self.get_rejection_stats_structured(),
-            "reconciliation": self.reconcile_trade_state(),
-            "trade_registry": {
-                "total": len(self.trade_registry.trades) if self.trade_registry else 0,
-                "by_mode": self.group_registry_trades_by_mode(),
-                "by_entry_source": self.group_registry_trades_by_entry_source(),
+            "reconciliation": self.get_reconciliation_structured(),
+            # Backward-compatible alias used in previous snapshots.
+            "profitability": performance,
             },
         }
     
@@ -981,7 +1038,7 @@ class SignalAnalytics:
             f"Expectancy: {profitability['expectancy']:.2f}R\n"
             f"Max drawdown: {profitability['max_drawdown_pct']:.2f}%\n"
             f"Relaxed share: {profitability['relaxed_share_pct']:.2f}%\n\n"
-            f"Execution mode: {self.execution_mode}\n"
+            f"Execution mode: {self._normalized_execution_mode()}\n"
             f"Risk per trade: {self.risk_per_trade_pct * 100:.2f}%\n"
             f"Fee rate: {self.fee_rate * 100:.3f}%\n\n"
             "📌 PROFITABILITY BY MODE\n"

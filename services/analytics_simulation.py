@@ -73,12 +73,13 @@ class AnalyticsSimulationService:
     def build_report(self) -> dict[str, Any]:
         metrics = self.analytics._build_profitability_metrics()
         codex_payload = self.analytics.build_codex_analytics_payload()
+        execution_mode = codex_payload.get("execution_mode", self.analytics.execution_mode)
         return {
             "profitability": metrics,
             "report_text": self.analytics.generate_report(),
             "rejection_stats": self.analytics.get_rejection_stats_structured(),
-            "execution_mode": self.analytics.execution_mode,
-            "mode": "PAPER" if self.analytics.execution_mode == "PAPER" else "SIMULATION",
+            "execution_mode": execution_mode,
+            "mode": execution_mode,
             "codex_payload": codex_payload,
             "reconcile_issues": self.analytics.reconcile_trade_state(),
         }

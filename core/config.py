@@ -602,12 +602,14 @@ MAX_OPEN_TRADES_SCALPING = 2
 # ============================================================
 # Execution mode (live runtime)
 # ============================================================
-EXECUTION_MODE = "SIMULATION"
-# Поддерживаемые режимы: SIMULATION / PAPER / DEMO.
-# Сейчас реализован SIMULATION; PAPER/DEMO оставлены как архитектурная заготовка.
+EXECUTION_MODE = "DISABLED"
+# Поддерживаемые режимы: DISABLED / PAPER / LIVE.
+# DISABLED — сигналы без симуляции сделок (поведение signal-only).
+# PAPER — симуляция lifecycle сделок и PnL без реальных API ордеров.
+# LIVE — зарезервирован для будущего подключения реального исполнения.
 
 SIMULATION_FEE_RATE = 0.0004
-# Комиссия в режиме SIMULATION (доля notional на сделку).
+# Комиссия в PAPER-симуляции (доля notional на сделку).
 
 def get_live_mode() -> str:
     """Возвращает нормализованный live-режим."""
