@@ -10665,3 +10665,135 @@ Reject reason: -
 🧠 Regime: N/A
 🕒 Time:   2026-03-31 16:00:00+00:00
 Fingerprint: 3014186e6db6640f
+2026-04-02 22:41:22,561 - INFO - MAIN 📡 SIGNAL
+
+Symbol:    BTCUSDT
+Direction: 🔻 SHORT
+Timeframe: 1h
+
+💰 Entry: 66653.500000
+🎯 TP:    65818.004286
+🛑 SL:    67117.664286
+RR:    1.80
+
+Score:      4.20 / 7.60
+⭐ Confidence: 0.84 ⭐⭐⭐⭐⭐
+
+Entry source: relaxed
+Passed: TREND, RSI, VOLUME, ADX
+Failed: STRUCTURE, MACD, DI
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-02 17:00:00+00:00
+Fingerprint: fcce5fac8bc2f236
+2026-04-02 22:41:22,566 - INFO - MAIN 📡 SIGNAL
+
+Symbol:    STOUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.362230
+🎯 TP:    0.854182
+🛑 SL:    0.088924
+RR:    1.80
+
+Score:      4.00 / 7.60
+⭐ Confidence: 0.80 ⭐⭐⭐⭐⭐
+
+Entry source: relaxed
+Passed: TREND, RSI, ADX, DI
+Failed: STRUCTURE, MACD, VOLUME
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-02 17:00:00+00:00
+Fingerprint: a336b7e26657bf2c
+2026-04-02 22:41:22,571 - INFO - MAIN 📡 SIGNAL
+
+Symbol:    XRPUSDT
+Direction: 🔻 SHORT
+Timeframe: 1h
+
+💰 Entry: 1.297900
+🎯 TP:    1.278589
+🛑 SL:    1.308629
+RR:    1.80
+
+Score:      5.40 / 7.60
+⭐ Confidence: 1.00 ⭐⭐⭐⭐⭐
+
+Entry source: relaxed
+Passed: TREND, RSI, MACD, ADX, DI
+Failed: STRUCTURE, VOLUME
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-02 17:00:00+00:00
+Fingerprint: 57cedfe26062d43f
+2026-04-02 22:41:22,575 - INFO - MAIN 📡 SIGNAL
+
+Symbol:    XAUTUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 4621.100000
+🎯 TP:    4693.511429
+🛑 SL:    4580.871429
+RR:    1.80
+
+Score:      4.40 / 7.60
+⭐ Confidence: 0.88 ⭐⭐⭐⭐⭐
+
+Entry source: relaxed
+Passed: TREND, RSI, MACD, ADX
+Failed: STRUCTURE, VOLUME, DI
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-02 17:00:00+00:00
+Fingerprint: da2855875dfe94cd
+2026-04-02 22:41:22,591 - INFO - MAIN 📡 SIGNAL
+
+Symbol:    DOGEUSDT
+Direction: 🔻 SHORT
+Timeframe: 1h
+
+💰 Entry: 0.089710
+🎯 TP:    0.088356
+🛑 SL:    0.090462
+RR:    1.80
+
+Score:      4.00 / 7.60
+⭐ Confidence: 0.80 ⭐⭐⭐⭐⭐
+
+Entry source: relaxed
+Passed: TREND, RSI, ADX, DI
+Failed: STRUCTURE, MACD, VOLUME
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-02 17:00:00+00:00
+Fingerprint: 81ed88c89c3fb911
+2026-04-02 22:41:22,595 - INFO - MAIN 📡 SIGNAL
+
+Symbol:    NOMUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.008285
+🎯 TP:    0.011498
+🛑 SL:    0.006500
+RR:    1.80
+
+Score:      4.00 / 7.60
+⭐ Confidence: 0.80 ⭐⭐⭐⭐⭐
+
+Entry source: relaxed
+Passed: TREND, RSI, ADX, DI
+Failed: STRUCTURE, MACD, VOLUME
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-02 17:00:00+00:00
+Fingerprint: 83605ef1f16d1931

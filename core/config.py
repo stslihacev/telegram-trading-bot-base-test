@@ -591,23 +591,23 @@ SIGNAL_COOLDOWN_WINDOW_MINUTES = 15
 MAX_SIGNALS_PER_SYMBOL_WINDOW = 2
 # Максимум сигналов по одному символу в окне SIGNAL_COOLDOWN_WINDOW_MINUTES.
 
-MAX_OPEN_TRADES_GLOBAL = 6
+MAX_OPEN_TRADES_GLOBAL = 20
 # Максимум одновременно открытых сигналов (всех режимов).
 
-POSITION_LIMITS = {"MAIN": 6, "SCALPING": 7, "LIGHT": 9}
+POSITION_LIMITS = {"MAIN": 6, "SCALPING": 4, "LIGHT": 3}
 # Опциональные пер-режимные лимиты. Пример:
 # {"MAIN": 6, "SCALPING": 3, "LIGHT": 2}
 # Если пусто/не задано — используется только глобальный лимит MAX_OPEN_TRADES_GLOBAL.
 
-MAX_OPEN_TRADES_LIGHT = 2
-MAX_OPEN_TRADES_MAIN = 3
-MAX_OPEN_TRADES_SCALPING = 2
+#MAX_OPEN_TRADES_LIGHT = 2
+#MAX_OPEN_TRADES_MAIN = 3
+#MAX_OPEN_TRADES_SCALPING = 2
 # Пер-режимные ограничения по числу открытых сигналов.
 
 # ============================================================
 # Execution mode (live runtime)
 # ============================================================
-EXECUTION_MODE = "DISABLED"
+EXECUTION_MODE = "PAPER"
 # Поддерживаемые режимы: DISABLED / PAPER / LIVE.
 # DISABLED — сигналы без симуляции сделок (поведение signal-only).
 # PAPER — симуляция lifecycle сделок и PnL без реальных API ордеров.

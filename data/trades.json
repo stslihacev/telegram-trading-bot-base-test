@@ -37,5 +37,57 @@
     "confidence": 1.0,
     "timestamp": "2026-03-31T16:00:00+00:00",
     "entry_source": "relaxed"
+  },
+  {
+    "id": "0d0c425f48934fcf9963d0ce3942b3eb",
+    "symbol": "BTCUSDT",
+    "mode": "MAIN",
+    "strategy_version": "v1",
+    "entry_price": 66653.5,
+    "tp": 65818.00428571428,
+    "sl": 67117.66428571429,
+    "status": "OPEN",
+    "confidence": 0.8400000000000001,
+    "timestamp": "2026-04-02T17:00:00+00:00",
+    "entry_source": "relaxed"
+  },
+  {
+    "id": "5b9848c939f54fe4841b037ee52e5d14",
+    "symbol": "STOUSDT",
+    "mode": "MAIN",
+    "strategy_version": "v1",
+    "entry_price": 0.36223,
+    "tp": 0.8541815714285713,
+    "sl": 0.08892357142857149,
+    "status": "OPEN",
+    "confidence": 0.8,
+    "timestamp": "2026-04-02T17:00:00+00:00",
+    "entry_source": "relaxed"
+  },
+  {
+    "id": "2da9a39f73cc47cf93398f5d510ea618",
+    "symbol": "XRPUSDT",
+    "mode": "MAIN",
+    "strategy_version": "v1",
+    "entry_price": 1.2979,
+    "tp": 1.2785885714285714,
+    "sl": 1.3086285714285715,
+    "status": "OPEN",
+    "confidence": 1.0,
+    "timestamp": "2026-04-02T17:00:00+00:00",
+    "entry_source": "relaxed"
+  },
+  {
+    "id": "4a1f179a161444e99761a11713479df4",
+    "symbol": "NOMUSDT",
+    "mode": "MAIN",
+    "strategy_version": "v1",
+    "entry_price": 0.008285,
+    "tp": 0.011498257142857142,
+    "sl": 0.006499857142857144,
+    "status": "OPEN",
+    "confidence": 0.8,
+    "timestamp": "2026-04-02T17:00:00+00:00",
+    "entry_source": "relaxed"
   }
 ]

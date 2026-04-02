@@ -130,6 +130,10 @@ class SignalAnalytics:
         for src, target in aliases.items():
             if text.startswith(src):
                 return target
+        if text.startswith("POSITION_LIMIT_MODE"):
+            return "POSITION_LIMIT_MODE"
+        if text.startswith("POSITION_LIMIT_GLOBAL"):
+            return "POSITION_LIMIT_GLOBAL"
         if "LIMIT" in text:
             return "POSITION_LIMIT"
         if "DUPLICATE" in text:
@@ -150,6 +154,8 @@ class SignalAnalytics:
         threshold: float | None = None,
         mode_position_count: int | None = None,
         mode_limit: int | None = None,
+        global_position_count: int | None = None,
+        global_limit: int | None = None,
     ) -> None:
         mode = str(signal.get("live_mode") or signal.get("label_prefix") or "UNKNOWN").upper().strip("[]")
         normalized_status = str(status or "REJECTED").upper()
@@ -160,7 +166,8 @@ class SignalAnalytics:
             bucket[normalized_reason] += 1
         logger.info(
             "SIGNAL_DECISION: symbol=%s mode=%s status=%s score=%.2f threshold=%s entry_source=%s "
-            "passed_filters=%s failed_filters=%s reason=%s position_block=%s mode_position_count=%s mode_limit=%s",
+            "passed_filters=%s failed_filters=%s reason=%s position_block=%s mode_position_count=%s mode_limit=%s "
+            "global_position_count=%s global_limit=%s",
             signal.get("symbol"),
             mode,
             normalized_status,
@@ -173,6 +180,8 @@ class SignalAnalytics:
             bool(position_block),
             mode_position_count if mode_position_count is not None else "n/a",
             mode_limit if mode_limit is not None else "n/a",
+            global_position_count if global_position_count is not None else "n/a",
+            global_limit if global_limit is not None else "n/a",
         )
 
     def format_rejection_stats(self) -> str:

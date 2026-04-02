@@ -81,18 +81,15 @@ class SignalRiskGuard:
     @staticmethod
     def check_open_trade_limits(active_trades: dict[str, dict], mode: str) -> tuple[bool, str | None]:
         details = SignalRiskGuard.get_open_trade_limit_details(active_trades, mode)
+        using_mode_limits = bool(details["using_mode_limits"])
+        mode_open = int(details["mode_open"])
+        mode_limit = int(details["mode_limit"])
+        if using_mode_limits and mode_open >= mode_limit:
+            return False, "POSITION_LIMIT_MODE"
+
         total_open = int(details["total_open"])
         global_limit = int(details["global_limit"])
         if total_open >= global_limit:
-            return False, f"global open trades limit reached ({total_open}/{global_limit})"
+            return False, "POSITION_LIMIT_GLOBAL"
 
-        normalized_mode = str(mode or "").upper()
-        using_mode_limits = bool(details["using_mode_limits"])
-        if not using_mode_limits:
-            return True, None
-        
-        mode_open = int(details["mode_open"])
-        mode_limit = int(details["mode_limit"])
-        if mode_open >= mode_limit:
-            return False, f"{normalized_mode} open trades limit reached ({mode_open}/{mode_limit})"
         return True, None

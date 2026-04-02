@@ -375,6 +375,8 @@ class TelegramTradingBot:
                             position_block=not can_pass_open_limits,
                             mode_position_count=int(limit_details.get("mode_open", 0)),
                             mode_limit=int(limit_details.get("mode_limit", 0)),
+                            global_position_count=int(limit_details.get("total_open", 0)),
+                            global_limit=int(limit_details.get("global_limit", 0)),
                         )
                         logger.info(
                             "[SIGNAL REJECTED] symbol=%s mode=%s entry_source=%s score=%s conf=%s reason=%s",
@@ -409,6 +411,8 @@ class TelegramTradingBot:
                             position_block=False,
                             mode_position_count=int(limit_details.get("mode_open", 0)),
                             mode_limit=int(limit_details.get("mode_limit", 0)),
+                            global_position_count=int(limit_details.get("total_open", 0)),
+                            global_limit=int(limit_details.get("global_limit", 0)),
                         )
                         analytics_added = True
                         try:
@@ -434,6 +438,8 @@ class TelegramTradingBot:
                             position_block=False,
                             mode_position_count=int(limit_details.get("mode_open", 0)),
                             mode_limit=int(limit_details.get("mode_limit", 0)),
+                            global_position_count=int(limit_details.get("total_open", 0)),
+                            global_limit=int(limit_details.get("global_limit", 0)),
                         )
                         self.signal_state.upsert_active(
                             {**enriched_signal, "rejection_reason": state_reason},
