@@ -78,7 +78,8 @@ class MarketScanner:
             return None
         return {
             "symbol": symbol,
-            "signal_type": f"{self.runtime['mode']}_TEST",
+            "signal_type": "strict",
+            "pattern_type": f"{self.runtime['mode']}_TEST",
             "direction": "LONG",
             "entry": price,
             "tp": round(price * 1.01, 8),

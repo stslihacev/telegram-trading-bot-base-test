@@ -59,6 +59,21 @@ class SignalAnalytics:
     fee_rate: float = field(default_factory=lambda: float(getattr(config, "SIMULATION_FEE_RATE", 0.0004)))
     execution_mode: str = field(default_factory=lambda: str(getattr(config, "EXECUTION_MODE", "DISABLED")).upper())
     equity_curve: list[dict[str, Any]] = field(default_factory=list)
+    analytics: dict[str, int] = field(
+        default_factory=lambda: {
+            "signals_total": 0,
+            "signals_strict": 0,
+            "signals_fallback": 0,
+            "signals_opened": 0,
+            "signals_blocked_by_limits": 0,
+            "opened_from_strict": 0,
+            "opened_from_fallback": 0,
+            "closed_strict_tp": 0,
+            "closed_strict_sl": 0,
+            "closed_fallback_tp": 0,
+            "closed_fallback_sl": 0,
+        }
+    )
 
     def __post_init__(self) -> None:
         try:
@@ -78,7 +93,26 @@ class SignalAnalytics:
     def _is_trade_simulation_enabled(self) -> bool:
         return self._normalized_execution_mode() == "PAPER"
 
+    @staticmethod
+    def _normalize_signal_type(signal: dict[str, Any] | None) -> str:
+        payload = signal or {}
+        signal_type = str(payload.get("signal_type") or "").lower().strip()
+        if signal_type in {"strict", "fallback"}:
+            return signal_type
+        entry_source = str(payload.get("entry_source") or "strict").lower().strip()
+        if entry_source in {"relaxed", "fallback"}:
+            return "fallback"
+        return "strict"
+
     def collect_signal(self, signal: dict[str, Any], is_duplicate: bool = False) -> None:
+        signal_type = self._normalize_signal_type(signal)
+        signal["signal_type"] = signal_type
+        self.analytics["signals_total"] += 1
+        if signal_type == "fallback":
+            self.analytics["signals_fallback"] += 1
+        else:
+            self.analytics["signals_strict"] += 1
+
         self.total_signals += 1
         if is_duplicate:
             self.duplicates += 1
@@ -164,6 +198,15 @@ class SignalAnalytics:
         if normalized_status == "REJECTED":
             bucket = self.rejection_counter.setdefault(mode, Counter())
             bucket[normalized_reason] += 1
+            if position_block:
+                self.analytics["signals_blocked_by_limits"] += 1
+        elif normalized_status == "OPEN":
+            signal_type = self._normalize_signal_type(signal)
+            self.analytics["signals_opened"] += 1
+            if signal_type == "fallback":
+                self.analytics["opened_from_fallback"] += 1
+            else:
+                self.analytics["opened_from_strict"] += 1
         logger.info(
             "SIGNAL_DECISION: symbol=%s mode=%s status=%s score=%.2f threshold=%s entry_source=%s "
             "passed_filters=%s failed_filters=%s reason=%s position_block=%s mode_position_count=%s mode_limit=%s "
@@ -299,6 +342,7 @@ class SignalAnalytics:
             "score": self._safe_float(payload.get("score")),
             "mode": str(payload.get("mode") or "UNKNOWN").upper().strip("[]"),
             "entry_source": str(payload.get("entry_source") or "strict").lower(),
+            "signal_type": self._normalize_signal_type(payload),
             "is_reversal": bool(payload.get("is_reversal", False)),
             "passed_filters": [
                 str(name).upper().strip()
@@ -437,6 +481,7 @@ class SignalAnalytics:
                 "mode": mode,
                 "registry_id": str(trade.get("registry_id") or ""),
                 "entry_source": str(trade.get("entry_source") or "strict").lower(),
+                "signal_type": self._normalize_signal_type(trade),
                 "is_reversal": bool(trade.get("is_reversal", False)),
                 "open_time": open_time,
                 "close_time": close_time,
@@ -469,6 +514,17 @@ class SignalAnalytics:
             self.last_closed_trade = closed
             self.mode_closed_counter[mode] += 1
             self.mode_rr_sum[mode] += rr
+            signal_type = self._normalize_signal_type(trade)
+            if str(result).upper() == "TP":
+                if signal_type == "fallback":
+                    self.analytics["closed_fallback_tp"] += 1
+                else:
+                    self.analytics["closed_strict_tp"] += 1
+            elif str(result).upper() == "SL":
+                if signal_type == "fallback":
+                    self.analytics["closed_fallback_sl"] += 1
+                else:
+                    self.analytics["closed_strict_sl"] += 1
             if result_bucket == "PROFIT":
                 self.mode_win_counter[mode] += 1
             if result_bucket == "LOSS" and self._safe_float(trade.get("confidence")) >= self.high_conf_threshold:
@@ -583,6 +639,7 @@ class SignalAnalytics:
             trade["score"] = self._safe_float(signal.get("score"))
             trade["mode"] = str(signal.get("live_mode") or signal.get("label_prefix") or "UNKNOWN").upper().strip("[]")
             trade["entry_source"] = str(signal.get("entry_source") or "strict").lower()
+            trade["signal_type"] = self._normalize_signal_type(signal)
             trade["passed_filters"] = [
                 str(name).upper().strip()
                 for name in (signal.get("passed_filters") or [])
@@ -607,6 +664,7 @@ class SignalAnalytics:
             "score": self._safe_float(signal.get("score")),
             "mode": str(signal.get("live_mode") or signal.get("label_prefix") or "UNKNOWN").upper().strip("[]"),
             "entry_source": str(signal.get("entry_source") or "strict").lower(),
+            "signal_type": self._normalize_signal_type(signal),
             "is_reversal": action_upper == "REVERSAL" or bool(signal.get("is_reversal", False)),
             "pending_since": signal.get("pending_since"),
             "confirmation_reason": signal.get("confirmation_reason"),
@@ -985,6 +1043,14 @@ class SignalAnalytics:
             )
         source_profitability_text = "\n".join(source_profitability_lines)
         high_conf = profitability["high_conf"]
+        strict_tp = int(self.analytics.get("closed_strict_tp", 0))
+        strict_sl = int(self.analytics.get("closed_strict_sl", 0))
+        fallback_tp = int(self.analytics.get("closed_fallback_tp", 0))
+        fallback_sl = int(self.analytics.get("closed_fallback_sl", 0))
+        strict_total_closed = strict_tp + strict_sl
+        fallback_total_closed = fallback_tp + fallback_sl
+        strict_winrate = (strict_tp / strict_total_closed * 100) if strict_total_closed else 0.0
+        fallback_winrate = (fallback_tp / fallback_total_closed * 100) if fallback_total_closed else 0.0
         mode_lines = []
         for mode_name in ("LIGHT", "MAIN", "SCALPING"):
             signals_count = self.mode_counter.get(mode_name, 0)
@@ -1017,6 +1083,19 @@ class SignalAnalytics:
 
         return (
             "📊 SIGNAL ANALYTICS\n\n"
+            "ANALYTICS REPORT:\n\n"
+            "Signals:\n"
+            f"* total: {self.analytics.get('signals_total', 0)}\n"
+            f"* strict: {self.analytics.get('signals_strict', 0)}\n"
+            f"* fallback: {self.analytics.get('signals_fallback', 0)}\n"
+            f"* opened: {self.analytics.get('signals_opened', 0)}\n"
+            f"* blocked_by_limits: {self.analytics.get('signals_blocked_by_limits', 0)}\n\n"
+            "Opened:\n"
+            f"* strict: {self.analytics.get('opened_from_strict', 0)}\n"
+            f"* fallback: {self.analytics.get('opened_from_fallback', 0)}\n\n"
+            "Results:\n"
+            f"* strict: TP={strict_tp} / SL={strict_sl} / winrate={strict_winrate:.2f}%\n"
+            f"* fallback: TP={fallback_tp} / SL={fallback_sl} / winrate={fallback_winrate:.2f}%\n\n"
             "📊 СТАТИСТИКА СИГНАЛОВ\n\n"
             f"Всего сигналов: {self.total_signals}\n"
             f"Уникальных: {self.unique_signals}\n"

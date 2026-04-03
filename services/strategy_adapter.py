@@ -307,7 +307,8 @@ class BacktestStrategyAdapter:
         rr = self._calculate_rr(entry, tp, sl)
         return {
             "symbol": symbol,
-            "signal_type": f"{runtime['mode']}_RELAXED",
+            "signal_type": "fallback",
+            "pattern_type": f"{runtime['mode']}_RELAXED",
             "direction": direction,
             "entry": float(entry),
             "tp": float(tp),
@@ -497,7 +498,8 @@ class BacktestStrategyAdapter:
                             signal_tf = runtime["scan_timeframe"]
                         strict_payload = {
                             "symbol": signal["symbol"],
-                            "signal_type": signal["signal_type"],
+                            "signal_type": "strict",
+                            "pattern_type": signal.get("signal_type"),
                             "direction": signal["direction"],
                             "entry": entry,
                             "tp": tp,
