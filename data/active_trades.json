@@ -63,48 +63,6 @@
       "ADX"
     ]
   },
-  "PUFFERUSDT": {
-    "symbol": "PUFFERUSDT",
-    "direction": "LONG",
-    "entry": 0.03473,
-    "tp": 0.041258857142857146,
-    "sl": 0.031102857142857137,
-    "open_time": "2026-04-04T16:00:00+00:00",
-    "signal_id": "PUFFERUSDT_1h_LONG_2026-04-04 16:00:00+00:00",
-    "confidence": 0.8,
-    "score": 4.0,
-    "mode": "MAIN",
-    "entry_source": "relaxed",
-    "signal_type": "fallback",
-    "is_reversal": false,
-    "passed_filters": [
-      "TREND",
-      "RSI",
-      "ADX",
-      "DI"
-    ]
-  },
-  "RIVERUSDT": {
-    "symbol": "RIVERUSDT",
-    "direction": "SHORT",
-    "entry": 12.075,
-    "tp": 11.319771428571428,
-    "sl": 12.494571428571428,
-    "open_time": "2026-04-04T16:00:00+00:00",
-    "signal_id": "RIVERUSDT_1h_SHORT_2026-04-04 16:00:00+00:00",
-    "confidence": 0.8800000000000001,
-    "score": 4.4,
-    "mode": "MAIN",
-    "entry_source": "relaxed",
-    "signal_type": "fallback",
-    "is_reversal": false,
-    "passed_filters": [
-      "TREND",
-      "RSI",
-      "MACD",
-      "ADX"
-    ]
-  },
   "JCTUSDT": {
     "symbol": "JCTUSDT",
     "direction": "LONG",

@@ -54,11 +54,11 @@ Winrate: 50.00%
 Trades: 2
 Wins/Losses: 1/1
 Winrate: 50.00%
-Profit Factor: 1.47
-Avg R: 0.34
+Profit Factor: 1.62
+Avg R: 0.35
 
-Expectancy: 0.34R
-Max drawdown: 1.46%
+Expectancy: 0.35R
+Max drawdown: 1.14%
 Relaxed share: 100.00%
 
 Execution mode: PAPER
@@ -67,12 +67,12 @@ Fee rate: 0.040%
 
 📌 PROFITABILITY BY MODE
 LIGHT: trades=0, wins=0, losses=0, winrate=0.0%, avgR=0.00, PF=0.00
-MAIN: trades=2, wins=1, losses=1, winrate=50.0%, avgR=0.34, PF=1.47
+MAIN: trades=2, wins=1, losses=1, winrate=50.0%, avgR=0.35, PF=1.62
 SCALPING: trades=0, wins=0, losses=0, winrate=0.0%, avgR=0.00, PF=0.00
 
 🧩 PROFITABILITY BY ENTRY SOURCE
 strict: trades=0, wins=0, losses=0, winrate=0.0%, avgR=0.00, PF=0.00
-relaxed: trades=2, wins=1, losses=1, winrate=50.0%, avgR=0.34, PF=1.47
+relaxed: trades=2, wins=1, losses=1, winrate=50.0%, avgR=0.35, PF=1.62
 
 REJECTION_STATS:
 (no rejected signals yet)
@@ -80,35 +80,34 @@ REJECTION_STATS:
 🎯 HIGH-CONFIDENCE (conf ≥ 0.70)
 Trades: 2
 Winrate: 50.00%
-Avg R: 0.34
+Avg R: 0.35
 
 Reversal trades: 0
 Reversal winrate: 0.00%
 
-Avg RR: 1.79
-Avg R: 0.34
-Avg duration: 20h 17m
+Avg RR: 1.49
+Avg R: 0.35
+Avg duration: 24h 43m
 High-conf losses: 1
 
 📌 MODE TRADE STATS
 LIGHT: signals=0, closed=0, winrate=0.0%, avgRR=0.00
-MAIN: signals=0, closed=2, winrate=50.0%, avgRR=1.79
+MAIN: signals=0, closed=2, winrate=50.0%, avgRR=1.49
 SCALPING: signals=0, closed=0, winrate=0.0%, avgRR=0.00
 
 🧪 FILTER OUTCOME BREAKDOWN
 ADX: profit=1, loss=1, winrate=50.0%
-DI: profit=1, loss=1, winrate=50.0%
+DI: profit=0, loss=1, winrate=0.0%
 MACD: profit=1, loss=0, winrate=100.0%
 RSI: profit=1, loss=1, winrate=50.0%
 TREND: profit=1, loss=1, winrate=50.0%
-VOLUME: profit=1, loss=0, winrate=100.0%
 
 --------------------------------
 
 ⚠️ РЕКОМЕНДАЦИИ
 
 - Низкая активность (возможно рынок спокойный). Накопите больше сигналов перед изменением настроек.
-2026-04-05 18:28:30,088 - [ANALYTICS SNAPSHOT]
+2026-04-05 20:09:25,124 - [ANALYTICS SNAPSHOT]
 📊 SIGNAL ANALYTICS
 
 ANALYTICS REPORT:
@@ -165,11 +164,11 @@ Winrate: 50.00%
 Trades: 2
 Wins/Losses: 1/1
 Winrate: 50.00%
-Profit Factor: 1.47
-Avg R: 0.34
+Profit Factor: 1.62
+Avg R: 0.35
 
-Expectancy: 0.34R
-Max drawdown: 1.46%
+Expectancy: 0.35R
+Max drawdown: 1.14%
 Relaxed share: 100.00%
 
 Execution mode: PAPER
@@ -178,12 +177,12 @@ Fee rate: 0.040%
 
 📌 PROFITABILITY BY MODE
 LIGHT: trades=0, wins=0, losses=0, winrate=0.0%, avgR=0.00, PF=0.00
-MAIN: trades=2, wins=1, losses=1, winrate=50.0%, avgR=0.34, PF=1.47
+MAIN: trades=2, wins=1, losses=1, winrate=50.0%, avgR=0.35, PF=1.62
 SCALPING: trades=0, wins=0, losses=0, winrate=0.0%, avgR=0.00, PF=0.00
 
 🧩 PROFITABILITY BY ENTRY SOURCE
 strict: trades=0, wins=0, losses=0, winrate=0.0%, avgR=0.00, PF=0.00
-relaxed: trades=2, wins=1, losses=1, winrate=50.0%, avgR=0.34, PF=1.47
+relaxed: trades=2, wins=1, losses=1, winrate=50.0%, avgR=0.35, PF=1.62
 
 REJECTION_STATS:
 (no rejected signals yet)
@@ -191,28 +190,27 @@ REJECTION_STATS:
 🎯 HIGH-CONFIDENCE (conf ≥ 0.70)
 Trades: 2
 Winrate: 50.00%
-Avg R: 0.34
+Avg R: 0.35
 
 Reversal trades: 0
 Reversal winrate: 0.00%
 
-Avg RR: 1.79
-Avg R: 0.34
-Avg duration: 20h 17m
+Avg RR: 1.49
+Avg R: 0.35
+Avg duration: 24h 43m
 High-conf losses: 1
 
 📌 MODE TRADE STATS
 LIGHT: signals=0, closed=0, winrate=0.0%, avgRR=0.00
-MAIN: signals=0, closed=2, winrate=50.0%, avgRR=1.79
+MAIN: signals=0, closed=2, winrate=50.0%, avgRR=1.49
 SCALPING: signals=0, closed=0, winrate=0.0%, avgRR=0.00
 
 🧪 FILTER OUTCOME BREAKDOWN
 ADX: profit=1, loss=1, winrate=50.0%
-DI: profit=1, loss=1, winrate=50.0%
+DI: profit=0, loss=1, winrate=0.0%
 MACD: profit=1, loss=0, winrate=100.0%
 RSI: profit=1, loss=1, winrate=50.0%
 TREND: profit=1, loss=1, winrate=50.0%
-VOLUME: profit=1, loss=0, winrate=100.0%
 
 --------------------------------
 

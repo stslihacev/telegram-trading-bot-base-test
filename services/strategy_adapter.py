@@ -26,6 +26,8 @@ from utils.logger import logger
 class BacktestStrategyAdapter:
     """Использует backtest.BosStrategy.generate_signal напрямую на последней свече."""
     _config_validated = False
+    _hard_filters = ("TREND", "STRUCTURE")
+    _soft_filters = ("RSI", "MACD", "VOLUME", "ADX")
 
     def __init__(self, min_rr: float | None = None):
         self.strategy = BosStrategy()
@@ -276,14 +278,28 @@ class BacktestStrategyAdapter:
         macd_signal = macd.ewm(span=9, adjust=False).mean()
         macd_hist = self._safe_float((macd - macd_signal).iloc[-2], 0.0)
 
-        trend_ok = close >= ema200 and ema50 >= ema200
-        rsi_ok = bool(getattr(config, "CONFIDENCE_RSI_LOW", 30) <= rsi <= getattr(config, "CONFIDENCE_RSI_HIGH", 70))
+        trend_tolerance = 0.003
+        direction = "LONG" if ema50 >= ema200 else "SHORT"
+        long_trend_ok = close >= ema200 * (1.0 - trend_tolerance) and ema50 >= ema200 * (1.0 - trend_tolerance)
+        short_trend_ok = close <= ema200 * (1.0 + trend_tolerance) and ema50 <= ema200 * (1.0 + trend_tolerance)
+        trend_ok = bool(long_trend_ok or short_trend_ok)
+        recent = df.iloc[max(0, len(df) - 22):-2]
+        recent_high = self._safe_float(recent["high"].max(), close) if len(recent) else close
+        recent_low = self._safe_float(recent["low"].min(), close) if len(recent) else close
+        structure_ok = bool(
+            (direction == "LONG" and close >= recent_high * (1.0 - trend_tolerance))
+            or (direction == "SHORT" and close <= recent_low * (1.0 + trend_tolerance))
+        )
+        rsi_low = self._safe_float(getattr(config, "CONFIDENCE_RSI_LOW", 40.0), 40.0)
+        rsi_high = self._safe_float(getattr(config, "CONFIDENCE_RSI_HIGH", 60.0), 60.0)
+        rsi_ok = bool((direction == "LONG" and rsi <= rsi_high) or (direction == "SHORT" and rsi >= rsi_low))
         adx_ok = adx >= self._safe_float(getattr(config, "LIVE_ADX_MIN", 20.0), 20.0)
-        volume_ok = volume_now > volume_ma if volume_ma > 0 else False
-        macd_ok = macd_hist > 0
+        volume_ok = volume_now >= volume_ma if volume_ma > 0 else False
+        macd_ok = (direction == "LONG" and macd_hist >= 0) or (direction == "SHORT" and macd_hist <= 0)
 
         checks = {
             "TREND": trend_ok,
+            "STRUCTURE": structure_ok,
             "RSI": rsi_ok,
             "ADX": adx_ok,
             "VOLUME": volume_ok,
@@ -298,11 +314,15 @@ class BacktestStrategyAdapter:
             "volume": volume_now,
             "volume_ma": volume_ma,
             "macd_hist": macd_hist,
+            "recent_high": recent_high,
+            "recent_low": recent_low,
+            "direction": 1.0 if direction == "LONG" else -1.0,
         }
         logger.info(
-            "FILTER_CHECK: symbol=%s trend_ok=%s rsi_ok=%s adx_ok=%s volume_ok=%s macd_ok=%s",
+            "FILTER_CHECK: symbol=%s trend_ok=%s structure_ok=%s rsi_ok=%s adx_ok=%s volume_ok=%s macd_ok=%s",
             symbol,
             checks["TREND"],
+            checks["STRUCTURE"],
             checks["RSI"],
             checks["ADX"],
             checks["VOLUME"],
@@ -544,10 +564,37 @@ class BacktestStrategyAdapter:
             with self._apply_runtime_overrides(runtime):
                 df = self._prepare_frame(candles, runtime)
                 filter_checks, _filter_metrics = self._build_filter_diagnostics(symbol, df)
-                _score_breakdown, _min_required_score = self._log_score_breakdown(symbol, filter_checks, runtime)
-                filter_failed = [name for name, ok in filter_checks.items() if not ok]
-                if filter_failed:
-                    logger.info("FILTER_REJECTION: symbol=%s failed_filters=%s", symbol, filter_failed)
+                score_breakdown, _min_required_score = self._log_score_breakdown(symbol, filter_checks, runtime)
+                hard_failed = [name for name in self._hard_filters if name in filter_checks and not filter_checks[name]]
+                soft_failed = [name for name in self._soft_filters if name in filter_checks and not filter_checks[name]]
+                if hard_failed or soft_failed:
+                    logger.info(
+                        "FILTER_REJECTION: symbol=%s hard_failed=%s soft_failed=%s",
+                        symbol,
+                        hard_failed,
+                        soft_failed,
+                    )
+                if hard_failed:
+                    self.last_signal_diagnostics = {
+                        "mode": runtime["mode"],
+                        "score": float(score_breakdown.get("total_score", 0.0)),
+                        "passed_filters": [name for name, ok in filter_checks.items() if ok],
+                        "failed_filters": hard_failed,
+                        "rejection_reason": "hard filters failed",
+                        "potential_signal": False,
+                        "strict_signal": False,
+                    }
+                    self._log_execution_trace(symbol, strict_result=False, fallback_executed=False)
+                    return None
+                self.last_signal_diagnostics = {
+                    "mode": runtime["mode"],
+                    "score": float(score_breakdown.get("total_score", 0.0)),
+                    "passed_filters": [name for name, ok in filter_checks.items() if ok],
+                    "failed_filters": soft_failed,
+                    "rejection_reason": None,
+                    "potential_signal": True,
+                    "strict_signal": False,
+                }
                 arrays = self._build_arrays(df)
                 swing_indices = self._build_swing_indices(df)
                 df_4h = build_4h_frame(df)
@@ -700,7 +747,7 @@ class BacktestStrategyAdapter:
                 else:
                     strict_rejection_reason = str(self.strategy.last_rejection_reason or "unknown")
                     strict_rejection_details = str(self.strategy.last_rejection_message or "no details")
-                    self.last_signal_diagnostics["potential_signal"] = False
+                    self.last_signal_diagnostics["potential_signal"] = True
                     self.last_signal_diagnostics["strict_signal"] = False
 
                 if strict_payload:

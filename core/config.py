@@ -31,7 +31,7 @@ ENABLE_SIGNAL_SCORING = True
 SIGNAL_LOG_MODE = "FULL"
 # Режим логирования сигналов: "FULL" (многострочный) или "COMPACT" (одна строка).
 
-MIN_SCORE_THRESHOLD_MAIN = 4.2
+MIN_SCORE_THRESHOLD_MAIN = 4.0
 # MAIN: максимально строгий порог 6.0 (фактически требует совпадения всех фильтров).
 
 MIN_SCORE_THRESHOLD_SCALPING = 3.8
@@ -291,10 +291,10 @@ CONFIDENCE_WEIGHT_CHART = 0.10
 CONFIDENCE_ADX_THRESHOLD = 25
 # Порог ADX, после которого тренд считается сильным в confidence-модели.
 
-CONFIDENCE_RSI_LOW = 30
+CONFIDENCE_RSI_LOW = 40
 # Нижняя граница RSI для перепроданности.
 
-CONFIDENCE_RSI_HIGH = 70
+CONFIDENCE_RSI_HIGH = 60
 # Верхняя граница RSI для перекупленности.
 
 CONFIDENCE_VOLUME_RATIO = 1.5
