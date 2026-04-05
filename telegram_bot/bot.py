@@ -53,40 +53,43 @@ from telegram_bot.handlers.commands import (
     status_command,
 )
 from telegram_bot.handlers.signals import broadcast_signal
-from utils.logger import LOG_DIR, logger
+from utils.logger import LOG_DIR, ensure_named_file_logger, logger
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
 
-signals_logger = logging.getLogger("signals_logger")
-signals_logger.setLevel(logging.INFO)
-signals_logger.propagate = False
-
-if not any(
-    isinstance(handler, logging.FileHandler)
-    and Path(getattr(handler, "baseFilename", "")).name == "signals.log"
-    for handler in signals_logger.handlers
-):
-    signals_file_handler = logging.FileHandler(LOG_DIR / "signals.log", encoding="utf-8")
-    signals_file_handler.setLevel(logging.INFO)
-    signals_file_handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
-    signals_logger.addHandler(signals_file_handler)
-
-analytics_logger = logging.getLogger("analytics_logger")
-analytics_logger.setLevel(logging.INFO)
-analytics_logger.propagate = False
-
-if not any(
-    isinstance(handler, logging.FileHandler)
-    and Path(getattr(handler, "baseFilename", "")).name == "analytics.log"
-    for handler in analytics_logger.handlers
-):
-    analytics_file_handler = logging.FileHandler(LOG_DIR / "analytics.log", encoding="utf-8")
-    analytics_file_handler.setLevel(logging.INFO)
-    analytics_file_handler.setFormatter(logging.Formatter("%(asctime)s - %(message)s"))
-    analytics_logger.addHandler(analytics_file_handler)
-
 ANALYTICS_SNAPSHOT_PATH = LOG_DIR / "analytics_snapshot.log"
+signals_logger = ensure_named_file_logger(
+    "signals_logger",
+    LOG_DIR / "signals.log",
+    level=logging.INFO,
+    fmt="%(asctime)s - [SIGNAL] %(levelname)s - %(message)s",
+)
+analytics_logger = ensure_named_file_logger(
+    "analytics_logger",
+    LOG_DIR / "analytics.log",
+    level=logging.INFO,
+    fmt="%(asctime)s - [ANALYTICS] %(message)s",
+)
+snapshot_logger = ensure_named_file_logger(
+    "snapshot_logger",
+    ANALYTICS_SNAPSHOT_PATH,
+    level=logging.INFO,
+    fmt="%(asctime)s - [ANALYTICS SNAPSHOT]\n%(message)s",
+)
+
+
+def _log_logger_status(name: str, subject_logger: logging.Logger) -> None:
+    handlers = subject_logger.handlers
+    logger.info("LOGGER INIT OK: %s handlers=%s level=%s propagate=%s", name, len(handlers), logging.getLevelName(subject_logger.level), subject_logger.propagate)
+    if not handlers:
+        logger.warning("LOGGER INIT WARNING: %s has no handlers configured", name)
+
+
+_log_logger_status("crypto_bot", logger)
+_log_logger_status("signals_logger", signals_logger)
+_log_logger_status("analytics_logger", analytics_logger)
+_log_logger_status("snapshot_logger", snapshot_logger)
 
 class TelegramTradingBot:
     """Оркестратор Telegram + сканер + диспетчер сигналов."""
@@ -304,6 +307,7 @@ class TelegramTradingBot:
     def generate_analytics_report(self) -> str:
         report = self.signal_analytics.generate_report()
         ANALYTICS_SNAPSHOT_PATH.write_text(report + "\n", encoding="utf-8")
+        snapshot_logger.info("%s", report)
         return report
 
     async def _reconcile_active_trades_on_startup(self) -> None:
@@ -339,8 +343,10 @@ class TelegramTradingBot:
         interval_sec = max(60, int(interval_sec))
         await self._reconcile_active_trades_on_startup()
 
+        scan_iteration = 0
         while True:
             try:
+                scan_iteration += 1
                 logger.info(f"🔍 Starting market scan for top-{TOP_N} symbols...")
 
                 signals = await asyncio.wait_for(
@@ -552,9 +558,10 @@ class TelegramTradingBot:
                             "last_trade": self.signal_analytics.get_last_closed_trade_brief(),
                         }
                     )
-                    if self.signal_analytics.should_emit_report(signals_step=20, minutes_step=10):
-                        analytics_logger.info("\n%s\n", self.generate_analytics_report())
                     # await self.broadcast_if_needed(signal)  # временно отключено до повторного включения Telegram/Discord
+
+                if self.signal_analytics.should_emit_report(signals_step=20, minutes_step=10) or scan_iteration % 3 == 0:
+                    analytics_logger.info("\n%s\n", self.generate_analytics_report())
 
             except TimeoutError:
                 logger.warning("scan_loop timeout: scanner.scan exceeded 120s")

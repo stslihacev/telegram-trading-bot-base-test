@@ -3,13 +3,10 @@
 from __future__ import annotations
 
 import time
-import logging
 
 from database.db import init_db
 from telegram_bot.bot import TelegramTradingBot
 from utils.logger import logger
-
-logging.basicConfig(level=logging.INFO)
 
 
 def main() -> None:

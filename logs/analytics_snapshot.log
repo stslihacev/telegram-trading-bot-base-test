@@ -1,75 +1,225 @@
 📊 SIGNAL ANALYTICS
 
+ANALYTICS REPORT:
+
+Signals:
+* total: 0
+* strict: 0
+* fallback: 0
+* opened: 0
+* blocked_by_limits: 0
+
+Opened:
+* strict: 0
+* fallback: 0
+
+Results:
+* strict: TP=1 / SL=1 / winrate=50.00%
+* fallback: TP=4 / SL=4 / winrate=50.00%
+
 📊 СТАТИСТИКА СИГНАЛОВ
 
-Всего сигналов: 41
-Уникальных: 41
+Всего сигналов: 0
+Уникальных: 0
 Дубликатов: 0
 
-LIGHT: 41
+LIGHT: 0
 MAIN: 0
 SCALPING: 0
 
-Средний confidence: 0.61
-Средний score: 4.30
+strict source: 0
+relaxed source: 0
+
+Средний confidence: 0.00
+Средний score: 0.00
 
 Качество:
 ⭐⭐⭐⭐⭐: 0
-⭐⭐⭐⭐: 26
-⭐⭐⭐: 15
+⭐⭐⭐⭐: 0
+⭐⭐⭐: 0
 ⭐⭐: 0
 ⭐: 0
 
 Топ фильтров:
-BODY: 100.0%
-VOLUME: 82.9%
-MACD: 75.6%
-RSI: 14.6%
-SMA: 14.6%
+-
 
 📈 TRADE OUTCOME ANALYTICS
 
-Trades total: 0
-TP: 0
-SL: 0
-Winrate: 0.00%
+Trades total: 10
+TP: 5
+SL: 5
+Winrate: 50.00%
 
 💹 PROFITABILITY SUMMARY
-Trades: 0
-Wins/Losses: 0/0
-Winrate: 0.00%
-Profit Factor: 0.00
-Avg R: 0.00
+Trades: 10
+Wins/Losses: 5/5
+Winrate: 50.00%
+Profit Factor: 1.34
+Avg R: 0.33
+
+Expectancy: 0.33R
+Max drawdown: 3.99%
+Relaxed share: 80.00%
+
+Execution mode: PAPER
+Risk per trade: 1.00%
+Fee rate: 0.040%
 
 📌 PROFITABILITY BY MODE
-LIGHT: trades=0, wins=0, losses=0, winrate=0.0%, avgR=0.00, PF=0.00
-MAIN: trades=0, wins=0, losses=0, winrate=0.0%, avgR=0.00, PF=0.00
+LIGHT: trades=2, wins=1, losses=1, winrate=50.0%, avgR=-0.06, PF=0.95
+MAIN: trades=8, wins=4, losses=4, winrate=50.0%, avgR=0.43, PF=1.45
 SCALPING: trades=0, wins=0, losses=0, winrate=0.0%, avgR=0.00, PF=0.00
 
+🧩 PROFITABILITY BY ENTRY SOURCE
+strict: trades=2, wins=1, losses=1, winrate=50.0%, avgR=-0.06, PF=0.95
+relaxed: trades=8, wins=4, losses=4, winrate=50.0%, avgR=0.43, PF=1.45
+
+REJECTION_STATS:
+(no rejected signals yet)
+
 🎯 HIGH-CONFIDENCE (conf ≥ 0.70)
-Trades: 0
-Winrate: 0.00%
-Avg R: 0.00
+Trades: 8
+Winrate: 50.00%
+Avg R: 0.43
 
 Reversal trades: 0
 Reversal winrate: 0.00%
 
-Avg RR: 0.00
-Avg R: 0.00
-Avg duration: 0h 0m
-High-conf losses: 0
+Avg RR: 2.31
+Avg R: 0.33
+Avg duration: 22h 15m
+High-conf losses: 4
 
 📌 MODE TRADE STATS
-LIGHT: signals=41, closed=0, winrate=0.0%, avgRR=0.00
-MAIN: signals=0, closed=0, winrate=0.0%, avgRR=0.00
+LIGHT: signals=0, closed=2, winrate=50.0%, avgRR=2.15
+MAIN: signals=0, closed=8, winrate=50.0%, avgRR=2.35
 SCALPING: signals=0, closed=0, winrate=0.0%, avgRR=0.00
 
 🧪 FILTER OUTCOME BREAKDOWN
--
+ADX: profit=4, loss=4, winrate=50.0%
+BODY: profit=1, loss=1, winrate=50.0%
+DI: profit=1, loss=3, winrate=25.0%
+MACD: profit=1, loss=2, winrate=33.3%
+RSI: profit=5, loss=4, winrate=55.6%
+SMA: profit=0, loss=1, winrate=0.0%
+TREND: profit=4, loss=4, winrate=50.0%
+VOLUME: profit=5, loss=3, winrate=62.5%
 
 --------------------------------
 
 ⚠️ РЕКОМЕНДАЦИИ
 
-- EMA проходит только в 2% случаев — фильтр слишком строгий.
-- RSI почти не проходит — возможно пороги слишком жёсткие.
+- Низкая активность (возможно рынок спокойный). Накопите больше сигналов перед изменением настроек.
+2026-04-05 15:00:45,624 - [ANALYTICS SNAPSHOT]
+📊 SIGNAL ANALYTICS
+
+ANALYTICS REPORT:
+
+Signals:
+* total: 0
+* strict: 0
+* fallback: 0
+* opened: 0
+* blocked_by_limits: 0
+
+Opened:
+* strict: 0
+* fallback: 0
+
+Results:
+* strict: TP=1 / SL=1 / winrate=50.00%
+* fallback: TP=4 / SL=4 / winrate=50.00%
+
+📊 СТАТИСТИКА СИГНАЛОВ
+
+Всего сигналов: 0
+Уникальных: 0
+Дубликатов: 0
+
+LIGHT: 0
+MAIN: 0
+SCALPING: 0
+
+strict source: 0
+relaxed source: 0
+
+Средний confidence: 0.00
+Средний score: 0.00
+
+Качество:
+⭐⭐⭐⭐⭐: 0
+⭐⭐⭐⭐: 0
+⭐⭐⭐: 0
+⭐⭐: 0
+⭐: 0
+
+Топ фильтров:
+-
+
+📈 TRADE OUTCOME ANALYTICS
+
+Trades total: 10
+TP: 5
+SL: 5
+Winrate: 50.00%
+
+💹 PROFITABILITY SUMMARY
+Trades: 10
+Wins/Losses: 5/5
+Winrate: 50.00%
+Profit Factor: 1.34
+Avg R: 0.33
+
+Expectancy: 0.33R
+Max drawdown: 3.99%
+Relaxed share: 80.00%
+
+Execution mode: PAPER
+Risk per trade: 1.00%
+Fee rate: 0.040%
+
+📌 PROFITABILITY BY MODE
+LIGHT: trades=2, wins=1, losses=1, winrate=50.0%, avgR=-0.06, PF=0.95
+MAIN: trades=8, wins=4, losses=4, winrate=50.0%, avgR=0.43, PF=1.45
+SCALPING: trades=0, wins=0, losses=0, winrate=0.0%, avgR=0.00, PF=0.00
+
+🧩 PROFITABILITY BY ENTRY SOURCE
+strict: trades=2, wins=1, losses=1, winrate=50.0%, avgR=-0.06, PF=0.95
+relaxed: trades=8, wins=4, losses=4, winrate=50.0%, avgR=0.43, PF=1.45
+
+REJECTION_STATS:
+(no rejected signals yet)
+
+🎯 HIGH-CONFIDENCE (conf ≥ 0.70)
+Trades: 8
+Winrate: 50.00%
+Avg R: 0.43
+
+Reversal trades: 0
+Reversal winrate: 0.00%
+
+Avg RR: 2.31
+Avg R: 0.33
+Avg duration: 22h 15m
+High-conf losses: 4
+
+📌 MODE TRADE STATS
+LIGHT: signals=0, closed=2, winrate=50.0%, avgRR=2.15
+MAIN: signals=0, closed=8, winrate=50.0%, avgRR=2.35
+SCALPING: signals=0, closed=0, winrate=0.0%, avgRR=0.00
+
+🧪 FILTER OUTCOME BREAKDOWN
+ADX: profit=4, loss=4, winrate=50.0%
+BODY: profit=1, loss=1, winrate=50.0%
+DI: profit=1, loss=3, winrate=25.0%
+MACD: profit=1, loss=2, winrate=33.3%
+RSI: profit=5, loss=4, winrate=55.6%
+SMA: profit=0, loss=1, winrate=0.0%
+TREND: profit=4, loss=4, winrate=50.0%
+VOLUME: profit=5, loss=3, winrate=62.5%
+
+--------------------------------
+
+⚠️ РЕКОМЕНДАЦИИ
+
+- Низкая активность (возможно рынок спокойный). Накопите больше сигналов перед изменением настроек.

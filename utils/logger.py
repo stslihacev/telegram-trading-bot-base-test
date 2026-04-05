@@ -31,3 +31,31 @@ if not has_console:
     console_handler = logging.StreamHandler(sys.stdout)
     console_handler.setFormatter(formatter)
     logger.addHandler(console_handler)
+
+
+def ensure_named_file_logger(
+    name: str,
+    file_path: Path,
+    *,
+    level: int = logging.INFO,
+    fmt: str = "%(asctime)s - %(message)s",
+) -> logging.Logger:
+    """Create or reuse a named file logger with a deterministic handler."""
+    target_path = Path(file_path).resolve()
+    target_path.parent.mkdir(parents=True, exist_ok=True)
+
+    named_logger = logging.getLogger(name)
+    named_logger.setLevel(level)
+    named_logger.propagate = False
+
+    has_target_file_handler = any(
+        isinstance(handler, logging.FileHandler)
+        and Path(getattr(handler, "baseFilename", "")).resolve() == target_path
+        for handler in named_logger.handlers
+    )
+    if not has_target_file_handler:
+        file_handler = logging.FileHandler(target_path, encoding="utf-8")
+        file_handler.setLevel(level)
+        file_handler.setFormatter(logging.Formatter(fmt))
+        named_logger.addHandler(file_handler)
+    return named_logger

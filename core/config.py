@@ -229,7 +229,7 @@ HIGH_CONF_ONLY = False
 HIGH_CONFIDENCE_THRESHOLD = 0.70
 # Унифицированный порог high-confidence режима для LIGHT/MAIN/SCALPING.
 
-ENABLE_RELAXED_SIGNALS = True
+ENABLE_RELAXED_SIGNALS = False
 # Разрешать fallback relaxed-сигналы для MAIN/SCALPING, когда strict-ветка не дала вход.
 
 # ============================================================
@@ -591,10 +591,10 @@ SIGNAL_COOLDOWN_WINDOW_MINUTES = 15
 MAX_SIGNALS_PER_SYMBOL_WINDOW = 2
 # Максимум сигналов по одному символу в окне SIGNAL_COOLDOWN_WINDOW_MINUTES.
 
-MAX_OPEN_TRADES_GLOBAL = 20
+MAX_OPEN_TRADES_GLOBAL = 40
 # Максимум одновременно открытых сигналов (всех режимов).
 
-POSITION_LIMITS = {"MAIN": 6, "SCALPING": 4, "LIGHT": 3}
+POSITION_LIMITS = {"MAIN": 40, "SCALPING": 30, "LIGHT": 20}
 # Опциональные пер-режимные лимиты. Пример:
 # {"MAIN": 6, "SCALPING": 3, "LIGHT": 2}
 # Если пусто/не задано — используется только глобальный лимит MAX_OPEN_TRADES_GLOBAL.
