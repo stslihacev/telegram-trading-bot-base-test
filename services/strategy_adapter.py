@@ -25,6 +25,7 @@ from utils.logger import logger
 
 class BacktestStrategyAdapter:
     """Использует backtest.BosStrategy.generate_signal напрямую на последней свече."""
+    _config_validated = False
 
     def __init__(self, min_rr: float | None = None):
         self.strategy = BosStrategy()
@@ -33,6 +34,7 @@ class BacktestStrategyAdapter:
         runtime = config.get_live_runtime_settings()
         self.min_rr = float(runtime["min_signal_rr"] if min_rr is None else min_rr)
         self.max_rr = float(runtime["max_rr"])
+        self._validate_config_once(runtime)
 
     @staticmethod
     def _runtime_settings() -> dict:
@@ -195,6 +197,148 @@ class BacktestStrategyAdapter:
         breakdown = build_breakdown(strict_checks)
         return breakdown.score, breakdown.max_score, breakdown.confidence, breakdown.passed_filters, breakdown.failed_filters
 
+    @staticmethod
+    def _safe_float(value: object, fallback: float = 0.0) -> float:
+        try:
+            casted = float(value)
+        except (TypeError, ValueError):
+            return fallback
+        if np.isnan(casted) or np.isinf(casted):
+            return fallback
+        return casted
+
+    @classmethod
+    def _validate_config_once(cls, runtime: dict) -> None:
+        if cls._config_validated:
+            return
+        warnings: list[str] = []
+        rsi_low = cls._safe_float(getattr(config, "CONFIDENCE_RSI_LOW", 30.0), 30.0)
+        rsi_high = cls._safe_float(getattr(config, "CONFIDENCE_RSI_HIGH", 70.0), 70.0)
+        if rsi_low >= rsi_high:
+            warnings.append(f"RSI range invalid: low={rsi_low} >= high={rsi_high}")
+        if rsi_low < 0 or rsi_high > 100:
+            warnings.append(f"RSI range out of bounds: low={rsi_low}, high={rsi_high}")
+
+        adx_live = cls._safe_float(getattr(config, "LIVE_ADX_MIN", 0.0))
+        adx_bos = cls._safe_float(getattr(config, "BOS_ADX_MIN", 0.0))
+        if adx_live >= 35:
+            warnings.append(f"LIVE_ADX_MIN is very strict: {adx_live}")
+        if adx_bos >= 35:
+            warnings.append(f"BOS_ADX_MIN is very strict: {adx_bos}")
+
+        min_score = cls._safe_float(runtime.get("min_score_threshold"), 0.0)
+        max_score = sum(float(v) for v in (getattr(config, "FILTER_WEIGHTS", {}) or {}).values())
+        if max_score > 0 and min_score > max_score:
+            warnings.append(f"score threshold impossible: min_required_score={min_score} > max_score={max_score}")
+        elif max_score > 0 and min_score >= max_score * 0.9:
+            warnings.append(
+                f"score threshold near max ({min_score} / {max_score:.2f}); this can lead to near-zero strict signals"
+            )
+
+        adx_block_low = cls._safe_float(getattr(config, "BOS_ADX_BLOCKED_LOW", 0.0))
+        adx_block_high = cls._safe_float(getattr(config, "BOS_ADX_BLOCKED_HIGH", 0.0))
+        adx_allowed_min = cls._safe_float(getattr(config, "BOS_ADX_ALLOWED_MIN", 0.0))
+        adx_allowed_max = cls._safe_float(getattr(config, "BOS_ADX_ALLOWED_MAX", 0.0))
+        if adx_block_low >= adx_block_high:
+            warnings.append(
+                f"BOS ADX blocked band invalid: low={adx_block_low} >= high={adx_block_high}"
+            )
+        if adx_allowed_min >= adx_allowed_max:
+            warnings.append(
+                f"BOS ADX allowed range invalid: min={adx_allowed_min} >= max={adx_allowed_max}"
+            )
+        if adx_block_low <= adx_allowed_max and adx_block_high >= adx_allowed_min:
+            warnings.append(
+                "BOS ADX blocked band overlaps allowed range; this can suppress otherwise valid BOS entries"
+            )
+
+        if warnings:
+            logger.warning("CONFIG_WARNINGS:")
+            for warning in warnings:
+                logger.warning("- %s", warning)
+        else:
+            logger.info("CONFIG_WARNINGS: none")
+        cls._config_validated = True
+
+    def _build_filter_diagnostics(self, symbol: str, df: pd.DataFrame) -> tuple[dict[str, bool], dict[str, float]]:
+        row = df.iloc[-2]
+        close = self._safe_float(row.get("close"), 0.0)
+        ema50 = self._safe_float(row.get("ema50"), close)
+        ema200 = self._safe_float(row.get("ema200"), close)
+        adx = self._safe_float(row.get("adx"), 0.0)
+        rsi = self._safe_float(row.get("rsi"), 50.0)
+        volume_now = self._safe_float(row.get("volume"), 0.0)
+        volume_ma = self._safe_float(df["volume"].astype(float).rolling(20, min_periods=1).mean().iloc[-2], 0.0)
+
+        ema_fast = df["close"].astype(float).ewm(span=12, adjust=False).mean()
+        ema_slow = df["close"].astype(float).ewm(span=26, adjust=False).mean()
+        macd = ema_fast - ema_slow
+        macd_signal = macd.ewm(span=9, adjust=False).mean()
+        macd_hist = self._safe_float((macd - macd_signal).iloc[-2], 0.0)
+
+        trend_ok = close >= ema200 and ema50 >= ema200
+        rsi_ok = bool(getattr(config, "CONFIDENCE_RSI_LOW", 30) <= rsi <= getattr(config, "CONFIDENCE_RSI_HIGH", 70))
+        adx_ok = adx >= self._safe_float(getattr(config, "LIVE_ADX_MIN", 20.0), 20.0)
+        volume_ok = volume_now > volume_ma if volume_ma > 0 else False
+        macd_ok = macd_hist > 0
+
+        checks = {
+            "TREND": trend_ok,
+            "RSI": rsi_ok,
+            "ADX": adx_ok,
+            "VOLUME": volume_ok,
+            "MACD": macd_ok,
+        }
+        metrics = {
+            "close": close,
+            "ema50": ema50,
+            "ema200": ema200,
+            "rsi": rsi,
+            "adx": adx,
+            "volume": volume_now,
+            "volume_ma": volume_ma,
+            "macd_hist": macd_hist,
+        }
+        logger.info(
+            "FILTER_CHECK: symbol=%s trend_ok=%s rsi_ok=%s adx_ok=%s volume_ok=%s macd_ok=%s",
+            symbol,
+            checks["TREND"],
+            checks["RSI"],
+            checks["ADX"],
+            checks["VOLUME"],
+            checks["MACD"],
+        )
+        return checks, metrics
+
+    def _log_score_breakdown(self, symbol: str, checks: dict[str, bool], runtime: dict) -> tuple[dict[str, float], float]:
+        weights = getattr(config, "FILTER_WEIGHTS", {}) or {}
+        trend_score = float(weights.get("ema", 1.0)) if checks.get("TREND") else 0.0
+        rsi_score = float(weights.get("rsi", 1.0)) if checks.get("RSI") else 0.0
+        adx_score = float(weights.get("sma", 0.5)) if checks.get("ADX") else 0.0
+        volume_score = float(weights.get("volume", 1.0)) if checks.get("VOLUME") else 0.0
+        macd_score = float(weights.get("macd", 1.0)) if checks.get("MACD") else 0.0
+        total_score = trend_score + rsi_score + adx_score + volume_score + macd_score
+        min_required = float(runtime.get("min_score_threshold", get_mode_threshold(runtime["mode"])))
+        logger.info(
+            "SCORE_BREAKDOWN: symbol=%s trend_score=%.2f rsi_score=%.2f adx_score=%.2f volume_score=%.2f macd_score=%.2f total_score=%.2f min_required_score=%.2f",
+            symbol,
+            trend_score,
+            rsi_score,
+            adx_score,
+            volume_score,
+            macd_score,
+            total_score,
+            min_required,
+        )
+        return {
+            "trend_score": trend_score,
+            "rsi_score": rsi_score,
+            "adx_score": adx_score,
+            "volume_score": volume_score,
+            "macd_score": macd_score,
+            "total_score": total_score,
+        }, min_required
+
     def _build_relaxed_signal(self, symbol: str, df: pd.DataFrame, runtime: dict) -> dict | None:
         logger.info("DEBUG: FALLBACK EXECUTED")
         if not bool(getattr(config, "ENABLE_RELAXED_SIGNALS", True)):
@@ -204,6 +348,8 @@ class BacktestStrategyAdapter:
                 "passed_filters": [],
                 "failed_filters": ["RELAXED_DISABLED"],
                 "rejection_reason": "relaxed signals disabled by config",
+                "potential_signal": False,
+                "strict_signal": False,
             }
             return None
         if len(df) < 3:
@@ -216,6 +362,8 @@ class BacktestStrategyAdapter:
                 "required_filters_result": {"trend": False, "structure": False},
                 "required_filters": ["trend"],
                 "rejection_reason": "not enough candles for relaxed scoring",
+                "potential_signal": False,
+                "strict_signal": False,
             }
             return None
 
@@ -290,6 +438,8 @@ class BacktestStrategyAdapter:
             "required_filters_result": required_checks,
             "required_filters": required_filters,
             "rejection_reason": rejection_reason,
+            "potential_signal": False,
+            "strict_signal": False,
         }
         if not passed and not failed:
             logger.warning("%s | Relaxed diagnostics are empty; forcing DATA failure marker", symbol)
@@ -364,6 +514,8 @@ class BacktestStrategyAdapter:
             "passed_filters": [],
             "failed_filters": ["PENDING"],
             "rejection_reason": "evaluation_started",
+            "potential_signal": False,
+            "strict_signal": False,
         }
         min_candles = int(runtime["scan_candle_limit"])
         min_required_candles = max(1, int(min_candles * 0.95))
@@ -381,6 +533,8 @@ class BacktestStrategyAdapter:
                     f"not enough candles ({candles_count} < {min_required_candles} required, "
                     f"limit={min_candles})"
                 ),
+                "potential_signal": False,
+                "strict_signal": False,
             }
             return None
         if candles_count < min_candles:
@@ -389,6 +543,11 @@ class BacktestStrategyAdapter:
         try:
             with self._apply_runtime_overrides(runtime):
                 df = self._prepare_frame(candles, runtime)
+                filter_checks, _filter_metrics = self._build_filter_diagnostics(symbol, df)
+                _score_breakdown, _min_required_score = self._log_score_breakdown(symbol, filter_checks, runtime)
+                filter_failed = [name for name, ok in filter_checks.items() if not ok]
+                if filter_failed:
+                    logger.info("FILTER_REJECTION: symbol=%s failed_filters=%s", symbol, filter_failed)
                 arrays = self._build_arrays(df)
                 swing_indices = self._build_swing_indices(df)
                 df_4h = build_4h_frame(df)
@@ -456,6 +615,8 @@ class BacktestStrategyAdapter:
                             "passed_filters": [],
                             "failed_filters": ["RR"],
                             "rejection_reason": "rr below live minimum",
+                            "potential_signal": True,
+                            "strict_signal": False,
                         }
                         strict_rejection_reason = "rr below live minimum"
                     elif runtime.get("is_scalping") and rr > rr_max:
@@ -465,6 +626,8 @@ class BacktestStrategyAdapter:
                             "passed_filters": [],
                             "failed_filters": ["RR"],
                             "rejection_reason": "rr above scalping maximum",
+                            "potential_signal": True,
+                            "strict_signal": False,
                         }
                         strict_rejection_reason = "rr above scalping maximum"
                     elif config.ENABLE_SIGNAL_SCORING and score < get_mode_threshold(runtime["mode"]):
@@ -474,6 +637,8 @@ class BacktestStrategyAdapter:
                             "passed_filters": [],
                             "failed_filters": ["SCORING"],
                             "rejection_reason": "score below threshold",
+                            "potential_signal": True,
+                            "strict_signal": False,
                         }
                         strict_rejection_reason = "score below threshold"
                     elif bool(getattr(config, "HIGH_CONF_ONLY", False)) and confidence < float(getattr(config, "HIGH_CONFIDENCE_THRESHOLD", 0.7)):
@@ -483,6 +648,8 @@ class BacktestStrategyAdapter:
                             "passed_filters": [],
                             "failed_filters": ["CONFIDENCE"],
                             "rejection_reason": "high confidence gate blocked",
+                            "potential_signal": True,
+                            "strict_signal": False,
                         }
                         strict_rejection_reason = "high confidence gate blocked"
                     else:
@@ -527,10 +694,14 @@ class BacktestStrategyAdapter:
                             "passed_filters": strict_payload["passed_filters"],
                             "failed_filters": strict_payload["failed_filters"],
                             "rejection_reason": None,
+                            "potential_signal": True,
+                            "strict_signal": True,
                         }
                 else:
                     strict_rejection_reason = str(self.strategy.last_rejection_reason or "unknown")
                     strict_rejection_details = str(self.strategy.last_rejection_message or "no details")
+                    self.last_signal_diagnostics["potential_signal"] = False
+                    self.last_signal_diagnostics["strict_signal"] = False
 
                 if strict_payload:
                     self._ensure_diagnostics_not_empty(symbol)

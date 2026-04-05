@@ -141,6 +141,8 @@ class MarketScanner:
         payload.setdefault("passed_filters", [])
         payload.setdefault("failed_filters", [])
         payload.setdefault("rejection_reason", "unknown")
+        payload.setdefault("potential_signal", False)
+        payload.setdefault("strict_signal", False)
         return payload
 
     async def scan(self) -> list[dict]:
@@ -159,6 +161,15 @@ class MarketScanner:
             return []
 
         signals: list[dict] = []
+        raw_candidates = len(active_symbols)
+        potential_signals = 0
+        strict_signals = 0
+        logger.info(
+            "%s RAW_CANDIDATES_BEFORE_STRICT_FILTERS: count=%s mode=%s",
+            self.log_prefix,
+            raw_candidates,
+            self.runtime["mode"],
+        )
         for symbol in active_symbols:
             logger.info(f"{self.log_prefix} 🔍 Scanning {symbol}".strip())
             df = await self._fetch_ohlcv(symbol)
@@ -175,6 +186,10 @@ class MarketScanner:
                 debug_stage("STRATEGY", clean_symbol, f"calling strategy adapter | mode={self.runtime['mode']}")
             signal = self.strategy.generate_signal(clean_symbol, df)
             diagnostics = self._normalize_diagnostics(getattr(self.strategy, "last_signal_diagnostics", {}) or {})
+            if diagnostics.get("potential_signal"):
+                potential_signals += 1
+            if diagnostics.get("strict_signal"):
+                strict_signals += 1
             if signal:
                 label = signal.get("label_prefix") or self.log_prefix
                 logger.info(
@@ -216,4 +231,11 @@ class MarketScanner:
                 self._forced_test_signal_sent = True
 
         logger.info(f"{self.log_prefix} 📊 Total signals after scan: {len(signals)}".strip())
+        logger.info(
+            "%s STRICT_PIPELINE_METRICS: potential_signals=%s strict_signals=%s raw_candidates=%s",
+            self.log_prefix,
+            potential_signals,
+            strict_signals,
+            raw_candidates,
+        )
         return signals

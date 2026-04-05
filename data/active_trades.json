@@ -105,50 +105,6 @@
       "ADX"
     ]
   },
-  "ALGOUSDT": {
-    "symbol": "ALGOUSDT",
-    "direction": "LONG",
-    "entry": 0.11974,
-    "tp": 0.12561957142857144,
-    "sl": 0.11647357142857143,
-    "open_time": "2026-04-04T16:00:00+00:00",
-    "signal_id": "ALGOUSDT_1h_LONG_2026-04-04 16:00:00+00:00",
-    "confidence": 0.8,
-    "score": 4.0,
-    "mode": "MAIN",
-    "entry_source": "relaxed",
-    "signal_type": "fallback",
-    "is_reversal": false,
-    "passed_filters": [
-      "TREND",
-      "RSI",
-      "ADX",
-      "DI"
-    ]
-  },
-  "TAOUSDT": {
-    "symbol": "TAOUSDT",
-    "direction": "SHORT",
-    "entry": 304.04,
-    "tp": 299.1182857142858,
-    "sl": 306.7742857142857,
-    "open_time": "2026-04-04T16:00:00+00:00",
-    "signal_id": "TAOUSDT_1h_SHORT_2026-04-04 16:00:00+00:00",
-    "confidence": 1.0,
-    "score": 6.6,
-    "mode": "MAIN",
-    "entry_source": "relaxed",
-    "signal_type": "fallback",
-    "is_reversal": false,
-    "passed_filters": [
-      "TREND",
-      "RSI",
-      "MACD",
-      "VOLUME",
-      "ADX",
-      "DI"
-    ]
-  },
   "JCTUSDT": {
     "symbol": "JCTUSDT",
     "direction": "LONG",
