@@ -11060,3 +11060,110 @@ TREND: profit=1, loss=1, winrate=50.0%
 
 - Низкая активность (возможно рынок спокойный). Накопите больше сигналов перед изменением настроек.
 
+2026-04-05 20:54:41,881 - [ANALYTICS] 
+📊 SIGNAL ANALYTICS
+
+ANALYTICS REPORT:
+
+Signals:
+* total: 0
+* strict: 0
+* fallback: 0
+* opened: 0
+* blocked_by_limits: 0
+
+Opened:
+* strict: 0
+* fallback: 0
+
+Results:
+* strict: TP=0 / SL=0 / winrate=0.00%
+* fallback: TP=0 / SL=0 / winrate=0.00%
+
+📊 СТАТИСТИКА СИГНАЛОВ
+
+Всего сигналов: 0
+Уникальных: 0
+Дубликатов: 0
+
+LIGHT: 0
+MAIN: 0
+SCALPING: 0
+
+strict source: 0
+relaxed source: 0
+
+Средний confidence: 0.00
+Средний score: 0.00
+
+Качество:
+⭐⭐⭐⭐⭐: 0
+⭐⭐⭐⭐: 0
+⭐⭐⭐: 0
+⭐⭐: 0
+⭐: 0
+
+Топ фильтров:
+-
+
+📈 TRADE OUTCOME ANALYTICS
+
+Trades total: 0
+TP: 0
+SL: 0
+Winrate: 0.00%
+
+💹 PROFITABILITY SUMMARY
+Trades: 0
+Wins/Losses: 0/0
+Winrate: 0.00%
+Profit Factor: 0.00
+Avg R: 0.00
+
+Expectancy: 0.00R
+Max drawdown: 0.00%
+Relaxed share: 0.00%
+
+Execution mode: PAPER
+Risk per trade: 1.00%
+Fee rate: 0.040%
+
+📌 PROFITABILITY BY MODE
+LIGHT: trades=0, wins=0, losses=0, winrate=0.0%, avgR=0.00, PF=0.00
+MAIN: trades=0, wins=0, losses=0, winrate=0.0%, avgR=0.00, PF=0.00
+SCALPING: trades=0, wins=0, losses=0, winrate=0.0%, avgR=0.00, PF=0.00
+
+🧩 PROFITABILITY BY ENTRY SOURCE
+strict: trades=0, wins=0, losses=0, winrate=0.0%, avgR=0.00, PF=0.00
+relaxed: trades=0, wins=0, losses=0, winrate=0.0%, avgR=0.00, PF=0.00
+
+REJECTION_STATS:
+(no rejected signals yet)
+
+🎯 HIGH-CONFIDENCE (conf ≥ 0.70)
+Trades: 0
+Winrate: 0.00%
+Avg R: 0.00
+
+Reversal trades: 0
+Reversal winrate: 0.00%
+
+Avg RR: 0.00
+Avg R: 0.00
+Avg duration: 0h 0m
+High-conf losses: 0
+
+📌 MODE TRADE STATS
+LIGHT: signals=0, closed=0, winrate=0.0%, avgRR=0.00
+MAIN: signals=0, closed=0, winrate=0.0%, avgRR=0.00
+SCALPING: signals=0, closed=0, winrate=0.0%, avgRR=0.00
+
+🧪 FILTER OUTCOME BREAKDOWN
+-
+
+--------------------------------
+
+⚠️ РЕКОМЕНДАЦИИ
+
+- Низкая активность (возможно рынок спокойный). Накопите больше сигналов перед изменением настроек.
+

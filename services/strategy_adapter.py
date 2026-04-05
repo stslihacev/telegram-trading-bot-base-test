@@ -262,7 +262,7 @@ class BacktestStrategyAdapter:
             logger.info("CONFIG_WARNINGS: none")
         cls._config_validated = True
 
-    def _build_filter_diagnostics(self, symbol: str, df: pd.DataFrame) -> tuple[dict[str, bool], dict[str, float]]:
+    def _build_filter_diagnostics(self, symbol: str, df: pd.DataFrame) -> tuple[dict[str, bool], dict[str, object]]:
         row = df.iloc[-2]
         close = self._safe_float(row.get("close"), 0.0)
         ema50 = self._safe_float(row.get("ema50"), close)
@@ -283,13 +283,9 @@ class BacktestStrategyAdapter:
         long_trend_ok = close >= ema200 * (1.0 - trend_tolerance) and ema50 >= ema200 * (1.0 - trend_tolerance)
         short_trend_ok = close <= ema200 * (1.0 + trend_tolerance) and ema50 <= ema200 * (1.0 + trend_tolerance)
         trend_ok = bool(long_trend_ok or short_trend_ok)
-        recent = df.iloc[max(0, len(df) - 22):-2]
-        recent_high = self._safe_float(recent["high"].max(), close) if len(recent) else close
-        recent_low = self._safe_float(recent["low"].min(), close) if len(recent) else close
-        structure_ok = bool(
-            (direction == "LONG" and close >= recent_high * (1.0 - trend_tolerance))
-            or (direction == "SHORT" and close <= recent_low * (1.0 + trend_tolerance))
-        )
+        structure_state, structure_score, structure_debug = self._evaluate_structure_state(df=df, direction=direction)
+        recent_high = self._safe_float(structure_debug["recent_high"], close)
+        recent_low = self._safe_float(structure_debug["recent_low"], close)
         rsi_low = self._safe_float(getattr(config, "CONFIDENCE_RSI_LOW", 40.0), 40.0)
         rsi_high = self._safe_float(getattr(config, "CONFIDENCE_RSI_HIGH", 60.0), 60.0)
         rsi_ok = bool((direction == "LONG" and rsi <= rsi_high) or (direction == "SHORT" and rsi >= rsi_low))
@@ -299,7 +295,7 @@ class BacktestStrategyAdapter:
 
         checks = {
             "TREND": trend_ok,
-            "STRUCTURE": structure_ok,
+            "STRUCTURE": structure_state != "invalid",
             "RSI": rsi_ok,
             "ADX": adx_ok,
             "VOLUME": volume_ok,
@@ -317,32 +313,53 @@ class BacktestStrategyAdapter:
             "recent_high": recent_high,
             "recent_low": recent_low,
             "direction": 1.0 if direction == "LONG" else -1.0,
+            "structure_state": structure_state,
+            "structure_score": structure_score,
         }
         logger.info(
-            "FILTER_CHECK: symbol=%s trend_ok=%s structure_ok=%s rsi_ok=%s adx_ok=%s volume_ok=%s macd_ok=%s",
+            "FILTER_CHECK: symbol=%s trend_ok=%s structure_state=%s structure_ok=%s rsi_ok=%s adx_ok=%s volume_ok=%s macd_ok=%s",
             symbol,
             checks["TREND"],
+            structure_state,
             checks["STRUCTURE"],
             checks["RSI"],
             checks["ADX"],
             checks["VOLUME"],
             checks["MACD"],
         )
+        logger.info(
+            "STRUCTURE_DEBUG: symbol=%s trend=%s recent_highs=%s recent_lows=%s bos_detected=%s structure_state=%s reason=%s",
+            symbol,
+            direction,
+            structure_debug["recent_highs"],
+            structure_debug["recent_lows"],
+            structure_debug["bos_detected"],
+            structure_state,
+            structure_debug["reason"],
+        )
         return checks, metrics
 
-    def _log_score_breakdown(self, symbol: str, checks: dict[str, bool], runtime: dict) -> tuple[dict[str, float], float]:
+    def _log_score_breakdown(
+        self,
+        symbol: str,
+        checks: dict[str, bool],
+        runtime: dict,
+        metrics: dict[str, object] | None = None,
+    ) -> tuple[dict[str, float], float]:
         weights = getattr(config, "FILTER_WEIGHTS", {}) or {}
         trend_score = float(weights.get("ema", 1.0)) if checks.get("TREND") else 0.0
+        structure_score = self._safe_float((metrics or {}).get("structure_score"), 1.0 if checks.get("STRUCTURE") else 0.0)
         rsi_score = float(weights.get("rsi", 1.0)) if checks.get("RSI") else 0.0
         adx_score = float(weights.get("sma", 0.5)) if checks.get("ADX") else 0.0
         volume_score = float(weights.get("volume", 1.0)) if checks.get("VOLUME") else 0.0
         macd_score = float(weights.get("macd", 1.0)) if checks.get("MACD") else 0.0
-        total_score = trend_score + rsi_score + adx_score + volume_score + macd_score
+        total_score = trend_score + structure_score + rsi_score + adx_score + volume_score + macd_score
         min_required = float(runtime.get("min_score_threshold", get_mode_threshold(runtime["mode"])))
         logger.info(
-            "SCORE_BREAKDOWN: symbol=%s trend_score=%.2f rsi_score=%.2f adx_score=%.2f volume_score=%.2f macd_score=%.2f total_score=%.2f min_required_score=%.2f",
+            "SCORE_BREAKDOWN: symbol=%s trend_score=%.2f structure_score=%.2f rsi_score=%.2f adx_score=%.2f volume_score=%.2f macd_score=%.2f total_score=%.2f min_required_score=%.2f",
             symbol,
             trend_score,
+            structure_score,
             rsi_score,
             adx_score,
             volume_score,
@@ -352,12 +369,118 @@ class BacktestStrategyAdapter:
         )
         return {
             "trend_score": trend_score,
+            "structure_score": structure_score,
             "rsi_score": rsi_score,
             "adx_score": adx_score,
             "volume_score": volume_score,
             "macd_score": macd_score,
             "total_score": total_score,
         }, min_required
+
+    def _evaluate_structure_state(self, df: pd.DataFrame, direction: str) -> tuple[str, float, dict[str, object]]:
+        """
+        STRUCTURE state machine:
+        - strong: clear BOS + directional HH/HL or LL/LH alignment
+        - weak: developing trend / noisy but not broken
+        - invalid: explicit anti-trend structure break
+        """
+        close_series = df["close"].astype(float)
+        high_series = df["high"].astype(float)
+        low_series = df["low"].astype(float)
+        close = self._safe_float(close_series.iloc[-2], 0.0)
+
+        lookback = min(max(5, int(getattr(config, "STRUCTURE_LOOKBACK_CANDLES", 10))), max(5, len(df) - 2))
+        recent = df.iloc[max(0, len(df) - (lookback + 2)):-2]
+        if recent.empty:
+            return "invalid", 0.0, {
+                "recent_high": close,
+                "recent_low": close,
+                "recent_highs": [],
+                "recent_lows": [],
+                "bos_detected": False,
+                "reason": "insufficient history for structure",
+            }
+
+        tolerance_pct = self._safe_float(getattr(config, "STRUCTURE_TOLERANCE_PCT", 0.003), 0.003)
+        highs = recent["high"].astype(float).tail(lookback).tolist()
+        lows = recent["low"].astype(float).tail(lookback).tolist()
+        recent_high = float(max(highs)) if highs else close
+        recent_low = float(min(lows)) if lows else close
+        mid = (recent_high + recent_low) / 2.0 if (recent_high > 0 and recent_low > 0) else close
+        abs_tol = max(mid * tolerance_pct, 1e-9)
+
+        first_half = recent.iloc[: max(2, len(recent) // 2)]
+        second_half = recent.iloc[max(1, len(recent) // 2):]
+        first_low = self._safe_float(first_half["low"].min(), recent_low)
+        first_high = self._safe_float(first_half["high"].max(), recent_high)
+        second_low = self._safe_float(second_half["low"].min(), recent_low)
+        second_high = self._safe_float(second_half["high"].max(), recent_high)
+
+        higher_lows = second_low >= first_low - abs_tol
+        lower_highs = second_high <= first_high + abs_tol
+        hh_progress = second_high >= first_high - abs_tol
+        ll_progress = second_low <= first_low + abs_tol
+
+        if direction == "LONG":
+            bos_level = first_high
+            bos_detected = close >= bos_level - abs_tol
+            broken = close < first_low - abs_tol
+            if broken:
+                return "invalid", 0.0, {
+                    "recent_high": recent_high,
+                    "recent_low": recent_low,
+                    "recent_highs": [round(v, 6) for v in highs[-5:]],
+                    "recent_lows": [round(v, 6) for v in lows[-5:]],
+                    "bos_detected": bos_detected,
+                    "reason": "lower low detected in uptrend -> invalid",
+                }
+            if bos_detected and higher_lows and hh_progress:
+                return "strong", 1.0, {
+                    "recent_high": recent_high,
+                    "recent_low": recent_low,
+                    "recent_highs": [round(v, 6) for v in highs[-5:]],
+                    "recent_lows": [round(v, 6) for v in lows[-5:]],
+                    "bos_detected": bos_detected,
+                    "reason": "BOS confirmed with higher lows",
+                }
+            return "weak", 0.5, {
+                "recent_high": recent_high,
+                "recent_low": recent_low,
+                "recent_highs": [round(v, 6) for v in highs[-5:]],
+                "recent_lows": [round(v, 6) for v in lows[-5:]],
+                "bos_detected": bos_detected,
+                "reason": "no BOS but higher lows / developing uptrend",
+            }
+
+        bos_level = first_low
+        bos_detected = close <= bos_level + abs_tol
+        broken = close > first_high + abs_tol
+        if broken:
+            return "invalid", 0.0, {
+                "recent_high": recent_high,
+                "recent_low": recent_low,
+                "recent_highs": [round(v, 6) for v in highs[-5:]],
+                "recent_lows": [round(v, 6) for v in lows[-5:]],
+                "bos_detected": bos_detected,
+                "reason": "higher high detected in downtrend -> invalid",
+            }
+        if bos_detected and lower_highs and ll_progress:
+            return "strong", 1.0, {
+                "recent_high": recent_high,
+                "recent_low": recent_low,
+                "recent_highs": [round(v, 6) for v in highs[-5:]],
+                "recent_lows": [round(v, 6) for v in lows[-5:]],
+                "bos_detected": bos_detected,
+                "reason": "BOS confirmed with lower highs",
+            }
+        return "weak", 0.5, {
+            "recent_high": recent_high,
+            "recent_low": recent_low,
+            "recent_highs": [round(v, 6) for v in highs[-5:]],
+            "recent_lows": [round(v, 6) for v in lows[-5:]],
+            "bos_detected": bos_detected,
+            "reason": "no BOS but lower highs / developing downtrend",
+        }
 
     def _build_relaxed_signal(self, symbol: str, df: pd.DataFrame, runtime: dict) -> dict | None:
         logger.info("DEBUG: FALLBACK EXECUTED")
@@ -563,10 +686,18 @@ class BacktestStrategyAdapter:
         try:
             with self._apply_runtime_overrides(runtime):
                 df = self._prepare_frame(candles, runtime)
-                filter_checks, _filter_metrics = self._build_filter_diagnostics(symbol, df)
-                score_breakdown, _min_required_score = self._log_score_breakdown(symbol, filter_checks, runtime)
+                filter_checks, filter_metrics = self._build_filter_diagnostics(symbol, df)
+                score_breakdown, _min_required_score = self._log_score_breakdown(
+                    symbol,
+                    filter_checks,
+                    runtime,
+                    metrics=filter_metrics,
+                )
+                structure_state = str(filter_metrics.get("structure_state", "invalid"))
                 hard_failed = [name for name in self._hard_filters if name in filter_checks and not filter_checks[name]]
                 soft_failed = [name for name in self._soft_filters if name in filter_checks and not filter_checks[name]]
+                if structure_state == "weak" and "STRUCTURE" not in soft_failed:
+                    soft_failed.append("STRUCTURE")
                 if hard_failed or soft_failed:
                     logger.info(
                         "FILTER_REJECTION: symbol=%s hard_failed=%s soft_failed=%s",
@@ -578,7 +709,9 @@ class BacktestStrategyAdapter:
                     self.last_signal_diagnostics = {
                         "mode": runtime["mode"],
                         "score": float(score_breakdown.get("total_score", 0.0)),
-                        "passed_filters": [name for name, ok in filter_checks.items() if ok],
+                        "passed_filters": [
+                            name for name, ok in filter_checks.items() if ok and name not in hard_failed and name not in soft_failed
+                        ],
                         "failed_filters": hard_failed,
                         "rejection_reason": "hard filters failed",
                         "potential_signal": False,
@@ -589,7 +722,9 @@ class BacktestStrategyAdapter:
                 self.last_signal_diagnostics = {
                     "mode": runtime["mode"],
                     "score": float(score_breakdown.get("total_score", 0.0)),
-                    "passed_filters": [name for name, ok in filter_checks.items() if ok],
+                    "passed_filters": [
+                        name for name, ok in filter_checks.items() if ok and name not in soft_failed
+                    ],
                     "failed_filters": soft_failed,
                     "rejection_reason": None,
                     "potential_signal": True,
