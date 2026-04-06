@@ -28,6 +28,7 @@ class BacktestStrategyAdapter:
     _config_validated = False
     _hard_filters = ("TREND", "STRUCTURE")
     _soft_filters = ("RSI", "MACD", "VOLUME", "ADX")
+    _weak_position_size_factor = 0.5
 
     def __init__(self, min_rr: float | None = None):
         self.strategy = BosStrategy()
@@ -200,6 +201,163 @@ class BacktestStrategyAdapter:
         return breakdown.score, breakdown.max_score, breakdown.confidence, breakdown.passed_filters, breakdown.failed_filters
 
     @staticmethod
+    def _get_adaptive_score_threshold(runtime: dict, structure_state: str) -> float:
+        base_threshold = float(runtime.get("min_score_threshold", get_mode_threshold(runtime["mode"])))
+        if structure_state == "strong":
+            return max(4.0, base_threshold)
+        if structure_state == "weak":
+            return max(3.0, min(3.2, base_threshold))
+        return base_threshold
+
+    def _evaluate_weak_entry_risk(
+        self,
+        symbol: str,
+        df: pd.DataFrame,
+        i: int,
+        direction: str,
+    ) -> tuple[bool, str]:
+        current = df.iloc[i]
+        close = self._safe_float(current.get("close"), 0.0)
+        open_price = self._safe_float(current.get("open"), close)
+        high = self._safe_float(current.get("high"), close)
+        low = self._safe_float(current.get("low"), close)
+        atr = self._safe_float(current.get("atr"), 0.0)
+        body = abs(close - open_price)
+        candle_range = max(high - low, 1e-9)
+        body_ratio = body / candle_range
+        impulse_ok = (
+            (direction == "LONG" and close > open_price)
+            or (direction == "SHORT" and close < open_price)
+        ) and body_ratio >= 0.55
+
+        lookback = max(6, int(getattr(config, "STRUCTURE_LOOKBACK_CANDLES", 10)))
+        recent = df.iloc[max(0, i - lookback):i + 1]
+        recent_high = self._safe_float(recent["high"].max(), high)
+        recent_low = self._safe_float(recent["low"].min(), low)
+        range_width = max(recent_high - recent_low, 1e-9)
+        range_tight = range_width <= max(atr * 1.2, close * 0.004)
+
+        confirmation_passed = impulse_ok and not range_tight
+        if not impulse_ok:
+            reason = f"impulse candle missing (body_ratio={body_ratio:.2f})"
+        elif range_tight:
+            reason = f"tight range detected (range={range_width:.6f}, atr={atr:.6f})"
+        else:
+            reason = "weak-risk checks passed"
+
+        logger.info(
+            "ENTRY_RISK_ADJUSTMENT: structure_state=weak position_size_factor=%.2f confirmation_passed=%s reason=\"%s\" symbol=%s",
+            self._weak_position_size_factor,
+            confirmation_passed,
+            reason,
+            symbol,
+        )
+        return confirmation_passed, reason
+
+    def _build_weak_adaptive_strict_signal(
+        self,
+        symbol: str,
+        df: pd.DataFrame,
+        i: int,
+        runtime: dict,
+        score: float,
+        max_score: float,
+        filter_checks: dict[str, bool],
+    ) -> dict | None:
+        row = df.iloc[i]
+        close = self._safe_float(row.get("close"), 0.0)
+        open_price = self._safe_float(row.get("open"), close)
+        atr = max(self._safe_float(row.get("atr"), 0.0), close * 0.002, 1e-9)
+        ema50 = self._safe_float(row.get("ema50"), close)
+        ema200 = self._safe_float(row.get("ema200"), close)
+        direction = "LONG" if ema50 >= ema200 else "SHORT"
+        confirmation_passed, risk_reason = self._evaluate_weak_entry_risk(symbol, df, i, direction)
+        if not confirmation_passed:
+            logger.info(
+                "ENTRY_DEBUG: symbol=%s structure_state=weak entry_type=continuation rr=0.00 entry_valid=False reason=\"%s\"",
+                symbol,
+                risk_reason,
+            )
+            return None
+
+        prev_high = self._safe_float(df["high"].iloc[max(0, i - 1)], close)
+        prev_low = self._safe_float(df["low"].iloc[max(0, i - 1)], close)
+        body = abs(close - open_price)
+        candle_range = max(self._safe_float(row.get("high"), close) - self._safe_float(row.get("low"), close), 1e-9)
+        body_ratio = body / candle_range
+        momentum_break = (direction == "LONG" and close > prev_high) or (direction == "SHORT" and close < prev_low)
+        entry_type = "momentum" if momentum_break and body_ratio >= 0.65 else "continuation"
+
+        entry = close
+        local_slice = df.iloc[max(0, i - 3):i + 1]
+        if direction == "LONG":
+            structural_anchor = self._safe_float(local_slice["low"].min(), close)
+            sl = min(entry - atr, structural_anchor - atr * 0.2)
+        else:
+            structural_anchor = self._safe_float(local_slice["high"].max(), close)
+            sl = max(entry + atr, structural_anchor + atr * 0.2)
+        risk = abs(entry - sl)
+        if risk <= 1e-9:
+            return None
+        rr_target = 1.6
+        tp = entry + risk * rr_target if direction == "LONG" else entry - risk * rr_target
+        rr = self._calculate_rr(entry, tp, sl)
+        entry_valid = rr >= 1.5
+        reason = "adaptive weak entry accepted" if entry_valid else "rr below weak minimum"
+        logger.info(
+            "ENTRY_DEBUG: symbol=%s structure_state=weak entry_type=%s rr=%.2f entry_valid=%s reason=\"%s\"",
+            symbol,
+            entry_type,
+            rr,
+            entry_valid,
+            reason,
+        )
+        if not entry_valid:
+            return None
+
+        risk_snapshot = {
+            "entry": entry,
+            "sl": sl,
+            "tp": tp,
+            "direction": direction,
+        }
+        calculate_risk_based_position_size(
+            risk_snapshot,
+            capital=config.BACKTEST_INITIAL_CAPITAL,
+            risk_factor=config.RISK_PER_TRADE,
+        )
+        adjusted_position_size = float(risk_snapshot.get("position_size", 0.0)) * self._weak_position_size_factor
+        adjusted_trade_risk = float(risk_snapshot.get("trade_risk", 0.0)) * self._weak_position_size_factor
+        passed_filters = [name for name, ok in filter_checks.items() if ok]
+        return {
+            "symbol": symbol,
+            "signal_type": "strict",
+            "pattern_type": f"{runtime['mode']}_WEAK_{entry_type.upper()}",
+            "direction": direction,
+            "entry": float(entry),
+            "tp": float(tp),
+            "sl": float(sl),
+            "rr": float(rr),
+            "confidence": float(max(0.0, min(1.0, score / max(max_score, 1.0)))),
+            "score": float(score),
+            "max_score": float(max_score),
+            "passed_filters": passed_filters,
+            "failed_filters": [],
+            "regime": str(row.get("regime", "N/A")),
+            "timestamp": str(df.index[i]),
+            "tf": runtime["scan_timeframe"],
+            "trade_type": "aligned",
+            "position_size": adjusted_position_size,
+            "trade_risk": adjusted_trade_risk,
+            "live_mode": runtime["mode"],
+            "label_prefix": runtime["signal_prefix"],
+            "execution_timeframes": tuple(runtime["execution_timeframes"]),
+            "entry_source": "strict",
+            "entry_type": entry_type,
+            "position_size_factor": self._weak_position_size_factor,
+        }
+
+    @staticmethod
     def _safe_float(value: object, fallback: float = 0.0) -> float:
         try:
             casted = float(value)
@@ -354,7 +512,8 @@ class BacktestStrategyAdapter:
         volume_score = float(weights.get("volume", 1.0)) if checks.get("VOLUME") else 0.0
         macd_score = float(weights.get("macd", 1.0)) if checks.get("MACD") else 0.0
         total_score = trend_score + structure_score + rsi_score + adx_score + volume_score + macd_score
-        min_required = float(runtime.get("min_score_threshold", get_mode_threshold(runtime["mode"])))
+        structure_state = str((metrics or {}).get("structure_state", "invalid"))
+        min_required = self._get_adaptive_score_threshold(runtime, structure_state)
         logger.info(
             "SCORE_BREAKDOWN: symbol=%s trend_score=%.2f structure_score=%.2f rsi_score=%.2f adx_score=%.2f volume_score=%.2f macd_score=%.2f total_score=%.2f min_required_score=%.2f",
             symbol,
@@ -693,7 +852,9 @@ class BacktestStrategyAdapter:
                     runtime,
                     metrics=filter_metrics,
                 )
+                total_score = float(score_breakdown.get("total_score", 0.0))
                 structure_state = str(filter_metrics.get("structure_state", "invalid"))
+                adaptive_score_threshold = self._get_adaptive_score_threshold(runtime, structure_state)
                 hard_failed = [name for name in self._hard_filters if name in filter_checks and not filter_checks[name]]
                 soft_failed = [name for name in self._soft_filters if name in filter_checks and not filter_checks[name]]
                 if structure_state == "weak" and "STRUCTURE" not in soft_failed:
@@ -719,9 +880,21 @@ class BacktestStrategyAdapter:
                     }
                     self._log_execution_trace(symbol, strict_result=False, fallback_executed=False)
                     return None
+                if config.ENABLE_SIGNAL_SCORING and total_score < adaptive_score_threshold:
+                    self.last_signal_diagnostics = {
+                        "mode": runtime["mode"],
+                        "score": total_score,
+                        "passed_filters": [name for name, ok in filter_checks.items() if ok and name not in soft_failed],
+                        "failed_filters": ["SCORING"],
+                        "rejection_reason": f"score below adaptive threshold ({total_score:.2f} < {adaptive_score_threshold:.2f})",
+                        "potential_signal": True,
+                        "strict_signal": False,
+                    }
+                    self._log_execution_trace(symbol, strict_result=False, fallback_executed=False)
+                    return None
                 self.last_signal_diagnostics = {
                     "mode": runtime["mode"],
-                    "score": float(score_breakdown.get("total_score", 0.0)),
+                    "score": total_score,
                     "passed_filters": [
                         name for name, ok in filter_checks.items() if ok and name not in soft_failed
                     ],
@@ -778,6 +951,8 @@ class BacktestStrategyAdapter:
                         logger.warning("[SIGNAL ERROR] Invalid entry/TP/SL | symbol=%s | signal skipped", symbol)
                         return None
                     score, max_score, confidence, strict_passed, strict_failed = self._strict_mode_scoring()
+                    score = total_score
+                    confidence = float(max(0.0, min(1.0, score / max(max_score, 1.0))))
                     sl, tp = self._refine_risk_levels(
                         signal=signal,
                         entry=entry,
@@ -788,9 +963,39 @@ class BacktestStrategyAdapter:
                     rr = self._calculate_rr(entry=entry, tp=tp, sl=sl)
                     rr_min = float(self.min_rr)
                     rr_max = float(self.max_rr)
+                    entry_mode = str(signal.get("entry_mode") or signal.get("entry_type") or "unknown").lower()
+                    adaptive_entry_type = "bos_retest" if signal.get("signal_type") == "BOS" and entry_mode == "zone" else entry_mode
+                    if structure_state == "strong":
+                        rr_min = max(rr_min, 2.0)
+                        if str(signal.get("signal_type")) != "BOS":
+                            strict_rejection_reason = "strong structure requires BOS"
+                            strict_rejection_details = f"signal_type={signal.get('signal_type')}"
+                        elif entry_mode != "zone":
+                            strict_rejection_reason = "strong structure requires retest/zone entry"
+                            strict_rejection_details = f"entry_mode={entry_mode}"
+                    elif structure_state == "weak":
+                        rr_min = max(1.5, min(rr_min, 1.8))
                     if config.DEBUG_MODE:
                         debug_stage("RR", symbol, f"rr={rr:.4f}, min_rr={rr_min:.4f}, max_rr={rr_max:.4f}")
-                    if rr < rr_min:
+                    if strict_rejection_reason:
+                        self.last_signal_diagnostics = {
+                            "mode": runtime["mode"],
+                            "score": score,
+                            "passed_filters": [],
+                            "failed_filters": ["ENTRY"],
+                            "rejection_reason": strict_rejection_reason,
+                            "potential_signal": True,
+                            "strict_signal": False,
+                        }
+                        logger.info(
+                            "ENTRY_DEBUG: symbol=%s structure_state=%s entry_type=%s rr=%.2f entry_valid=False reason=\"%s\"",
+                            symbol,
+                            structure_state,
+                            adaptive_entry_type,
+                            rr,
+                            strict_rejection_reason,
+                        )
+                    elif rr < rr_min:
                         self.last_signal_diagnostics = {
                             "mode": runtime["mode"],
                             "score": score,
@@ -812,7 +1017,7 @@ class BacktestStrategyAdapter:
                             "strict_signal": False,
                         }
                         strict_rejection_reason = "rr above scalping maximum"
-                    elif config.ENABLE_SIGNAL_SCORING and score < get_mode_threshold(runtime["mode"]):
+                    elif config.ENABLE_SIGNAL_SCORING and score < adaptive_score_threshold:
                         self.last_signal_diagnostics = {
                             "mode": runtime["mode"],
                             "score": score,
@@ -835,55 +1040,117 @@ class BacktestStrategyAdapter:
                         }
                         strict_rejection_reason = "high confidence gate blocked"
                     else:
-                        risk_snapshot = dict(signal)
-                        calculate_risk_based_position_size(
-                            risk_snapshot,
-                            capital=config.BACKTEST_INITIAL_CAPITAL,
-                            risk_factor=config.RISK_PER_TRADE,
-                        )
+                        if structure_state == "weak":
+                            weak_risk_ok, weak_risk_reason = self._evaluate_weak_entry_risk(
+                                symbol=symbol,
+                                df=df,
+                                i=i,
+                                direction=str(signal.get("direction") or ""),
+                            )
+                            if not weak_risk_ok:
+                                self.last_signal_diagnostics = {
+                                    "mode": runtime["mode"],
+                                    "score": score,
+                                    "passed_filters": [],
+                                    "failed_filters": ["RISK"],
+                                    "rejection_reason": weak_risk_reason,
+                                    "potential_signal": True,
+                                    "strict_signal": False,
+                                }
+                                strict_rejection_reason = weak_risk_reason
+                                logger.info(
+                                    "ENTRY_DEBUG: symbol=%s structure_state=weak entry_type=%s rr=%.2f entry_valid=False reason=\"%s\"",
+                                    symbol,
+                                    adaptive_entry_type,
+                                    rr,
+                                    weak_risk_reason,
+                                )
+                                signal = None
+                        if signal is None:
+                            strict_payload = None
+                        else:
+                            logger.info(
+                                "ENTRY_DEBUG: symbol=%s structure_state=%s entry_type=%s rr=%.2f entry_valid=True reason=\"strict entry accepted\"",
+                                symbol,
+                                structure_state,
+                                adaptive_entry_type,
+                                rr,
+                            )
+                            risk_snapshot = dict(signal)
+                            calculate_risk_based_position_size(
+                                risk_snapshot,
+                                capital=config.BACKTEST_INITIAL_CAPITAL,
+                                risk_factor=config.RISK_PER_TRADE,
+                            )
+                            if structure_state == "weak":
+                                risk_snapshot["position_size"] = float(risk_snapshot.get("position_size", 0.0)) * self._weak_position_size_factor
+                                risk_snapshot["trade_risk"] = float(risk_snapshot.get("trade_risk", 0.0)) * self._weak_position_size_factor
 
-                        signal_tf = signal.get("tf") or runtime["scan_timeframe"]
-                        if runtime.get("is_scalping") and str(signal_tf).lower() == "1h":
-                            signal_tf = runtime["scan_timeframe"]
-                        strict_payload = {
-                            "symbol": signal["symbol"],
-                            "signal_type": "strict",
-                            "pattern_type": signal.get("signal_type"),
-                            "direction": signal["direction"],
-                            "entry": entry,
-                            "tp": tp,
-                            "sl": sl,
-                            "rr": rr,
-                            "confidence": confidence,
-                            "score": score,
-                            "max_score": max_score,
-                            "passed_filters": strict_passed,
-                            "failed_filters": strict_failed,
-                            "regime": signal.get("regime", "N/A"),
-                            "timestamp": str(df.index[i]),
-                            "tf": signal_tf,
-                            "trade_type": signal.get("trade_type", "aligned"),
-                            "position_size": float(risk_snapshot.get("position_size", 0.0)),
-                            "trade_risk": float(risk_snapshot.get("trade_risk", 0.0)),
-                            "live_mode": runtime["mode"],
-                            "label_prefix": runtime["signal_prefix"],
-                            "execution_timeframes": tuple(runtime["execution_timeframes"]),
-                            "entry_source": "strict",
-                        }
-                        self.last_signal_diagnostics = {
-                            "mode": runtime["mode"],
-                            "score": strict_payload["score"],
-                            "passed_filters": strict_payload["passed_filters"],
-                            "failed_filters": strict_payload["failed_filters"],
-                            "rejection_reason": None,
-                            "potential_signal": True,
-                            "strict_signal": True,
-                        }
+                                signal_tf = signal.get("tf") or runtime["scan_timeframe"]
+                            if runtime.get("is_scalping") and str(signal_tf).lower() == "1h":
+                                signal_tf = runtime["scan_timeframe"]
+                            strict_payload = {
+                                "symbol": signal["symbol"],
+                                "signal_type": "strict",
+                                "pattern_type": signal.get("signal_type"),
+                                "direction": signal["direction"],
+                                "entry": entry,
+                                "tp": tp,
+                                "sl": sl,
+                                "rr": rr,
+                                "confidence": confidence,
+                                "score": score,
+                                "max_score": max_score,
+                                "passed_filters": strict_passed,
+                                "failed_filters": strict_failed,
+                                "regime": signal.get("regime", "N/A"),
+                                "timestamp": str(df.index[i]),
+                                "tf": signal_tf,
+                                "trade_type": signal.get("trade_type", "aligned"),
+                                "position_size": float(risk_snapshot.get("position_size", 0.0)),
+                                "trade_risk": float(risk_snapshot.get("trade_risk", 0.0)),
+                                "live_mode": runtime["mode"],
+                                "label_prefix": runtime["signal_prefix"],
+                                "execution_timeframes": tuple(runtime["execution_timeframes"]),
+                                "entry_source": "strict",
+                            }
+                            self.last_signal_diagnostics = {
+                                "mode": runtime["mode"],
+                                "score": strict_payload["score"],
+                                "passed_filters": strict_payload["passed_filters"],
+                                "failed_filters": strict_payload["failed_filters"],
+                                "rejection_reason": None,
+                                "potential_signal": True,
+                                "strict_signal": True,
+                            }
                 else:
                     strict_rejection_reason = str(self.strategy.last_rejection_reason or "unknown")
                     strict_rejection_details = str(self.strategy.last_rejection_message or "no details")
                     self.last_signal_diagnostics["potential_signal"] = True
                     self.last_signal_diagnostics["strict_signal"] = False
+                    if structure_state == "weak":
+                        weak_strict = self._build_weak_adaptive_strict_signal(
+                            symbol=symbol,
+                            df=df,
+                            i=i,
+                            runtime=runtime,
+                            score=total_score,
+                            max_score=max(score_breakdown.get("total_score", 0.0), 5.0),
+                            filter_checks=filter_checks,
+                        )
+                        if weak_strict is not None:
+                            self.last_signal_diagnostics = {
+                                "mode": runtime["mode"],
+                                "score": weak_strict["score"],
+                                "passed_filters": weak_strict["passed_filters"],
+                                "failed_filters": weak_strict["failed_filters"],
+                                "rejection_reason": None,
+                                "potential_signal": True,
+                                "strict_signal": True,
+                            }
+                            self._ensure_diagnostics_not_empty(symbol)
+                            self._log_execution_trace(symbol, strict_result=True, fallback_executed=False)
+                            return weak_strict
 
                 if strict_payload:
                     self._ensure_diagnostics_not_empty(symbol)
