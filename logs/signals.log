@@ -12469,3 +12469,47 @@ Reject reason: -
 🧠 Regime: N/A
 🕒 Time:   2026-04-06 16:00:00+00:00
 Fingerprint: d12da83d07de6703
+2026-04-07 19:52:11,253 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    PIPPINUSDT
+Direction: 🔻 SHORT
+Timeframe: 1h
+
+💰 Entry: 0.033750
+🎯 TP:    0.029752
+🛑 SL:    0.036249
+RR:    1.60
+
+Score:      4.20 / 5.00
+⭐ Confidence: 0.84 ⭐⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX, VOLUME
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-07 14:00:00+00:00
+Fingerprint: 5fe6be39f51d6788
+2026-04-07 20:02:35,231 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    SIRENUSDT
+Direction: 🔻 SHORT
+Timeframe: 1h
+
+💰 Entry: 0.577450
+🎯 TP:    0.511607
+🛑 SL:    0.618602
+RR:    1.60
+
+Score:      3.40 / 5.00
+⭐ Confidence: 0.68 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, ADX, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-07 15:00:00+00:00
+Fingerprint: 043e788a3b603733

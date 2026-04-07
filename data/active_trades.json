@@ -20,26 +20,6 @@
       "ADX"
     ]
   },
-  "EDGEUSDT": {
-    "symbol": "EDGEUSDT",
-    "direction": "LONG",
-    "entry": 0.927,
-    "tp": 0.9619680000000002,
-    "sl": 0.9020228571428571,
-    "open_time": "2026-04-05T18:00:00+00:00",
-    "signal_id": "EDGEUSDT_30m_LONG_2026-04-05 18:00:00+00:00",
-    "confidence": 0.549296,
-    "score": 3.9,
-    "mode": "LIGHT",
-    "entry_source": "strict",
-    "signal_type": "strict",
-    "is_reversal": false,
-    "passed_filters": [
-      "SMA",
-      "MACD",
-      "BODY"
-    ]
-  },
   "BERAUSDT": {
     "symbol": "BERAUSDT",
     "direction": "SHORT",
@@ -63,43 +43,30 @@
   },
   "SIRENUSDT": {
     "symbol": "SIRENUSDT",
-    "direction": "LONG",
-    "entry": 0.56742,
-    "tp": 0.6634227428571428,
-    "sl": 0.5074182857142858,
-    "open_time": "2026-04-05T18:00:00+00:00",
-    "signal_id": "SIRENUSDT_30m_LONG_2026-04-05 18:00:00+00:00",
-    "confidence": 0.661972,
-    "score": 4.7,
-    "mode": "LIGHT",
-    "entry_source": "strict",
-    "signal_type": "strict",
-    "is_reversal": false,
-    "passed_filters": [
-      "EMA",
-      "SMA",
-      "BODY",
-      "VOLUME"
-    ]
-  },
-  "MMTUSDT": {
-    "symbol": "MMTUSDT",
     "direction": "SHORT",
-    "entry": 0.13795,
-    "tp": 0.12241119999999998,
-    "sl": 0.14904914285714285,
-    "open_time": "2026-04-05T18:00:00+00:00",
-    "signal_id": "MMTUSDT_30m_SHORT_2026-04-05 18:00:00+00:00",
-    "confidence": 0.478873,
+    "entry": 0.57745,
+    "tp": 0.5116072571428572,
+    "sl": 0.6186017142857143,
+    "open_time": "2026-04-07T15:00:00+00:00",
+    "signal_id": "SIRENUSDT_1h_SHORT_2026-04-07 15:00:00+00:00",
+    "confidence": 0.6799999999999999,
     "score": 3.4,
-    "mode": "LIGHT",
+    "mode": "MAIN",
     "entry_source": "strict",
     "signal_type": "strict",
     "is_reversal": false,
+    "pending_since": "2026-04-07 15:00:00+00:00",
+    "confirmation_reason": "no active signal",
+    "rejection_reason": null,
+    "opened_at": null,
+    "closed_at": null,
     "passed_filters": [
-      "MACD",
-      "BODY"
-    ]
+      "TREND",
+      "STRUCTURE",
+      "ADX",
+      "MACD"
+    ],
+    "registry_id": "6f30e4e468f2451d94cab781a1acd3de"
   },
   "STOUSDT": {
     "symbol": "STOUSDT",
@@ -115,18 +82,12 @@
     "entry_source": "strict",
     "signal_type": "strict",
     "is_reversal": false,
-    "pending_since": "2026-04-06 14:00:00+00:00",
-    "confirmation_reason": "no active signal",
-    "rejection_reason": null,
-    "opened_at": null,
-    "closed_at": null,
     "passed_filters": [
       "TREND",
       "STRUCTURE",
       "RSI",
       "VOLUME"
-    ],
-    "registry_id": "dea41bfc72994b6faa1f84bbdb1edd22"
+    ]
   },
   "TREEUSDT": {
     "symbol": "TREEUSDT",
@@ -142,74 +103,13 @@
     "entry_source": "strict",
     "signal_type": "strict",
     "is_reversal": false,
-    "pending_since": "2026-04-06 14:00:00+00:00",
-    "confirmation_reason": "no active signal",
-    "rejection_reason": null,
-    "opened_at": null,
-    "closed_at": null,
     "passed_filters": [
       "TREND",
       "STRUCTURE",
       "ADX",
       "VOLUME",
       "MACD"
-    ],
-    "registry_id": "c34f1e5bd3af4d92b57998478774a52d"
-  },
-  "BTCUSDT": {
-    "symbol": "BTCUSDT",
-    "direction": "LONG",
-    "entry": 69925.8,
-    "tp": 71349.37714285716,
-    "sl": 69036.06428571428,
-    "open_time": "2026-04-06T15:00:00+00:00",
-    "signal_id": "BTCUSDT_1h_LONG_2026-04-06 15:00:00+00:00",
-    "confidence": 0.9199999999999999,
-    "score": 4.6,
-    "mode": "MAIN",
-    "entry_source": "strict",
-    "signal_type": "strict",
-    "is_reversal": false,
-    "pending_since": "2026-04-06 15:00:00+00:00",
-    "confirmation_reason": "no active signal",
-    "rejection_reason": null,
-    "opened_at": null,
-    "closed_at": null,
-    "passed_filters": [
-      "TREND",
-      "STRUCTURE",
-      "ADX",
-      "VOLUME",
-      "MACD"
-    ],
-    "registry_id": "0d0c425f48934fcf9963d0ce3942b3eb"
-  },
-  "LINKUSDT": {
-    "symbol": "LINKUSDT",
-    "direction": "LONG",
-    "entry": 9.081,
-    "tp": 9.248474285714286,
-    "sl": 8.97632857142857,
-    "open_time": "2026-04-06T15:00:00+00:00",
-    "signal_id": "LINKUSDT_1h_LONG_2026-04-06 15:00:00+00:00",
-    "confidence": 0.6799999999999999,
-    "score": 3.4,
-    "mode": "MAIN",
-    "entry_source": "strict",
-    "signal_type": "strict",
-    "is_reversal": false,
-    "pending_since": "2026-04-06 15:00:00+00:00",
-    "confirmation_reason": "no active signal",
-    "rejection_reason": null,
-    "opened_at": null,
-    "closed_at": null,
-    "passed_filters": [
-      "TREND",
-      "STRUCTURE",
-      "ADX",
-      "MACD"
-    ],
-    "registry_id": "cee67131158c4af59543502ce0ba4e07"
+    ]
   },
   "APRUSDT": {
     "symbol": "APRUSDT",
@@ -225,129 +125,13 @@
     "entry_source": "strict",
     "signal_type": "strict",
     "is_reversal": false,
-    "pending_since": "2026-04-06 15:00:00+00:00",
-    "confirmation_reason": "no active signal",
-    "rejection_reason": null,
-    "opened_at": null,
-    "closed_at": null,
     "passed_filters": [
       "TREND",
       "STRUCTURE",
       "RSI",
       "ADX",
       "VOLUME"
-    ],
-    "registry_id": "c94760972c084ae2b3cd8a6a7605de9b"
-  },
-  "ARIAUSDT": {
-    "symbol": "ARIAUSDT",
-    "direction": "LONG",
-    "entry": 0.63287,
-    "tp": 0.7117904571428573,
-    "sl": 0.5835447142857143,
-    "open_time": "2026-04-06T15:00:00+00:00",
-    "signal_id": "ARIAUSDT_1h_LONG_2026-04-06 15:00:00+00:00",
-    "confidence": 0.6799999999999999,
-    "score": 3.4,
-    "mode": "MAIN",
-    "entry_source": "strict",
-    "signal_type": "strict",
-    "is_reversal": false,
-    "pending_since": "2026-04-06 15:00:00+00:00",
-    "confirmation_reason": "no active signal",
-    "rejection_reason": null,
-    "opened_at": null,
-    "closed_at": null,
-    "passed_filters": [
-      "TREND",
-      "STRUCTURE",
-      "ADX",
-      "MACD"
-    ],
-    "registry_id": "33a6f44070604fa582d044cb5faee669"
-  },
-  "SOLUSDT": {
-    "symbol": "SOLUSDT",
-    "direction": "SHORT",
-    "entry": 81.56,
-    "tp": 79.3289142857143,
-    "sl": 82.95442857142856,
-    "open_time": "2026-04-06T16:00:00+00:00",
-    "signal_id": "SOLUSDT_1h_SHORT_2026-04-06 16:00:00+00:00",
-    "confidence": 0.6799999999999999,
-    "score": 3.4,
-    "mode": "MAIN",
-    "entry_source": "strict",
-    "signal_type": "strict",
-    "is_reversal": false,
-    "pending_since": "2026-04-06 16:00:00+00:00",
-    "confirmation_reason": "no active signal",
-    "rejection_reason": null,
-    "opened_at": null,
-    "closed_at": null,
-    "passed_filters": [
-      "TREND",
-      "STRUCTURE",
-      "ADX",
-      "MACD"
-    ],
-    "registry_id": "48ad4dc572d54874b859516b524ba5fd"
-  },
-  "XRPUSDT": {
-    "symbol": "XRPUSDT",
-    "direction": "SHORT",
-    "entry": 1.3427,
-    "tp": 1.3235114285714287,
-    "sl": 1.3546928571428571,
-    "open_time": "2026-04-06T16:00:00+00:00",
-    "signal_id": "XRPUSDT_1h_SHORT_2026-04-06 16:00:00+00:00",
-    "confidence": 0.8800000000000001,
-    "score": 4.4,
-    "mode": "MAIN",
-    "entry_source": "strict",
-    "signal_type": "strict",
-    "is_reversal": false,
-    "pending_since": "2026-04-06 16:00:00+00:00",
-    "confirmation_reason": "no active signal",
-    "rejection_reason": null,
-    "opened_at": null,
-    "closed_at": null,
-    "passed_filters": [
-      "TREND",
-      "STRUCTURE",
-      "RSI",
-      "ADX",
-      "MACD"
-    ],
-    "registry_id": "2da9a39f73cc47cf93398f5d510ea618"
-  },
-  "ZECUSDT": {
-    "symbol": "ZECUSDT",
-    "direction": "LONG",
-    "entry": 256.77,
-    "tp": 266.2042857142857,
-    "sl": 250.87357142857144,
-    "open_time": "2026-04-06T16:00:00+00:00",
-    "signal_id": "ZECUSDT_1h_LONG_2026-04-06 16:00:00+00:00",
-    "confidence": 0.8800000000000001,
-    "score": 4.4,
-    "mode": "MAIN",
-    "entry_source": "strict",
-    "signal_type": "strict",
-    "is_reversal": false,
-    "pending_since": "2026-04-06 16:00:00+00:00",
-    "confirmation_reason": "no active signal",
-    "rejection_reason": null,
-    "opened_at": null,
-    "closed_at": null,
-    "passed_filters": [
-      "TREND",
-      "STRUCTURE",
-      "RSI",
-      "ADX",
-      "MACD"
-    ],
-    "registry_id": "823108509d6b48af89f19b9ad2796ce8"
+    ]
   },
   "ENAUSDT": {
     "symbol": "ENAUSDT",
@@ -363,35 +147,29 @@
     "entry_source": "strict",
     "signal_type": "strict",
     "is_reversal": false,
-    "pending_since": "2026-04-06 16:00:00+00:00",
-    "confirmation_reason": "no active signal",
-    "rejection_reason": null,
-    "opened_at": null,
-    "closed_at": null,
     "passed_filters": [
       "TREND",
       "STRUCTURE",
       "RSI",
       "ADX",
       "VOLUME"
-    ],
-    "registry_id": "94c35f6ae24e492ba8ac4012972a30dc"
+    ]
   },
-  "AAVEUSDT": {
-    "symbol": "AAVEUSDT",
+  "PIPPINUSDT": {
+    "symbol": "PIPPINUSDT",
     "direction": "SHORT",
-    "entry": 95.23,
-    "tp": 90.74542857142856,
-    "sl": 98.03285714285715,
-    "open_time": "2026-04-06T16:00:00+00:00",
-    "signal_id": "AAVEUSDT_1h_SHORT_2026-04-06 16:00:00+00:00",
+    "entry": 0.03375,
+    "tp": 0.0297516,
+    "sl": 0.036249,
+    "open_time": "2026-04-07T14:00:00+00:00",
+    "signal_id": "PIPPINUSDT_1h_SHORT_2026-04-07 14:00:00+00:00",
     "confidence": 0.8400000000000001,
     "score": 4.2,
     "mode": "MAIN",
     "entry_source": "strict",
     "signal_type": "strict",
     "is_reversal": false,
-    "pending_since": "2026-04-06 16:00:00+00:00",
+    "pending_since": "2026-04-07 14:00:00+00:00",
     "confirmation_reason": "no active signal",
     "rejection_reason": null,
     "opened_at": null,
@@ -403,6 +181,6 @@
       "ADX",
       "VOLUME"
     ],
-    "registry_id": "e5850bbc757748f0a78912fa6390a243"
+    "registry_id": "a30b3d6e0b7d46619fe30025b6a5b229"
   }
 }
