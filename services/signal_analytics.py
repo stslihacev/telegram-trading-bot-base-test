@@ -240,7 +240,41 @@ class SignalAnalytics:
         return mode if mode in {"DISABLED", "PAPER", "LIVE"} else "DISABLED"
 
     def _is_trade_simulation_enabled(self) -> bool:
-        return self._normalized_execution_mode() == "PAPER"
+        return (
+            self._normalized_execution_mode() == "PAPER"
+            and not bool(getattr(config, "TRADING_ENABLED", False))
+            and not bool(getattr(config, "DISABLE_PAPER_TRADING", False))
+        )
+
+    def reconcile_external_close(self, symbol: str, reason: str = "EXTERNAL_CLOSE") -> None:
+        symbol_key = str(symbol or "").strip().upper()
+        if not symbol_key:
+            return
+        with self._io_lock:
+            trade = self.active_trades.pop(symbol_key, None)
+            if trade is None:
+                return
+            trade["closed_at"] = datetime.now(timezone.utc).isoformat()
+            trade["result"] = str(reason or "EXTERNAL_CLOSE").upper()
+            self._save_active_trades()
+            self._save_analytics_state()
+        logger.info("REAL_TRADE_RECONCILED: symbol=%s event=%s", symbol_key, str(reason or "EXTERNAL_CLOSE").upper())
+
+    def reconcile_external_partial(self, symbol: str, current_size: float) -> None:
+        symbol_key = str(symbol or "").strip().upper()
+        if not symbol_key:
+            return
+        with self._io_lock:
+            trade = self.active_trades.get(symbol_key)
+            if trade is None:
+                return
+            trade["remaining_size"] = max(0.0, float(current_size))
+            trade["partial_tp_taken"] = True
+            trade["last_reconciled_at"] = datetime.now(timezone.utc).isoformat()
+            self.active_trades[symbol_key] = trade
+            self._save_active_trades()
+            self._save_analytics_state()
+        logger.info("REAL_TRADE_RECONCILED: symbol=%s event=PARTIAL_CLOSE size=%s", symbol_key, current_size)
 
     @staticmethod
     def _normalize_signal_type(signal: dict[str, Any] | None) -> str:

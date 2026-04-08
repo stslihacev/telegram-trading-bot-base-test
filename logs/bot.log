@@ -136947,3 +136947,43 @@ Request → GET https://api-testnet.bybit.com/v5/position/list: category=linear&
 2026-04-08 22:25:44,083 - crypto_bot - INFO - [SIGNAL REJECTED] symbol=XPLUSDT mode=MAIN entry_source=strict action=IGNORE reason=both below upgrade threshold
 2026-04-08 22:25:44,083 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
 2026-04-08 22:26:57,362 - crypto_bot - INFO - 🛑 Остановка по KeyboardInterrupt
+2026-04-08 22:42:49,017 - crypto_bot - INFO - LOGGER INIT OK: crypto_bot handlers=2 level=INFO propagate=False
+2026-04-08 22:42:49,018 - crypto_bot - INFO - LOGGER INIT OK: signals_logger handlers=1 level=INFO propagate=False
+2026-04-08 22:42:49,018 - crypto_bot - INFO - LOGGER INIT OK: analytics_logger handlers=1 level=INFO propagate=False
+2026-04-08 22:42:49,018 - crypto_bot - INFO - LOGGER INIT OK: snapshot_logger handlers=1 level=INFO propagate=False
+2026-04-08 22:42:49,018 - crypto_bot - INFO - 🚀 Starting bot...
+2026-04-08 22:42:49,018 - crypto_bot - WARNING - TELEGRAM_TOKEN не задан — бот запустится в режиме scanner + GUI без Telegram polling
+2026-04-08 22:42:49,018 - crypto_bot - INFO - [ANALYTICS INIT] trade tracking enabled
+2026-04-08 22:42:49,019 - crypto_bot - INFO - [PERSISTENCE] loaded trades: 26
+2026-04-08 22:42:49,021 - crypto_bot - INFO - PERSISTENCE_DEBUG: loaded_trades=23 restored_positions=26 missing_links=23
+2026-04-08 22:42:49,021 - crypto_bot - INFO - ANALYTICS_DEBUG: total_signals_loaded=33 total_trades_loaded=23 orphan_trades=23 orphan_signals=33
+2026-04-08 22:42:49,021 - crypto_bot - WARNING - CONFIG_WARNINGS:
+2026-04-08 22:42:49,022 - crypto_bot - WARNING - - BOS ADX blocked band overlaps allowed range; this can suppress otherwise valid BOS entries
+2026-04-08 22:42:49,025 - crypto_bot - INFO - [MAIN] scanner initialized | mode=MAIN | timeframe=1h | candle_limit=220 | execution_tfs=4h, 1h, 30m, 15m
+2026-04-08 22:42:49,025 - crypto_bot - INFO - DEBUG: SCANNER STRATEGY CLASS | class=BacktestStrategyAdapter
+2026-04-08 22:42:49,059 - crypto_bot - INFO - 🖥️ Signal GUI thread started
+2026-04-08 22:42:49,060 - crypto_bot - INFO - ✅ Telegram отключён: инициализированы scanner + GUI режим
+2026-04-08 22:42:49,060 - crypto_bot - INFO - 📡 Starting polling...
+2026-04-08 22:42:49,060 - crypto_bot - INFO - 📡 Telegram polling disabled, running standalone scan loop
+2026-04-08 22:42:49,061 - crypto_bot - INFO - 🚀 SCAN LOOP STARTED
+2026-04-08 22:42:49,605 - crypto_bot - WARNING - BYBIT_API_RETRY: endpoint=get_positions attempt=1/3 backoff=0.70s error=Http status code is not 200. (ErrCode: 401) (ErrTime: 19:42:49).
+Request → GET https://api-testnet.bybit.com/v5/position/list: category=linear&settleCoin=USDT.
+2026-04-08 22:42:50,552 - crypto_bot - WARNING - BYBIT_API_RETRY: endpoint=get_positions attempt=2/3 backoff=1.40s error=Http status code is not 200. (ErrCode: 401) (ErrTime: 19:42:50).
+Request → GET https://api-testnet.bybit.com/v5/position/list: category=linear&settleCoin=USDT.
+2026-04-08 22:42:52,193 - crypto_bot - ERROR - POSITION_SYNC_FAILED: get_positions failed after 3 attempts: Http status code is not 200. (ErrCode: 401) (ErrTime: 19:42:52).
+Request → GET https://api-testnet.bybit.com/v5/position/list: category=linear&settleCoin=USDT.
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\execution\position_manager.py", line 38, in sync_from_exchange
+    rows = self.bybit.get_positions()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\execution\bybit_client.py", line 103, in get_positions
+    payload = self._call("get_positions", lambda: self._session.get_positions(**request))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\execution\bybit_client.py", line 66, in _call
+    raise RuntimeError(f"{name} failed after {self.max_retries} attempts: {last_exc}")
+RuntimeError: get_positions failed after 3 attempts: Http status code is not 200. (ErrCode: 401) (ErrTime: 19:42:52).
+Request → GET https://api-testnet.bybit.com/v5/position/list: category=linear&settleCoin=USDT.
+2026-04-08 22:42:52,194 - crypto_bot - WARNING - [RECONCILE] issues=['registry_open_without_active:HYPEUSDT:ce573ef672b84b6b968d2da71de7e282', 'registry_open_without_active:XAUTUSDT:b9de1d5406594539908bd0ca875672f2', 'registry_closed_missing_snapshot:STOUSDT:5b9848c939f54fe4841b037ee52e5d14', 'registry_open_without_active:XRPUSDT:2da9a39f73cc47cf93398f5d510ea618', 'registry_closed_missing_snapshot:NOMUSDT:4a1f179a161444e99761a11713479df4', 'registry_open_without_active:1000PEPEUSDT:fefcbb7d73b542ef99a3dcfb3fb10bc0', 'registry_open_without_active:TAOUSDT:a9933b7408924cc8a299407b9966385e', 'registry_open_without_active:ONTUSDT:7f27789f834d4b3ca50ddddec8acb256', 'registry_open_without_active:PUFFERUSDT:18fb2cedb8324f4e9ecb2ca1edcd24a5', 'registry_open_without_active:RIVERUSDT:cae3629d20fa4eda97d54206bd27ba98', 'registry_open_without_active:ALGOUSDT:11470a0db0f64a3bbd5d22cb18a6e78b', 'registry_closed_missing_snapshot:ZECUSDT:a7543cfde51140c69100a23f6f3ab106', 'registry_open_without_active:JCTUSDT:e757104f4199417196abe9e349214691', 'registry_closed_missing_snapshot:FARTCOINUSDT:9960dd0b4f2445ae843112c6443459ef', 'registry_open_without_active:ARIAUSDT:33a6f44070604fa582d044cb5faee669', 'registry_closed_missing_snapshot:NEARUSDT:0b9330556c9e4c2ea5f2ebc01ff8d62b', 'registry_open_without_active:MONUSDT:36074d9c7453412ca6e38dad0a81c0de', 'registry_open_without_active:ETHUSDT:82e4b171dbc14f23b1268a1ca2fa0cfc', 'registry_open_without_active:ENAUSDT:94c35f6ae24e492ba8ac4012972a30dc', 'registry_closed_missing_snapshot:BARDUSDT:8cb7d26ab5734142b52d76de2209d353', 'registry_open_without_active:MMTUSDT:05699846b6014a99a1dce2446735c010', 'registry_open_without_active:SOLVUSDT:78ccb710e7e54001bc238d095e827ace', 'registry_open_without_active:LINKUSDT:cee67131158c4af59543502ce0ba4e07', 'registry_open_without_active:REDUSDT:02515c4a20f146d6af37147773ffd6c4', 'registry_open_without_active:SUIUSDT:2085f58a1b0444c1a6cfd215e3d04359', 'registry_open_without_active:LTCUSDT:59dbc32a71a54396a9f41bc65018a222', 'registry_open_without_active:VIRTUALUSDT:1eff8576f445433d9b06dc04ba8bdffc', 'registry_open_without_active:HBARUSDT:22ce226076bb462f99a044e9c67f61b7', 'active_and_closed_conflict:BTCUSDT:', 'active_and_closed_conflict:SOLUSDT:', 'active_and_closed_conflict:AAVEUSDT:', 'active_and_closed_conflict:XPLUSDT:', 'active_and_closed_conflict:ZECUSDT:', 'active_and_closed_conflict:GALAUSDT:', 'active_and_closed_conflict:EDGEUSDT:']
+2026-04-08 22:42:52,195 - crypto_bot - INFO - [STARTUP] reconciling active trades: 26
+2026-04-08 22:43:01,695 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-04-08 22:43:03,513 - crypto_bot - INFO - 🛑 Остановка по KeyboardInterrupt

@@ -331,8 +331,20 @@ class TelegramTradingBot:
         return report
 
     async def _reconcile_active_trades_on_startup(self) -> None:
+        simulation_enabled = (
+            str(getattr(config, "EXECUTION_MODE", "DISABLED")).upper() == "PAPER"
+            and not bool(TRADING_ENABLED)
+        )
         if bool(TRADING_ENABLED):
-            self.position_manager.sync_from_exchange()
+            sync_events = self.position_manager.sync_from_exchange(known_positions=self.signal_analytics.active_trades)
+            for event in sync_events:
+                symbol = str(event.get("symbol") or "")
+                detected_event = str(event.get("detected_event") or "").lower()
+                if detected_event == "partial_close":
+                    self.signal_analytics.reconcile_external_partial(symbol, float(event.get("current_size") or 0.0))
+                elif detected_event == "full_close":
+                    self.signal_analytics.reconcile_external_close(symbol, reason="EXCHANGE_FULL_CLOSE")
+                    self.signal_analytics.register_real_trade_event("CLOSE")
         active_symbols = sorted(self.signal_analytics.active_trades.keys())
         self.signal_analytics.reconcile_trade_state()
         if not active_symbols:
@@ -348,11 +360,12 @@ class TelegramTradingBot:
             last_price = ticker.get("last")
             if last_price is None:
                 continue
-            self.signal_analytics.check_trade_exits(
-                current_price=last_price,
-                symbol=symbol,
-                timestamp=datetime.now(timezone.utc).isoformat(),
-            )
+            if simulation_enabled:
+                self.signal_analytics.check_trade_exits(
+                    current_price=last_price,
+                    symbol=symbol,
+                    timestamp=datetime.now(timezone.utc).isoformat(),
+                )
 
     async def scan_loop(self, interval_sec: int | None = None) -> None:
         logger.info("🚀 SCAN LOOP STARTED")
@@ -416,11 +429,15 @@ class TelegramTradingBot:
                             reject_reason,
                         )
                         continue
-                    self.signal_analytics.check_trade_exits(
-                        current_price=enriched_signal.get("entry"),
-                        symbol=str(enriched_signal.get("symbol") or ""),
-                        timestamp=enriched_signal.get("timestamp"),
-                    )
+                    if (
+                        str(getattr(config, "EXECUTION_MODE", "DISABLED")).upper() == "PAPER"
+                        and not bool(TRADING_ENABLED)
+                    ):
+                        self.signal_analytics.check_trade_exits(
+                            current_price=enriched_signal.get("entry"),
+                            symbol=str(enriched_signal.get("symbol") or ""),
+                            timestamp=enriched_signal.get("timestamp"),
+                        )
                     if bool(TRADING_ENABLED):
                         try:
                             close_events = self.position_manager.handle_price_update(
@@ -572,12 +589,13 @@ class TelegramTradingBot:
                             order_decision = self.order_manager.execute_signal(
                                 enriched_signal,
                                 active_trades=self.signal_analytics.active_trades,
-                                qty=float(getattr(config, "LIVE_ORDER_QTY", 1.0)),
+                                fallback_qty=float(getattr(config, "LIVE_ORDER_QTY", 1.0)),
                             )
                             if order_decision.accepted:
+                                executed_qty = float(order_decision.details.get("qty") or 0.0)
                                 self.position_manager.register_opened_position(
                                     enriched_signal,
-                                    qty=float(getattr(config, "LIVE_ORDER_QTY", 1.0)),
+                                    qty=executed_qty,
                                 )
                                 self.signal_analytics.register_real_trade_event("OPEN")
                     self.signal_state.mark_seen(signal_id, datetime.now(timezone.utc).isoformat())

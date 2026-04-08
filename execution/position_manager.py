@@ -31,25 +31,43 @@ class PositionManager:
         self.bybit = bybit_client
         self.positions: dict[str, ManagedPosition] = {}
 
-    def sync_from_exchange(self) -> None:
-        """Recovery step on startup: rebuild internal state from Bybit positions."""
+    def sync_from_exchange(self, known_positions: dict[str, dict[str, Any]] | None = None) -> list[dict[str, Any]]:
+        """Recovery/reconciliation with Bybit positions."""
+        reconciliation_events: list[dict[str, Any]] = []
         try:
             rows = self.bybit.get_positions()
         except Exception as exc:
             logger.error("POSITION_SYNC_FAILED: %s", exc, exc_info=True)
-            return
+            return reconciliation_events
+
+        if not self.positions and known_positions:
+            for symbol, trade in known_positions.items():
+                symbol_key = str(symbol or "").upper()
+                if not symbol_key:
+                    continue
+                direction = str(trade.get("direction") or "LONG").upper()
+                self.positions[symbol_key] = ManagedPosition(
+                    symbol=symbol_key,
+                    side=direction,
+                    size=float(trade.get("remaining_size") or trade.get("size") or 1.0),
+                    entry_price=float(trade.get("entry") or 0.0),
+                    sl=float(trade.get("sl") or 0.0),
+                    tp=float(trade.get("tp") or 0.0),
+                    mode=str(trade.get("mode") or "MAIN").upper(),
+                )
+
+        previous_positions = dict(self.positions)
+        next_positions: dict[str, ManagedPosition] = {}
 
         restored = 0
         for row in rows:
             size = float(row.get("size") or 0.0)
-            if size <= 0:
-                continue
             symbol = str(row.get("symbol") or "").upper()
             side = "LONG" if str(row.get("side") or "").upper() == "BUY" else "SHORT"
             entry = float(row.get("avgPrice") or row.get("entryPrice") or 0.0)
-            if not symbol or entry <= 0:
+            if not symbol or size <= 0 or entry <= 0:
                 continue
-            self.positions[symbol] = ManagedPosition(
+            next_positions[symbol] = ManagedPosition(
                 symbol=symbol,
                 side=side,
                 size=size,
@@ -59,7 +77,35 @@ class PositionManager:
                 mode="MAIN",
             )
             restored += 1
+        for symbol in sorted(set(previous_positions) | set(next_positions)):
+            prev_size = float(previous_positions.get(symbol).size if symbol in previous_positions else 0.0)
+            curr_size = float(next_positions.get(symbol).size if symbol in next_positions else 0.0)
+            if prev_size > 0 and curr_size == 0:
+                detected_event = "full_close"
+            elif prev_size > 0 and 0 < curr_size < prev_size:
+                detected_event = "partial_close"
+            elif prev_size == 0 and curr_size > 0:
+                detected_event = "opened_or_restored"
+            else:
+                detected_event = "unchanged"
+            logger.info(
+                "SYNC_RECONCILIATION: symbol=%s previous_size=%s current_size=%s detected_event=%s",
+                symbol,
+                prev_size,
+                curr_size,
+                detected_event,
+            )
+            reconciliation_events.append(
+                {
+                    "symbol": symbol,
+                    "previous_size": prev_size,
+                    "current_size": curr_size,
+                    "detected_event": detected_event,
+                }
+            )
+        self.positions = next_positions
         logger.info("POSITION_SYNCED: restored_positions=%s", restored)
+        return reconciliation_events
 
     def register_opened_position(self, signal: dict[str, Any], qty: float) -> None:
         symbol = str(signal.get("symbol") or "").upper()
