@@ -31,11 +31,11 @@ ENABLE_SIGNAL_SCORING = True
 SIGNAL_LOG_MODE = "FULL"
 # Режим логирования сигналов: "FULL" (многострочный) или "COMPACT" (одна строка).
 
-MIN_SCORE_THRESHOLD_MAIN = 4.0
-# MAIN: максимально строгий порог 6.0 (фактически требует совпадения всех фильтров).
+MIN_SCORE_THRESHOLD_MAIN = 3.2
+# MAIN: максимально строгий порог 6.0 (фактически требует совпадения всех фильтров). был 4.0
 
-MIN_SCORE_THRESHOLD_SCALPING = 3.8
-# SCALPING: средний порог 4.0 для более частых, но всё ещё фильтрованных сигналов.
+MIN_SCORE_THRESHOLD_SCALPING = 3.0
+# SCALPING: средний порог 4.0 для более частых, но всё ещё фильтрованных сигналов. 3.8
 
 MIN_SCORE_THRESHOLD_LIGHT = 3.0
 # LIGHT: мягкий порог 3.0 для signal-only режима.
@@ -45,7 +45,7 @@ FILTER_WEIGHTS = {
     "sma": 0.5,
     "rsi": 1.0,
     "macd": 1.4,
-    "volume": 1.2,
+    "volume": 0.25,
     "body": 0.8,
 }
 # FILTER_WEIGHTS стандартные "ema": 1.0, "sma": 1.0, "rsi": 1.0, "macd": 1.0, "volume": 1.0, "body": 1.0,
@@ -132,11 +132,11 @@ SCAN_CANDLE_LIMIT_SCALPING = 120
 CONFIDENCE_THRESHOLD_SCALPING = 0.8
 # Скальпинг допускает чуть более ранние сигналы, но дальше усиливается RR/MTF-фильтрами. ,было 0.8
 
-MIN_SIGNAL_RR_SCALPING = 1.0
-# Минимальный RR для live-скальпинга.
+MIN_SIGNAL_RR_SCALPING = 1.2
+# Минимальный RR для live-скальпинга. было 1.0
 
-MAX_RR_SCALPING = 2.0
-# Верхняя граница RR для скальпинга: отсеивает слишком дальние TP для коротких движений.
+MAX_RR_SCALPING = 1.6
+# Верхняя граница RR для скальпинга: отсеивает слишком дальние TP для коротких движений. было 2.0
 # ==============================================================
 
 SCALPING_MTF_FILTER_LOGIC = "OR"

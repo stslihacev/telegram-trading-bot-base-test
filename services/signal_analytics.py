@@ -13,6 +13,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
+from uuid import uuid4
 
 import core.config as config
 from services.signal_formatter import get_stars_bucket
@@ -41,6 +42,8 @@ class SignalAnalytics:
     active_trades: dict[str, dict[str, Any]] = field(default_factory=dict)
     closed_trades: list[dict[str, Any]] = field(default_factory=list)
     trades_path: Path = field(default_factory=lambda: Path("data") / "active_trades.json")
+    signals_path: Path = field(default_factory=lambda: Path("data") / "signals.json")
+    analytics_state_path: Path = field(default_factory=lambda: Path("data") / "analytics_state.json")
     trade_results_log_path: Path = field(default_factory=lambda: Path("logs") / "trades_results.log")
     trade_results_snapshot_json_path: Path = field(default_factory=lambda: Path("logs") / "trades_results_snapshot.json")
     trade_results_snapshot_csv_path: Path = field(default_factory=lambda: Path("logs") / "trades_results_snapshot.csv")
@@ -81,8 +84,144 @@ class SignalAnalytics:
         except Exception:
             pass
         self.trade_registry = TradeRegistry(path=Path("data") / "trades.json")
+        self._load_signal_journal()
+        self._load_closed_trades_snapshot()
         self._load_active_trades()
+        self._load_analytics_state()
+        self._log_persistence_debug()
         self.equity_curve = [{"timestamp": datetime.now(timezone.utc).isoformat(), "equity": float(self.initial_deposit), "pnl": 0.0}]
+
+    def _save_analytics_state(self) -> None:
+        with self._io_lock:
+            payload = {
+                "analytics": dict(self.analytics),
+                "mode_counter": dict(self.mode_counter),
+                "entry_source_counter": dict(self.entry_source_counter),
+                "rejection_counter": {mode: dict(counter) for mode, counter in self.rejection_counter.items()},
+                "total_signals": int(self.total_signals),
+                "unique_signals": int(self.unique_signals),
+                "duplicates": int(self.duplicates),
+                "confidence_sum": float(self.confidence_sum),
+                "score_sum": float(self.score_sum),
+                "scored_count": int(self.scored_count),
+            }
+            self.analytics_state_path.parent.mkdir(parents=True, exist_ok=True)
+            tmp_path = self.analytics_state_path.with_suffix(f"{self.analytics_state_path.suffix}.tmp")
+            tmp_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+            os.replace(tmp_path, self.analytics_state_path)
+
+    def _load_analytics_state(self) -> None:
+        if not self.analytics_state_path.exists():
+            return
+        try:
+            payload = json.loads(self.analytics_state_path.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            return
+        if not isinstance(payload, dict):
+            return
+        saved_analytics = payload.get("analytics")
+        if isinstance(saved_analytics, dict):
+            for key in self.analytics.keys():
+                self.analytics[key] = int(saved_analytics.get(key, self.analytics[key]) or 0)
+        mode_counter = payload.get("mode_counter")
+        if isinstance(mode_counter, dict):
+            self.mode_counter.update({str(k): int(v or 0) for k, v in mode_counter.items()})
+        source_counter = payload.get("entry_source_counter")
+        if isinstance(source_counter, dict):
+            self.entry_source_counter.update({str(k): int(v or 0) for k, v in source_counter.items()})
+        rejection_counter = payload.get("rejection_counter")
+        if isinstance(rejection_counter, dict):
+            for mode, counters in rejection_counter.items():
+                if isinstance(counters, dict):
+                    self.rejection_counter[str(mode)] = Counter({str(k): int(v or 0) for k, v in counters.items()})
+        self.total_signals = int(payload.get("total_signals", self.total_signals) or 0)
+        self.unique_signals = int(payload.get("unique_signals", self.unique_signals) or 0)
+        self.duplicates = int(payload.get("duplicates", self.duplicates) or 0)
+        self.confidence_sum = float(payload.get("confidence_sum", self.confidence_sum) or 0.0)
+        self.score_sum = float(payload.get("score_sum", self.score_sum) or 0.0)
+        self.scored_count = int(payload.get("scored_count", self.scored_count) or 0)
+
+    def _append_signal_journal(self, signal: dict[str, Any]) -> None:
+        self.signals_path.parent.mkdir(parents=True, exist_ok=True)
+        records: list[dict[str, Any]] = []
+        try:
+            if self.signals_path.exists():
+                payload = json.loads(self.signals_path.read_text(encoding="utf-8"))
+                if isinstance(payload, list):
+                    records = [row for row in payload if isinstance(row, dict)]
+        except (json.JSONDecodeError, OSError):
+            records = []
+        signal_id = str(signal.get("signal_id") or "").strip()
+        if signal_id and any(str(item.get("signal_id") or "").strip() == signal_id for item in records):
+            return
+        records.append(
+            {
+                "signal_id": signal_id,
+                "symbol": str(signal.get("symbol") or ""),
+                "mode": str(signal.get("live_mode") or signal.get("label_prefix") or "UNKNOWN").upper().strip("[]"),
+                "entry_source": str(signal.get("entry_source") or "strict").lower(),
+                "signal_type": self._normalize_signal_type(signal),
+                "score": self._safe_float(signal.get("score")),
+                "timestamp": self._parse_timestamp(signal.get("timestamp")).isoformat(),
+            }
+        )
+        tmp_path = self.signals_path.with_suffix(f"{self.signals_path.suffix}.tmp")
+        tmp_path.write_text(json.dumps(records, ensure_ascii=False, indent=2), encoding="utf-8")
+        os.replace(tmp_path, self.signals_path)
+
+    def _load_signal_journal(self) -> None:
+        if not self.signals_path.exists():
+            return
+        try:
+            payload = json.loads(self.signals_path.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            return
+        if not isinstance(payload, list):
+            return
+        self.total_signals = len(payload)
+        self.unique_signals = len(payload)
+        self.duplicates = 0
+        self.mode_counter = Counter(str(item.get("mode") or "UNKNOWN").upper() for item in payload if isinstance(item, dict))
+        self.entry_source_counter = Counter(
+            str(item.get("entry_source") or "strict").lower() for item in payload if isinstance(item, dict)
+        )
+
+    def _load_closed_trades_snapshot(self) -> None:
+        if not self.trade_results_snapshot_json_path.exists():
+            return
+        try:
+            payload = json.loads(self.trade_results_snapshot_json_path.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            return
+        if not isinstance(payload, list):
+            return
+        self.closed_trades = [item for item in payload if isinstance(item, dict)]
+        for trade in self.closed_trades:
+            key = f"{trade.get('symbol')}|{trade.get('open_time')}|{trade.get('close_time')}|{trade.get('result')}"
+            self._closed_trade_keys.add(key)
+
+    def _log_persistence_debug(self) -> None:
+        signals_loaded = self.total_signals
+        trades_loaded = len(self.closed_trades)
+        signal_ids = {str(item.get("signal_id") or "") for item in self.closed_trades if isinstance(item, dict)}
+        signal_ids.discard("")
+        orphan_trades = sum(
+            1 for trade in self.closed_trades if isinstance(trade, dict) and not str(trade.get("signal_id") or "").strip()
+        )
+        missing_links = max(0, len(self.closed_trades) - len(signal_ids))
+        logger.info(
+            "PERSISTENCE_DEBUG: loaded_trades=%s restored_positions=%s missing_links=%s",
+            trades_loaded,
+            len(self.active_trades),
+            missing_links,
+        )
+        logger.info(
+            "ANALYTICS_DEBUG: total_signals_loaded=%s total_trades_loaded=%s orphan_trades=%s orphan_signals=%s",
+            signals_loaded,
+            trades_loaded,
+            orphan_trades,
+            max(0, signals_loaded - len(signal_ids)),
+        )
 
     def _normalized_execution_mode(self) -> str:
         mode = str(self.execution_mode or "DISABLED").upper()
@@ -144,6 +283,8 @@ class SignalAnalytics:
             name = str(filter_name).upper().strip()
             if name:
                 self.filter_pass_counter[name] += 1
+        self._append_signal_journal(signal)
+        self._save_analytics_state()
 
     @staticmethod
     def _normalize_rejection_reason(reason: Any) -> str:
@@ -226,6 +367,7 @@ class SignalAnalytics:
             global_position_count if global_position_count is not None else "n/a",
             global_limit if global_limit is not None else "n/a",
         )
+        self._save_analytics_state()
 
     def format_rejection_stats(self) -> str:
         if not self.rejection_counter:
@@ -331,6 +473,7 @@ class SignalAnalytics:
 
         open_time = self._parse_timestamp(payload.get("open_time"))
         trade = {
+            "trade_id": str(payload.get("trade_id") or payload.get("registry_id") or uuid4().hex),
             "symbol": normalized_symbol,
             "direction": str(payload.get("direction") or "").upper(),
             "entry": self._safe_float(payload.get("entry")),
@@ -539,6 +682,7 @@ class SignalAnalytics:
                 self.trade_registry.update_trade_status(str(trade.get("registry_id")), status)
             self._append_closed_trade_log(closed)
             self._write_closed_trade_snapshots()
+            self._save_analytics_state()
         try:
             logger.info(
                 "[TRADE CLOSED] symbol=%s result=%s rr=%.2f duration=%s",
@@ -653,6 +797,7 @@ class SignalAnalytics:
                 self._close_trade(symbol, entry, timestamp, result="REVERSAL_EXIT")
 
         trade = {
+            "trade_id": str(signal.get("trade_id") or uuid4().hex),
             "symbol": symbol,
             "direction": str(signal.get("direction") or "").upper(),
             "entry": entry,
@@ -681,8 +826,11 @@ class SignalAnalytics:
             version = str(getattr(config, "STRATEGY_VERSION", "v1"))
             registry_trade = self.trade_registry.register_signal_trade(signal, strategy_version=version, status="OPEN")
             trade["registry_id"] = registry_trade.get("id")
+            if not trade.get("trade_id"):
+                trade["trade_id"] = str(registry_trade.get("id") or uuid4().hex)
         self.active_trades[symbol] = trade
         self._save_active_trades()
+        self._save_analytics_state()
         try:
             logger.info(
                 "[TRADE OPEN] symbol=%s dir=%s entry=%s tp=%s sl=%s conf=%.2f",

@@ -203,10 +203,17 @@ class BacktestStrategyAdapter:
     @staticmethod
     def _get_adaptive_score_threshold(runtime: dict, structure_state: str) -> float:
         base_threshold = float(runtime.get("min_score_threshold", get_mode_threshold(runtime["mode"])))
+        mode = str(runtime.get("mode") or "MAIN").upper()
+        if mode == "SCALPING":
+            if structure_state == "strong":
+                return max(3.0, min(3.2, base_threshold))
+            if structure_state == "weak":
+                return max(2.7, min(3.0, base_threshold))
+            return max(2.8, min(3.1, base_threshold))
         if structure_state == "strong":
             return max(4.0, base_threshold)
         if structure_state == "weak":
-            return max(3.0, min(3.2, base_threshold))
+            return 3.0 if base_threshold <= 3.2 else 3.2
         return base_threshold
 
     def _evaluate_weak_entry_risk(
@@ -509,7 +516,11 @@ class BacktestStrategyAdapter:
         structure_score = self._safe_float((metrics or {}).get("structure_score"), 1.0 if checks.get("STRUCTURE") else 0.0)
         rsi_score = float(weights.get("rsi", 1.0)) if checks.get("RSI") else 0.0
         adx_score = float(weights.get("sma", 0.5)) if checks.get("ADX") else 0.0
-        volume_score = float(weights.get("volume", 1.0)) if checks.get("VOLUME") else 0.0
+        runtime_mode = str(runtime.get("mode") or "MAIN").upper()
+        configured_volume_weight = float(weights.get("volume", 0.25))
+        if runtime_mode in {"MAIN", "SCALPING"}:
+            configured_volume_weight = min(configured_volume_weight, 0.25)
+        volume_score = configured_volume_weight if checks.get("VOLUME") else 0.0
         macd_score = float(weights.get("macd", 1.0)) if checks.get("MACD") else 0.0
         total_score = trend_score + structure_score + rsi_score + adx_score + volume_score + macd_score
         structure_state = str((metrics or {}).get("structure_state", "invalid"))
@@ -747,6 +758,14 @@ class BacktestStrategyAdapter:
             logger.warning("%s | Relaxed diagnostics are empty; forcing DATA failure marker", symbol)
             self.last_signal_diagnostics["failed_filters"] = ["DATA"]
         if rejection_reason:
+            if runtime.get("is_scalping"):
+                logger.info(
+                    "SCALPING_DEBUG: symbol=%s entry_type=%s threshold=%.2f rejection_reason=%s",
+                    symbol,
+                    "continuation",
+                    score_threshold,
+                    rejection_reason,
+                )
             return None
         if atr <= 0:
             self.last_signal_diagnostics["rejection_reason"] = "atr unavailable"
@@ -782,6 +801,7 @@ class BacktestStrategyAdapter:
             "execution_timeframes": tuple(runtime["execution_timeframes"]),
             "signal_only": True,
             "entry_source": "relaxed",
+            "entry_type": "micro_pullback" if runtime.get("is_scalping") else "continuation",
         }
 
     def _ensure_diagnostics_not_empty(self, symbol: str) -> None:
@@ -857,6 +877,10 @@ class BacktestStrategyAdapter:
                 adaptive_score_threshold = self._get_adaptive_score_threshold(runtime, structure_state)
                 hard_failed = [name for name in self._hard_filters if name in filter_checks and not filter_checks[name]]
                 soft_failed = [name for name in self._soft_filters if name in filter_checks and not filter_checks[name]]
+                if runtime.get("is_scalping") and not filter_checks.get("RSI", False) and "RSI" not in hard_failed:
+                    hard_failed.append("RSI")
+                    if "RSI" in soft_failed:
+                        soft_failed.remove("RSI")
                 if structure_state == "weak" and "STRUCTURE" not in soft_failed:
                     soft_failed.append("STRUCTURE")
                 if hard_failed or soft_failed:
@@ -867,6 +891,14 @@ class BacktestStrategyAdapter:
                         soft_failed,
                     )
                 if hard_failed:
+                    if runtime.get("is_scalping"):
+                        logger.info(
+                            "SCALPING_DEBUG: symbol=%s entry_type=%s threshold=%.2f rejection_reason=%s",
+                            symbol,
+                            "continuation",
+                            adaptive_score_threshold,
+                            f"required filters failed: {hard_failed}",
+                        )
                     self.last_signal_diagnostics = {
                         "mode": runtime["mode"],
                         "score": float(score_breakdown.get("total_score", 0.0)),
@@ -881,6 +913,14 @@ class BacktestStrategyAdapter:
                     self._log_execution_trace(symbol, strict_result=False, fallback_executed=False)
                     return None
                 if config.ENABLE_SIGNAL_SCORING and total_score < adaptive_score_threshold:
+                    if runtime.get("is_scalping"):
+                        logger.info(
+                            "SCALPING_DEBUG: symbol=%s entry_type=%s threshold=%.2f rejection_reason=%s",
+                            symbol,
+                            "continuation",
+                            adaptive_score_threshold,
+                            f"score below threshold ({total_score:.2f})",
+                        )
                     self.last_signal_diagnostics = {
                         "mode": runtime["mode"],
                         "score": total_score,
@@ -965,8 +1005,12 @@ class BacktestStrategyAdapter:
                     rr_max = float(self.max_rr)
                     entry_mode = str(signal.get("entry_mode") or signal.get("entry_type") or "unknown").lower()
                     adaptive_entry_type = "bos_retest" if signal.get("signal_type") == "BOS" and entry_mode == "zone" else entry_mode
+                    if runtime.get("is_scalping"):
+                        rr_min = max(1.2, rr_min)
+                        rr_max = min(1.6, rr_max)
                     if structure_state == "strong":
-                        rr_min = max(rr_min, 2.0)
+                        if not runtime.get("is_scalping"):
+                            rr_min = max(rr_min, 2.0)
                         if str(signal.get("signal_type")) != "BOS":
                             strict_rejection_reason = "strong structure requires BOS"
                             strict_rejection_details = f"signal_type={signal.get('signal_type')}"
@@ -1076,6 +1120,17 @@ class BacktestStrategyAdapter:
                                 adaptive_entry_type,
                                 rr,
                             )
+                            if runtime.get("is_scalping"):
+                                scalping_entry_type = "momentum"
+                                if structure_state == "weak":
+                                    scalping_entry_type = "micro_pullback" if entry_mode in {"zone", "retest"} else "continuation"
+                                logger.info(
+                                    "SCALPING_DEBUG: symbol=%s entry_type=%s threshold=%.2f rejection_reason=%s",
+                                    symbol,
+                                    scalping_entry_type,
+                                    adaptive_score_threshold,
+                                    "accepted",
+                                )
                             risk_snapshot = dict(signal)
                             calculate_risk_based_position_size(
                                 risk_snapshot,
@@ -1113,6 +1168,7 @@ class BacktestStrategyAdapter:
                                 "label_prefix": runtime["signal_prefix"],
                                 "execution_timeframes": tuple(runtime["execution_timeframes"]),
                                 "entry_source": "strict",
+                                "entry_type": scalping_entry_type if runtime.get("is_scalping") else adaptive_entry_type,
                             }
                             self.last_signal_diagnostics = {
                                 "mode": runtime["mode"],

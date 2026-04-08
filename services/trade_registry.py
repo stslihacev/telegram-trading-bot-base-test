@@ -72,6 +72,7 @@ class TradeRegistry:
             validated.append(
                 {
                     "id": trade_id,
+                    "signal_id": str(item.get("signal_id") or "").strip(),
                     "symbol": symbol,
                     "mode": mode,
                     "strategy_version": str(item.get("strategy_version") or "unknown"),
@@ -97,8 +98,10 @@ class TradeRegistry:
             self._save_unlocked()
 
     def register_signal_trade(self, signal: dict[str, Any], strategy_version: str, status: str = "OPEN") -> dict[str, Any]:
+        signal_id = str(signal.get("signal_id") or "").strip()
         trade = {
             "id": uuid4().hex,
+            "signal_id": signal_id,
             "symbol": str(signal.get("symbol") or "").strip(),
             "mode": str(signal.get("live_mode") or "MAIN").upper(),
             "strategy_version": strategy_version,
@@ -112,6 +115,8 @@ class TradeRegistry:
         }
         with self._lock:
             for row in self.trades:
+                if signal_id and str(row.get("signal_id") or "").strip() == signal_id:
+                    return dict(row)
                 if (
                     str(row.get("symbol") or "").upper() == str(trade["symbol"]).upper()
                     and str(row.get("status") or "").upper() == "OPEN"

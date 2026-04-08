@@ -1,6 +1,7 @@
 [
   {
     "id": "00577e29762d4c19bf0babb939afb413",
+    "signal_id": "",
     "symbol": "DOGEUSDT",
     "mode": "MAIN",
     "strategy_version": "v1",
@@ -14,6 +15,7 @@
   },
   {
     "id": "ce573ef672b84b6b968d2da71de7e282",
+    "signal_id": "",
     "symbol": "HYPEUSDT",
     "mode": "MAIN",
     "strategy_version": "v1",
@@ -27,6 +29,7 @@
   },
   {
     "id": "b9de1d5406594539908bd0ca875672f2",
+    "signal_id": "",
     "symbol": "XAUTUSDT",
     "mode": "MAIN",
     "strategy_version": "v1",
@@ -40,6 +43,7 @@
   },
   {
     "id": "0d0c425f48934fcf9963d0ce3942b3eb",
+    "signal_id": "",
     "symbol": "BTCUSDT",
     "mode": "MAIN",
     "strategy_version": "v1",
@@ -53,6 +57,7 @@
   },
   {
     "id": "5b9848c939f54fe4841b037ee52e5d14",
+    "signal_id": "",
     "symbol": "STOUSDT",
     "mode": "MAIN",
     "strategy_version": "v1",
@@ -66,6 +71,7 @@
   },
   {
     "id": "2da9a39f73cc47cf93398f5d510ea618",
+    "signal_id": "",
     "symbol": "XRPUSDT",
     "mode": "MAIN",
     "strategy_version": "v1",
@@ -79,6 +85,7 @@
   },
   {
     "id": "4a1f179a161444e99761a11713479df4",
+    "signal_id": "",
     "symbol": "NOMUSDT",
     "mode": "MAIN",
     "strategy_version": "v1",
@@ -92,6 +99,7 @@
   },
   {
     "id": "48ad4dc572d54874b859516b524ba5fd",
+    "signal_id": "",
     "symbol": "SOLUSDT",
     "mode": "MAIN",
     "strategy_version": "v1",
@@ -105,6 +113,7 @@
   },
   {
     "id": "69bd74d26b2e4984921a0b072a6058d6",
+    "signal_id": "",
     "symbol": "XPLUSDT",
     "mode": "MAIN",
     "strategy_version": "v1",
@@ -118,6 +127,7 @@
   },
   {
     "id": "a30b3d6e0b7d46619fe30025b6a5b229",
+    "signal_id": "",
     "symbol": "PIPPINUSDT",
     "mode": "MAIN",
     "strategy_version": "v1",
@@ -131,6 +141,7 @@
   },
   {
     "id": "2f6d6fbc391141ddad8ca2ae73bd0b71",
+    "signal_id": "",
     "symbol": "EDGEUSDT",
     "mode": "SCALPING",
     "strategy_version": "v1",
@@ -144,6 +155,7 @@
   },
   {
     "id": "8cfdea4978314c9690385c8e9edf2e4f",
+    "signal_id": "",
     "symbol": "ADAUSDT",
     "mode": "LIGHT",
     "strategy_version": "v1",
@@ -157,6 +169,7 @@
   },
   {
     "id": "fefcbb7d73b542ef99a3dcfb3fb10bc0",
+    "signal_id": "",
     "symbol": "1000PEPEUSDT",
     "mode": "MAIN",
     "strategy_version": "v1",
@@ -170,6 +183,7 @@
   },
   {
     "id": "a9933b7408924cc8a299407b9966385e",
+    "signal_id": "",
     "symbol": "TAOUSDT",
     "mode": "MAIN",
     "strategy_version": "v1",
@@ -183,6 +197,7 @@
   },
   {
     "id": "7f27789f834d4b3ca50ddddec8acb256",
+    "signal_id": "",
     "symbol": "ONTUSDT",
     "mode": "MAIN",
     "strategy_version": "v1",
@@ -196,6 +211,7 @@
   },
   {
     "id": "6f30e4e468f2451d94cab781a1acd3de",
+    "signal_id": "",
     "symbol": "SIRENUSDT",
     "mode": "MAIN",
     "strategy_version": "v1",
@@ -209,6 +225,7 @@
   },
   {
     "id": "18fb2cedb8324f4e9ecb2ca1edcd24a5",
+    "signal_id": "",
     "symbol": "PUFFERUSDT",
     "mode": "MAIN",
     "strategy_version": "v1",
@@ -222,6 +239,7 @@
   },
   {
     "id": "cae3629d20fa4eda97d54206bd27ba98",
+    "signal_id": "",
     "symbol": "RIVERUSDT",
     "mode": "MAIN",
     "strategy_version": "v1",
@@ -235,6 +253,7 @@
   },
   {
     "id": "11470a0db0f64a3bbd5d22cb18a6e78b",
+    "signal_id": "",
     "symbol": "ALGOUSDT",
     "mode": "MAIN",
     "strategy_version": "v1",
@@ -248,6 +267,7 @@
   },
   {
     "id": "a7543cfde51140c69100a23f6f3ab106",
+    "signal_id": "",
     "symbol": "ZECUSDT",
     "mode": "MAIN",
     "strategy_version": "v1",
@@ -261,6 +281,7 @@
   },
   {
     "id": "e757104f4199417196abe9e349214691",
+    "signal_id": "",
     "symbol": "JCTUSDT",
     "mode": "MAIN",
     "strategy_version": "v1",
@@ -274,6 +295,7 @@
   },
   {
     "id": "9960dd0b4f2445ae843112c6443459ef",
+    "signal_id": "",
     "symbol": "FARTCOINUSDT",
     "mode": "MAIN",
     "strategy_version": "v1",
@@ -287,6 +309,7 @@
   },
   {
     "id": "33a6f44070604fa582d044cb5faee669",
+    "signal_id": "",
     "symbol": "ARIAUSDT",
     "mode": "MAIN",
     "strategy_version": "v1",
@@ -300,6 +323,7 @@
   },
   {
     "id": "be69a869f7404fdda9d3e3d2d40055e7",
+    "signal_id": "",
     "symbol": "BERAUSDT",
     "mode": "MAIN",
     "strategy_version": "v1",
@@ -313,6 +337,7 @@
   },
   {
     "id": "0b9330556c9e4c2ea5f2ebc01ff8d62b",
+    "signal_id": "",
     "symbol": "NEARUSDT",
     "mode": "MAIN",
     "strategy_version": "v1",
@@ -326,6 +351,7 @@
   },
   {
     "id": "529512db726f4990822f2ced81f4916d",
+    "signal_id": "",
     "symbol": "TRUMPUSDT",
     "mode": "MAIN",
     "strategy_version": "v1",
@@ -339,6 +365,7 @@
   },
   {
     "id": "36074d9c7453412ca6e38dad0a81c0de",
+    "signal_id": "",
     "symbol": "MONUSDT",
     "mode": "MAIN",
     "strategy_version": "v1",
@@ -352,6 +379,7 @@
   },
   {
     "id": "82e4b171dbc14f23b1268a1ca2fa0cfc",
+    "signal_id": "",
     "symbol": "ETHUSDT",
     "mode": "MAIN",
     "strategy_version": "v1",
@@ -365,6 +393,7 @@
   },
   {
     "id": "94c35f6ae24e492ba8ac4012972a30dc",
+    "signal_id": "",
     "symbol": "ENAUSDT",
     "mode": "MAIN",
     "strategy_version": "v1",
@@ -378,6 +407,7 @@
   },
   {
     "id": "8cb7d26ab5734142b52d76de2209d353",
+    "signal_id": "",
     "symbol": "BARDUSDT",
     "mode": "MAIN",
     "strategy_version": "v1",
@@ -391,6 +421,7 @@
   },
   {
     "id": "6fb64c642ccb4826b119af97a628257d",
+    "signal_id": "",
     "symbol": "FARTCOINUSDT",
     "mode": "MAIN",
     "strategy_version": "v1",
@@ -404,6 +435,7 @@
   },
   {
     "id": "dea41bfc72994b6faa1f84bbdb1edd22",
+    "signal_id": "",
     "symbol": "STOUSDT",
     "mode": "MAIN",
     "strategy_version": "v1",
@@ -417,6 +449,7 @@
   },
   {
     "id": "05699846b6014a99a1dce2446735c010",
+    "signal_id": "",
     "symbol": "MMTUSDT",
     "mode": "LIGHT",
     "strategy_version": "v1",
@@ -430,6 +463,7 @@
   },
   {
     "id": "98c05e902398401b9e9e65ca81ffe816",
+    "signal_id": "",
     "symbol": "NEARUSDT",
     "mode": "LIGHT",
     "strategy_version": "v1",
@@ -443,6 +477,7 @@
   },
   {
     "id": "78ccb710e7e54001bc238d095e827ace",
+    "signal_id": "",
     "symbol": "SOLVUSDT",
     "mode": "LIGHT",
     "strategy_version": "v1",
@@ -456,6 +491,7 @@
   },
   {
     "id": "c34f1e5bd3af4d92b57998478774a52d",
+    "signal_id": "",
     "symbol": "TREEUSDT",
     "mode": "MAIN",
     "strategy_version": "v1",
@@ -469,6 +505,7 @@
   },
   {
     "id": "cee67131158c4af59543502ce0ba4e07",
+    "signal_id": "",
     "symbol": "LINKUSDT",
     "mode": "MAIN",
     "strategy_version": "v1",
@@ -482,6 +519,7 @@
   },
   {
     "id": "c94760972c084ae2b3cd8a6a7605de9b",
+    "signal_id": "",
     "symbol": "APRUSDT",
     "mode": "MAIN",
     "strategy_version": "v1",
@@ -495,6 +533,7 @@
   },
   {
     "id": "823108509d6b48af89f19b9ad2796ce8",
+    "signal_id": "",
     "symbol": "ZECUSDT",
     "mode": "MAIN",
     "strategy_version": "v1",
@@ -508,6 +547,7 @@
   },
   {
     "id": "e5850bbc757748f0a78912fa6390a243",
+    "signal_id": "",
     "symbol": "AAVEUSDT",
     "mode": "MAIN",
     "strategy_version": "v1",
@@ -517,6 +557,188 @@
     "status": "OPEN",
     "confidence": 0.8400000000000001,
     "timestamp": "2026-04-06T16:00:00+00:00",
+    "entry_source": "strict"
+  },
+  {
+    "id": "02515c4a20f146d6af37147773ffd6c4",
+    "signal_id": "REDUSDT_30m_LONG_2026-04-07 16:30:00+00:00",
+    "symbol": "REDUSDT",
+    "mode": "SCALPING",
+    "strategy_version": "v1",
+    "entry_price": 0.20344,
+    "tp": 0.23473920000000004,
+    "sl": 0.18387799999999999,
+    "status": "OPEN",
+    "confidence": 0.6,
+    "timestamp": "2026-04-07T16:30:00+00:00",
+    "entry_source": "strict"
+  },
+  {
+    "id": "6b3bbaf3ed6f47fca33d3f3239dd4205",
+    "signal_id": "MUSDT_30m_LONG_2026-04-07 16:30:00+00:00",
+    "symbol": "MUSDT",
+    "mode": "SCALPING",
+    "strategy_version": "v1",
+    "entry_price": 2.6288,
+    "tp": 2.8510857142857144,
+    "sl": 2.4898714285714285,
+    "status": "OPEN",
+    "confidence": 0.8800000000000001,
+    "timestamp": "2026-04-07T16:30:00+00:00",
+    "entry_source": "strict"
+  },
+  {
+    "id": "75c20b1d803d49b0a8bf3ecb259a12d4",
+    "signal_id": "GALAUSDT_30m_SHORT_2026-04-07 16:30:00+00:00",
+    "symbol": "GALAUSDT",
+    "mode": "SCALPING",
+    "strategy_version": "v1",
+    "entry_price": 0.002818,
+    "tp": 0.002778388571428572,
+    "sl": 0.002842757142857143,
+    "status": "OPEN",
+    "confidence": 0.6,
+    "timestamp": "2026-04-07T16:30:00+00:00",
+    "entry_source": "strict"
+  },
+  {
+    "id": "2085f58a1b0444c1a6cfd215e3d04359",
+    "signal_id": "SUIUSDT_30m_LONG_2026-04-07 17:00:00+00:00",
+    "symbol": "SUIUSDT",
+    "mode": "SCALPING",
+    "strategy_version": "v1",
+    "entry_price": 0.8687,
+    "tp": 0.8806177142857142,
+    "sl": 0.8612514285714287,
+    "status": "OPEN",
+    "confidence": 0.8800000000000001,
+    "timestamp": "2026-04-07T17:00:00+00:00",
+    "entry_source": "strict"
+  },
+  {
+    "id": "83fef0d2a6c443d3bc1f1b42b80859bf",
+    "signal_id": "BARDUSDT_30m_LONG_2026-04-07 17:00:00+00:00",
+    "symbol": "BARDUSDT",
+    "mode": "SCALPING",
+    "strategy_version": "v1",
+    "entry_price": 0.3149,
+    "tp": 0.33330457142857145,
+    "sl": 0.30339714285714287,
+    "status": "OPEN",
+    "confidence": 0.6,
+    "timestamp": "2026-04-07T17:00:00+00:00",
+    "entry_source": "strict"
+  },
+  {
+    "id": "e01806b0d9cc40c39d33935e4bc8b7e1",
+    "signal_id": "SUPERUSDT_30m_LONG_2026-04-07 17:00:00+00:00",
+    "symbol": "SUPERUSDT",
+    "mode": "SCALPING",
+    "strategy_version": "v1",
+    "entry_price": 0.11706,
+    "tp": 0.12078182857142858,
+    "sl": 0.11473385714285714,
+    "status": "OPEN",
+    "confidence": 0.6,
+    "timestamp": "2026-04-07T17:00:00+00:00",
+    "entry_source": "strict"
+  },
+  {
+    "id": "21ba042c91aa4594859d1e5950990285",
+    "signal_id": "BCHUSDT_30m_LONG_2026-04-08 15:00:00+00:00",
+    "symbol": "BCHUSDT",
+    "mode": "SCALPING",
+    "strategy_version": "v1",
+    "entry_price": 444.6,
+    "tp": 449.7108571428572,
+    "sl": 441.4057142857143,
+    "status": "OPEN",
+    "confidence": 0.6,
+    "timestamp": "2026-04-08T15:00:00+00:00",
+    "entry_source": "strict"
+  },
+  {
+    "id": "8bffe3f30eb647e5b79fcf0fdd0a312f",
+    "signal_id": "CLUSDT_30m_SHORT_2026-04-08 15:30:00+00:00",
+    "symbol": "CLUSDT",
+    "mode": "SCALPING",
+    "strategy_version": "v1",
+    "entry_price": 94.403,
+    "tp": 91.71950285714287,
+    "sl": 96.08018571428572,
+    "status": "OPEN",
+    "confidence": 0.65,
+    "timestamp": "2026-04-08T15:30:00+00:00",
+    "entry_source": "strict"
+  },
+  {
+    "id": "59dbc32a71a54396a9f41bc65018a222",
+    "signal_id": "LTCUSDT_30m_LONG_2026-04-08 15:30:00+00:00",
+    "symbol": "LTCUSDT",
+    "mode": "SCALPING",
+    "strategy_version": "v1",
+    "entry_price": 54.61,
+    "tp": 55.1956,
+    "sl": 54.244,
+    "status": "OPEN",
+    "confidence": 0.6,
+    "timestamp": "2026-04-08T15:30:00+00:00",
+    "entry_source": "strict"
+  },
+  {
+    "id": "1eff8576f445433d9b06dc04ba8bdffc",
+    "signal_id": "VIRTUALUSDT_30m_LONG_2026-04-08 15:30:00+00:00",
+    "symbol": "VIRTUALUSDT",
+    "mode": "SCALPING",
+    "strategy_version": "v1",
+    "entry_price": 0.6737,
+    "tp": 0.6876222857142856,
+    "sl": 0.6649985714285714,
+    "status": "OPEN",
+    "confidence": 0.6,
+    "timestamp": "2026-04-08T15:30:00+00:00",
+    "entry_source": "strict"
+  },
+  {
+    "id": "9c62d217541246df843de9f2ccab6c96",
+    "signal_id": "RENDERUSDT_30m_LONG_2026-04-08 15:30:00+00:00",
+    "symbol": "RENDERUSDT",
+    "mode": "SCALPING",
+    "strategy_version": "v1",
+    "entry_price": 2.0557,
+    "tp": 2.1206302857142854,
+    "sl": 2.0151185714285713,
+    "status": "OPEN",
+    "confidence": 0.65,
+    "timestamp": "2026-04-08T15:30:00+00:00",
+    "entry_source": "strict"
+  },
+  {
+    "id": "92b89042ad6947029135322e69ace8ab",
+    "signal_id": "XMRUSDT_1h_LONG_2026-04-08 15:00:00+00:00",
+    "symbol": "XMRUSDT",
+    "mode": "MAIN",
+    "strategy_version": "v1",
+    "entry_price": 338.08,
+    "tp": 358.7554285714286,
+    "sl": 325.1578571428571,
+    "status": "OPEN",
+    "confidence": 0.65,
+    "timestamp": "2026-04-08T15:00:00+00:00",
+    "entry_source": "strict"
+  },
+  {
+    "id": "22ce226076bb462f99a044e9c67f61b7",
+    "signal_id": "HBARUSDT_1h_LONG_2026-04-08 15:00:00+00:00",
+    "symbol": "HBARUSDT",
+    "mode": "MAIN",
+    "strategy_version": "v1",
+    "entry_price": 0.09063,
+    "tp": 0.09261788571428572,
+    "sl": 0.08938757142857143,
+    "status": "OPEN",
+    "confidence": 0.6,
+    "timestamp": "2026-04-08T15:00:00+00:00",
     "entry_source": "strict"
   }
 ]

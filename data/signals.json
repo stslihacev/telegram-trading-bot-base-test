@@ -1,0 +1,245 @@
+[
+  {
+    "signal_id": "REDUSDT_30m_LONG_2026-04-07 16:30:00+00:00",
+    "symbol": "REDUSDT",
+    "mode": "SCALPING",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-07T16:30:00+00:00"
+  },
+  {
+    "signal_id": "MUSDT_30m_LONG_2026-04-07 16:30:00+00:00",
+    "symbol": "MUSDT",
+    "mode": "SCALPING",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 4.4,
+    "timestamp": "2026-04-07T16:30:00+00:00"
+  },
+  {
+    "signal_id": "GALAUSDT_30m_SHORT_2026-04-07 16:30:00+00:00",
+    "symbol": "GALAUSDT",
+    "mode": "SCALPING",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-07T16:30:00+00:00"
+  },
+  {
+    "signal_id": "BTCUSDT_30m_LONG_2026-04-07 17:00:00+00:00",
+    "symbol": "BTCUSDT",
+    "mode": "SCALPING",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 4.4,
+    "timestamp": "2026-04-07T17:00:00+00:00"
+  },
+  {
+    "signal_id": "HYPEUSDT_30m_LONG_2026-04-07 17:00:00+00:00",
+    "symbol": "HYPEUSDT",
+    "mode": "SCALPING",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.9,
+    "timestamp": "2026-04-07T17:00:00+00:00"
+  },
+  {
+    "signal_id": "TAOUSDT_30m_LONG_2026-04-07 17:00:00+00:00",
+    "symbol": "TAOUSDT",
+    "mode": "SCALPING",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.9,
+    "timestamp": "2026-04-07T17:00:00+00:00"
+  },
+  {
+    "signal_id": "SUIUSDT_30m_LONG_2026-04-07 17:00:00+00:00",
+    "symbol": "SUIUSDT",
+    "mode": "SCALPING",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 4.4,
+    "timestamp": "2026-04-07T17:00:00+00:00"
+  },
+  {
+    "signal_id": "XPLUSDT_30m_LONG_2026-04-07 17:00:00+00:00",
+    "symbol": "XPLUSDT",
+    "mode": "SCALPING",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 4.4,
+    "timestamp": "2026-04-07T17:00:00+00:00"
+  },
+  {
+    "signal_id": "BARDUSDT_30m_LONG_2026-04-07 17:00:00+00:00",
+    "symbol": "BARDUSDT",
+    "mode": "SCALPING",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-07T17:00:00+00:00"
+  },
+  {
+    "signal_id": "SUPERUSDT_30m_LONG_2026-04-07 17:00:00+00:00",
+    "symbol": "SUPERUSDT",
+    "mode": "SCALPING",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-07T17:00:00+00:00"
+  },
+  {
+    "signal_id": "MUSDT_30m_LONG_2026-04-07 18:00:00+00:00",
+    "symbol": "MUSDT",
+    "mode": "SCALPING",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 4.65,
+    "timestamp": "2026-04-07T18:00:00+00:00"
+  },
+  {
+    "signal_id": "BTCUSDT_30m_LONG_2026-04-08 15:00:00+00:00",
+    "symbol": "BTCUSDT",
+    "mode": "SCALPING",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.25,
+    "timestamp": "2026-04-08T15:00:00+00:00"
+  },
+  {
+    "signal_id": "FARTCOINUSDT_30m_LONG_2026-04-08 15:00:00+00:00",
+    "symbol": "FARTCOINUSDT",
+    "mode": "SCALPING",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.25,
+    "timestamp": "2026-04-08T15:00:00+00:00"
+  },
+  {
+    "signal_id": "BCHUSDT_30m_LONG_2026-04-08 15:00:00+00:00",
+    "symbol": "BCHUSDT",
+    "mode": "SCALPING",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-08T15:00:00+00:00"
+  },
+  {
+    "signal_id": "ZECUSDT_30m_LONG_2026-04-08 15:30:00+00:00",
+    "symbol": "ZECUSDT",
+    "mode": "SCALPING",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-08T15:30:00+00:00"
+  },
+  {
+    "signal_id": "CLUSDT_30m_SHORT_2026-04-08 15:30:00+00:00",
+    "symbol": "CLUSDT",
+    "mode": "SCALPING",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.25,
+    "timestamp": "2026-04-08T15:30:00+00:00"
+  },
+  {
+    "signal_id": "NEARUSDT_30m_LONG_2026-04-08 15:30:00+00:00",
+    "symbol": "NEARUSDT",
+    "mode": "SCALPING",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-08T15:30:00+00:00"
+  },
+  {
+    "signal_id": "ENAUSDT_30m_LONG_2026-04-08 15:30:00+00:00",
+    "symbol": "ENAUSDT",
+    "mode": "SCALPING",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.25,
+    "timestamp": "2026-04-08T15:30:00+00:00"
+  },
+  {
+    "signal_id": "AAVEUSDT_30m_LONG_2026-04-08 15:30:00+00:00",
+    "symbol": "AAVEUSDT",
+    "mode": "SCALPING",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-08T15:30:00+00:00"
+  },
+  {
+    "signal_id": "LTCUSDT_30m_LONG_2026-04-08 15:30:00+00:00",
+    "symbol": "LTCUSDT",
+    "mode": "SCALPING",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-08T15:30:00+00:00"
+  },
+  {
+    "signal_id": "VIRTUALUSDT_30m_LONG_2026-04-08 15:30:00+00:00",
+    "symbol": "VIRTUALUSDT",
+    "mode": "SCALPING",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-08T15:30:00+00:00"
+  },
+  {
+    "signal_id": "RENDERUSDT_30m_LONG_2026-04-08 15:30:00+00:00",
+    "symbol": "RENDERUSDT",
+    "mode": "SCALPING",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.25,
+    "timestamp": "2026-04-08T15:30:00+00:00"
+  },
+  {
+    "signal_id": "XPLUSDT_30m_LONG_2026-04-08 16:00:00+00:00",
+    "symbol": "XPLUSDT",
+    "mode": "SCALPING",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-08T16:00:00+00:00"
+  },
+  {
+    "signal_id": "GALAUSDT_30m_LONG_2026-04-08 16:00:00+00:00",
+    "symbol": "GALAUSDT",
+    "mode": "SCALPING",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.25,
+    "timestamp": "2026-04-08T16:00:00+00:00"
+  },
+  {
+    "signal_id": "HYPEUSDT_1h_LONG_2026-04-08 15:00:00+00:00",
+    "symbol": "HYPEUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-08T15:00:00+00:00"
+  },
+  {
+    "signal_id": "XMRUSDT_1h_LONG_2026-04-08 15:00:00+00:00",
+    "symbol": "XMRUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.25,
+    "timestamp": "2026-04-08T15:00:00+00:00"
+  },
+  {
+    "signal_id": "HBARUSDT_1h_LONG_2026-04-08 15:00:00+00:00",
+    "symbol": "HBARUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-08T15:00:00+00:00"
+  }
+]

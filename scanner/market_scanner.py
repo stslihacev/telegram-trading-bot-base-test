@@ -5,6 +5,7 @@ from __future__ import annotations
 import ccxt
 import pandas as pd
 from datetime import datetime, timezone
+from collections import Counter
 
 import core.config as config
 from core.debug import debug_stage, reject
@@ -29,6 +30,7 @@ class MarketScanner:
         configured_ttl = getattr(config, "OHLCV_CACHE_TTL_SEC", None)
         self.ohlcv_cache_ttl_sec = int(configured_ttl) if configured_ttl is not None else None
         self._forced_test_signal_sent = False
+        self.last_scan_diagnostic: dict[str, object] = {}
         logger.info(
             "%s scanner initialized | mode=%s | timeframe=%s | candle_limit=%s | execution_tfs=%s",
             self.log_prefix or "[MAIN]",
@@ -164,6 +166,9 @@ class MarketScanner:
         raw_candidates = len(active_symbols)
         potential_signals = 0
         strict_signals = 0
+        scalping_signals = 0
+        score_values: list[float] = []
+        rejection_counter: Counter[str] = Counter()
         logger.info(
             "%s RAW_CANDIDATES_BEFORE_STRICT_FILTERS: count=%s mode=%s",
             self.log_prefix,
@@ -190,7 +195,13 @@ class MarketScanner:
                 potential_signals += 1
             if diagnostics.get("strict_signal"):
                 strict_signals += 1
+            try:
+                score_values.append(float(diagnostics.get("score", 0.0) or 0.0))
+            except (TypeError, ValueError):
+                pass
             if signal:
+                if str((signal.get("live_mode") or self.runtime["mode"])).upper() == "SCALPING":
+                    scalping_signals += 1
                 label = signal.get("label_prefix") or self.log_prefix
                 logger.info(
                     (
@@ -202,6 +213,7 @@ class MarketScanner:
                 )
                 signals.append(signal)
             else:
+                rejection_counter[str(diagnostics.get("rejection_reason") or "unknown")] += 1
                 logger.info(
                     (
                         f"{self.log_prefix} ❌ No signal: {clean_symbol} | mode={diagnostics.get('mode', self.runtime['mode'])} | "
@@ -238,4 +250,23 @@ class MarketScanner:
             strict_signals,
             raw_candidates,
         )
+        avg_score = (sum(score_values) / len(score_values)) if score_values else 0.0
+        rejection_top = rejection_counter.most_common(3)
+        self.last_scan_diagnostic = {
+            "potential_signals": potential_signals,
+            "strict_signals": strict_signals,
+            "scalping_signals": scalping_signals,
+            "avg_score": avg_score,
+            "rejection_top_reasons": rejection_top,
+        }
+        logger.info(
+            "AUTO_DIAGNOSTIC: potential_signals=%s strict_signals=%s scalping_signals=%s avg_score=%.2f rejection_top_reasons=%s",
+            potential_signals,
+            strict_signals,
+            scalping_signals,
+            avg_score,
+            rejection_top,
+        )
+        if strict_signals == 0 or (self.runtime.get("is_scalping") and scalping_signals == 0):
+            logger.warning("LOW SIGNAL FLOW DETECTED")
         return signals
