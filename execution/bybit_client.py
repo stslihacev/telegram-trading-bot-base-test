@@ -8,7 +8,11 @@ from decimal import Decimal
 from pathlib import Path
 from typing import Any, Callable
 
-from dotenv import load_dotenv
+try:
+    from dotenv import load_dotenv
+except Exception:  # pragma: no cover - optional dependency fallback
+    def load_dotenv(*_: Any, **__: Any) -> bool:
+        return False
 from pybit.unified_trading import HTTP
 
 from utils.logger import logger
@@ -23,6 +27,7 @@ class BybitExecutionClient:
         self,
         *,
         testnet: bool = True,
+        demo: bool = False,
         api_key: str | None = None,
         api_secret: str | None = None,
         timeout: float = 10.0,
@@ -30,10 +35,12 @@ class BybitExecutionClient:
         retry_backoff_sec: float = 0.7,
     ) -> None:
         self.testnet = bool(testnet)
+        self.demo = bool(demo)
         self.max_retries = max(1, int(max_retries))
         self.retry_backoff_sec = max(0.1, float(retry_backoff_sec))
         self._session = HTTP(
             testnet=self.testnet,
+            demo=self.demo,
             api_key=api_key or os.getenv("BYBIT_API_KEY", ""),
             api_secret=api_secret or os.getenv("BYBIT_SECRET", ""),
             timeout=float(timeout),
@@ -50,6 +57,7 @@ class BybitExecutionClient:
         return {
             "ok": True,
             "testnet": self.testnet,
+            "demo": self.demo,
             "coin": str(coin).upper(),
             "balance": balance,
             "positions_count": len(positions),
