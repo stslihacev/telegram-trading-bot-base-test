@@ -20,6 +20,8 @@ from telegram.ext import Application, CallbackQueryHandler, CommandHandler
 
 from core.config import (
     DEBUG_MODE,
+    EXECUTION_MODE,
+    REAL_TRADING_ENABLED,
     TESTNET,
     TRADING_ENABLED,
     FAILED_SIGNAL_COOLDOWN_MINUTES,
@@ -162,6 +164,36 @@ class TelegramTradingBot:
         self.gui_thread: threading.Thread | None = None
         self.gui_started = False
         self.gui_summary_queue: queue.Queue[dict[str, str]] = queue.Queue()
+
+    def _verify_bybit_connectivity(self) -> None:
+        """Проверка авторизованного подключения к Bybit при старте."""
+        if not bool(TRADING_ENABLED):
+            logger.info("BYBIT_CONNECTIVITY_CHECK skipped: TRADING_ENABLED=False")
+            return
+
+        logger.info(
+            "BYBIT_CONNECTIVITY_CHECK start: execution_mode=%s testnet=%s trading_enabled=%s real_trading_enabled=%s",
+            str(EXECUTION_MODE).upper(),
+            bool(TESTNET),
+            bool(TRADING_ENABLED),
+            bool(REAL_TRADING_ENABLED),
+        )
+        try:
+            result = self.bybit_client.connectivity_check(coin="USDT")
+            logger.info(
+                "BYBIT_CONNECTIVITY_CHECK OK: testnet=%s coin=%s balance=%s positions=%s",
+                bool(result.get("testnet")),
+                result.get("coin"),
+                result.get("balance"),
+                result.get("positions_count"),
+            )
+        except Exception as exc:
+            logger.error(
+                "BYBIT_CONNECTIVITY_CHECK FAILED: %s. "
+                "Проверьте .env ключи BYBIT_API_KEY/BYBIT_SECRET и соответствие TESTNET режиму (401/Unauthorized обычно означает mismatch).",
+                exc,
+            )
+            raise
 
     def ensure_user(self, chat_id: int) -> None:
         state_manager.init_user(chat_id)
@@ -672,6 +704,7 @@ class TelegramTradingBot:
     def initialize(self) -> None:
         """Создаёт Telegram Application в текущем asyncio loop и поднимает GUI для сигналов."""
         self._start_signal_gui()
+        self._verify_bybit_connectivity()
 
         if not self.telegram_enabled:
             logger.info("✅ Telegram отключён: инициализированы scanner + GUI режим")

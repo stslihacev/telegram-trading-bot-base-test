@@ -136987,3 +136987,79 @@ Request → GET https://api-testnet.bybit.com/v5/position/list: category=linear&
 2026-04-08 22:42:52,195 - crypto_bot - INFO - [STARTUP] reconciling active trades: 26
 2026-04-08 22:43:01,695 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
 2026-04-08 22:43:03,513 - crypto_bot - INFO - 🛑 Остановка по KeyboardInterrupt
+2026-04-08 22:53:31,666 - crypto_bot - INFO - LOGGER INIT OK: crypto_bot handlers=2 level=INFO propagate=False
+2026-04-08 22:53:31,666 - crypto_bot - INFO - LOGGER INIT OK: signals_logger handlers=1 level=INFO propagate=False
+2026-04-08 22:53:31,666 - crypto_bot - INFO - LOGGER INIT OK: analytics_logger handlers=1 level=INFO propagate=False
+2026-04-08 22:53:31,666 - crypto_bot - INFO - LOGGER INIT OK: snapshot_logger handlers=1 level=INFO propagate=False
+2026-04-08 22:53:31,667 - crypto_bot - INFO - 🚀 Starting bot...
+2026-04-08 22:53:31,667 - crypto_bot - WARNING - TELEGRAM_TOKEN не задан — бот запустится в режиме scanner + GUI без Telegram polling
+2026-04-08 22:53:31,667 - crypto_bot - INFO - [ANALYTICS INIT] trade tracking enabled
+2026-04-08 22:53:31,669 - crypto_bot - INFO - [PERSISTENCE] loaded trades: 26
+2026-04-08 22:53:31,669 - crypto_bot - INFO - PERSISTENCE_DEBUG: loaded_trades=23 restored_positions=26 missing_links=23
+2026-04-08 22:53:31,669 - crypto_bot - INFO - ANALYTICS_DEBUG: total_signals_loaded=33 total_trades_loaded=23 orphan_trades=23 orphan_signals=33
+2026-04-08 22:53:31,670 - crypto_bot - WARNING - CONFIG_WARNINGS:
+2026-04-08 22:53:31,670 - crypto_bot - WARNING - - BOS ADX blocked band overlaps allowed range; this can suppress otherwise valid BOS entries
+2026-04-08 22:53:31,673 - crypto_bot - INFO - [MAIN] scanner initialized | mode=MAIN | timeframe=1h | candle_limit=220 | execution_tfs=4h, 1h, 30m, 15m
+2026-04-08 22:53:31,673 - crypto_bot - INFO - DEBUG: SCANNER STRATEGY CLASS | class=BacktestStrategyAdapter
+2026-04-08 22:53:31,707 - crypto_bot - INFO - 🖥️ Signal GUI thread started
+2026-04-08 22:53:31,708 - crypto_bot - INFO - BYBIT_CONNECTIVITY_CHECK start: execution_mode=LIVE testnet=True trading_enabled=True real_trading_enabled=True
+2026-04-08 22:53:32,297 - crypto_bot - WARNING - BYBIT_API_RETRY: endpoint=get_wallet_balance attempt=1/3 backoff=0.70s error=Http status code is not 200. (ErrCode: 401) (ErrTime: 19:53:32).
+Request → GET https://api-testnet.bybit.com/v5/account/wallet-balance: accountType=UNIFIED&coin=USDT.
+2026-04-08 22:53:33,247 - crypto_bot - WARNING - BYBIT_API_RETRY: endpoint=get_wallet_balance attempt=2/3 backoff=1.40s error=Http status code is not 200. (ErrCode: 401) (ErrTime: 19:53:33).
+Request → GET https://api-testnet.bybit.com/v5/account/wallet-balance: accountType=UNIFIED&coin=USDT.
+2026-04-08 22:53:34,895 - crypto_bot - ERROR - BYBIT_CONNECTIVITY_CHECK FAILED: get_wallet_balance failed after 3 attempts: Http status code is not 200. (ErrCode: 401) (ErrTime: 19:53:34).
+Request → GET https://api-testnet.bybit.com/v5/account/wallet-balance: accountType=UNIFIED&coin=USDT.. Проверьте .env ключи BYBIT_API_KEY/BYBIT_SECRET и соответствие TESTNET режиму (401/Unauthorized обычно означает mismatch).
+2026-04-08 22:53:34,896 - crypto_bot - ERROR - ❌ Polling crashed. Restarting in 5 seconds...
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 21, in main
+    bot.initialize()
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 707, in initialize
+    self._verify_bybit_connectivity()
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 182, in _verify_bybit_connectivity
+    result = self.bybit_client.connectivity_check(coin="USDT")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\execution\bybit_client.py", line 48, in connectivity_check
+    balance = self.get_balance(coin=coin)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\execution\bybit_client.py", line 126, in get_balance
+    payload = self._call(
+              ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\execution\bybit_client.py", line 84, in _call
+    raise RuntimeError(f"{name} failed after {self.max_retries} attempts: {last_exc}")
+RuntimeError: get_wallet_balance failed after 3 attempts: Http status code is not 200. (ErrCode: 401) (ErrTime: 19:53:34).
+Request → GET https://api-testnet.bybit.com/v5/account/wallet-balance: accountType=UNIFIED&coin=USDT.
+2026-04-08 22:53:39,898 - crypto_bot - INFO - 🚀 Starting bot...
+2026-04-08 22:53:39,898 - crypto_bot - WARNING - TELEGRAM_TOKEN не задан — бот запустится в режиме scanner + GUI без Telegram polling
+2026-04-08 22:53:39,898 - crypto_bot - INFO - [ANALYTICS INIT] trade tracking enabled
+2026-04-08 22:53:39,899 - crypto_bot - INFO - [PERSISTENCE] loaded trades: 26
+2026-04-08 22:53:39,901 - crypto_bot - INFO - PERSISTENCE_DEBUG: loaded_trades=23 restored_positions=26 missing_links=23
+2026-04-08 22:53:39,901 - crypto_bot - INFO - ANALYTICS_DEBUG: total_signals_loaded=33 total_trades_loaded=23 orphan_trades=23 orphan_signals=33
+2026-04-08 22:53:39,904 - crypto_bot - INFO - [MAIN] scanner initialized | mode=MAIN | timeframe=1h | candle_limit=220 | execution_tfs=4h, 1h, 30m, 15m
+2026-04-08 22:53:39,904 - crypto_bot - INFO - DEBUG: SCANNER STRATEGY CLASS | class=BacktestStrategyAdapter
+2026-04-08 22:53:39,930 - crypto_bot - INFO - 🖥️ Signal GUI thread started
+2026-04-08 22:53:39,931 - crypto_bot - INFO - BYBIT_CONNECTIVITY_CHECK start: execution_mode=LIVE testnet=True trading_enabled=True real_trading_enabled=True
+2026-04-08 22:53:40,415 - crypto_bot - WARNING - BYBIT_API_RETRY: endpoint=get_wallet_balance attempt=1/3 backoff=0.70s error=Http status code is not 200. (ErrCode: 401) (ErrTime: 19:53:40).
+Request → GET https://api-testnet.bybit.com/v5/account/wallet-balance: accountType=UNIFIED&coin=USDT.
+2026-04-08 22:53:41,362 - crypto_bot - WARNING - BYBIT_API_RETRY: endpoint=get_wallet_balance attempt=2/3 backoff=1.40s error=Http status code is not 200. (ErrCode: 401) (ErrTime: 19:53:41).
+Request → GET https://api-testnet.bybit.com/v5/account/wallet-balance: accountType=UNIFIED&coin=USDT.
+2026-04-08 22:53:43,011 - crypto_bot - ERROR - BYBIT_CONNECTIVITY_CHECK FAILED: get_wallet_balance failed after 3 attempts: Http status code is not 200. (ErrCode: 401) (ErrTime: 19:53:43).
+Request → GET https://api-testnet.bybit.com/v5/account/wallet-balance: accountType=UNIFIED&coin=USDT.. Проверьте .env ключи BYBIT_API_KEY/BYBIT_SECRET и соответствие TESTNET режиму (401/Unauthorized обычно означает mismatch).
+2026-04-08 22:53:43,012 - crypto_bot - ERROR - ❌ Polling crashed. Restarting in 5 seconds...
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\main.py", line 21, in main
+    bot.initialize()
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 707, in initialize
+    self._verify_bybit_connectivity()
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 182, in _verify_bybit_connectivity
+    result = self.bybit_client.connectivity_check(coin="USDT")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\execution\bybit_client.py", line 48, in connectivity_check
+    balance = self.get_balance(coin=coin)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\execution\bybit_client.py", line 126, in get_balance
+    payload = self._call(
+              ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\execution\bybit_client.py", line 84, in _call
+    raise RuntimeError(f"{name} failed after {self.max_retries} attempts: {last_exc}")
+RuntimeError: get_wallet_balance failed after 3 attempts: Http status code is not 200. (ErrCode: 401) (ErrTime: 19:53:43).
+Request → GET https://api-testnet.bybit.com/v5/account/wallet-balance: accountType=UNIFIED&coin=USDT.

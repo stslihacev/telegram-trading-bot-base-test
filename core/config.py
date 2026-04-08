@@ -607,7 +607,7 @@ POSITION_LIMITS = {"MAIN": 40, "SCALPING": 30, "LIGHT": 20}
 # ============================================================
 # Execution mode (live runtime)
 # ============================================================
-EXECUTION_MODE = "PAPER"
+EXECUTION_MODE = "LIVE"
 # Поддерживаемые режимы: DISABLED / PAPER / LIVE.
 # DISABLED — сигналы без симуляции сделок (поведение signal-only).
 # PAPER — симуляция lifecycle сделок и PnL без реальных API ордеров.
@@ -622,8 +622,9 @@ TRADING_ENABLED = True
 TESTNET = True
 # По умолчанию live-исполнение работает только в Bybit testnet.
 
-REAL_TRADING_ENABLED = False
-# Дополнительный safety gate: для реальных ордеров должен быть включён явно.
+REAL_TRADING_ENABLED = bool(TRADING_ENABLED and TESTNET)
+# Дополнительный safety gate для реальных ордеров в demo-интеграции.
+# В этой конфигурации real execution разрешён только при включённых TRADING_ENABLED и TESTNET.
 
 USE_REAL_EXECUTION = bool(TRADING_ENABLED)
 # Жёсткое разделение execution path: real execution разрешён только когда TRADING_ENABLED=True.

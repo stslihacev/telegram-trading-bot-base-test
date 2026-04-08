@@ -5,6 +5,7 @@ from __future__ import annotations
 import os
 import time
 from decimal import Decimal
+from pathlib import Path
 from typing import Any, Callable
 
 from dotenv import load_dotenv
@@ -12,6 +13,8 @@ from pybit.unified_trading import HTTP
 
 from utils.logger import logger
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / ".env", override=False)
 
 class BybitExecutionClient:
     """Thin safe wrapper over pybit HTTP client."""
@@ -26,7 +29,6 @@ class BybitExecutionClient:
         max_retries: int = 3,
         retry_backoff_sec: float = 0.7,
     ) -> None:
-        load_dotenv()
         self.testnet = bool(testnet)
         self.max_retries = max(1, int(max_retries))
         self.retry_backoff_sec = max(0.1, float(retry_backoff_sec))
@@ -36,6 +38,22 @@ class BybitExecutionClient:
             api_secret=api_secret or os.getenv("BYBIT_SECRET", ""),
             timeout=float(timeout),
         )
+
+    def connectivity_check(self, coin: str = "USDT") -> dict[str, Any]:
+        """Run authenticated testnet/mainnet connectivity checks.
+
+        Uses signed private endpoints to detect invalid key/domain mismatch
+        early (e.g. demo keys with mainnet or vice versa).
+        """
+        balance = self.get_balance(coin=coin)
+        positions = self.get_positions()
+        return {
+            "ok": True,
+            "testnet": self.testnet,
+            "coin": str(coin).upper(),
+            "balance": balance,
+            "positions_count": len(positions),
+        }
 
     def _call(self, name: str, fn: Callable[[], Any]) -> dict[str, Any]:
         last_exc: Exception | None = None
