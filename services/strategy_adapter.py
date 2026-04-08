@@ -205,10 +205,10 @@ class BacktestStrategyAdapter:
         base_threshold = float(runtime.get("min_score_threshold", get_mode_threshold(runtime["mode"])))
         mode = str(runtime.get("mode") or "MAIN").upper()
         if mode == "SCALPING":
-            if structure_state == "strong":
-                return max(3.0, min(3.2, base_threshold))
             if structure_state == "weak":
-                return max(2.7, min(3.0, base_threshold))
+                return 2.7
+            if structure_state == "strong":
+                return 3.0
             return max(2.8, min(3.1, base_threshold))
         if structure_state == "strong":
             return max(4.0, base_threshold)
@@ -350,6 +350,7 @@ class BacktestStrategyAdapter:
             "max_score": float(max_score),
             "passed_filters": passed_filters,
             "failed_filters": [],
+            "filters_weighted": [name for name in passed_filters if name in {"TREND", "STRUCTURE", "RSI", "ADX", "VOLUME", "MACD"}],
             "regime": str(row.get("regime", "N/A")),
             "timestamp": str(df.index[i]),
             "tf": runtime["scan_timeframe"],
@@ -503,6 +504,18 @@ class BacktestStrategyAdapter:
             structure_debug["reason"],
         )
         return checks, metrics
+
+    @staticmethod
+    def _compute_weighted_filters(score_breakdown: dict[str, float]) -> list[str]:
+        mapping = {
+            "trend_score": "TREND",
+            "structure_score": "STRUCTURE",
+            "rsi_score": "RSI",
+            "adx_score": "ADX",
+            "volume_score": "VOLUME",
+            "macd_score": "MACD",
+        }
+        return [label for key, label in mapping.items() if float(score_breakdown.get(key, 0.0) or 0.0) > 0.0]
 
     def _log_score_breakdown(
         self,
@@ -748,6 +761,14 @@ class BacktestStrategyAdapter:
             "score": total_score,
             "passed_filters": passed,
             "failed_filters": failed,
+            "filters_weighted": self._compute_weighted_filters({
+                "trend_score": float(optional_checks["di"]),
+                "structure_score": float(required_checks["structure"]),
+                "rsi_score": float(optional_checks["rsi"]),
+                "adx_score": float(optional_checks["adx"]),
+                "volume_score": float(optional_checks["volume_threshold"]),
+                "macd_score": float(optional_checks["macd"]),
+            }),
             "required_filters_result": required_checks,
             "required_filters": required_filters,
             "rejection_reason": rejection_reason,
@@ -760,9 +781,10 @@ class BacktestStrategyAdapter:
         if rejection_reason:
             if runtime.get("is_scalping"):
                 logger.info(
-                    "SCALPING_DEBUG: symbol=%s entry_type=%s threshold=%.2f rejection_reason=%s",
+                    "SCALPING_DEBUG: symbol=%s entry_type=%s score=%.2f threshold_used=%.2f rejection_reason=%s",
                     symbol,
                     "continuation",
+                    total_score,
                     score_threshold,
                     rejection_reason,
                 )
@@ -790,6 +812,14 @@ class BacktestStrategyAdapter:
             "max_score": float(breakdown.max_score or max(5.0, score_threshold + 1.0)),
             "passed_filters": passed,
             "failed_filters": failed,
+            "filters_weighted": self._compute_weighted_filters({
+                "trend_score": float(optional_checks["di"]),
+                "structure_score": float(required_checks["structure"]),
+                "rsi_score": float(optional_checks["rsi"]),
+                "adx_score": float(optional_checks["adx"]),
+                "volume_score": float(optional_checks["volume_threshold"]),
+                "macd_score": float(optional_checks["macd"]),
+            }),
             "regime": str(last.get("regime", "N/A")),
             "timestamp": str(df.index[-2]),
             "tf": runtime["scan_timeframe"],
@@ -873,8 +903,37 @@ class BacktestStrategyAdapter:
                     metrics=filter_metrics,
                 )
                 total_score = float(score_breakdown.get("total_score", 0.0))
+                weighted_filters = self._compute_weighted_filters(score_breakdown)
                 structure_state = str(filter_metrics.get("structure_state", "invalid"))
                 adaptive_score_threshold = self._get_adaptive_score_threshold(runtime, structure_state)
+                if runtime.get("is_scalping"):
+                    scalping_direction = "LONG" if float(filter_metrics.get("direction", 1.0) or 1.0) >= 0 else "SHORT"
+                    impulse_ok, impulse_reason = self._evaluate_weak_entry_risk(
+                        symbol=symbol,
+                        df=df,
+                        i=len(df) - 2,
+                        direction=scalping_direction,
+                    )
+                    if not impulse_ok:
+                        logger.info(
+                            "SCALPING_DEBUG: symbol=%s entry_type=%s score=%.2f threshold_used=%.2f rejection_reason=%s",
+                            symbol,
+                            "continuation",
+                            total_score,
+                            adaptive_score_threshold,
+                            impulse_reason,
+                        )
+                        self.last_signal_diagnostics = {
+                            "mode": runtime["mode"],
+                            "score": total_score,
+                            "passed_filters": [name for name, ok in filter_checks.items() if ok],
+                            "failed_filters": ["ENTRY_RISK"],
+                            "rejection_reason": impulse_reason,
+                            "potential_signal": True,
+                            "strict_signal": False,
+                        }
+                        self._log_execution_trace(symbol, strict_result=False, fallback_executed=False)
+                        return None
                 hard_failed = [name for name in self._hard_filters if name in filter_checks and not filter_checks[name]]
                 soft_failed = [name for name in self._soft_filters if name in filter_checks and not filter_checks[name]]
                 if runtime.get("is_scalping") and not filter_checks.get("RSI", False) and "RSI" not in hard_failed:
@@ -893,9 +952,10 @@ class BacktestStrategyAdapter:
                 if hard_failed:
                     if runtime.get("is_scalping"):
                         logger.info(
-                            "SCALPING_DEBUG: symbol=%s entry_type=%s threshold=%.2f rejection_reason=%s",
+                            "SCALPING_DEBUG: symbol=%s entry_type=%s score=%.2f threshold_used=%.2f rejection_reason=%s",
                             symbol,
                             "continuation",
+                            total_score,
                             adaptive_score_threshold,
                             f"required filters failed: {hard_failed}",
                         )
@@ -915,9 +975,10 @@ class BacktestStrategyAdapter:
                 if config.ENABLE_SIGNAL_SCORING and total_score < adaptive_score_threshold:
                     if runtime.get("is_scalping"):
                         logger.info(
-                            "SCALPING_DEBUG: symbol=%s entry_type=%s threshold=%.2f rejection_reason=%s",
+                            "SCALPING_DEBUG: symbol=%s entry_type=%s score=%.2f threshold_used=%.2f rejection_reason=%s",
                             symbol,
                             "continuation",
+                            total_score,
                             adaptive_score_threshold,
                             f"score below threshold ({total_score:.2f})",
                         )
@@ -991,6 +1052,8 @@ class BacktestStrategyAdapter:
                         logger.warning("[SIGNAL ERROR] Invalid entry/TP/SL | symbol=%s | signal skipped", symbol)
                         return None
                     score, max_score, confidence, strict_passed, strict_failed = self._strict_mode_scoring()
+                    strict_passed = [name for name, ok in filter_checks.items() if ok and name not in soft_failed]
+                    strict_failed = list(dict.fromkeys(hard_failed + soft_failed))
                     score = total_score
                     confidence = float(max(0.0, min(1.0, score / max(max_score, 1.0))))
                     sl, tp = self._refine_risk_levels(
@@ -1125,12 +1188,14 @@ class BacktestStrategyAdapter:
                                 if structure_state == "weak":
                                     scalping_entry_type = "micro_pullback" if entry_mode in {"zone", "retest"} else "continuation"
                                 logger.info(
-                                    "SCALPING_DEBUG: symbol=%s entry_type=%s threshold=%.2f rejection_reason=%s",
+                                    "SCALPING_DEBUG: symbol=%s entry_type=%s score=%.2f threshold_used=%.2f rejection_reason=%s",
                                     symbol,
                                     scalping_entry_type,
+                                    score,
                                     adaptive_score_threshold,
                                     "accepted",
                                 )
+                            signal_tf = signal.get("tf") or runtime["scan_timeframe"]
                             risk_snapshot = dict(signal)
                             calculate_risk_based_position_size(
                                 risk_snapshot,
@@ -1141,7 +1206,6 @@ class BacktestStrategyAdapter:
                                 risk_snapshot["position_size"] = float(risk_snapshot.get("position_size", 0.0)) * self._weak_position_size_factor
                                 risk_snapshot["trade_risk"] = float(risk_snapshot.get("trade_risk", 0.0)) * self._weak_position_size_factor
 
-                                signal_tf = signal.get("tf") or runtime["scan_timeframe"]
                             if runtime.get("is_scalping") and str(signal_tf).lower() == "1h":
                                 signal_tf = runtime["scan_timeframe"]
                             strict_payload = {
@@ -1158,6 +1222,7 @@ class BacktestStrategyAdapter:
                                 "max_score": max_score,
                                 "passed_filters": strict_passed,
                                 "failed_filters": strict_failed,
+                                "filters_weighted": weighted_filters,
                                 "regime": signal.get("regime", "N/A"),
                                 "timestamp": str(df.index[i]),
                                 "tf": signal_tf,

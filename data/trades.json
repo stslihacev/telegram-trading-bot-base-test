@@ -740,5 +740,19 @@
     "confidence": 0.6,
     "timestamp": "2026-04-08T15:00:00+00:00",
     "entry_source": "strict"
+  },
+  {
+    "id": "bef82b59f9bf4efdbdff0616ffa24bac",
+    "signal_id": "LABUSDT_1h_LONG_2026-04-08 16:00:00+00:00",
+    "symbol": "LABUSDT",
+    "mode": "MAIN",
+    "strategy_version": "v1",
+    "entry_price": 0.38382,
+    "tp": 0.5113699428571429,
+    "sl": 0.3041012857142857,
+    "status": "OPEN",
+    "confidence": 0.65,
+    "timestamp": "2026-04-08T16:00:00+00:00",
+    "entry_source": "strict"
   }
 ]

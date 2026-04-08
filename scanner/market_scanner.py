@@ -267,6 +267,28 @@ class MarketScanner:
             avg_score,
             rejection_top,
         )
+        main_signals = len(signals) - scalping_signals
+        main_scores = [
+            float(sig.get("score") or 0.0)
+            for sig in signals
+            if str(sig.get("live_mode") or self.runtime.get("mode") or "").upper() == "MAIN"
+        ]
+        scalping_scores = [
+            float(sig.get("score") or 0.0)
+            for sig in signals
+            if str(sig.get("live_mode") or self.runtime.get("mode") or "").upper() == "SCALPING"
+        ]
+        avg_score_main = (sum(main_scores) / len(main_scores)) if main_scores else 0.0
+        avg_score_scalping = (sum(scalping_scores) / len(scalping_scores)) if scalping_scores else 0.0
+        logger.info(
+            "AUTO_DIAGNOSTIC_EXTENDED: main_signal_count=%s scalping_signal_count=%s avg_score_main=%.2f avg_score_scalping=%.2f",
+            main_signals,
+            scalping_signals,
+            avg_score_main,
+            avg_score_scalping,
+        )
+        if main_signals > 0 and scalping_signals > main_signals * 10:
+            logger.warning("SCALPING DOMINANCE DETECTED")
         if strict_signals == 0 or (self.runtime.get("is_scalping") and scalping_signals == 0):
             logger.warning("LOW SIGNAL FLOW DETECTED")
         return signals

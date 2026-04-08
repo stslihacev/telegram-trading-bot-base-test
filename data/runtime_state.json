@@ -3,18 +3,18 @@
   "active_signals": {
     "BTCUSDT": {
       "direction": "LONG",
-      "entry": 71144.0,
-      "sl": 70579.23142857142,
-      "tp": 72047.62971428572,
-      "score": 3.25,
-      "confidence": 0.65,
+      "entry": 71554.8,
+      "sl": 70565.7457142857,
+      "tp": 73137.28685714288,
+      "score": 3.0,
+      "confidence": 0.6,
       "status": "REJECTED",
-      "timestamp": "2026-04-08 15:00:00+00:00",
+      "timestamp": "2026-04-08 16:00:00+00:00",
       "pending_since": "2026-04-08 15:00:00+00:00",
       "confirmation_reason": "no active signal",
       "rejection_reason": "both below upgrade threshold",
       "opened_at": "2026-04-08 15:00:00+00:00",
-      "closed_at": "2026-04-08 15:00:00+00:00"
+      "closed_at": "2026-04-08 16:00:00+00:00"
     },
     "FARTCOINUSDT": {
       "direction": "LONG",
@@ -168,18 +168,18 @@
     },
     "XPLUSDT": {
       "direction": "LONG",
-      "entry": 0.12736,
-      "sl": 0.122408,
-      "tp": 0.1352832,
+      "entry": 0.12803,
+      "sl": 0.12223142857142857,
+      "tp": 0.13730771428571428,
       "score": 3.0,
       "confidence": 0.6,
-      "status": "OPEN",
+      "status": "REJECTED",
       "timestamp": "2026-04-08 16:00:00+00:00",
       "pending_since": "2026-04-08 16:00:00+00:00",
       "confirmation_reason": "no active signal",
-      "rejection_reason": null,
+      "rejection_reason": "both below upgrade threshold",
       "opened_at": "2026-04-08 16:00:00+00:00",
-      "closed_at": null
+      "closed_at": "2026-04-08 16:00:00+00:00"
     },
     "GALAUSDT": {
       "direction": "LONG",
@@ -240,6 +240,36 @@
       "rejection_reason": null,
       "opened_at": "2026-04-08 15:00:00+00:00",
       "closed_at": null
+    },
+    "LABUSDT": {
+      "direction": "LONG",
+      "entry": 0.38382,
+      "sl": 0.3041012857142857,
+      "tp": 0.5113699428571429,
+      "score": 3.25,
+      "confidence": 0.65,
+      "status": "OPEN",
+      "timestamp": "2026-04-08 16:00:00+00:00",
+      "pending_since": "2026-04-08 16:00:00+00:00",
+      "confirmation_reason": "no active signal",
+      "rejection_reason": null,
+      "opened_at": "2026-04-08 16:00:00+00:00",
+      "closed_at": null
+    },
+    "TRUMPUSDT": {
+      "direction": "LONG",
+      "entry": 3.051,
+      "sl": 2.956185714285714,
+      "tp": 3.2027028571428575,
+      "score": 3.65,
+      "confidence": 0.73,
+      "status": "OPEN",
+      "timestamp": "2026-04-08 16:00:00+00:00",
+      "pending_since": "2026-04-08 16:00:00+00:00",
+      "confirmation_reason": "no active signal",
+      "rejection_reason": null,
+      "opened_at": "2026-04-08 16:00:00+00:00",
+      "closed_at": null
     }
   },
   "seen_signals": {
@@ -258,7 +288,9 @@
     "GALAUSDT_30m_LONG_2026-04-08 16:00:00+00:00": "2026-04-08T17:01:10.289407+00:00",
     "HYPEUSDT_1h_LONG_2026-04-08 15:00:00+00:00": "2026-04-08T17:03:23.128736+00:00",
     "XMRUSDT_1h_LONG_2026-04-08 15:00:00+00:00": "2026-04-08T17:03:23.147735+00:00",
-    "HBARUSDT_1h_LONG_2026-04-08 15:00:00+00:00": "2026-04-08T17:03:23.162735+00:00"
+    "HBARUSDT_1h_LONG_2026-04-08 15:00:00+00:00": "2026-04-08T17:03:23.162735+00:00",
+    "LABUSDT_1h_LONG_2026-04-08 16:00:00+00:00": "2026-04-08T18:37:08.744850+00:00",
+    "TRUMPUSDT_1h_LONG_2026-04-08 16:00:00+00:00": "2026-04-08T18:37:08.762415+00:00"
   },
   "failed_signals": {},
   "last_reversal_at": {}

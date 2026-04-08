@@ -1,36 +1,62 @@
 {
   "analytics": {
-    "signals_total": 27,
-    "signals_strict": 27,
+    "signals_total": 29,
+    "signals_strict": 29,
     "signals_fallback": 0,
-    "signals_opened": 27,
+    "signals_opened": 29,
     "signals_blocked_by_limits": 0,
-    "opened_from_strict": 27,
+    "opened_from_strict": 29,
     "opened_from_fallback": 0,
     "closed_strict_tp": 5,
-    "closed_strict_sl": 3,
+    "closed_strict_sl": 4,
     "closed_fallback_tp": 1,
     "closed_fallback_sl": 0
   },
   "mode_counter": {
-    "SCALPING": 83,
-    "MAIN": 6
+    "SCALPING": 107,
+    "MAIN": 11
   },
   "entry_source_counter": {
-    "strict": 89
+    "strict": 118
   },
   "rejection_counter": {
     "SCALPING": {
       "LOW_SCORE": 94
     },
     "MAIN": {
-      "LOW_SCORE": 42
+      "LOW_SCORE": 44
     }
   },
-  "total_signals": 27,
-  "unique_signals": 27,
+  "total_signals": 29,
+  "unique_signals": 29,
   "duplicates": 0,
-  "confidence_sum": 18.36,
-  "score_sum": 91.8,
-  "scored_count": 27
+  "confidence_sum": 19.74,
+  "score_sum": 98.7,
+  "scored_count": 29,
+  "signal_filter_counter": {
+    "TREND": {
+      "passed": 2,
+      "weighted": 2
+    },
+    "STRUCTURE": {
+      "passed": 2,
+      "weighted": 2
+    },
+    "RSI": {
+      "passed": 1,
+      "weighted": 1
+    },
+    "ADX": {
+      "passed": 2,
+      "weighted": 2
+    },
+    "VOLUME": {
+      "passed": 2,
+      "weighted": 2
+    },
+    "MACD": {
+      "passed": 1,
+      "weighted": 1
+    }
+  }
 }

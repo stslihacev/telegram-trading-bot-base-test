@@ -19,7 +19,9 @@
       "RSI",
       "MACD",
       "ADX"
-    ]
+    ],
+    "failed_filters": [],
+    "filters_weighted": []
   },
   "SIRENUSDT": {
     "trade_id": "6f30e4e468f2451d94cab781a1acd3de",
@@ -41,7 +43,9 @@
       "STRUCTURE",
       "ADX",
       "MACD"
-    ]
+    ],
+    "failed_filters": [],
+    "filters_weighted": []
   },
   "STOUSDT": {
     "trade_id": "afa3b47556f64f4fa90733ae4190a870",
@@ -63,7 +67,9 @@
       "STRUCTURE",
       "RSI",
       "VOLUME"
-    ]
+    ],
+    "failed_filters": [],
+    "filters_weighted": []
   },
   "TREEUSDT": {
     "trade_id": "5da12b93d4894c57bc7164bf1661e17f",
@@ -86,7 +92,9 @@
       "ADX",
       "VOLUME",
       "MACD"
-    ]
+    ],
+    "failed_filters": [],
+    "filters_weighted": []
   },
   "APRUSDT": {
     "trade_id": "14863d87ac1a4058be14937899b06789",
@@ -109,7 +117,9 @@
       "RSI",
       "ADX",
       "VOLUME"
-    ]
+    ],
+    "failed_filters": [],
+    "filters_weighted": []
   },
   "PIPPINUSDT": {
     "trade_id": "a30b3d6e0b7d46619fe30025b6a5b229",
@@ -132,7 +142,9 @@
       "RSI",
       "ADX",
       "VOLUME"
-    ]
+    ],
+    "failed_filters": [],
+    "filters_weighted": []
   },
   "MUSDT": {
     "trade_id": "9e7dbc59648b408492e3f9b331f511bc",
@@ -156,7 +168,9 @@
       "ADX",
       "VOLUME",
       "MACD"
-    ]
+    ],
+    "failed_filters": [],
+    "filters_weighted": []
   },
   "BARDUSDT": {
     "trade_id": "b1d63d21cce44c789c8f8b005de110f5",
@@ -178,7 +192,9 @@
       "STRUCTURE",
       "RSI",
       "ADX"
-    ]
+    ],
+    "failed_filters": [],
+    "filters_weighted": []
   },
   "SUPERUSDT": {
     "trade_id": "daddd2c17cdc4d3f8cbca9f6c64e42e9",
@@ -200,7 +216,9 @@
       "STRUCTURE",
       "RSI",
       "ADX"
-    ]
+    ],
+    "failed_filters": [],
+    "filters_weighted": []
   },
   "BTCUSDT": {
     "trade_id": "fb8d911507dc40cfb497073913b2bbab",
@@ -223,7 +241,9 @@
       "RSI",
       "ADX",
       "VOLUME"
-    ]
+    ],
+    "failed_filters": [],
+    "filters_weighted": []
   },
   "FARTCOINUSDT": {
     "trade_id": "d0d7630b47704cf18df3ca7300b2f7e3",
@@ -246,7 +266,9 @@
       "RSI",
       "ADX",
       "VOLUME"
-    ]
+    ],
+    "failed_filters": [],
+    "filters_weighted": []
   },
   "BCHUSDT": {
     "trade_id": "d8fcc4d02b034507a219c2c4f29280ca",
@@ -268,7 +290,9 @@
       "STRUCTURE",
       "RSI",
       "ADX"
-    ]
+    ],
+    "failed_filters": [],
+    "filters_weighted": []
   },
   "ZECUSDT": {
     "trade_id": "1ada6c3bd6a646ef84c8c3b1f4a7319e",
@@ -290,7 +314,9 @@
       "STRUCTURE",
       "RSI",
       "ADX"
-    ]
+    ],
+    "failed_filters": [],
+    "filters_weighted": []
   },
   "CLUSDT": {
     "trade_id": "117f936d1f0b4170b798abd32c6de7b6",
@@ -313,7 +339,9 @@
       "RSI",
       "ADX",
       "VOLUME"
-    ]
+    ],
+    "failed_filters": [],
+    "filters_weighted": []
   },
   "NEARUSDT": {
     "trade_id": "2f9d606ce3cf4c769a3c32fcde848809",
@@ -335,7 +363,9 @@
       "STRUCTURE",
       "RSI",
       "ADX"
-    ]
+    ],
+    "failed_filters": [],
+    "filters_weighted": []
   },
   "ENAUSDT": {
     "trade_id": "4dd7ad1b2e334e06b34c406fae91b4b9",
@@ -358,7 +388,9 @@
       "RSI",
       "ADX",
       "VOLUME"
-    ]
+    ],
+    "failed_filters": [],
+    "filters_weighted": []
   },
   "AAVEUSDT": {
     "trade_id": "02be00c6af824af78a34fd787fddcb2c",
@@ -380,7 +412,9 @@
       "STRUCTURE",
       "RSI",
       "ADX"
-    ]
+    ],
+    "failed_filters": [],
+    "filters_weighted": []
   },
   "LTCUSDT": {
     "trade_id": "734684ec0d424dfd89f0bb8004ac4262",
@@ -402,7 +436,9 @@
       "STRUCTURE",
       "RSI",
       "ADX"
-    ]
+    ],
+    "failed_filters": [],
+    "filters_weighted": []
   },
   "VIRTUALUSDT": {
     "trade_id": "872fc22b35c046b89066dbf3fd8348b3",
@@ -424,7 +460,9 @@
       "STRUCTURE",
       "RSI",
       "ADX"
-    ]
+    ],
+    "failed_filters": [],
+    "filters_weighted": []
   },
   "RENDERUSDT": {
     "trade_id": "5023e1c43c1a44daaf197401d86f36eb",
@@ -447,7 +485,9 @@
       "RSI",
       "ADX",
       "VOLUME"
-    ]
+    ],
+    "failed_filters": [],
+    "filters_weighted": []
   },
   "XPLUSDT": {
     "trade_id": "2ffd27ab00304a3281f7f368db564e13",
@@ -469,7 +509,9 @@
       "STRUCTURE",
       "RSI",
       "ADX"
-    ]
+    ],
+    "failed_filters": [],
+    "filters_weighted": []
   },
   "GALAUSDT": {
     "trade_id": "f22c6402cc314050b548e7738e130377",
@@ -492,29 +534,9 @@
       "RSI",
       "ADX",
       "VOLUME"
-    ]
-  },
-  "HYPEUSDT": {
-    "trade_id": "8ef0362984124ae195cd43c3a5c064b8",
-    "symbol": "HYPEUSDT",
-    "direction": "LONG",
-    "entry": 38.835,
-    "tp": 39.63662285714287,
-    "sl": 38.33398571428571,
-    "open_time": "2026-04-08T15:00:00+00:00",
-    "signal_id": "HYPEUSDT_1h_LONG_2026-04-08 15:00:00+00:00",
-    "confidence": 0.6,
-    "score": 3.0,
-    "mode": "MAIN",
-    "entry_source": "strict",
-    "signal_type": "strict",
-    "is_reversal": false,
-    "passed_filters": [
-      "TREND",
-      "STRUCTURE",
-      "RSI",
-      "ADX"
-    ]
+    ],
+    "failed_filters": [],
+    "filters_weighted": []
   },
   "XMRUSDT": {
     "trade_id": "e9a62392119a4c5eac6c786debe85774",
@@ -537,7 +559,9 @@
       "RSI",
       "ADX",
       "VOLUME"
-    ]
+    ],
+    "failed_filters": [],
+    "filters_weighted": []
   },
   "HBARUSDT": {
     "trade_id": "4b12fec3b4f645a6a12aca1aeade5951",
@@ -559,6 +583,90 @@
       "STRUCTURE",
       "RSI",
       "ADX"
-    ]
+    ],
+    "failed_filters": [],
+    "filters_weighted": []
+  },
+  "LABUSDT": {
+    "trade_id": "5a87fe4d0eb44f96892887c078eb9878",
+    "symbol": "LABUSDT",
+    "direction": "LONG",
+    "entry": 0.38382,
+    "tp": 0.5113699428571429,
+    "sl": 0.3041012857142857,
+    "open_time": "2026-04-08T16:00:00+00:00",
+    "signal_id": "LABUSDT_1h_LONG_2026-04-08 16:00:00+00:00",
+    "confidence": 0.65,
+    "score": 3.25,
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "is_reversal": false,
+    "pending_since": "2026-04-08 16:00:00+00:00",
+    "confirmation_reason": "no active signal",
+    "rejection_reason": null,
+    "opened_at": null,
+    "closed_at": null,
+    "passed_filters": [
+      "TREND",
+      "STRUCTURE",
+      "RSI",
+      "ADX",
+      "VOLUME"
+    ],
+    "failed_filters": [],
+    "filters_weighted": [
+      "TREND",
+      "STRUCTURE",
+      "RSI",
+      "ADX",
+      "VOLUME"
+    ],
+    "tp1": 0.5033980714285715,
+    "tp2": 0.5831167857142858,
+    "partial_tp_taken": false,
+    "remaining_size": 1.0,
+    "registry_id": "bef82b59f9bf4efdbdff0616ffa24bac"
+  },
+  "TRUMPUSDT": {
+    "trade_id": "7a5b416b91a44865a96b0057085e277c",
+    "symbol": "TRUMPUSDT",
+    "direction": "LONG",
+    "entry": 3.051,
+    "tp": 3.2027028571428575,
+    "sl": 2.956185714285714,
+    "open_time": "2026-04-08T16:00:00+00:00",
+    "signal_id": "TRUMPUSDT_1h_LONG_2026-04-08 16:00:00+00:00",
+    "confidence": 0.73,
+    "score": 3.65,
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "is_reversal": false,
+    "pending_since": "2026-04-08 16:00:00+00:00",
+    "confirmation_reason": "no active signal",
+    "rejection_reason": null,
+    "opened_at": null,
+    "closed_at": null,
+    "passed_filters": [
+      "TREND",
+      "STRUCTURE",
+      "ADX",
+      "VOLUME",
+      "MACD"
+    ],
+    "failed_filters": [],
+    "filters_weighted": [
+      "TREND",
+      "STRUCTURE",
+      "ADX",
+      "VOLUME",
+      "MACD"
+    ],
+    "tp1": 3.1932214285714293,
+    "tp2": 3.288035714285715,
+    "partial_tp_taken": false,
+    "remaining_size": 1.0,
+    "registry_id": "529512db726f4990822f2ced81f4916d"
   }
 }

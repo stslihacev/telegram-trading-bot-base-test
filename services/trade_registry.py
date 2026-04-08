@@ -26,6 +26,16 @@ def _utc_iso(value: Any | None = None) -> str:
             pass
     return datetime.now(timezone.utc).isoformat()
 
+def _normalize_mode(value: Any, label_prefix: Any = None) -> str:
+    mode = str(value or "").upper().strip("[]")
+    if mode in {"MAIN", "SCALPING", "LIGHT"}:
+        return mode
+    prefix = str(label_prefix or "").upper()
+    if "SCALP" in prefix:
+        return "SCALPING"
+    if "LIGHT" in prefix:
+        return "LIGHT"
+    return "MAIN"
 
 @dataclass
 class TradeRegistry:
@@ -103,7 +113,7 @@ class TradeRegistry:
             "id": uuid4().hex,
             "signal_id": signal_id,
             "symbol": str(signal.get("symbol") or "").strip(),
-            "mode": str(signal.get("live_mode") or "MAIN").upper(),
+            "mode": _normalize_mode(signal.get("live_mode") or signal.get("mode"), signal.get("label_prefix")),
             "strategy_version": strategy_version,
             "entry_price": float(signal.get("entry") or 0.0),
             "tp": float(signal.get("tp") or 0.0),

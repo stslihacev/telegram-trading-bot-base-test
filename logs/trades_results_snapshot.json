@@ -651,5 +651,43 @@
       "ADX"
     ],
     "close_event_key": "REDUSDT|2026-04-07T16:30:00+00:00|2026-04-08T17:34:36.075036+00:00|SL"
+  },
+  {
+    "symbol": "HYPEUSDT",
+    "result": "SL",
+    "result_bucket": "LOSS",
+    "entry": 38.835,
+    "exit": 38.213,
+    "tp": 39.63662285714287,
+    "sl": 38.33398571428571,
+    "direction": "LONG",
+    "duration_sec": 13002.993741,
+    "duration_hm": "3h 36m",
+    "rr": 1.2414815659661695,
+    "RR": 1.2414815659661695,
+    "r_multiple": -1.2414815659661695,
+    "R": -1.2414815659661695,
+    "pnl_points": -0.6219999999999999,
+    "position_notional": 77.51275983005822,
+    "fee_paid": 0.031005103932023288,
+    "pnl_net": -1.2724866698981931,
+    "confidence": 0.6,
+    "score": 3.0,
+    "mode": "MAIN",
+    "registry_id": "",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "is_reversal": false,
+    "open_time": "2026-04-08T15:00:00+00:00",
+    "close_time": "2026-04-08T18:36:42.993741+00:00",
+    "passed_filters": [
+      "TREND",
+      "STRUCTURE",
+      "RSI",
+      "ADX"
+    ],
+    "failed_filters": [],
+    "filters_weighted": [],
+    "close_event_key": "HYPEUSDT|2026-04-08T15:00:00+00:00|2026-04-08T18:36:42.993741+00:00|SL"
   }
 ]

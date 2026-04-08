@@ -288,6 +288,17 @@ class TelegramTradingBot:
     @staticmethod
     def _enrich_signal(signal: dict) -> dict:
         enriched = dict(signal)
+        raw_mode = str(enriched.get("live_mode") or enriched.get("mode") or "").upper().strip("[]")
+        if raw_mode not in {"MAIN", "SCALPING", "LIGHT"}:
+            label_prefix = str(enriched.get("label_prefix") or "").upper()
+            if "SCALP" in label_prefix:
+                raw_mode = "SCALPING"
+            elif "LIGHT" in label_prefix:
+                raw_mode = "LIGHT"
+            else:
+                raw_mode = "MAIN"
+        enriched["live_mode"] = raw_mode
+        enriched["mode"] = raw_mode
         signal_id = (
             f"{enriched.get('symbol', 'N/A')}_"
             f"{enriched.get('tf', 'N/A')}_"
@@ -406,13 +417,14 @@ class TelegramTradingBot:
                         enriched_signal["confirmation_reason"] = state_reason
 
                     analytics_added = False
-                    if state_action in {"NEW", "UPDATE", "REVERSAL"}:
+                    if state_action in {"NEW", "REVERSAL"}:
                         self.signal_analytics.collect_signal(enriched_signal, is_duplicate=False)
+                    if state_action in {"NEW", "UPDATE", "REVERSAL"}:
                         self.signal_analytics.register_trade(enriched_signal, state_action)
                         self.signal_analytics.register_signal_decision(
                             enriched_signal,
-                            status="OPEN",
-                            reason="OPEN",
+                            status="OPEN" if state_action in {"NEW", "REVERSAL"} else "UPDATED",
+                            reason="OPEN" if state_action in {"NEW", "REVERSAL"} else "UPDATED",
                             threshold=score_threshold,
                             position_block=False,
                             mode_position_count=int(limit_details.get("mode_open", 0)),

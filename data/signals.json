@@ -241,5 +241,23 @@
     "signal_type": "strict",
     "score": 3.0,
     "timestamp": "2026-04-08T15:00:00+00:00"
+  },
+  {
+    "signal_id": "LABUSDT_1h_LONG_2026-04-08 16:00:00+00:00",
+    "symbol": "LABUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.25,
+    "timestamp": "2026-04-08T16:00:00+00:00"
+  },
+  {
+    "signal_id": "TRUMPUSDT_1h_LONG_2026-04-08 16:00:00+00:00",
+    "symbol": "TRUMPUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.65,
+    "timestamp": "2026-04-08T16:00:00+00:00"
   }
 ]

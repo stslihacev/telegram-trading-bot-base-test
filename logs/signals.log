@@ -13107,3 +13107,47 @@ Reject reason: -
 🧠 Regime: N/A
 🕒 Time:   2026-04-08 15:00:00+00:00
 Fingerprint: 181e2a1ca132cd06
+2026-04-08 21:37:08,746 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    LABUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.383820
+🎯 TP:    0.511370
+🛑 SL:    0.304101
+RR:    1.60
+
+Score:      3.25 / 5.00
+⭐ Confidence: 0.65 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX, VOLUME
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-08 16:00:00+00:00
+Fingerprint: e2006e54cb5f31b4
+2026-04-08 21:37:08,764 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    TRUMPUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 3.051000
+🎯 TP:    3.202703
+🛑 SL:    2.956186
+RR:    1.60
+
+Score:      3.65 / 5.00
+⭐ Confidence: 0.73 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, ADX, VOLUME, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-08 16:00:00+00:00
+Fingerprint: c259285a472336c7

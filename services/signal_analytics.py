@@ -53,6 +53,7 @@ class SignalAnalytics:
     mode_rr_sum: Counter[str] = field(default_factory=Counter)
     high_conf_loss_counter: int = 0
     filter_result_counter: dict[str, Counter[str]] = field(default_factory=dict)
+    signal_filter_counter: dict[str, Counter[str]] = field(default_factory=dict)
     rejection_counter: dict[str, Counter[str]] = field(default_factory=dict)
     _closed_trade_keys: set[str] = field(default_factory=set, init=False, repr=False)
     _io_lock: threading.RLock = field(default_factory=threading.RLock, init=False, repr=False)
@@ -104,6 +105,7 @@ class SignalAnalytics:
                 "confidence_sum": float(self.confidence_sum),
                 "score_sum": float(self.score_sum),
                 "scored_count": int(self.scored_count),
+                "signal_filter_counter": {name: dict(counter) for name, counter in self.signal_filter_counter.items()},
             }
             self.analytics_state_path.parent.mkdir(parents=True, exist_ok=True)
             tmp_path = self.analytics_state_path.with_suffix(f"{self.analytics_state_path.suffix}.tmp")
@@ -140,6 +142,11 @@ class SignalAnalytics:
         self.confidence_sum = float(payload.get("confidence_sum", self.confidence_sum) or 0.0)
         self.score_sum = float(payload.get("score_sum", self.score_sum) or 0.0)
         self.scored_count = int(payload.get("scored_count", self.scored_count) or 0)
+        signal_filter_counter = payload.get("signal_filter_counter")
+        if isinstance(signal_filter_counter, dict):
+            for name, counters in signal_filter_counter.items():
+                if isinstance(counters, dict):
+                    self.signal_filter_counter[str(name)] = Counter({str(k): int(v or 0) for k, v in counters.items()})
 
     def _append_signal_journal(self, signal: dict[str, Any]) -> None:
         self.signals_path.parent.mkdir(parents=True, exist_ok=True)
@@ -279,10 +286,16 @@ class SignalAnalytics:
         except (TypeError, ValueError):
             pass
 
-        for filter_name in signal.get("passed_filters") or []:
-            name = str(filter_name).upper().strip()
-            if name:
-                self.filter_pass_counter[name] += 1
+        passed_filters = [str(filter_name).upper().strip() for filter_name in (signal.get("passed_filters") or []) if str(filter_name).strip()]
+        weighted_filters = [str(filter_name).upper().strip() for filter_name in (signal.get("filters_weighted") or []) if str(filter_name).strip()]
+        failed_filters = [str(filter_name).upper().strip() for filter_name in (signal.get("failed_filters") or []) if str(filter_name).strip()]
+        for name in passed_filters:
+            self.filter_pass_counter[name] += 1
+            self.signal_filter_counter.setdefault(name, Counter())["passed"] += 1
+        for name in weighted_filters:
+            self.signal_filter_counter.setdefault(name, Counter())["weighted"] += 1
+        for name in failed_filters:
+            self.signal_filter_counter.setdefault(name, Counter())["failed"] += 1
         self._append_signal_journal(signal)
         self._save_analytics_state()
 
@@ -336,6 +349,19 @@ class SignalAnalytics:
         normalized_status = str(status or "REJECTED").upper()
         score = self._safe_float(signal.get("score"), default=0.0)
         normalized_reason = self._normalize_rejection_reason(reason if normalized_status == "REJECTED" else "OPEN")
+        if normalized_status == "UPDATED":
+            logger.info(
+                "SIGNAL_DECISION: symbol=%s mode=%s status=%s score=%.2f threshold=%s entry_source=%s reason=%s",
+                signal.get("symbol"),
+                mode,
+                normalized_status,
+                score,
+                f"{float(threshold):.2f}" if threshold is not None else "n/a",
+                str(signal.get("entry_source") or "strict").lower(),
+                normalized_reason,
+            )
+            self._save_analytics_state()
+            return
         if normalized_status == "REJECTED":
             bucket = self.rejection_counter.setdefault(mode, Counter())
             bucket[normalized_reason] += 1
@@ -492,6 +518,16 @@ class SignalAnalytics:
                 for name in (payload.get("passed_filters") or [])
                 if str(name).strip()
             ],
+            "failed_filters": [
+                str(name).upper().strip()
+                for name in (payload.get("failed_filters") or [])
+                if str(name).strip()
+            ],
+            "filters_weighted": [
+                str(name).upper().strip()
+                for name in (payload.get("filters_weighted") or [])
+                if str(name).strip()
+            ],
         }
         if trade["direction"] not in {"LONG", "SHORT"}:
             return None
@@ -629,6 +665,8 @@ class SignalAnalytics:
                 "open_time": open_time,
                 "close_time": close_time,
                 "passed_filters": list(trade.get("passed_filters") or []),
+                "failed_filters": list(trade.get("failed_filters") or []),
+                "filters_weighted": list(trade.get("filters_weighted") or []),
                 "close_event_key": close_event_key,
             }
             financials = self._calculate_trade_financials(entry=entry, sl=sl, pnl_points=pnl)
@@ -672,9 +710,17 @@ class SignalAnalytics:
                 self.mode_win_counter[mode] += 1
             if result_bucket == "LOSS" and self._safe_float(trade.get("confidence")) >= self.high_conf_threshold:
                 self.high_conf_loss_counter += 1
-            for filter_name in closed.get("passed_filters") or []:
+            filters_for_outcome = set(closed.get("passed_filters") or []) | set(closed.get("filters_weighted") or [])
+            for filter_name in filters_for_outcome:
                 bucket = self.filter_result_counter.setdefault(str(filter_name), Counter())
                 bucket[result_bucket] += 1
+            logger.info(
+                "FILTER_TRACE: trade_id=%s filters_passed=%s filters_weighted=%s filters_failed=%s",
+                closed.get("trade_id") or closed.get("registry_id") or "n/a",
+                list(closed.get("passed_filters") or []),
+                list(closed.get("filters_weighted") or []),
+                list(closed.get("failed_filters") or []),
+            )
 
             self._save_active_trades()
             if self.trade_registry and trade.get("registry_id"):
@@ -789,6 +835,16 @@ class SignalAnalytics:
                 for name in (signal.get("passed_filters") or [])
                 if str(name).strip()
             ]
+            trade["failed_filters"] = [
+                str(name).upper().strip()
+                for name in (signal.get("failed_filters") or [])
+                if str(name).strip()
+            ]
+            trade["filters_weighted"] = [
+                str(name).upper().strip()
+                for name in (signal.get("filters_weighted") or [])
+                if str(name).strip()
+            ]
             self.active_trades[symbol] = trade
             self._save_active_trades()
             return
@@ -821,7 +877,29 @@ class SignalAnalytics:
                 for name in (signal.get("passed_filters") or [])
                 if str(name).strip()
             ],
+            "failed_filters": [
+                str(name).upper().strip()
+                for name in (signal.get("failed_filters") or [])
+                if str(name).strip()
+            ],
+            "filters_weighted": [
+                str(name).upper().strip()
+                for name in (signal.get("filters_weighted") or [])
+                if str(name).strip()
+            ],
         }
+        if str(trade.get("mode") or "").upper() == "MAIN":
+            entry = self._safe_float(trade.get("entry"))
+            sl = self._safe_float(trade.get("sl"))
+            risk = abs(entry - sl)
+            direction = str(trade.get("direction") or "").upper()
+            if risk > 0:
+                tp1 = entry + (1.5 * risk) if direction == "LONG" else entry - (1.5 * risk)
+                tp2 = entry + (2.5 * risk) if direction == "LONG" else entry - (2.5 * risk)
+                trade["tp1"] = float(tp1)
+                trade["tp2"] = float(tp2)
+                trade["partial_tp_taken"] = False
+                trade["remaining_size"] = 1.0
         if self.trade_registry:
             version = str(getattr(config, "STRATEGY_VERSION", "v1"))
             registry_trade = self.trade_registry.register_signal_trade(signal, strategy_version=version, status="OPEN")
@@ -831,6 +909,13 @@ class SignalAnalytics:
         self.active_trades[symbol] = trade
         self._save_active_trades()
         self._save_analytics_state()
+        logger.info(
+            "FILTER_TRACE: trade_id=%s filters_passed=%s filters_weighted=%s filters_failed=%s",
+            trade.get("trade_id") or trade.get("registry_id") or "n/a",
+            list(trade.get("passed_filters") or []),
+            list(trade.get("filters_weighted") or []),
+            list(trade.get("failed_filters") or []),
+        )
         try:
             logger.info(
                 "[TRADE OPEN] symbol=%s dir=%s entry=%s tp=%s sl=%s conf=%.2f",
@@ -865,6 +950,32 @@ class SignalAnalytics:
         direction = str(trade.get("direction") or "").upper()
         tp = self._safe_float(trade.get("tp"))
         sl = self._safe_float(trade.get("sl"))
+        mode = str(trade.get("mode") or "").upper()
+
+        if mode == "MAIN" and not bool(trade.get("partial_tp_taken")):
+            tp1 = self._safe_float(trade.get("tp1"))
+            if direction == "LONG" and tp1 > 0 and price >= tp1:
+                trade["partial_tp_taken"] = True
+                trade["remaining_size"] = 0.5
+                trade["sl"] = self._safe_float(trade.get("entry"))
+                self.active_trades[symbol_key] = trade
+                self._save_active_trades()
+                logger.info(
+                    "MAIN_TP_SCALING: symbol=%s tp1_hit=True closed_pct=50 runner_active=True sl_to_break_even=True",
+                    symbol_key,
+                )
+            elif direction == "SHORT" and tp1 > 0 and price <= tp1:
+                trade["partial_tp_taken"] = True
+                trade["remaining_size"] = 0.5
+                trade["sl"] = self._safe_float(trade.get("entry"))
+                self.active_trades[symbol_key] = trade
+                self._save_active_trades()
+                logger.info(
+                    "MAIN_TP_SCALING: symbol=%s tp1_hit=True closed_pct=50 runner_active=True sl_to_break_even=True",
+                    symbol_key,
+                )
+        if mode == "MAIN" and bool(trade.get("partial_tp_taken")):
+            tp = self._safe_float(trade.get("tp2"), default=tp)
 
         if direction == "LONG":
             if price >= tp:
@@ -1063,6 +1174,37 @@ class SignalAnalytics:
         structured = self.get_reconciliation_structured()
         return [f"{item['type']}:{item['symbol']}:{item['trade_id']}" for item in structured["issues"]]
 
+    def _build_integrity_snapshot(self) -> dict[str, Any]:
+        with self._io_lock:
+            active_count = len(self.active_trades)
+            closed_count = len(self.closed_trades)
+        signals_generated = int(self.analytics.get("signals_opened", 0))
+        trades_opened = active_count + closed_count
+        trades_closed = closed_count
+        mode_distribution = {
+            mode: {
+                "signals": int(self.mode_counter.get(mode, 0)),
+                "closed": int(self.mode_closed_counter.get(mode, 0)),
+                "active": sum(1 for trade in self.active_trades.values() if str(trade.get("mode") or "").upper() == mode),
+            }
+            for mode in ("MAIN", "SCALPING", "LIGHT", "UNKNOWN")
+        }
+        payload = {
+            "signals_generated": signals_generated,
+            "trades_opened": trades_opened,
+            "trades_closed": trades_closed,
+            "signals_vs_trades_delta": signals_generated - trades_opened,
+            "trades_vs_closed_delta": trades_opened - trades_closed,
+            "mode_distribution": mode_distribution,
+        }
+        logger.info(
+            "ANALYTICS_INTEGRITY_CHECK: signals_vs_trades_delta=%s trades_vs_closed_delta=%s mode_distribution_check=%s",
+            payload["signals_vs_trades_delta"],
+            payload["trades_vs_closed_delta"],
+            mode_distribution,
+        )
+        return payload
+
     def build_codex_analytics_payload(self) -> dict[str, Any]:
         performance = self._build_profitability_metrics()
         return {
@@ -1078,6 +1220,7 @@ class SignalAnalytics:
             "performance": performance,
             "rejections": self.get_rejection_stats_structured(),
             "reconciliation": self.get_reconciliation_structured(),
+            "integrity": self._build_integrity_snapshot(),
             # Backward-compatible alias used in previous snapshots.
             "profitability": performance,
         }
@@ -1211,6 +1354,7 @@ class SignalAnalytics:
             )
         mode_stats_text = "\n".join(mode_lines)
 
+        integrity = self._build_integrity_snapshot()
         filter_breakdown_lines = []
         for filter_name, counters in sorted(self.filter_result_counter.items()):
             profit = counters.get("PROFIT", 0)
@@ -1220,6 +1364,12 @@ class SignalAnalytics:
                 f"{filter_name}: profit={profit}, loss={loss}, winrate={profit / total_filter * 100:.1f}%"
             )
         filter_breakdown_text = "\n".join(filter_breakdown_lines[:8]) if filter_breakdown_lines else "-"
+        filter_signal_lines = []
+        for filter_name, counters in sorted(self.signal_filter_counter.items()):
+            filter_signal_lines.append(
+                f"{filter_name}: passed={counters.get('passed', 0)}, weighted={counters.get('weighted', 0)}, failed={counters.get('failed', 0)}"
+            )
+        filter_signal_text = "\n".join(filter_signal_lines[:8]) if filter_signal_lines else "-"
         logger.info(
             "[ANALYTICS SUMMARY]\nTrades: %s\nWinrate: %.2f%%\nProfit Factor: %s\nAvg R: %.2f",
             profitability["trades"],
@@ -1299,6 +1449,11 @@ class SignalAnalytics:
             f"{mode_stats_text}\n\n"
             "🧪 FILTER OUTCOME BREAKDOWN\n"
             f"{filter_breakdown_text}\n\n"
+            "🧬 FILTER SIGNAL PARTICIPATION\n"
+            f"{filter_signal_text}\n\n"
+            "🛡️ ANALYTICS INTEGRITY CHECK\n"
+            f"signals_generated={integrity['signals_generated']} trades_opened={integrity['trades_opened']} trades_closed={integrity['trades_closed']}\n"
+            f"signals_vs_trades_delta={integrity['signals_vs_trades_delta']} trades_vs_closed_delta={integrity['trades_vs_closed_delta']}\n\n"
             "--------------------------------\n\n"
             "⚠️ РЕКОМЕНДАЦИИ\n\n"
             f"{recommendations}"
