@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import os
 import time
+from decimal import Decimal
 from typing import Any, Callable
 
 from dotenv import load_dotenv
@@ -119,3 +120,30 @@ class BybitExecutionClient:
                 except (TypeError, ValueError):
                     return 0.0
         return 0.0
+
+    def get_symbol_lot_filters(self, symbol: str) -> dict[str, float]:
+        payload = self._call(
+            "get_instruments_info",
+            lambda: self._session.get_instruments_info(category="linear", symbol=str(symbol).upper()),
+        )
+        rows = payload.get("result", {}).get("list", [])
+        if not rows:
+            return {"qty_step": 0.0, "min_qty": 0.0, "max_qty": 0.0}
+        row = rows[0] if isinstance(rows[0], dict) else {}
+        lot_filter = row.get("lotSizeFilter", {}) if isinstance(row.get("lotSizeFilter"), dict) else {}
+        return {
+            "qty_step": float(lot_filter.get("qtyStep") or 0.0),
+            "min_qty": float(lot_filter.get("minOrderQty") or 0.0),
+            "max_qty": float(lot_filter.get("maxOrderQty") or 0.0),
+        }
+
+    @staticmethod
+    def round_qty_to_step(qty: float, step: float) -> float:
+        qty_value = max(0.0, float(qty))
+        step_value = max(0.0, float(step))
+        if step_value <= 0:
+            return qty_value
+        qty_dec = Decimal(str(qty_value))
+        step_dec = Decimal(str(step_value))
+        rounded = (qty_dec // step_dec) * step_dec
+        return float(rounded)

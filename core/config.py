@@ -616,7 +616,7 @@ EXECUTION_MODE = "PAPER"
 SIMULATION_FEE_RATE = 0.0004
 # Комиссия в PAPER-симуляции (доля notional на сделку).
 
-TRADING_ENABLED = False
+TRADING_ENABLED = True
 # Глобальный флаг исполнения ордеров. False = всегда signal-only/paper.
 
 TESTNET = True
@@ -624,6 +624,12 @@ TESTNET = True
 
 REAL_TRADING_ENABLED = False
 # Дополнительный safety gate: для реальных ордеров должен быть включён явно.
+
+USE_REAL_EXECUTION = bool(TRADING_ENABLED)
+# Жёсткое разделение execution path: real execution разрешён только когда TRADING_ENABLED=True.
+
+DISABLE_PAPER_TRADING = bool(TRADING_ENABLED)
+# При включенном real execution paper lifecycle должен быть отключён.
 
 def get_live_mode() -> str:
     """Возвращает нормализованный live-режим."""

@@ -1,54 +1,57 @@
 {
   "analytics": {
-    "signals_total": 29,
-    "signals_strict": 29,
+    "signals_total": 33,
+    "signals_strict": 33,
     "signals_fallback": 0,
-    "signals_opened": 29,
+    "signals_opened": 33,
     "signals_blocked_by_limits": 0,
-    "opened_from_strict": 29,
+    "opened_from_strict": 33,
     "opened_from_fallback": 0,
     "closed_strict_tp": 5,
-    "closed_strict_sl": 4,
+    "closed_strict_sl": 8,
     "closed_fallback_tp": 1,
-    "closed_fallback_sl": 0
+    "closed_fallback_sl": 0,
+    "trades_opened_real": 0,
+    "trades_closed_real": 0,
+    "pnl_tracking_real": 0
   },
   "mode_counter": {
-    "SCALPING": 107,
-    "MAIN": 11
+    "SCALPING": 155,
+    "MAIN": 29
   },
   "entry_source_counter": {
-    "strict": 118
+    "strict": 184
   },
   "rejection_counter": {
     "SCALPING": {
       "LOW_SCORE": 94
     },
     "MAIN": {
-      "LOW_SCORE": 44
+      "LOW_SCORE": 54
     }
   },
-  "total_signals": 29,
-  "unique_signals": 29,
+  "total_signals": 33,
+  "unique_signals": 33,
   "duplicates": 0,
-  "confidence_sum": 19.74,
-  "score_sum": 98.7,
-  "scored_count": 29,
+  "confidence_sum": 22.140000000000004,
+  "score_sum": 110.7,
+  "scored_count": 33,
   "signal_filter_counter": {
     "TREND": {
-      "passed": 2,
-      "weighted": 2
+      "passed": 6,
+      "weighted": 6
     },
     "STRUCTURE": {
-      "passed": 2,
-      "weighted": 2
+      "passed": 6,
+      "weighted": 6
     },
     "RSI": {
-      "passed": 1,
-      "weighted": 1
+      "passed": 5,
+      "weighted": 5
     },
     "ADX": {
-      "passed": 2,
-      "weighted": 2
+      "passed": 6,
+      "weighted": 6
     },
     "VOLUME": {
       "passed": 2,

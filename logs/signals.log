@@ -13151,3 +13151,91 @@ Reject reason: -
 🧠 Regime: N/A
 🕒 Time:   2026-04-08 16:00:00+00:00
 Fingerprint: c259285a472336c7
+2026-04-08 22:19:47,576 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    SOLUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 83.940000
+🎯 TP:    86.504571
+🛑 SL:    82.337143
+RR:    1.60
+
+Score:      3.00 / 5.00
+⭐ Confidence: 0.60 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-08 17:00:00+00:00
+Fingerprint: 3bcbda326eafd0a8
+2026-04-08 22:19:47,592 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    DOGEUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.094010
+🎯 TP:    0.096509
+🛑 SL:    0.092448
+RR:    1.60
+
+Score:      3.00 / 5.00
+⭐ Confidence: 0.60 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-08 17:00:00+00:00
+Fingerprint: 457fbc6036f79f22
+2026-04-08 22:19:47,608 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    ADAUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.255600
+🎯 TP:    0.262453
+🛑 SL:    0.251317
+RR:    1.60
+
+Score:      3.00 / 5.00
+⭐ Confidence: 0.60 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-08 17:00:00+00:00
+Fingerprint: feaeced009653ef1
+2026-04-08 22:19:47,623 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    EDGEUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.996300
+🎯 TP:    1.116531
+🛑 SL:    0.921156
+RR:    1.60
+
+Score:      3.00 / 5.00
+⭐ Confidence: 0.60 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-08 17:00:00+00:00
+Fingerprint: ab856064d963b15c

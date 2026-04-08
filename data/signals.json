@@ -259,5 +259,41 @@
     "signal_type": "strict",
     "score": 3.65,
     "timestamp": "2026-04-08T16:00:00+00:00"
+  },
+  {
+    "signal_id": "SOLUSDT_1h_LONG_2026-04-08 17:00:00+00:00",
+    "symbol": "SOLUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-08T17:00:00+00:00"
+  },
+  {
+    "signal_id": "DOGEUSDT_1h_LONG_2026-04-08 17:00:00+00:00",
+    "symbol": "DOGEUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-08T17:00:00+00:00"
+  },
+  {
+    "signal_id": "ADAUSDT_1h_LONG_2026-04-08 17:00:00+00:00",
+    "symbol": "ADAUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-08T17:00:00+00:00"
+  },
+  {
+    "signal_id": "EDGEUSDT_1h_LONG_2026-04-08 17:00:00+00:00",
+    "symbol": "EDGEUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-08T17:00:00+00:00"
   }
 ]
