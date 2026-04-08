@@ -616,6 +616,15 @@ EXECUTION_MODE = "PAPER"
 SIMULATION_FEE_RATE = 0.0004
 # Комиссия в PAPER-симуляции (доля notional на сделку).
 
+TRADING_ENABLED = False
+# Глобальный флаг исполнения ордеров. False = всегда signal-only/paper.
+
+TESTNET = True
+# По умолчанию live-исполнение работает только в Bybit testnet.
+
+REAL_TRADING_ENABLED = False
+# Дополнительный safety gate: для реальных ордеров должен быть включён явно.
+
 def get_live_mode() -> str:
     """Возвращает нормализованный live-режим."""
     mode = str(LIVE_MODE or "MAIN").upper()

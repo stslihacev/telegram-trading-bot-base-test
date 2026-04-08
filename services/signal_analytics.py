@@ -76,6 +76,9 @@ class SignalAnalytics:
             "closed_strict_sl": 0,
             "closed_fallback_tp": 0,
             "closed_fallback_sl": 0,
+            "trades_opened_real": 0,
+            "trades_closed_real": 0,
+            "pnl_tracking_real": 0,
         }
     )
 
@@ -987,6 +990,16 @@ class SignalAnalytics:
                 self._close_trade(symbol_key, price, timestamp, result="TP")
             elif price >= sl:
                 self._close_trade(symbol_key, price, timestamp, result="SL")
+
+    def register_real_trade_event(self, event: str, pnl: float | None = None) -> None:
+        event_key = str(event or "").upper()
+        if event_key == "OPEN":
+            self.analytics["trades_opened_real"] = int(self.analytics.get("trades_opened_real", 0)) + 1
+        elif event_key == "CLOSE":
+            self.analytics["trades_closed_real"] = int(self.analytics.get("trades_closed_real", 0)) + 1
+            if pnl is not None:
+                self.analytics["pnl_tracking_real"] = int(round(float(self.analytics.get("pnl_tracking_real", 0)) + float(pnl)))
+        self._save_analytics_state()
 
     def group_registry_trades_by_mode(self) -> dict[str, list[dict[str, Any]]]:
         if not self.trade_registry:

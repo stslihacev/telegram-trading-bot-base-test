@@ -1,0 +1,121 @@
+"""Bybit execution client with safe defaults, retries and testnet/mainnet switch."""
+
+from __future__ import annotations
+
+import os
+import time
+from typing import Any, Callable
+
+from dotenv import load_dotenv
+from pybit.unified_trading import HTTP
+
+from utils.logger import logger
+
+
+class BybitExecutionClient:
+    """Thin safe wrapper over pybit HTTP client."""
+
+    def __init__(
+        self,
+        *,
+        testnet: bool = True,
+        api_key: str | None = None,
+        api_secret: str | None = None,
+        timeout: float = 10.0,
+        max_retries: int = 3,
+        retry_backoff_sec: float = 0.7,
+    ) -> None:
+        load_dotenv()
+        self.testnet = bool(testnet)
+        self.max_retries = max(1, int(max_retries))
+        self.retry_backoff_sec = max(0.1, float(retry_backoff_sec))
+        self._session = HTTP(
+            testnet=self.testnet,
+            api_key=api_key or os.getenv("BYBIT_API_KEY", ""),
+            api_secret=api_secret or os.getenv("BYBIT_SECRET", ""),
+            timeout=float(timeout),
+        )
+
+    def _call(self, name: str, fn: Callable[[], Any]) -> dict[str, Any]:
+        last_exc: Exception | None = None
+        for attempt in range(1, self.max_retries + 1):
+            try:
+                payload = fn()
+                if isinstance(payload, dict):
+                    ret_code = int(payload.get("retCode", -1))
+                    if ret_code == 0:
+                        return payload
+                    ret_msg = str(payload.get("retMsg") or "unknown")
+                    raise RuntimeError(f"{name} rejected: retCode={ret_code} retMsg={ret_msg}")
+                raise RuntimeError(f"{name} returned unexpected payload type={type(payload).__name__}")
+            except Exception as exc:  # pragma: no cover - defensive runtime branch
+                last_exc = exc
+                if attempt >= self.max_retries:
+                    break
+                backoff = self.retry_backoff_sec * (2 ** (attempt - 1))
+                logger.warning(
+                    "BYBIT_API_RETRY: endpoint=%s attempt=%s/%s backoff=%.2fs error=%s",
+                    name,
+                    attempt,
+                    self.max_retries,
+                    backoff,
+                    exc,
+                )
+                time.sleep(backoff)
+        raise RuntimeError(f"{name} failed after {self.max_retries} attempts: {last_exc}")
+
+    def place_market_order(self, *, symbol: str, side: str, qty: float, reduce_only: bool = False) -> dict[str, Any]:
+        side_norm = str(side or "").capitalize()
+        return self._call(
+            "place_order",
+            lambda: self._session.place_order(
+                category="linear",
+                symbol=str(symbol).upper(),
+                side=side_norm,
+                orderType="Market",
+                qty=str(float(qty)),
+                reduceOnly=bool(reduce_only),
+                timeInForce="IOC",
+            ),
+        )
+
+    def set_sl_tp(self, *, symbol: str, stop_loss: float | None, take_profit: float | None) -> dict[str, Any]:
+        payload: dict[str, Any] = {
+            "category": "linear",
+            "symbol": str(symbol).upper(),
+            "tpslMode": "Full",
+        }
+        if stop_loss is not None:
+            payload["stopLoss"] = str(float(stop_loss))
+        if take_profit is not None:
+            payload["takeProfit"] = str(float(take_profit))
+        return self._call("set_trading_stop", lambda: self._session.set_trading_stop(**payload))
+
+    def close_position(self, *, symbol: str, side: str, qty: float) -> dict[str, Any]:
+        close_side = "Sell" if str(side).upper() == "LONG" else "Buy"
+        return self.place_market_order(symbol=symbol, side=close_side, qty=qty, reduce_only=True)
+
+    def get_positions(self, symbol: str | None = None) -> list[dict[str, Any]]:
+        request: dict[str, Any] = {"category": "linear", "settleCoin": "USDT"}
+        if symbol:
+            request["symbol"] = str(symbol).upper()
+        payload = self._call("get_positions", lambda: self._session.get_positions(**request))
+        rows = payload.get("result", {}).get("list", [])
+        return [row for row in rows if isinstance(row, dict)]
+
+    def get_balance(self, coin: str = "USDT") -> float:
+        payload = self._call(
+            "get_wallet_balance",
+            lambda: self._session.get_wallet_balance(accountType="UNIFIED", coin=str(coin).upper()),
+        )
+        coins = payload.get("result", {}).get("list", [])
+        if not coins:
+            return 0.0
+        wallet_rows = coins[0].get("coin", [])
+        for row in wallet_rows:
+            if str(row.get("coin", "")).upper() == str(coin).upper():
+                try:
+                    return float(row.get("walletBalance") or 0.0)
+                except (TypeError, ValueError):
+                    return 0.0
+        return 0.0

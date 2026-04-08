@@ -15,10 +15,13 @@ from pathlib import Path
 from tkinter.scrolledtext import ScrolledText
 
 from dotenv import load_dotenv
+import core.config as config
 from telegram.ext import Application, CallbackQueryHandler, CommandHandler
 
 from core.config import (
     DEBUG_MODE,
+    TESTNET,
+    TRADING_ENABLED,
     FAILED_SIGNAL_COOLDOWN_MINUTES,
     COOLDOWN_OVERRIDE_SCORE,
     MIN_SIGNAL_RR,
@@ -36,6 +39,9 @@ from services.signal_scoring import get_mode_threshold
 from core.debug import success
 from core.state_manager import state_manager
 from execution.signal_dispatcher import SignalDispatcher
+from execution.bybit_client import BybitExecutionClient
+from execution.order_manager import OrderManager
+from execution.position_manager import PositionManager
 from scanner.market_scanner import MarketScanner
 from services.signal_analytics import SignalAnalytics
 from services.bybit_request_manager import get_bybit_request_manager
@@ -142,6 +148,9 @@ class TelegramTradingBot:
         self.scan_interval_min = int(os.getenv("SCAN_INTERVAL_MIN", str(default_scan_interval_min or SCAN_INTERVAL_MIN)))
         self.scanner = MarketScanner()
         self.request_manager = get_bybit_request_manager()
+        self.bybit_client = BybitExecutionClient(testnet=bool(TESTNET))
+        self.order_manager = OrderManager(self.bybit_client, self.risk_guard)
+        self.position_manager = PositionManager(self.bybit_client)
         if hasattr(self.scanner.strategy, "min_rr"):
             self.scanner.strategy.min_rr = self.min_rr
 
@@ -322,6 +331,8 @@ class TelegramTradingBot:
         return report
 
     async def _reconcile_active_trades_on_startup(self) -> None:
+        if bool(TRADING_ENABLED):
+            self.position_manager.sync_from_exchange()
         active_symbols = sorted(self.signal_analytics.active_trades.keys())
         self.signal_analytics.reconcile_trade_state()
         if not active_symbols:
@@ -410,6 +421,17 @@ class TelegramTradingBot:
                         symbol=str(enriched_signal.get("symbol") or ""),
                         timestamp=enriched_signal.get("timestamp"),
                     )
+                    if bool(TRADING_ENABLED):
+                        try:
+                            close_events = self.position_manager.handle_price_update(
+                                symbol=str(enriched_signal.get("symbol") or ""),
+                                price=float(enriched_signal.get("entry") or 0.0),
+                            )
+                            for event in close_events:
+                                if event in {"TP", "SL"}:
+                                    self.signal_analytics.register_real_trade_event("CLOSE")
+                        except Exception:
+                            logger.error("POSITION_MANAGEMENT_ERROR", exc_info=True)
                     self.signal_state.maybe_register_exit(enriched_signal)
                     state_action, state_reason = self.signal_state.evaluate_signal(enriched_signal)
                     enriched_signal["pending_since"] = enriched_signal.get("timestamp")
@@ -545,6 +567,19 @@ class TelegramTradingBot:
                     )
                     if state_action in {"NEW", "REVERSAL"}:
                         self.risk_guard.register_symbol_signal(str(enriched_signal.get("symbol") or ""))
+                        runtime_mode = str(enriched_signal.get("live_mode") or "MAIN").upper()
+                        if runtime_mode != "LIGHT" and bool(TRADING_ENABLED):
+                            order_decision = self.order_manager.execute_signal(
+                                enriched_signal,
+                                active_trades=self.signal_analytics.active_trades,
+                                qty=float(getattr(config, "LIVE_ORDER_QTY", 1.0)),
+                            )
+                            if order_decision.accepted:
+                                self.position_manager.register_opened_position(
+                                    enriched_signal,
+                                    qty=float(getattr(config, "LIVE_ORDER_QTY", 1.0)),
+                                )
+                                self.signal_analytics.register_real_trade_event("OPEN")
                     self.signal_state.mark_seen(signal_id, datetime.now(timezone.utc).isoformat())
                     self.signal_state.cleanup_stale()
                     self.signal_state.save()
