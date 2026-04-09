@@ -1,4 +1,8 @@
-"""Bybit execution client with safe defaults, retries and testnet/mainnet switch."""
+"""Bybit execution client with safe defaults, retries and testnet/mainnet switch.
+
+Bybit deprecated separate testnet domain (api-testnet.bybit.com).
+Demo trading now uses api-demo.bybit.com with keys generated inside main account.
+"""
 
 from __future__ import annotations
 
@@ -35,11 +39,14 @@ class BybitExecutionClient:
         retry_backoff_sec: float = 0.7,
     ) -> None:
         self.testnet = bool(testnet)
-        self.demo = bool(demo)
+        # Bybit deprecated separate testnet domain (api-testnet.bybit.com)
+        # Demo trading now uses api-demo.bybit.com with keys generated inside main account
+        self.demo = bool(demo or self.testnet)
+        transport_testnet = bool(self.testnet and not self.demo)
         self.max_retries = max(1, int(max_retries))
         self.retry_backoff_sec = max(0.1, float(retry_backoff_sec))
         self._session = HTTP(
-            testnet=self.testnet,
+            testnet=transport_testnet,
             demo=self.demo,
             api_key=api_key or os.getenv("BYBIT_API_KEY", ""),
             api_secret=api_secret or os.getenv("BYBIT_SECRET", ""),

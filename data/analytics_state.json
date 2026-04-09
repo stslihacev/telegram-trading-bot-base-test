@@ -1,65 +1,77 @@
 {
   "analytics": {
-    "signals_total": 33,
-    "signals_strict": 33,
+    "signals_total": 54,
+    "signals_strict": 54,
     "signals_fallback": 0,
-    "signals_opened": 33,
+    "signals_opened": 54,
     "signals_blocked_by_limits": 0,
-    "opened_from_strict": 33,
+    "opened_from_strict": 54,
     "opened_from_fallback": 0,
     "closed_strict_tp": 5,
     "closed_strict_sl": 8,
     "closed_fallback_tp": 1,
     "closed_fallback_sl": 0,
-    "trades_opened_real": 0,
-    "trades_closed_real": 0,
+    "trades_opened_real": 14,
+    "trades_closed_real": 26,
     "pnl_tracking_real": 0
   },
   "mode_counter": {
-    "SCALPING": 155,
-    "MAIN": 29
+    "SCALPING": 341,
+    "MAIN": 99,
+    "LIGHT": 4
   },
   "entry_source_counter": {
-    "strict": 184
+    "strict": 444
   },
   "rejection_counter": {
     "SCALPING": {
-      "LOW_SCORE": 94
+      "LOW_SCORE": 95
     },
     "MAIN": {
-      "LOW_SCORE": 54
+      "LOW_SCORE": 69
     }
   },
-  "total_signals": 33,
-  "unique_signals": 33,
+  "total_signals": 54,
+  "unique_signals": 54,
   "duplicates": 0,
-  "confidence_sum": 22.140000000000004,
-  "score_sum": 110.7,
-  "scored_count": 33,
+  "confidence_sum": 35.49346200000001,
+  "score_sum": 177.60000000000002,
+  "scored_count": 54,
   "signal_filter_counter": {
     "TREND": {
-      "passed": 6,
-      "weighted": 6
+      "passed": 26,
+      "weighted": 26
     },
     "STRUCTURE": {
-      "passed": 6,
-      "weighted": 6
+      "passed": 26,
+      "weighted": 26
     },
     "RSI": {
-      "passed": 5,
-      "weighted": 5
+      "passed": 23,
+      "weighted": 23,
+      "failed": 1
     },
     "ADX": {
-      "passed": 6,
-      "weighted": 6
+      "passed": 25,
+      "weighted": 25
     },
     "VOLUME": {
-      "passed": 2,
-      "weighted": 2
+      "passed": 9,
+      "weighted": 9,
+      "failed": 1
     },
     "MACD": {
-      "passed": 1,
-      "weighted": 1
+      "passed": 5,
+      "weighted": 4
+    },
+    "EMA": {
+      "passed": 1
+    },
+    "BODY": {
+      "passed": 1
+    },
+    "SMA": {
+      "failed": 1
     }
   }
 }

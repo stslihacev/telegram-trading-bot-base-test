@@ -13239,3 +13239,465 @@ Reject reason: -
 🧠 Regime: N/A
 🕒 Time:   2026-04-08 17:00:00+00:00
 Fingerprint: ab856064d963b15c
+2026-04-08 23:32:57,615 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    WLDUSDT
+Direction: 🔻 SHORT
+Timeframe: 1h
+
+💰 Entry: 0.258900
+🎯 TP:    0.241803
+🛑 SL:    0.269586
+RR:    1.60
+
+Score:      4.65 / 5.00
+⭐ Confidence: 0.93 ⭐⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX, VOLUME, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-08 18:00:00+00:00
+Fingerprint: 2a84e272b0598583
+2026-04-08 23:37:59,168 - [SIGNAL] INFO - [LIGHT] 📡 SIGNAL
+
+Symbol:    ZECUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 323.980000
+🎯 TP:    313.828686
+🛑 SL:    330.324571
+RR:    1.60
+
+Score:      3.45 / 5.20
+⭐ Confidence: 0.66 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: EMA, MACD, BODY
+Failed: SMA, RSI, VOLUME
+Reject reason: -
+
+🧠 Regime: LIGHT_RANGE
+🕒 Time:   2026-04-08 20:00:00+00:00
+Fingerprint: 817fc86292acff82
+2026-04-08 23:40:18,920 - [SIGNAL] INFO - [SCALP] 📡 SIGNAL
+
+Symbol:    ETHUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 2209.900000
+🎯 TP:    2241.078286
+🛑 SL:    2190.413571
+RR:    1.60
+
+Score:      3.00 / 5.00
+⭐ Confidence: 0.60 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-08 19:30:00+00:00
+Fingerprint: bf822eba5b94b0c4
+2026-04-08 23:40:20,127 - [SIGNAL] INFO - [SCALP] 📡 SIGNAL
+
+Symbol:    XRPUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 1.351100
+🎯 TP:    1.366375
+🛑 SL:    1.341553
+RR:    1.60
+
+Score:      3.00 / 5.00
+⭐ Confidence: 0.60 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-08 19:30:00+00:00
+Fingerprint: 46c85f40c887a140
+2026-04-08 23:40:20,140 - [SIGNAL] INFO - [SCALP] 📡 SIGNAL
+
+Symbol:    CLUSDT
+Direction: 🔻 SHORT
+Timeframe: 30m
+
+💰 Entry: 95.321000
+🎯 TP:    92.768314
+🛑 SL:    96.916429
+RR:    1.60
+
+Score:      2.75 / 5.00
+⭐ Confidence: 0.55 ⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, VOLUME
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-08 19:30:00+00:00
+Fingerprint: efb97ac4bb5b53ca
+2026-04-08 23:40:21,346 - [SIGNAL] INFO - [SCALP] 📡 SIGNAL
+
+Symbol:    SUIUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 0.921600
+🎯 TP:    0.935303
+🛑 SL:    0.913036
+RR:    1.60
+
+Score:      3.00 / 5.00
+⭐ Confidence: 0.60 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-08 19:30:00+00:00
+Fingerprint: 3727efa2c97c6518
+2026-04-08 23:40:22,560 - [SIGNAL] INFO - [SCALP] 📡 SIGNAL
+
+Symbol:    AVAXUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 9.184000
+🎯 TP:    9.328389
+🛑 SL:    9.093757
+RR:    1.60
+
+Score:      3.00 / 5.00
+⭐ Confidence: 0.60 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-08 19:30:00+00:00
+Fingerprint: df508609fc7e7ce7
+2026-04-08 23:40:23,770 - [SIGNAL] INFO - [SCALP] 📡 SIGNAL
+
+Symbol:    MONUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 0.031128
+🎯 TP:    0.032562
+🛑 SL:    0.030231
+RR:    1.60
+
+Score:      3.00 / 5.00
+⭐ Confidence: 0.60 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-08 19:30:00+00:00
+Fingerprint: 1c46a1efbfbc2034
+2026-04-08 23:40:24,986 - [SIGNAL] INFO - [SCALP] 📡 SIGNAL
+
+Symbol:    DOTUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 1.280600
+🎯 TP:    1.298138
+🛑 SL:    1.269639
+RR:    1.60
+
+Score:      3.00 / 5.00
+⭐ Confidence: 0.60 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-08 19:30:00+00:00
+Fingerprint: 76d94e7adc645ca7
+2026-04-08 23:40:26,195 - [SIGNAL] INFO - [SCALP] 📡 SIGNAL
+
+Symbol:    DRIFTUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 0.031670
+🎯 TP:    0.033512
+🛑 SL:    0.030519
+RR:    1.60
+
+Score:      3.00 / 5.00
+⭐ Confidence: 0.60 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-08 19:30:00+00:00
+Fingerprint: 52e178452f116669
+2026-04-08 23:40:27,443 - [SIGNAL] INFO - [SCALP] 📡 SIGNAL
+
+Symbol:    XAGUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 74.590000
+🎯 TP:    76.478457
+🛑 SL:    73.409714
+RR:    1.60
+
+Score:      3.00 / 5.00
+⭐ Confidence: 0.60 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-08 19:30:00+00:00
+Fingerprint: 539eac53c82a1e60
+2026-04-08 23:40:28,658 - [SIGNAL] INFO - [SCALP] 📡 SIGNAL
+
+Symbol:    GALAUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 0.003064
+🎯 TP:    0.003127
+🛑 SL:    0.003024
+RR:    1.60
+
+Score:      3.00 / 5.00
+⭐ Confidence: 0.60 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-08 19:30:00+00:00
+Fingerprint: dad3633254b00484
+2026-04-08 23:40:29,887 - [SIGNAL] INFO - [SCALP] 📡 SIGNAL
+
+Symbol:    WIFUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 0.193640
+🎯 TP:    0.196739
+🛑 SL:    0.191703
+RR:    1.60
+
+Score:      3.25 / 5.00
+⭐ Confidence: 0.65 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX, VOLUME
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-08 19:30:00+00:00
+Fingerprint: 8fd2913b04f319a0
+2026-04-08 23:40:33,430 - [SIGNAL] INFO - [SCALP] 📡 SIGNAL
+
+Symbol:    CRVUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 0.219100
+🎯 TP:    0.221969
+🛑 SL:    0.217307
+RR:    1.60
+
+Score:      3.00 / 5.00
+⭐ Confidence: 0.60 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-08 19:30:00+00:00
+Fingerprint: 21cec26135e73558
+2026-04-08 23:40:36,981 - [SIGNAL] INFO - [SCALP] 📡 SIGNAL
+
+Symbol:    VIRTUALUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 0.667400
+🎯 TP:    0.679983
+🛑 SL:    0.659536
+RR:    1.60
+
+Score:      3.00 / 5.00
+⭐ Confidence: 0.60 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-08 19:30:00+00:00
+Fingerprint: cf43a82a3832da8c
+2026-04-08 23:40:40,518 - [SIGNAL] INFO - [SCALP] 📡 SIGNAL
+
+Symbol:    RENDERUSDT
+Direction: 🟢 LONG
+Timeframe: 30m
+
+💰 Entry: 2.025300
+🎯 TP:    2.065163
+🛑 SL:    2.000386
+RR:    1.60
+
+Score:      3.00 / 5.00
+⭐ Confidence: 0.60 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-08 19:30:00+00:00
+Fingerprint: 998daa427642a987
+2026-04-09 20:21:04,039 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    STOUSDT
+Direction: 🔻 SHORT
+Timeframe: 1h
+
+💰 Entry: 0.142170
+🎯 TP:    0.131333
+🛑 SL:    0.148943
+RR:    1.60
+
+Score:      3.00 / 5.00
+⭐ Confidence: 0.60 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-09 15:00:00+00:00
+Fingerprint: f20d8deb89ff8f8c
+2026-04-09 20:21:05,206 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    EDGEUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.958700
+🎯 TP:    1.044318
+🛑 SL:    0.905189
+RR:    1.60
+
+Score:      3.25 / 5.00
+⭐ Confidence: 0.65 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX, VOLUME
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-09 15:00:00+00:00
+Fingerprint: bda418062e454290
+2026-04-09 20:21:06,361 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    XMRUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 339.220000
+🎯 TP:    357.721714
+🛑 SL:    327.656429
+RR:    1.60
+
+Score:      3.65 / 5.00
+⭐ Confidence: 0.73 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, ADX, VOLUME, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-09 15:00:00+00:00
+Fingerprint: c3218bf6d4cfa0a9
+2026-04-09 20:26:18,310 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    CLUSDT
+Direction: 🔻 SHORT
+Timeframe: 1h
+
+💰 Entry: 96.115000
+🎯 TP:    90.931686
+🛑 SL:    99.354571
+RR:    1.60
+
+Score:      3.25 / 5.00
+⭐ Confidence: 0.65 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX, VOLUME
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-09 15:00:00+00:00
+Fingerprint: 5473bc073e1e9fd4
+2026-04-09 20:26:19,856 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    MONUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.031661
+🎯 TP:    0.036142
+🛑 SL:    0.028861
+RR:    1.60
+
+Score:      3.65 / 5.00
+⭐ Confidence: 0.73 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, ADX, VOLUME, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-09 15:00:00+00:00
+Fingerprint: 3db0a76cd1004f9a
