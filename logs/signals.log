@@ -13701,3 +13701,69 @@ Reject reason: -
 🧠 Regime: N/A
 🕒 Time:   2026-04-09 15:00:00+00:00
 Fingerprint: 3db0a76cd1004f9a
+2026-04-09 22:29:01,481 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    EDGEUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.963300
+🎯 TP:    1.056251
+🛑 SL:    0.905206
+RR:    1.60
+
+Score:      3.00 / 5.00
+⭐ Confidence: 0.60 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-09 17:00:00+00:00
+Fingerprint: b9a6a90972973a6c
+2026-04-09 22:29:02,933 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    STOUSDT
+Direction: 🔻 SHORT
+Timeframe: 1h
+
+💰 Entry: 0.140650
+🎯 TP:    0.129616
+🛑 SL:    0.147546
+RR:    1.60
+
+Score:      4.40 / 5.00
+⭐ Confidence: 0.88 ⭐⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-09 17:00:00+00:00
+Fingerprint: 3ffef4698d8fe958
+2026-04-09 22:29:04,369 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    CRVUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.222400
+🎯 TP:    0.236489
+🛑 SL:    0.213594
+RR:    1.60
+
+Score:      3.65 / 5.00
+⭐ Confidence: 0.73 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, ADX, VOLUME, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-09 17:00:00+00:00
+Fingerprint: 299781b36f4ded97

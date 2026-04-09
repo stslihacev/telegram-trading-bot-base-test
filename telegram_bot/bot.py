@@ -623,6 +623,23 @@ class TelegramTradingBot:
                                 active_trades=self.signal_analytics.active_trades,
                                 fallback_qty=float(getattr(config, "LIVE_ORDER_QTY", 1.0)),
                             )
+                            portfolio_metrics = order_decision.details.get("portfolio_metrics", {}) if isinstance(order_decision.details, dict) else {}
+                            total_risk_pct = portfolio_metrics.get("total_risk_pct") if isinstance(portfolio_metrics, dict) else None
+                            total_exposure_pct = portfolio_metrics.get("total_exposure_pct") if isinstance(portfolio_metrics, dict) else None
+                            try:
+                                total_risk_pct_value = float(total_risk_pct) if total_risk_pct is not None else None
+                            except (TypeError, ValueError):
+                                total_risk_pct_value = None
+                            try:
+                                total_exposure_pct_value = float(total_exposure_pct) if total_exposure_pct is not None else None
+                            except (TypeError, ValueError):
+                                total_exposure_pct_value = None
+                            self.signal_analytics.register_portfolio_risk_event(
+                                blocked=bool(order_decision.details.get("risk_blocked")) if isinstance(order_decision.details, dict) else False,
+                                scaled=bool(order_decision.details.get("risk_scaled")) if isinstance(order_decision.details, dict) else False,
+                                total_risk_pct=total_risk_pct_value,
+                                total_exposure_pct=total_exposure_pct_value,
+                            )
                             if order_decision.accepted:
                                 executed_qty = float(order_decision.details.get("qty") or 0.0)
                                 self.position_manager.register_opened_position(
@@ -659,6 +676,14 @@ class TelegramTradingBot:
 
                 if self.signal_analytics.should_emit_report(signals_step=20, minutes_step=10) or scan_iteration % 3 == 0:
                     analytics_logger.info("\n%s\n", self.generate_analytics_report())
+                portfolio_diag = self.signal_analytics.get_portfolio_risk_diagnostics()
+                logger.info(
+                    "AUTO_DIAGNOSTIC_PORTFOLIO: avg_portfolio_risk=%.2f avg_exposure=%.2f signals_blocked_by_risk=%s signals_scaled_by_risk=%s",
+                    portfolio_diag["avg_portfolio_risk"],
+                    portfolio_diag["avg_exposure"],
+                    int(portfolio_diag["signals_blocked_by_risk"]),
+                    int(portfolio_diag["signals_scaled_by_risk"]),
+                )
 
             except TimeoutError:
                 logger.warning("scan_loop timeout: scanner.scan exceeded 120s")

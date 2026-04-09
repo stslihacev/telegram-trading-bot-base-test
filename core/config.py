@@ -556,6 +556,20 @@ MIN_STOP_PCT = 0.001
 RISK_PER_TRADE = 0.01
 # Базовый риск на сделку: 1% капитала.
 
+RISK_PER_TRADE_MAIN = 0.07
+RISK_PER_TRADE_SCALPING = 0.10
+# Базовые лимиты риска для live-исполнения с адаптивным портфельным scaling.
+
+MAX_TOTAL_RISK_PCT = 6.0
+MAX_EXPOSURE_PCT = 40.0
+MAX_LONG_EXPOSURE = 25.0
+MAX_SHORT_EXPOSURE = 25.0
+# Портфельные лимиты (в процентах от доступного капитала).
+
+MIN_RISK_PER_TRADE = 0.03
+MAX_RISK_PER_TRADE = 0.10
+# Ограничения итогового риска на сделку после scaling.
+
 MIN_RISK_USDT = 0.01
 # Минимальный абсолютный риск, чтобы избежать деления на почти ноль.
 

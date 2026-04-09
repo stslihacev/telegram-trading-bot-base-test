@@ -484,5 +484,32 @@
     "signal_type": "strict",
     "score": 3.65,
     "timestamp": "2026-04-09T15:00:00+00:00"
+  },
+  {
+    "signal_id": "EDGEUSDT_1h_LONG_2026-04-09 17:00:00+00:00",
+    "symbol": "EDGEUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-09T17:00:00+00:00"
+  },
+  {
+    "signal_id": "STOUSDT_1h_SHORT_2026-04-09 17:00:00+00:00",
+    "symbol": "STOUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 4.4,
+    "timestamp": "2026-04-09T17:00:00+00:00"
+  },
+  {
+    "signal_id": "CRVUSDT_1h_LONG_2026-04-09 17:00:00+00:00",
+    "symbol": "CRVUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.65,
+    "timestamp": "2026-04-09T17:00:00+00:00"
   }
 ]

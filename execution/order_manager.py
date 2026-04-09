@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from typing import Any
 
 import core.config as config
+from risk.portfolio_risk_manager import PortfolioRiskManager
 from services.risk_guard import SignalRiskGuard
 from utils.logger import logger
 
@@ -23,6 +24,7 @@ class OrderManager:
     def __init__(self, bybit_client: BybitExecutionClient, risk_guard: SignalRiskGuard):
         self.bybit = bybit_client
         self.risk_guard = risk_guard
+        self.portfolio_risk_manager = PortfolioRiskManager(balance_provider=bybit_client)
 
     @staticmethod
     def _normalize_mode(signal: dict[str, Any]) -> str:
@@ -37,13 +39,13 @@ class OrderManager:
         if mode in {"MAIN", "SCALPING"} and not bool(getattr(config, "REAL_TRADING_ENABLED", False)):
             return OrderDecision(False, "REAL_TRADING_DISABLED", {"mode": mode})
 
-        score_threshold = float(getattr(config, f"MIN_SCORE_THRESHOLD_{mode}", getattr(config, "MIN_SCORE_THRESHOLD_MAIN", 0.0)))
         try:
             score = float(signal.get("score") or 0.0)
         except (TypeError, ValueError):
             score = 0.0
-        if score < score_threshold:
-            return OrderDecision(False, "LOW_SCORE", {"score": score, "threshold": score_threshold, "mode": mode})
+        base_score_threshold = float(
+            getattr(config, f"MIN_SCORE_THRESHOLD_{mode}", getattr(config, "MIN_SCORE_THRESHOLD_MAIN", 0.0))
+        )
 
         symbol = str(signal.get("symbol") or "").strip().upper()
         if symbol in active_trades:
@@ -62,9 +64,71 @@ class OrderManager:
         ok_limits, reason = self.risk_guard.check_open_trade_limits(active_trades, mode)
         if not ok_limits:
             return OrderDecision(False, reason or "POSITION_LIMIT", {"mode": mode})
-        return OrderDecision(True, "OK", {"mode": mode, "score": score})
+        risk_decision = self.portfolio_risk_manager.evaluate(
+            signal,
+            active_trades,
+            base_min_score=base_score_threshold,
+        )
+        if not risk_decision.allowed:
+            logger.warning("RISK_BLOCK: symbol=%s reason=%s", symbol, risk_decision.reason)
+            return OrderDecision(
+                False,
+                risk_decision.reason,
+                {
+                    "mode": mode,
+                    "score": score,
+                    "base_threshold": base_score_threshold,
+                    "adjusted_min_score": risk_decision.adjusted_min_score,
+                    "adjusted_risk_pct": risk_decision.adjusted_risk_pct,
+                    "portfolio_metrics": risk_decision.metrics,
+                    "risk_blocked": True,
+                },
+            )
+        required_score = float(risk_decision.adjusted_min_score)
+        strong_buffer = float(getattr(config, "STRONG_SIGNAL_SCORE_BUFFER", 0.9))
+        strong_override_threshold = base_score_threshold + strong_buffer
+        if score < required_score and score < strong_override_threshold:
+            logger.info(
+                "SIGNAL_FILTERED_BY_RISK: symbol=%s score=%.2f required_score=%.2f reason=ADAPTIVE_MIN_SCORE",
+                symbol,
+                score,
+                required_score,
+            )
+            return OrderDecision(
+                False,
+                "LOW_SCORE_RISK_ADAPTIVE",
+                {
+                    "mode": mode,
+                    "score": score,
+                    "base_threshold": base_score_threshold,
+                    "adjusted_min_score": required_score,
+                    "adjusted_risk_pct": risk_decision.adjusted_risk_pct,
+                    "portfolio_metrics": risk_decision.metrics,
+                    "risk_blocked": True,
+                },
+            )
+        return OrderDecision(
+            True,
+            "OK",
+            {
+                "mode": mode,
+                "score": score,
+                "base_threshold": base_score_threshold,
+                "adjusted_min_score": required_score,
+                "adjusted_risk_pct": risk_decision.adjusted_risk_pct,
+                "portfolio_metrics": risk_decision.metrics,
+                "risk_scaled": abs(risk_decision.adjusted_risk_pct - self._resolve_base_risk_pct(mode)) > 1e-9,
+            },
+        )
 
-    def _resolve_order_qty(self, signal: dict[str, Any], fallback_qty: float) -> float:
+    @staticmethod
+    def _resolve_base_risk_pct(mode: str) -> float:
+        mode_name = str(mode or "MAIN").upper()
+        if mode_name == "SCALPING":
+            return max(0.0, float(getattr(config, "RISK_PER_TRADE_SCALPING", getattr(config, "RISK_PER_TRADE", 0.01))))
+        return max(0.0, float(getattr(config, "RISK_PER_TRADE_MAIN", getattr(config, "RISK_PER_TRADE", 0.01))))
+
+    def _resolve_order_qty(self, signal: dict[str, Any], fallback_qty: float, *, risk_percent: float) -> float:
         symbol = str(signal.get("symbol") or "").strip().upper()
         entry = float(signal.get("entry") or 0.0)
         sl = float(signal.get("sl") or 0.0)
@@ -73,7 +137,7 @@ class OrderManager:
             logger.warning("POSITION_SIZING_SKIPPED: symbol=%s reason=INVALID_ENTRY_OR_SL fallback_qty=%s", symbol, fallback_qty)
             return max(0.0, float(fallback_qty))
         balance = max(0.0, float(self.bybit.get_balance("USDT")))
-        risk_percent = max(0.0, float(getattr(config, "RISK_PER_TRADE", 0.01)))
+        risk_percent = max(0.0, float(risk_percent))
         risk_amount = balance * risk_percent
         raw_qty = (risk_amount / risk_distance) if risk_distance > 0 else 0.0
         lot = self.bybit.get_symbol_lot_filters(symbol)
@@ -110,7 +174,10 @@ class OrderManager:
 
         side = "Buy" if str(signal.get("direction") or "").upper() == "LONG" else "Sell"
         symbol = str(signal.get("symbol") or "").upper()
-        qty = self._resolve_order_qty(signal, fallback_qty=fallback_qty)
+        adjusted_risk_pct = float(
+            decision.details.get("adjusted_risk_pct") or self._resolve_base_risk_pct(self._normalize_mode(signal))
+        )
+        qty = self._resolve_order_qty(signal, fallback_qty=fallback_qty, risk_percent=adjusted_risk_pct)
         if qty <= 0:
             logger.info("ORDER_SKIPPED: symbol=%s reason=INVALID_ORDER_QTY", symbol)
             return OrderDecision(False, "INVALID_ORDER_QTY", {"symbol": symbol, "qty": qty})
@@ -118,14 +185,25 @@ class OrderManager:
             order_result = self.bybit.place_market_order(symbol=symbol, side=side, qty=float(qty))
             self.bybit.set_sl_tp(symbol=symbol, stop_loss=signal.get("sl"), take_profit=signal.get("tp"))
             logger.info(
-                "ORDER_EXECUTED: symbol=%s side=%s qty=%s mode=%s score=%s",
+                "ORDER_EXECUTED: symbol=%s side=%s qty=%s mode=%s score=%s adjusted_risk_pct=%s",
                 symbol,
                 str(signal.get("direction") or "").upper(),
                 qty,
                 self._normalize_mode(signal),
                 signal.get("score"),
+                adjusted_risk_pct,
             )
-            return OrderDecision(True, "ORDER_EXECUTED", {"order": order_result, "mode": self._normalize_mode(signal), "qty": qty})
+            return OrderDecision(
+                True,
+                "ORDER_EXECUTED",
+                {
+                    **decision.details,
+                    "order": order_result,
+                    "mode": self._normalize_mode(signal),
+                    "qty": qty,
+                    "adjusted_risk_pct": adjusted_risk_pct,
+                },
+            )
         except Exception as exc:
             logger.error("ORDER_FAILED: symbol=%s reason=%s retry_count=%s", symbol, exc, int(getattr(self.bybit, "max_retries", 1)))
             return OrderDecision(False, "ORDER_FAILED", {"error": str(exc)})

@@ -62,6 +62,9 @@ class SignalAnalytics:
     risk_per_trade_pct: float = field(default_factory=lambda: float(getattr(config, "RISK_PER_TRADE", 0.01)))
     fee_rate: float = field(default_factory=lambda: float(getattr(config, "SIMULATION_FEE_RATE", 0.0004)))
     execution_mode: str = field(default_factory=lambda: str(getattr(config, "EXECUTION_MODE", "DISABLED")).upper())
+    portfolio_risk_sum: float = 0.0
+    portfolio_exposure_sum: float = 0.0
+    portfolio_risk_samples: int = 0
     equity_curve: list[dict[str, Any]] = field(default_factory=list)
     analytics: dict[str, int] = field(
         default_factory=lambda: {
@@ -79,6 +82,8 @@ class SignalAnalytics:
             "trades_opened_real": 0,
             "trades_closed_real": 0,
             "pnl_tracking_real": 0,
+            "signals_blocked_by_risk": 0,
+            "signals_scaled_by_risk": 0,
         }
     )
 
@@ -108,6 +113,9 @@ class SignalAnalytics:
                 "confidence_sum": float(self.confidence_sum),
                 "score_sum": float(self.score_sum),
                 "scored_count": int(self.scored_count),
+                "portfolio_risk_sum": float(self.portfolio_risk_sum),
+                "portfolio_exposure_sum": float(self.portfolio_exposure_sum),
+                "portfolio_risk_samples": int(self.portfolio_risk_samples),
                 "signal_filter_counter": {name: dict(counter) for name, counter in self.signal_filter_counter.items()},
             }
             self.analytics_state_path.parent.mkdir(parents=True, exist_ok=True)
@@ -145,6 +153,9 @@ class SignalAnalytics:
         self.confidence_sum = float(payload.get("confidence_sum", self.confidence_sum) or 0.0)
         self.score_sum = float(payload.get("score_sum", self.score_sum) or 0.0)
         self.scored_count = int(payload.get("scored_count", self.scored_count) or 0)
+        self.portfolio_risk_sum = float(payload.get("portfolio_risk_sum", self.portfolio_risk_sum) or 0.0)
+        self.portfolio_exposure_sum = float(payload.get("portfolio_exposure_sum", self.portfolio_exposure_sum) or 0.0)
+        self.portfolio_risk_samples = int(payload.get("portfolio_risk_samples", self.portfolio_risk_samples) or 0)
         signal_filter_counter = payload.get("signal_filter_counter")
         if isinstance(signal_filter_counter, dict):
             for name, counters in signal_filter_counter.items():
@@ -450,6 +461,33 @@ class SignalAnalytics:
         for mode, counters in self.rejection_counter.items():
             payload[mode] = {reason: int(count) for reason, count in counters.items()}
         return payload
+
+    def register_portfolio_risk_event(
+        self,
+        *,
+        blocked: bool = False,
+        scaled: bool = False,
+        total_risk_pct: float | None = None,
+        total_exposure_pct: float | None = None,
+    ) -> None:
+        if blocked:
+            self.analytics["signals_blocked_by_risk"] = int(self.analytics.get("signals_blocked_by_risk", 0)) + 1
+        if scaled:
+            self.analytics["signals_scaled_by_risk"] = int(self.analytics.get("signals_scaled_by_risk", 0)) + 1
+        if total_risk_pct is not None and total_exposure_pct is not None:
+            self.portfolio_risk_sum += float(total_risk_pct)
+            self.portfolio_exposure_sum += float(total_exposure_pct)
+            self.portfolio_risk_samples += 1
+        self._save_analytics_state()
+
+    def get_portfolio_risk_diagnostics(self) -> dict[str, float]:
+        samples = max(1, int(self.portfolio_risk_samples))
+        return {
+            "avg_portfolio_risk": self.portfolio_risk_sum / samples if self.portfolio_risk_samples else 0.0,
+            "avg_exposure": self.portfolio_exposure_sum / samples if self.portfolio_risk_samples else 0.0,
+            "signals_blocked_by_risk": float(self.analytics.get("signals_blocked_by_risk", 0)),
+            "signals_scaled_by_risk": float(self.analytics.get("signals_scaled_by_risk", 0)),
+        }
 
     def _calculate_trade_financials(self, entry: float, sl: float, pnl_points: float) -> dict[str, float]:
         risk_budget = float(self.initial_deposit) * max(0.0, float(self.risk_per_trade_pct))
@@ -1254,6 +1292,7 @@ class SignalAnalytics:
 
     def build_codex_analytics_payload(self) -> dict[str, Any]:
         performance = self._build_profitability_metrics()
+        portfolio_risk_diag = self.get_portfolio_risk_diagnostics()
         return {
             "execution_mode": self._normalized_execution_mode(),
             "signals": {
@@ -1266,6 +1305,7 @@ class SignalAnalytics:
             "trades": self.get_trade_stats_structured(),
             "performance": performance,
             "rejections": self.get_rejection_stats_structured(),
+            "portfolio_risk": portfolio_risk_diag,
             "reconciliation": self.get_reconciliation_structured(),
             "integrity": self._build_integrity_snapshot(),
             # Backward-compatible alias used in previous snapshots.
@@ -1317,6 +1357,7 @@ class SignalAnalytics:
         self.last_report_at = datetime.now(timezone.utc)
         avg_confidence = self.confidence_sum / self.total_signals if self.total_signals else 0.0
         avg_score = self.score_sum / self.scored_count if self.scored_count else 0.0
+        portfolio_risk_diag = self.get_portfolio_risk_diagnostics()
 
         light = self.mode_counter.get("LIGHT", 0)
         main = self.mode_counter.get("MAIN", 0)
@@ -1452,6 +1493,11 @@ class SignalAnalytics:
             f"relaxed source: {relaxed_count}\n\n"
             f"Средний confidence: {avg_confidence:.2f}\n"
             f"Средний score: {avg_score:.2f}\n\n"
+            "🛡️ PORTFOLIO RISK DIAGNOSTICS\n"
+            f"avg_portfolio_risk: {portfolio_risk_diag['avg_portfolio_risk']:.2f}%\n"
+            f"avg_exposure: {portfolio_risk_diag['avg_exposure']:.2f}%\n"
+            f"signals_blocked_by_risk: {int(portfolio_risk_diag['signals_blocked_by_risk'])}\n"
+            f"signals_scaled_by_risk: {int(portfolio_risk_diag['signals_scaled_by_risk'])}\n\n"
             "Качество:\n"
             f"⭐⭐⭐⭐⭐: {self.quality_counter.get('⭐⭐⭐⭐⭐', 0)}\n"
             f"⭐⭐⭐⭐: {self.quality_counter.get('⭐⭐⭐⭐', 0)}\n"
