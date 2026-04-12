@@ -498,8 +498,8 @@ class TelegramTradingBot:
                     if state_action in {"NEW", "UPDATE", "REVERSAL"}:
                         enriched_signal["confirmation_reason"] = state_reason
 
-                    analytics_added = False
-                    if state_action in {"NEW", "REVERSAL"}:
+                    is_strong_override_update = state_action == "UPDATE" and state_reason == "STRONG_SIGNAL_OVERRIDE"
+                    if state_action in {"NEW", "REVERSAL"} or is_strong_override_update:
                         self.signal_analytics.collect_signal(enriched_signal, is_duplicate=False)
                     if state_action in {"NEW", "UPDATE", "REVERSAL"}:
                         self.signal_analytics.register_trade(enriched_signal, state_action)
@@ -514,7 +514,6 @@ class TelegramTradingBot:
                             global_position_count=int(limit_details.get("total_open", 0)),
                             global_limit=int(limit_details.get("global_limit", 0)),
                         )
-                        analytics_added = True
                         try:
                             confidence_value = float(enriched_signal.get("confidence") or 0.0)
                         except (TypeError, ValueError):
@@ -528,6 +527,12 @@ class TelegramTradingBot:
                             enriched_signal.get("confidence"),
                             get_stars(confidence_value),
                         )
+                        if is_strong_override_update:
+                            logger.info(
+                                "SIGNAL_OVERRIDE_UPDATE: symbol=%s score=%s reason=STRONG_SIGNAL_OVERRIDE",
+                                enriched_signal.get("symbol"),
+                                enriched_signal.get("score"),
+                            )
 
                     if state_action in {"IGNORE", "COOLDOWN"}:
                         self.signal_analytics.register_signal_decision(
@@ -545,21 +550,6 @@ class TelegramTradingBot:
                             {**enriched_signal, "rejection_reason": state_reason},
                             status="REJECTED",
                         )
-                        try:
-                            if float(enriched_signal.get("confidence") or 0.0) >= 0.7 and not analytics_added:
-                                warning_text = (
-                                    f"[WARNING] HIGH CONF SIGNAL NOT IN ANALYTICS | "
-                                    f"{enriched_signal.get('symbol')} conf={float(enriched_signal.get('confidence') or 0.0):.2f} action={state_action}"
-                                )
-                                logger.warning(
-                                    "[WARNING] HIGH CONF SIGNAL NOT IN ANALYTICS | symbol=%s | conf=%.2f | action=%s",
-                                    enriched_signal.get("symbol"),
-                                    float(enriched_signal.get("confidence") or 0.0),
-                                    state_action,
-                                )
-                                self.signal_queue.put(warning_text)
-                        except (TypeError, ValueError):
-                            pass
                         logger.info(
                             "[SIGNAL REJECTED] symbol=%s mode=%s entry_source=%s action=%s reason=%s",
                             enriched_signal.get("symbol"),
@@ -596,22 +586,6 @@ class TelegramTradingBot:
                             signal_id,
                             state_reason,
                         )
-                        
-                    try:
-                        if float(enriched_signal.get("confidence") or 0.0) >= 0.7 and not analytics_added:
-                            warning_text = (
-                                f"[WARNING] HIGH CONF SIGNAL NOT IN ANALYTICS | "
-                                f"{enriched_signal.get('symbol')} conf={float(enriched_signal.get('confidence') or 0.0):.2f} action={state_action}"
-                            )
-                            logger.warning(
-                                "[WARNING] HIGH CONF SIGNAL NOT IN ANALYTICS | symbol=%s | conf=%.2f | action=%s",
-                                enriched_signal.get("symbol"),
-                                float(enriched_signal.get("confidence") or 0.0),
-                                state_action,
-                            )
-                            self.signal_queue.put(warning_text)
-                    except (TypeError, ValueError):
-                        pass
 
                     self.signal_state.upsert_active(enriched_signal, status="PENDING")
                     self.signal_state.transition_signal(

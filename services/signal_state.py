@@ -37,6 +37,7 @@ class SignalStateService:
     state_path: Path
     schema_version: int = 2
     min_upgrade_score: float = 4.5
+    strong_signal_score: float = 3.2
     min_score_diff: float = 0.5
     failed_cooldown_minutes: int = 30
     cooldown_override_score: float = 6.0
@@ -167,8 +168,11 @@ class SignalStateService:
 
         old_direction = str(current.get("direction") or "").upper()
         old_score = float(current.get("score") or 0.0)
+        is_strong_signal = score >= self.strong_signal_score
 
         if direction == old_direction:
+            if is_strong_signal:
+                return "UPDATE", "STRONG_SIGNAL_OVERRIDE"
             if score < self.min_upgrade_score and old_score < self.min_upgrade_score:
                 return "IGNORE", "both below upgrade threshold"
             if score >= self.min_upgrade_score and old_score < self.min_upgrade_score:
