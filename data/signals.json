@@ -511,5 +511,41 @@
     "signal_type": "strict",
     "score": 3.65,
     "timestamp": "2026-04-09T17:00:00+00:00"
+  },
+  {
+    "signal_id": "XRPUSDT_1h_LONG_2026-04-12 16:00:00+00:00",
+    "symbol": "XRPUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-12T16:00:00+00:00"
+  },
+  {
+    "signal_id": "AVAXUSDT_1h_LONG_2026-04-12 16:00:00+00:00",
+    "symbol": "AVAXUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-12T16:00:00+00:00"
+  },
+  {
+    "signal_id": "TRUMPUSDT_1h_SHORT_2026-04-12 16:00:00+00:00",
+    "symbol": "TRUMPUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-12T16:00:00+00:00"
+  },
+  {
+    "signal_id": "XPLUSDT_1h_LONG_2026-04-12 16:00:00+00:00",
+    "symbol": "XPLUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-12T16:00:00+00:00"
   }
 ]

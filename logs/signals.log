@@ -13767,3 +13767,91 @@ Reject reason: -
 🧠 Regime: N/A
 🕒 Time:   2026-04-09 17:00:00+00:00
 Fingerprint: 299781b36f4ded97
+2026-04-12 21:40:07,868 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    XRPUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 1.327200
+🎯 TP:    1.342992
+🛑 SL:    1.317330
+RR:    1.60
+
+Score:      3.00 / 5.00
+⭐ Confidence: 0.60 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-12 16:00:00+00:00
+Fingerprint: 10c7c1d6329bad8d
+2026-04-12 21:40:08,363 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    AVAXUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 9.011000
+🎯 TP:    9.165286
+🛑 SL:    8.914571
+RR:    1.60
+
+Score:      3.00 / 5.00
+⭐ Confidence: 0.60 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-12 16:00:00+00:00
+Fingerprint: 1d590aa9d221e98e
+2026-04-12 21:40:08,854 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    TRUMPUSDT
+Direction: 🔻 SHORT
+Timeframe: 1h
+
+💰 Entry: 2.793000
+🎯 TP:    2.705114
+🛑 SL:    2.847929
+RR:    1.60
+
+Score:      3.00 / 5.00
+⭐ Confidence: 0.60 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-12 16:00:00+00:00
+Fingerprint: 894e097fc446ca6c
+2026-04-12 21:40:09,344 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    XPLUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.125440
+🎯 TP:    0.129419
+🛑 SL:    0.122953
+RR:    1.60
+
+Score:      3.00 / 5.00
+⭐ Confidence: 0.60 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-12 16:00:00+00:00
+Fingerprint: 2f7fb2ea1ea1c878

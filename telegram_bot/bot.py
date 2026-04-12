@@ -475,6 +475,17 @@ class TelegramTradingBot:
                             close_events = self.position_manager.handle_price_update(
                                 symbol=str(enriched_signal.get("symbol") or ""),
                                 price=float(enriched_signal.get("entry") or 0.0),
+                                market_data={
+                                    "current_price": float(enriched_signal.get("entry") or 0.0),
+                                    "current_high": float(enriched_signal.get("high") or enriched_signal.get("entry") or 0.0),
+                                    "current_low": float(enriched_signal.get("low") or enriched_signal.get("entry") or 0.0),
+                                    "timestamp": enriched_signal.get("timestamp"),
+                                },
+                                indicators={
+                                    "adx": enriched_signal.get("adx"),
+                                    "atr": enriched_signal.get("atr"),
+                                    "confidence": enriched_signal.get("confidence"),
+                                },
                             )
                             for event in close_events:
                                 if event in {"TP", "SL"}:
