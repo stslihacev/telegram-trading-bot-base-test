@@ -85,14 +85,25 @@ class OrderManager:
                 },
             )
         required_score = float(risk_decision.adjusted_min_score)
-        strong_buffer = float(getattr(config, "STRONG_SIGNAL_SCORE_BUFFER", 0.9))
-        strong_override_threshold = base_score_threshold + strong_buffer
-        if score < required_score and score < strong_override_threshold:
+        strong_override_threshold = float(getattr(config, "STRONG_SIGNAL_MIN_SCORE", 3.2))
+        if score >= strong_override_threshold:
             logger.info(
-                "SIGNAL_FILTERED_BY_RISK: symbol=%s score=%.2f required_score=%.2f reason=ADAPTIVE_MIN_SCORE",
+                "RISK_OVERRIDE_STRONG_SIGNAL: symbol=%s score=%.2f required_score=%.2f total_risk=%.2f exposure=%.2f",
                 symbol,
                 score,
                 required_score,
+                float(risk_decision.metrics.get("total_risk_pct", 0.0)),
+                float(risk_decision.metrics.get("total_exposure_pct", 0.0)),
+            )
+        elif score < required_score:
+            logger.info(
+                "SIGNAL_BLOCKED_BY_RISK: symbol=%s score=%.2f required_score=%.2f base_score=%.2f total_risk=%.2f exposure=%.2f reason=ADAPTIVE_PRESSURE",
+                symbol,
+                score,
+                required_score,
+                base_score_threshold,
+                float(risk_decision.metrics.get("total_risk_pct", 0.0)),
+                float(risk_decision.metrics.get("total_exposure_pct", 0.0)),
             )
             return OrderDecision(
                 False,
@@ -104,7 +115,7 @@ class OrderManager:
                     "adjusted_min_score": required_score,
                     "adjusted_risk_pct": risk_decision.adjusted_risk_pct,
                     "portfolio_metrics": risk_decision.metrics,
-                    "risk_blocked": True,
+                    "risk_blocked": False,
                 },
             )
         return OrderDecision(

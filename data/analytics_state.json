@@ -18,19 +18,19 @@
     "signals_scaled_by_risk": 0
   },
   "mode_counter": {
-    "SCALPING": 531,
-    "MAIN": 204,
-    "LIGHT": 9
+    "SCALPING": 569,
+    "MAIN": 233,
+    "LIGHT": 10
   },
   "entry_source_counter": {
-    "strict": 744
+    "strict": 812
   },
   "rejection_counter": {
     "SCALPING": {
       "LOW_SCORE": 95
     },
     "MAIN": {
-      "LOW_SCORE": 94
+      "LOW_SCORE": 104
     }
   },
   "total_signals": 68,

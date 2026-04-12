@@ -125,6 +125,10 @@ class PortfolioRiskManager:
         if direction == "SHORT" and metrics["short_exposure_pct"] > max_short_exposure:
             return PortfolioRiskDecision(False, 0.0, base_min_score, "SHORT_EXPOSURE_LIMIT", metrics)
 
+        open_trades = int(metrics.get("open_trades_count", 0.0))
+        total_risk_pct = float(metrics.get("total_risk_pct", 0.0))
+        total_exposure_pct = float(metrics.get("total_exposure_pct", 0.0))
+        risk_load_pct = (total_risk_pct / max(max_total_risk_pct, 1e-9)) * 100.0
         if metrics["total_risk_pct"] < 0.5 * max_total_risk_pct:
             risk_multiplier = 1.0
             reason = "RISK_LOAD_LOW"
@@ -137,10 +141,24 @@ class PortfolioRiskManager:
 
         adjusted_risk = max(min_risk, min(max_risk, base_risk * risk_multiplier))
         adjusted_min_score = float(base_min_score)
-        if metrics["total_risk_pct"] > 0.7 * max_total_risk_pct:
-            adjusted_min_score += 0.3
-        if metrics["total_risk_pct"] > 0.9 * max_total_risk_pct:
-            adjusted_min_score += 0.5
+        adaptive_reason = "ADAPTIVE_PRESSURE"
+        score_bump = 0.0
+        if total_risk_pct == 0.0 and open_trades == 0:
+            adaptive_reason = "DISABLED_ZERO_EXPOSURE"
+            logger.info("RISK_ADJUSTMENT: mode=DISABLED_ZERO_EXPOSURE symbol=%s base_score=%.2f", symbol, base_min_score)
+        elif open_trades == 0 or total_exposure_pct < 10.0:
+            adaptive_reason = "DISABLED_EARLY_STAGE"
+        elif risk_load_pct < 10.0:
+            score_bump = 0.0
+        elif risk_load_pct < 25.0:
+            score_bump = 0.05
+        elif risk_load_pct < 50.0:
+            score_bump = 0.10
+        elif risk_load_pct < 70.0:
+            score_bump = 0.15
+        else:
+            score_bump = 0.20
+        adjusted_min_score += min(0.20, score_bump)
 
         if abs(adjusted_risk - base_risk) > 1e-9:
             logger.info(
@@ -154,6 +172,6 @@ class PortfolioRiskManager:
             allowed=True,
             adjusted_risk_pct=adjusted_risk,
             adjusted_min_score=adjusted_min_score,
-            reason=reason,
+            reason=f"{reason}|{adaptive_reason}",
             metrics=metrics,
         )
