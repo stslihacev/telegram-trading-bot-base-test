@@ -547,5 +547,68 @@
     "signal_type": "strict",
     "score": 3.0,
     "timestamp": "2026-04-12T16:00:00+00:00"
+  },
+  {
+    "signal_id": "BTCUSDT_1h_LONG_2026-04-12 17:00:00+00:00",
+    "symbol": "BTCUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-12T17:00:00+00:00"
+  },
+  {
+    "signal_id": "ETHUSDT_1h_LONG_2026-04-12 17:00:00+00:00",
+    "symbol": "ETHUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-12T17:00:00+00:00"
+  },
+  {
+    "signal_id": "1000PEPEUSDT_1h_LONG_2026-04-12 17:00:00+00:00",
+    "symbol": "1000PEPEUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-12T17:00:00+00:00"
+  },
+  {
+    "signal_id": "FARTCOINUSDT_1h_LONG_2026-04-12 17:00:00+00:00",
+    "symbol": "FARTCOINUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.25,
+    "timestamp": "2026-04-12T17:00:00+00:00"
+  },
+  {
+    "signal_id": "ENAUSDT_1h_LONG_2026-04-12 17:00:00+00:00",
+    "symbol": "ENAUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-12T17:00:00+00:00"
+  },
+  {
+    "signal_id": "LINKUSDT_1h_LONG_2026-04-12 17:00:00+00:00",
+    "symbol": "LINKUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-12T17:00:00+00:00"
+  },
+  {
+    "signal_id": "MONUSDT_1h_LONG_2026-04-12 17:00:00+00:00",
+    "symbol": "MONUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.25,
+    "timestamp": "2026-04-12T17:00:00+00:00"
   }
 ]

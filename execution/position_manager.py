@@ -206,6 +206,19 @@ class PositionManager:
                 self.bybit.set_sl_tp(symbol=position.symbol, stop_loss=position.sl, take_profit=position.tp2 if position.tp2 else position.tp)
                 logger.info("PROFIT_PROTECTION: symbol=%s action=TRAIL_SL", position.symbol)
 
+        active_tp = position.tp2 if position.mode == "MAIN" and position.tp1_hit and position.tp2 else position.tp
+        tp_hit = (position.side == "LONG" and price >= active_tp) or (position.side == "SHORT" and price <= active_tp)
+        sl_hit = (position.side == "LONG" and price <= position.sl) or (position.side == "SHORT" and price >= position.sl)
+
+        if tp_hit or sl_hit:
+            if position.size > 0:
+                self.bybit.close_position(symbol=position.symbol, side=position.side, qty=position.size)
+            reason = "TP" if tp_hit else "SL"
+            logger.info("POSITION_CLOSED: symbol=%s reason=%s", position.symbol, reason)
+            self.positions.pop(position.symbol, None)
+            events.append(reason)
+            return events
+
         exit_decision = self.exit_manager.evaluate_exit(
             position=position,
             market_data=runtime_market_data,
@@ -222,18 +235,5 @@ class PositionManager:
             )
             self.positions.pop(position.symbol, None)
             events.append("SMART_EXIT")
-            return events
-
-        active_tp = position.tp2 if position.mode == "MAIN" and position.tp1_hit and position.tp2 else position.tp
-        tp_hit = (position.side == "LONG" and price >= active_tp) or (position.side == "SHORT" and price <= active_tp)
-        sl_hit = (position.side == "LONG" and price <= position.sl) or (position.side == "SHORT" and price >= position.sl)
-
-        if tp_hit or sl_hit:
-            if position.size > 0:
-                self.bybit.close_position(symbol=position.symbol, side=position.side, qty=position.size)
-            reason = "TP" if tp_hit else "SL"
-            logger.info("POSITION_CLOSED: symbol=%s reason=%s", position.symbol, reason)
-            self.positions.pop(position.symbol, None)
-            events.append(reason)
-
+            
         return events
