@@ -130,3 +130,43 @@ def test_zero_total_risk_disables_adaptive_score_bump_even_with_open_trades():
     assert decision.allowed is True
     assert decision.adjusted_min_score == 3.0
     assert "DISABLED_ZERO_EXPOSURE" in decision.reason
+
+
+def test_effective_score_allows_valid_zero_risk_signal(monkeypatch):
+    monkeypatch.setattr(config, "TRADING_ENABLED", True)
+    monkeypatch.setattr(config, "REAL_TRADING_ENABLED", True)
+    manager = OrderManager(bybit_client=_BybitStub(balance=1000.0), risk_guard=_RiskGuardStub())
+    decision = manager._can_execute(
+        {
+            "symbol": "ETHUSDT",
+            "direction": "LONG",
+            "live_mode": "MAIN",
+            "score": 3.0,
+            "passed_filters": ["TREND", "STRUCTURE"],
+            "failed_filters": [],
+            "confidence": 0.85,
+        },
+        active_trades={},
+    )
+    assert decision.accepted is True
+    assert decision.details["effective_score"] >= 3.2
+
+
+def test_effective_score_weak_structure_bonus_can_open(monkeypatch):
+    monkeypatch.setattr(config, "TRADING_ENABLED", True)
+    monkeypatch.setattr(config, "REAL_TRADING_ENABLED", True)
+    manager = OrderManager(bybit_client=_BybitStub(balance=1000.0), risk_guard=_RiskGuardStub())
+    decision = manager._can_execute(
+        {
+            "symbol": "XRPUSDT",
+            "direction": "LONG",
+            "live_mode": "MAIN",
+            "score": 3.0,
+            "passed_filters": ["TREND"],
+            "failed_filters": ["STRUCTURE"],
+            "confidence": 0.6,
+        },
+        active_trades={},
+    )
+    assert decision.accepted is True
+    assert decision.details["execution_bonus"] == 0.3

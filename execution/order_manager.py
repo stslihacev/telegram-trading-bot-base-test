@@ -70,10 +70,16 @@ class OrderManager:
             base_min_score=base_score_threshold,
         )
         if not risk_decision.allowed:
+            block_reason = self._classify_hard_risk_reason(risk_decision.reason)
             logger.warning("RISK_BLOCK: symbol=%s reason=%s", symbol, risk_decision.reason)
+            logger.info(
+                "EXECUTION_DECISION: symbol=%s decision=SKIP reason=%s",
+                symbol,
+                block_reason,
+            )
             return OrderDecision(
                 False,
-                risk_decision.reason,
+                block_reason,
                 {
                     "mode": mode,
                     "score": score,
@@ -85,6 +91,15 @@ class OrderManager:
                 },
             )
         required_score = float(risk_decision.adjusted_min_score)
+        effective_score, execution_bonus = self._compute_effective_score(signal, base_score=score)
+        logger.info(
+            "EXECUTION_SCORE: symbol=%s base_score=%.2f bonus=%.2f effective_score=%.2f threshold=%.2f",
+            symbol,
+            score,
+            execution_bonus,
+            effective_score,
+            required_score,
+        )
         strong_override_threshold = float(getattr(config, "STRONG_SIGNAL_MIN_SCORE", 3.2))
         if score >= strong_override_threshold:
             logger.info(
@@ -96,23 +111,28 @@ class OrderManager:
                 float(risk_decision.metrics.get("total_exposure_pct", 0.0)),
             )
             logger.info("SIGNAL_ALLOWED_STRONG: symbol=%s score=%.2f threshold=%.2f", symbol, score, strong_override_threshold)
-        elif score < required_score:
-            if score >= base_score_threshold:
+            logger.info("EXECUTION_DECISION: symbol=%s decision=OPEN reason=STRONG_SIGNAL", symbol)
+        elif effective_score < required_score:
+            if effective_score >= base_score_threshold:
                 logger.info(
-                    "SIGNAL_BLOCKED_BY_RISK: symbol=%s score=%.2f required_score=%.2f base_score=%.2f total_risk=%.2f exposure=%.2f reason=LOW_SCORE_PORTFOLIO",
+                    "SIGNAL_BLOCKED_BY_RISK: symbol=%s score=%.2f effective_score=%.2f required_score=%.2f base_score=%.2f total_risk=%.2f exposure=%.2f reason=LOW_SCORE_PORTFOLIO",
                     symbol,
                     score,
+                    effective_score,
                     required_score,
                     base_score_threshold,
                     float(risk_decision.metrics.get("total_risk_pct", 0.0)),
                     float(risk_decision.metrics.get("total_exposure_pct", 0.0)),
                 )
+                logger.info("EXECUTION_DECISION: symbol=%s decision=SKIP reason=LOW_SCORE_PORTFOLIO", symbol)
                 return OrderDecision(
                     False,
                     "LOW_SCORE_PORTFOLIO",
                     {
                         "mode": mode,
                         "score": score,
+                        "effective_score": effective_score,
+                        "execution_bonus": execution_bonus,
                         "base_threshold": base_score_threshold,
                         "adjusted_min_score": required_score,
                         "adjusted_risk_pct": risk_decision.adjusted_risk_pct,
@@ -121,20 +141,24 @@ class OrderManager:
                     },
                 )
             logger.info(
-                "SIGNAL_BLOCKED_BY_RISK: symbol=%s score=%.2f required_score=%.2f base_score=%.2f total_risk=%.2f exposure=%.2f reason=LOW_SCORE_EXECUTION",
+                "SIGNAL_BLOCKED_BY_RISK: symbol=%s score=%.2f effective_score=%.2f required_score=%.2f base_score=%.2f total_risk=%.2f exposure=%.2f reason=LOW_SCORE_EXECUTION",
                 symbol,
                 score,
+                effective_score,
                 required_score,
                 base_score_threshold,
                 float(risk_decision.metrics.get("total_risk_pct", 0.0)),
                 float(risk_decision.metrics.get("total_exposure_pct", 0.0)),
             )
+            logger.info("EXECUTION_DECISION: symbol=%s decision=SKIP reason=LOW_SCORE_EXECUTION", symbol)
             return OrderDecision(
                 False,
                 "LOW_SCORE_EXECUTION",
                 {
                     "mode": mode,
                     "score": score,
+                    "effective_score": effective_score,
+                    "execution_bonus": execution_bonus,
                     "base_threshold": base_score_threshold,
                     "adjusted_min_score": required_score,
                     "adjusted_risk_pct": risk_decision.adjusted_risk_pct,
@@ -148,6 +172,8 @@ class OrderManager:
             {
                 "mode": mode,
                 "score": score,
+                "effective_score": effective_score,
+                "execution_bonus": execution_bonus,
                 "base_threshold": base_score_threshold,
                 "adjusted_min_score": required_score,
                 "adjusted_risk_pct": risk_decision.adjusted_risk_pct,
@@ -155,6 +181,41 @@ class OrderManager:
                 "risk_scaled": abs(risk_decision.adjusted_risk_pct - self._resolve_base_risk_pct(mode)) > 1e-9,
             },
         )
+
+    @staticmethod
+    def _has_filter(signal: dict[str, Any], label: str) -> bool:
+        normalized = str(label or "").upper()
+        weighted = {str(v).upper() for v in (signal.get("filters_weighted") or [])}
+        passed = {str(v).upper() for v in (signal.get("passed_filters") or [])}
+        return normalized in weighted or normalized in passed
+
+    def _compute_effective_score(self, signal: dict[str, Any], *, base_score: float) -> tuple[float, float]:
+        structure_state = str(signal.get("structure_state") or "").lower().strip()
+        failed_filters = {str(v).upper() for v in (signal.get("failed_filters") or [])}
+        confidence = max(0.0, min(1.0, float(signal.get("confidence") or 0.0)))
+
+        bonus = 0.0
+        if structure_state == "weak" or "STRUCTURE" in failed_filters:
+            bonus += 0.2
+        if self._has_filter(signal, "TREND"):
+            bonus += 0.1
+        if confidence >= 0.8:
+            bonus += 0.2
+        bonus = max(0.0, min(0.3, bonus))
+        return base_score + bonus, bonus
+
+    @staticmethod
+    def _classify_hard_risk_reason(reason: str) -> str:
+        hard_blocks = {
+            "MAX_EXPOSURE_EXCEEDED",
+            "EMERGENCY_RISK_BLOCK",
+            "LONG_EXPOSURE_LIMIT",
+            "SHORT_EXPOSURE_LIMIT",
+            "DUPLICATE_SYMBOL",
+        }
+        if reason in hard_blocks:
+            return "HARD_RISK_BLOCK"
+        return reason
 
     @staticmethod
     def _resolve_base_risk_pct(mode: str) -> float:
