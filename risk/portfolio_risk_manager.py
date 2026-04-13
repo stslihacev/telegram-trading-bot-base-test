@@ -143,7 +143,7 @@ class PortfolioRiskManager:
         adjusted_min_score = float(base_min_score)
         adaptive_reason = "ADAPTIVE_PRESSURE"
         score_bump = 0.0
-        if total_risk_pct == 0.0 and open_trades == 0:
+        if total_risk_pct == 0.0:
             adaptive_reason = "DISABLED_ZERO_EXPOSURE"
             logger.info("RISK_ADJUSTMENT: mode=DISABLED_ZERO_EXPOSURE symbol=%s base_score=%.2f", symbol, base_min_score)
         elif open_trades == 0 or total_exposure_pct < 10.0:

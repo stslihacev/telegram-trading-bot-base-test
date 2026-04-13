@@ -353,10 +353,11 @@ class SignalAnalytics:
         if not text:
             return "UNKNOWN"
         aliases = {
-            "SCORE BELOW THRESHOLD": "LOW_SCORE",
-            "OPTIONAL SCORE BELOW THRESHOLD": "LOW_SCORE",
-            "BOTH BELOW UPGRADE THRESHOLD": "LOW_SCORE",
-            "NO SIGNIFICANT IMPROVEMENT": "LOW_SCORE",
+            "SCORE BELOW THRESHOLD": "LOW_SCORE_STRATEGY",
+            "OPTIONAL SCORE BELOW THRESHOLD": "LOW_SCORE_STRATEGY",
+            "SCORE BELOW ADAPTIVE THRESHOLD": "LOW_SCORE_STRATEGY",
+            "BOTH BELOW UPGRADE THRESHOLD": "LOW_SCORE_UPGRADE",
+            "NO SIGNIFICANT IMPROVEMENT": "LOW_SCORE_UPGRADE",
             "REQUIRED FILTERS FAILED": "FILTER_FAIL",
             "RR BELOW LIVE MINIMUM": "RR_FAIL",
             "RR ABOVE SCALPING MAXIMUM": "RR_FAIL",
@@ -376,8 +377,18 @@ class SignalAnalytics:
             return "DUPLICATE"
         if "COOLDOWN" in text:
             return "COOLDOWN"
+        if "LOW_SCORE_RISK_ADAPTIVE" in text:
+            return "LOW_SCORE_PORTFOLIO"
+        if "LOW_SCORE_EXECUTION" in text:
+            return "LOW_SCORE_EXECUTION"
+        if "LOW_SCORE_UPGRADE" in text:
+            return "LOW_SCORE_UPGRADE"
+        if "LOW_SCORE_STRATEGY" in text:
+            return "LOW_SCORE_STRATEGY"
+        if "LOW_SCORE_PORTFOLIO" in text:
+            return "LOW_SCORE_PORTFOLIO"
         if "LOW_SCORE" in text:
-            return "LOW_SCORE"
+            return "LOW_SCORE_EXECUTION"
         return text.replace(" ", "_")
 
     def register_signal_decision(
@@ -398,6 +409,19 @@ class SignalAnalytics:
         score = self._safe_float(signal.get("score"), default=0.0)
         normalized_reason = self._normalize_rejection_reason(reason if normalized_status == "REJECTED" else "OPEN")
         if normalized_status == "UPDATED":
+            logger.info(
+                "SIGNAL_DECISION: symbol=%s mode=%s status=%s score=%.2f threshold=%s entry_source=%s reason=%s",
+                signal.get("symbol"),
+                mode,
+                normalized_status,
+                score,
+                f"{float(threshold):.2f}" if threshold is not None else "n/a",
+                str(signal.get("entry_source") or "strict").lower(),
+                normalized_reason,
+            )
+            self._save_analytics_state()
+            return
+        if normalized_status in {"IGNORE", "NO_ACTION"}:
             logger.info(
                 "SIGNAL_DECISION: symbol=%s mode=%s status=%s score=%.2f threshold=%s entry_source=%s reason=%s",
                 signal.get("symbol"),

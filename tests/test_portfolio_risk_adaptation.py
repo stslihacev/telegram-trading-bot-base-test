@@ -75,3 +75,58 @@ def test_strong_signal_overrides_adaptive_threshold(monkeypatch):
         active_trades=active_trades,
     )
     assert decision.accepted is True
+
+
+def test_adaptive_block_above_base_threshold_is_portfolio_reason(monkeypatch):
+    monkeypatch.setattr(config, "TRADING_ENABLED", True)
+    monkeypatch.setattr(config, "REAL_TRADING_ENABLED", True)
+    manager = OrderManager(bybit_client=_BybitStub(balance=100.0), risk_guard=_RiskGuardStub())
+    active_trades = {
+        "BTCUSDT": {"entry": 100.0, "sl": 75.0, "qty": 0.2, "direction": "LONG"},
+    }
+    decision = manager._can_execute(
+        {
+            "symbol": "ETHUSDT",
+            "direction": "LONG",
+            "live_mode": "SCALPING",
+            "score": 3.1,
+        },
+        active_trades=active_trades,
+    )
+    assert decision.accepted is False
+    assert decision.reason == "LOW_SCORE_PORTFOLIO"
+
+
+def test_adaptive_block_below_base_threshold_is_execution_reason(monkeypatch):
+    monkeypatch.setattr(config, "TRADING_ENABLED", True)
+    monkeypatch.setattr(config, "REAL_TRADING_ENABLED", True)
+    manager = OrderManager(bybit_client=_BybitStub(balance=100.0), risk_guard=_RiskGuardStub())
+    active_trades = {
+        "BTCUSDT": {"entry": 100.0, "sl": 75.0, "qty": 0.2, "direction": "LONG"},
+    }
+    decision = manager._can_execute(
+        {
+            "symbol": "ETHUSDT",
+            "direction": "LONG",
+            "live_mode": "SCALPING",
+            "score": 2.8,
+        },
+        active_trades=active_trades,
+    )
+    assert decision.accepted is False
+    assert decision.reason == "LOW_SCORE_EXECUTION"
+
+
+def test_zero_total_risk_disables_adaptive_score_bump_even_with_open_trades():
+    manager = PortfolioRiskManager(balance_provider=_BalanceStub(balance=1000.0))
+    active_trades = {
+        "BTCUSDT": {"entry": 100.0, "sl": 100.0, "qty": 1.0, "direction": "LONG"},
+    }
+    decision = manager.evaluate(
+        {"symbol": "ETHUSDT", "direction": "LONG", "live_mode": "MAIN"},
+        active_trades=active_trades,
+        base_min_score=3.0,
+    )
+    assert decision.allowed is True
+    assert decision.adjusted_min_score == 3.0
+    assert "DISABLED_ZERO_EXPOSURE" in decision.reason

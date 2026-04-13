@@ -14031,3 +14031,157 @@ Reject reason: -
 🧠 Regime: N/A
 🕒 Time:   2026-04-12 17:00:00+00:00
 Fingerprint: da8292725fe633f9
+2026-04-12 23:19:57,480 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    TRUMPUSDT
+Direction: 🔻 SHORT
+Timeframe: 1h
+
+💰 Entry: 2.790000
+🎯 TP:    2.718160
+🛑 SL:    2.834900
+RR:    1.60
+
+Score:      3.00 / 5.00
+⭐ Confidence: 0.60 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-12 18:00:00+00:00
+Fingerprint: d61b1fd4bba43f4c
+2026-04-12 23:19:57,981 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    DOTUSDT
+Direction: 🔻 SHORT
+Timeframe: 1h
+
+💰 Entry: 1.235100
+🎯 TP:    1.213292
+🛑 SL:    1.248730
+RR:    1.60
+
+Score:      3.00 / 5.00
+⭐ Confidence: 0.60 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-12 18:00:00+00:00
+Fingerprint: 5ed53cafe2c0e8b7
+2026-04-13 00:01:35,943 - [SIGNAL] INFO - [UPDATE] MAIN 📡 SIGNAL
+
+Symbol:    ENAUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.092140
+🎯 TP:    0.095984
+🛑 SL:    0.089738
+RR:    1.60
+
+Score:      4.65 / 5.00
+⭐ Confidence: 0.93 ⭐⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX, VOLUME, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-12 19:00:00+00:00
+Fingerprint: e1c9150223e44d50
+2026-04-13 00:06:50,270 - [SIGNAL] INFO - [UPDATE] MAIN 📡 SIGNAL
+
+Symbol:    ENAUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.092140
+🎯 TP:    0.095984
+🛑 SL:    0.089738
+RR:    1.60
+
+Score:      4.65 / 5.00
+⭐ Confidence: 0.93 ⭐⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX, VOLUME, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-12 19:00:00+00:00
+Fingerprint: e1c9150223e44d50
+2026-04-13 00:12:05,293 - [SIGNAL] INFO - [UPDATE] MAIN 📡 SIGNAL
+
+Symbol:    ENAUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.092140
+🎯 TP:    0.095984
+🛑 SL:    0.089738
+RR:    1.60
+
+Score:      4.65 / 5.00
+⭐ Confidence: 0.93 ⭐⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX, VOLUME, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-12 19:00:00+00:00
+Fingerprint: e1c9150223e44d50
+2026-04-13 00:17:20,972 - [SIGNAL] INFO - [UPDATE] MAIN 📡 SIGNAL
+
+Symbol:    ENAUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.092140
+🎯 TP:    0.095984
+🛑 SL:    0.089738
+RR:    1.60
+
+Score:      4.65 / 5.00
+⭐ Confidence: 0.93 ⭐⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX, VOLUME, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-12 19:00:00+00:00
+Fingerprint: e1c9150223e44d50
+2026-04-13 19:30:07,035 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    BEATUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.383400
+🎯 TP:    0.415569
+🛑 SL:    0.363294
+RR:    1.60
+
+Score:      3.00 / 5.00
+⭐ Confidence: 0.60 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-13 14:00:00+00:00
+Fingerprint: 497dcae49e6b6424

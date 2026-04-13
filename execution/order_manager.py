@@ -88,16 +88,40 @@ class OrderManager:
         strong_override_threshold = float(getattr(config, "STRONG_SIGNAL_MIN_SCORE", 3.2))
         if score >= strong_override_threshold:
             logger.info(
-                "RISK_OVERRIDE_STRONG_SIGNAL: symbol=%s score=%.2f required_score=%.2f total_risk=%.2f exposure=%.2f",
+                "SIGNAL_OVERRIDE_APPLIED: symbol=%s score=%.2f required_score=%.2f total_risk=%.2f exposure=%.2f",
                 symbol,
                 score,
                 required_score,
                 float(risk_decision.metrics.get("total_risk_pct", 0.0)),
                 float(risk_decision.metrics.get("total_exposure_pct", 0.0)),
             )
+            logger.info("SIGNAL_ALLOWED_STRONG: symbol=%s score=%.2f threshold=%.2f", symbol, score, strong_override_threshold)
         elif score < required_score:
+            if score >= base_score_threshold:
+                logger.info(
+                    "SIGNAL_BLOCKED_BY_RISK: symbol=%s score=%.2f required_score=%.2f base_score=%.2f total_risk=%.2f exposure=%.2f reason=LOW_SCORE_PORTFOLIO",
+                    symbol,
+                    score,
+                    required_score,
+                    base_score_threshold,
+                    float(risk_decision.metrics.get("total_risk_pct", 0.0)),
+                    float(risk_decision.metrics.get("total_exposure_pct", 0.0)),
+                )
+                return OrderDecision(
+                    False,
+                    "LOW_SCORE_PORTFOLIO",
+                    {
+                        "mode": mode,
+                        "score": score,
+                        "base_threshold": base_score_threshold,
+                        "adjusted_min_score": required_score,
+                        "adjusted_risk_pct": risk_decision.adjusted_risk_pct,
+                        "portfolio_metrics": risk_decision.metrics,
+                        "risk_blocked": False,
+                    },
+                )
             logger.info(
-                "SIGNAL_BLOCKED_BY_RISK: symbol=%s score=%.2f required_score=%.2f base_score=%.2f total_risk=%.2f exposure=%.2f reason=ADAPTIVE_PRESSURE",
+                "SIGNAL_BLOCKED_BY_RISK: symbol=%s score=%.2f required_score=%.2f base_score=%.2f total_risk=%.2f exposure=%.2f reason=LOW_SCORE_EXECUTION",
                 symbol,
                 score,
                 required_score,
@@ -107,7 +131,7 @@ class OrderManager:
             )
             return OrderDecision(
                 False,
-                "LOW_SCORE_RISK_ADAPTIVE",
+                "LOW_SCORE_EXECUTION",
                 {
                     "mode": mode,
                     "score": score,

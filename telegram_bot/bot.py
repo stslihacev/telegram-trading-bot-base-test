@@ -529,12 +529,40 @@ class TelegramTradingBot:
                         )
                         if is_strong_override_update:
                             logger.info(
-                                "SIGNAL_OVERRIDE_UPDATE: symbol=%s score=%s reason=STRONG_SIGNAL_OVERRIDE",
+                                "SIGNAL_OVERRIDE_APPLIED: symbol=%s score=%s reason=STRONG_SIGNAL_OVERRIDE",
                                 enriched_signal.get("symbol"),
                                 enriched_signal.get("score"),
                             )
+                            logger.info(
+                                "SIGNAL_ALLOWED_STRONG: symbol=%s score=%s action=%s",
+                                enriched_signal.get("symbol"),
+                                enriched_signal.get("score"),
+                                state_action,
+                            )
 
-                    if state_action in {"IGNORE", "COOLDOWN"}:
+                    if state_action == "IGNORE":
+                        self.signal_analytics.register_signal_decision(
+                            enriched_signal,
+                            status="IGNORE",
+                            reason=state_reason,
+                            threshold=score_threshold,
+                            position_block=False,
+                            mode_position_count=int(limit_details.get("mode_open", 0)),
+                            mode_limit=int(limit_details.get("mode_limit", 0)),
+                            global_position_count=int(limit_details.get("total_open", 0)),
+                            global_limit=int(limit_details.get("global_limit", 0)),
+                        )
+                        logger.info(
+                            "SIGNAL_IGNORED_NO_IMPROVEMENT: symbol=%s mode=%s entry_source=%s action=%s reason=%s",
+                            enriched_signal.get("symbol"),
+                            mode_name,
+                            enriched_signal.get("entry_source", "strict"),
+                            state_action,
+                            state_reason,
+                        )
+                        continue
+
+                    if state_action == "COOLDOWN":
                         self.signal_analytics.register_signal_decision(
                             enriched_signal,
                             status="REJECTED",
@@ -608,6 +636,25 @@ class TelegramTradingBot:
                                 active_trades=self.signal_analytics.active_trades,
                                 fallback_qty=float(getattr(config, "LIVE_ORDER_QTY", 1.0)),
                             )
+                            if not order_decision.accepted:
+                                if str(order_decision.reason).upper() in {
+                                    "MAX_EXPOSURE_EXCEEDED",
+                                    "EMERGENCY_RISK_BLOCK",
+                                    "LONG_EXPOSURE_LIMIT",
+                                    "SHORT_EXPOSURE_LIMIT",
+                                    "POSITION_LIMIT",
+                                    "POSITION_LIMIT_MODE",
+                                    "POSITION_LIMIT_GLOBAL",
+                                    "DUPLICATE_SYMBOL",
+                                    "DUPLICATE_SYMBOL_EXCHANGE",
+                                }:
+                                    logger.info(
+                                        "SIGNAL_BLOCKED_HARD_RISK: symbol=%s mode=%s score=%s reason=%s",
+                                        enriched_signal.get("symbol"),
+                                        runtime_mode,
+                                        enriched_signal.get("score"),
+                                        order_decision.reason,
+                                    )
                             portfolio_metrics = order_decision.details.get("portfolio_metrics", {}) if isinstance(order_decision.details, dict) else {}
                             total_risk_pct = portfolio_metrics.get("total_risk_pct") if isinstance(portfolio_metrics, dict) else None
                             total_exposure_pct = portfolio_metrics.get("total_exposure_pct") if isinstance(portfolio_metrics, dict) else None

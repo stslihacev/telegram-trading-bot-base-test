@@ -610,5 +610,41 @@
     "signal_type": "strict",
     "score": 3.25,
     "timestamp": "2026-04-12T17:00:00+00:00"
+  },
+  {
+    "signal_id": "TRUMPUSDT_1h_SHORT_2026-04-12 18:00:00+00:00",
+    "symbol": "TRUMPUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-12T18:00:00+00:00"
+  },
+  {
+    "signal_id": "DOTUSDT_1h_SHORT_2026-04-12 18:00:00+00:00",
+    "symbol": "DOTUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-12T18:00:00+00:00"
+  },
+  {
+    "signal_id": "ENAUSDT_1h_LONG_2026-04-12 19:00:00+00:00",
+    "symbol": "ENAUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 4.65,
+    "timestamp": "2026-04-12T19:00:00+00:00"
+  },
+  {
+    "signal_id": "BEATUSDT_1h_LONG_2026-04-13 14:00:00+00:00",
+    "symbol": "BEATUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-13T14:00:00+00:00"
   }
 ]
