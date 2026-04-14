@@ -346,8 +346,18 @@ class SmartExitManager:
             pnl_r = (entry - current_price) / risk
 
         action = ProfitProtectionAction(reason=f"r_multiple={pnl_r:.2f}")
+        bars_alive = int(getattr(position, "bars_alive", 0) or 0)
+        symbol = str(getattr(position, "symbol", "")).upper()
 
-        if pnl_r >= 1.0 and not bool(getattr(position, "breakeven_moved", False)):
+        breakeven_allowed = pnl_r >= 1.2 and bars_alive >= 3 and not bool(getattr(position, "breakeven_moved", False))
+        logger.info(
+            "BREAKEVEN_CHECK: symbol=%s pnl_r=%.3f bars_alive=%s decision=%s",
+            symbol,
+            pnl_r,
+            bars_alive,
+            "ALLOW" if breakeven_allowed else "BLOCK",
+        )
+        if breakeven_allowed:
             action.move_to_breakeven = True
 
         partial_done = bool(getattr(position, "tp1_hit", False) or getattr(position, "partial_15r_done", False))
@@ -358,17 +368,31 @@ class SmartExitManager:
         if pnl_r >= 2.0:
             trend_strength = self._resolve_trend_strength(indicators, market_data)
             trailing_distance_r = 1.0 if trend_strength == "strong" else (0.7 if trend_strength == "weak" else 0.8)
-            if side == "LONG":
-                trail_ref = current_price - (risk * trailing_distance_r)
-                action.trailing_stop = max(entry, trail_ref)
+            tp = self._to_float(getattr(position, "tp", 0.0))
+            distance_to_tp_r = abs(tp - current_price) / risk if tp > 0 else float("inf")
+            if distance_to_tp_r < 0.5:
+                logger.info(
+                    "TRAILING_GUARD: symbol=%s distance_to_tp_R=%.3f action=HOLD",
+                    symbol,
+                    distance_to_tp_r,
+                )
             else:
-                trail_ref = current_price + (risk * trailing_distance_r)
-                action.trailing_stop = min(entry, trail_ref)
-            logger.info(
-                "TRAILING_UPDATE: symbol=%s distance=%.2fR trend_strength=%s",
-                str(getattr(position, "symbol", "")).upper(),
-                trailing_distance_r,
-                trend_strength,
-            )
+                if side == "LONG":
+                    trail_ref = current_price - (risk * trailing_distance_r)
+                    action.trailing_stop = max(entry, trail_ref)
+                else:
+                    trail_ref = current_price + (risk * trailing_distance_r)
+                    action.trailing_stop = min(entry, trail_ref)
+                logger.info(
+                    "TRAILING_GUARD: symbol=%s distance_to_tp_R=%.3f action=UPDATE",
+                    symbol,
+                    distance_to_tp_r,
+                )
+                logger.info(
+                    "TRAILING_UPDATE: symbol=%s distance=%.2fR trend_strength=%s",
+                    symbol,
+                    trailing_distance_r,
+                    trend_strength,
+                )
 
         return action

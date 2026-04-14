@@ -91,11 +91,13 @@ class OrderManager:
                 },
             )
         required_score = float(risk_decision.adjusted_min_score)
-        effective_score, execution_bonus = self._compute_effective_score(signal, base_score=score)
+        effective_score, execution_bonus, bonus_raw, penalty = self._compute_effective_score(signal, base_score=score)
         logger.info(
-            "EXECUTION_SCORE: symbol=%s base_score=%.2f bonus=%.2f effective_score=%.2f threshold=%.2f",
+            "EXECUTION_SCORE: symbol=%s base_score=%.2f bonus_raw=%.2f penalty=%.2f final_bonus=%.2f effective_score=%.2f threshold=%.2f",
             symbol,
             score,
+            bonus_raw,
+            penalty,
             execution_bonus,
             effective_score,
             required_score,
@@ -189,20 +191,30 @@ class OrderManager:
         passed = {str(v).upper() for v in (signal.get("passed_filters") or [])}
         return normalized in weighted or normalized in passed
 
-    def _compute_effective_score(self, signal: dict[str, Any], *, base_score: float) -> tuple[float, float]:
+    def _compute_effective_score(self, signal: dict[str, Any], *, base_score: float) -> tuple[float, float, float, float]:
         structure_state = str(signal.get("structure_state") or "").lower().strip()
         failed_filters = {str(v).upper() for v in (signal.get("failed_filters") or [])}
         confidence = max(0.0, min(1.0, float(signal.get("confidence") or 0.0)))
+        trend_present = self._has_filter(signal, "TREND")
 
         bonus = 0.0
-        if structure_state == "weak" or "STRUCTURE" in failed_filters:
-            bonus += 0.2
-        if self._has_filter(signal, "TREND"):
+        if structure_state == "weak" and trend_present:
             bonus += 0.1
-        if confidence >= 0.8:
+        if trend_present:
+            bonus += 0.1
+        if confidence >= 0.85:
             bonus += 0.2
-        bonus = max(0.0, min(0.3, bonus))
-        return base_score + bonus, bonus
+        elif confidence >= 0.7:
+            bonus += 0.1
+
+        penalty = 0.0
+        if "VOLUME" in failed_filters:
+            penalty += 0.05
+        if "MACD" in failed_filters:
+            penalty += 0.05
+
+        execution_bonus = max(0.0, min(0.3, bonus - penalty))
+        return base_score + execution_bonus, execution_bonus, bonus, penalty
 
     @staticmethod
     def _classify_hard_risk_reason(reason: str) -> str:

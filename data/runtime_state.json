@@ -1,24 +1,24 @@
 {
   "version": 2,
   "active_signals": {
-    "BEATUSDT": {
+    "LABUSDT": {
       "direction": "LONG",
-      "entry": 0.3834,
-      "sl": 0.36329428571428574,
-      "tp": 0.41556914285714286,
+      "entry": 0.59061,
+      "sl": 0.5361065714285714,
+      "tp": 0.6778154857142856,
       "score": 3.0,
       "confidence": 0.6,
       "status": "OPEN",
-      "timestamp": "2026-04-13 14:00:00+00:00",
-      "pending_since": "2026-04-13 14:00:00+00:00",
+      "timestamp": "2026-04-14 15:00:00+00:00",
+      "pending_since": "2026-04-14 15:00:00+00:00",
       "confirmation_reason": "no active signal",
       "rejection_reason": null,
-      "opened_at": "2026-04-13 14:00:00+00:00",
+      "opened_at": "2026-04-14 15:00:00+00:00",
       "closed_at": null
     }
   },
   "seen_signals": {
-    "BEATUSDT_1h_LONG_2026-04-13 14:00:00+00:00": "2026-04-13T16:30:07.033446+00:00"
+    "LABUSDT_1h_LONG_2026-04-14 15:00:00+00:00": "2026-04-14T17:42:42.566138+00:00"
   },
   "failed_signals": {},
   "last_reversal_at": {}

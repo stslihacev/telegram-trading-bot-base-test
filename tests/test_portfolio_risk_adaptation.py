@@ -1,6 +1,8 @@
 import sys
 import types
 
+import pytest
+
 from risk.portfolio_risk_manager import PortfolioRiskManager
 import core.config as config
 
@@ -168,5 +170,27 @@ def test_effective_score_weak_structure_bonus_can_open(monkeypatch):
         },
         active_trades={},
     )
+    assert decision.accepted is False
+    assert decision.reason == "LOW_SCORE_EXECUTION"
+    assert decision.details["execution_bonus"] == 0.1
+
+
+def test_effective_score_applies_penalties_and_confidence_tier(monkeypatch):
+    monkeypatch.setattr(config, "TRADING_ENABLED", True)
+    monkeypatch.setattr(config, "REAL_TRADING_ENABLED", True)
+    manager = OrderManager(bybit_client=_BybitStub(balance=1000.0), risk_guard=_RiskGuardStub())
+    decision = manager._can_execute(
+        {
+            "symbol": "SOLUSDT",
+            "direction": "LONG",
+            "live_mode": "MAIN",
+            "score": 3.0,
+            "passed_filters": ["TREND"],
+            "failed_filters": ["VOLUME", "MACD"],
+            "confidence": 0.72,
+            "structure_state": "weak",
+        },
+        active_trades={},
+    )
     assert decision.accepted is True
-    assert decision.details["execution_bonus"] == 0.3
+    assert decision.details["execution_bonus"] == pytest.approx(0.2)
