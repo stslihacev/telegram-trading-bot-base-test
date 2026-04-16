@@ -1,24 +1,56 @@
 {
   "version": 2,
   "active_signals": {
-    "LABUSDT": {
-      "direction": "LONG",
-      "entry": 0.59061,
-      "sl": 0.5361065714285714,
-      "tp": 0.6778154857142856,
-      "score": 3.0,
-      "confidence": 0.6,
+    "TAOUSDT": {
+      "direction": "SHORT",
+      "entry": 236.52,
+      "sl": 245.20957142857142,
+      "tp": 222.61668571428575,
+      "score": 3.15,
+      "confidence": 0.63,
       "status": "OPEN",
-      "timestamp": "2026-04-14 15:00:00+00:00",
-      "pending_since": "2026-04-14 15:00:00+00:00",
+      "timestamp": "2026-04-16 16:00:00+00:00",
+      "pending_since": "2026-04-16 16:00:00+00:00",
       "confirmation_reason": "no active signal",
       "rejection_reason": null,
-      "opened_at": "2026-04-14 15:00:00+00:00",
+      "opened_at": "2026-04-16 16:00:00+00:00",
+      "closed_at": null
+    },
+    "SIGNUSDT": {
+      "direction": "SHORT",
+      "entry": 0.01914,
+      "sl": 0.02395742857142857,
+      "tp": 0.01143211428571429,
+      "score": 3.65,
+      "confidence": 0.73,
+      "status": "OPEN",
+      "timestamp": "2026-04-16 16:00:00+00:00",
+      "pending_since": "2026-04-16 16:00:00+00:00",
+      "confirmation_reason": "STRONG_SIGNAL_OVERRIDE",
+      "rejection_reason": null,
+      "opened_at": "2026-04-16 16:00:00+00:00",
+      "closed_at": null
+    },
+    "1000NEIROCTOUSDT": {
+      "direction": "LONG",
+      "entry": 0.13011,
+      "sl": 0.08288957142857142,
+      "tp": 0.20566268571428575,
+      "score": 3.65,
+      "confidence": 0.73,
+      "status": "OPEN",
+      "timestamp": "2026-04-16 16:00:00+00:00",
+      "pending_since": "2026-04-16 16:00:00+00:00",
+      "confirmation_reason": "STRONG_SIGNAL_OVERRIDE",
+      "rejection_reason": null,
+      "opened_at": "2026-04-16 16:00:00+00:00",
       "closed_at": null
     }
   },
   "seen_signals": {
-    "LABUSDT_1h_LONG_2026-04-14 15:00:00+00:00": "2026-04-14T17:42:42.566138+00:00"
+    "TAOUSDT_1h_SHORT_2026-04-16 16:00:00+00:00": "2026-04-16T18:22:37.904207+00:00",
+    "SIGNUSDT_1h_SHORT_2026-04-16 16:00:00+00:00": "2026-04-16T18:55:12.254920+00:00",
+    "1000NEIROCTOUSDT_1h_LONG_2026-04-16 16:00:00+00:00": "2026-04-16T18:55:12.259430+00:00"
   },
   "failed_signals": {},
   "last_reversal_at": {}

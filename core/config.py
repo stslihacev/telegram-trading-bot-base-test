@@ -560,11 +560,16 @@ RISK_PER_TRADE_MAIN = 0.07
 RISK_PER_TRADE_SCALPING = 0.10
 # Базовые лимиты риска для live-исполнения с адаптивным портфельным scaling.
 
-MAX_TOTAL_RISK_PCT = 6.0
-MAX_EXPOSURE_PCT = 40.0
-MAX_LONG_EXPOSURE = 25.0
-MAX_SHORT_EXPOSURE = 25.0
+MAX_TOTAL_RISK_PCT = 25.0
+MAX_EXPOSURE_PCT = 50.0
+MAX_LONG_EXPOSURE = 35.0
+MAX_SHORT_EXPOSURE = 35.0
 # Портфельные лимиты (в процентах от доступного капитала).
+
+# Совместимые алиасы в долях капитала для новых компонентов риск-менеджмента.
+PORTFOLIO_MAX_RISK = MAX_TOTAL_RISK_PCT / 100.0
+PORTFOLIO_MAX_EXPOSURE = MAX_EXPOSURE_PCT / 100.0
+PORTFOLIO_MAX_SIDE_EXPOSURE = MAX_LONG_EXPOSURE / 100.0
 
 MIN_RISK_PER_TRADE = 0.03
 MAX_RISK_PER_TRADE = 0.10

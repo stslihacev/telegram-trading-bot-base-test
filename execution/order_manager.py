@@ -48,7 +48,7 @@ class OrderManager:
         )
 
         symbol = str(signal.get("symbol") or "").strip().upper()
-        if symbol in active_trades:
+        if self._is_trade_active((active_trades or {}).get(symbol)):
             logger.warning("DUPLICATE_BLOCK: symbol=%s reason=LOCAL_ACTIVE_TRADE_EXISTS", symbol)
             return OrderDecision(False, "DUPLICATE_SYMBOL", {"symbol": symbol})
         try:
@@ -315,3 +315,9 @@ class OrderManager:
         except Exception as exc:
             logger.error("ORDER_FAILED: symbol=%s reason=%s retry_count=%s", symbol, exc, int(getattr(self.bybit, "max_retries", 1)))
             return OrderDecision(False, "ORDER_FAILED", {"error": str(exc)})
+    @staticmethod
+    def _is_trade_active(trade: dict[str, Any] | None) -> bool:
+        if not isinstance(trade, dict):
+            return False
+        status = str(trade.get("status") or "OPEN").upper()
+        return status not in {"CLOSED", "REJECTED", "TP_HIT", "SL_HIT", "REVERSAL_EXIT"}

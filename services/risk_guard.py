@@ -62,7 +62,11 @@ class SignalRiskGuard:
 
     @staticmethod
     def get_open_trade_limit_details(active_trades: dict[str, dict], mode: str) -> dict[str, int | bool]:
-        active_items = [trade for trade in (active_trades or {}).values() if isinstance(trade, dict)]
+        active_items = [
+            trade
+            for trade in (active_trades or {}).values()
+            if isinstance(trade, dict) and SignalRiskGuard._is_trade_active(trade)
+        ]
         total_open = len(active_items)
         global_limit = max(1, int(getattr(config, "MAX_OPEN_TRADES_GLOBAL", 6)))
 
@@ -93,3 +97,7 @@ class SignalRiskGuard:
             return False, "POSITION_LIMIT_GLOBAL"
 
         return True, None
+    @staticmethod
+    def _is_trade_active(trade: dict) -> bool:
+        status = str((trade or {}).get("status") or "OPEN").upper()
+        return status not in {"CLOSED", "REJECTED", "TP_HIT", "SL_HIT", "REVERSAL_EXIT"}

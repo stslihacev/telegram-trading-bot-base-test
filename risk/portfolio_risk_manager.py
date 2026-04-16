@@ -22,6 +22,26 @@ class PortfolioRiskManager:
     def __init__(self, balance_provider: Any) -> None:
         self.balance_provider = balance_provider
 
+    @staticmethod
+    def _is_trade_active(trade: dict[str, Any]) -> bool:
+        status = str((trade or {}).get("status") or "OPEN").upper()
+        return status not in {"CLOSED", "REJECTED", "TP_HIT", "SL_HIT", "REVERSAL_EXIT"}
+
+    @staticmethod
+    def _resolve_portfolio_cap_pct(*, pct_name: str, ratio_name: str, default_pct: float) -> float:
+        ratio_raw = getattr(config, ratio_name, None)
+        if ratio_raw is not None:
+            try:
+                ratio = float(ratio_raw)
+                if ratio > 0:
+                    return ratio * 100.0 if ratio <= 1.0 else ratio
+            except (TypeError, ValueError):
+                pass
+        try:
+            return float(getattr(config, pct_name, default_pct))
+        except (TypeError, ValueError):
+            return float(default_pct)
+
     def _get_balance(self) -> float:
         try:
             return max(0.0, float(self.balance_provider.get_balance("USDT")))
@@ -49,6 +69,8 @@ class PortfolioRiskManager:
         for trade in (active_trades or {}).values():
             if not isinstance(trade, dict):
                 continue
+            if not self._is_trade_active(trade):
+                continue
             try:
                 entry = float(trade.get("entry") or 0.0)
                 sl = float(trade.get("sl") or 0.0)
@@ -74,7 +96,9 @@ class PortfolioRiskManager:
             "total_exposure_pct": (total_exposure_usdt / denom) * 100.0,
             "long_exposure_pct": (long_exposure_usdt / denom) * 100.0,
             "short_exposure_pct": (short_exposure_usdt / denom) * 100.0,
-            "open_trades_count": float(len(active_trades or {})),
+            "open_trades_count": float(
+                sum(1 for trade in (active_trades or {}).values() if isinstance(trade, dict) and self._is_trade_active(trade))
+            ),
         }
         logger.info(
             "PORTFOLIO_RISK_STATE: total_risk=%.3f exposure=%.3f long_exposure=%.3f short_exposure=%.3f open_trades=%s",
@@ -106,14 +130,28 @@ class PortfolioRiskManager:
         base_risk = self._resolve_base_risk(mode)
         metrics = self.build_portfolio_metrics(active_trades)
 
-        max_total_risk_pct = float(getattr(config, "MAX_TOTAL_RISK_PCT", 6.0))
-        max_exposure_pct = float(getattr(config, "MAX_EXPOSURE_PCT", 40.0))
-        max_long_exposure = float(getattr(config, "MAX_LONG_EXPOSURE", 25.0))
-        max_short_exposure = float(getattr(config, "MAX_SHORT_EXPOSURE", 25.0))
+        max_total_risk_pct = self._resolve_portfolio_cap_pct(
+            pct_name="MAX_TOTAL_RISK_PCT",
+            ratio_name="PORTFOLIO_MAX_RISK",
+            default_pct=25.0,
+        )
+        max_exposure_pct = self._resolve_portfolio_cap_pct(
+            pct_name="MAX_EXPOSURE_PCT",
+            ratio_name="PORTFOLIO_MAX_EXPOSURE",
+            default_pct=50.0,
+        )
+        max_side_exposure_pct = self._resolve_portfolio_cap_pct(
+            pct_name="MAX_LONG_EXPOSURE",
+            ratio_name="PORTFOLIO_MAX_SIDE_EXPOSURE",
+            default_pct=35.0,
+        )
+        max_long_exposure = float(getattr(config, "MAX_LONG_EXPOSURE", max_side_exposure_pct))
+        max_short_exposure = float(getattr(config, "MAX_SHORT_EXPOSURE", max_side_exposure_pct))
         min_risk = float(getattr(config, "MIN_RISK_PER_TRADE", 0.03))
         max_risk = float(getattr(config, "MAX_RISK_PER_TRADE", 0.10))
 
-        if symbol and symbol in (active_trades or {}):
+        symbol_trade = (active_trades or {}).get(symbol)
+        if symbol and isinstance(symbol_trade, dict) and self._is_trade_active(symbol_trade):
             return PortfolioRiskDecision(False, 0.0, base_min_score, "DUPLICATE_SYMBOL", metrics)
 
         if metrics["total_exposure_pct"] > max_exposure_pct:
