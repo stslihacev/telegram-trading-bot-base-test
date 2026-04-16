@@ -39,7 +39,7 @@ class MarketScanner:
             self.candle_limit,
             ", ".join(runtime["execution_timeframes"]),
         )
-        logger.info("DEBUG: SCANNER STRATEGY CLASS | class=%s", self.strategy.__class__.__name__)
+        logger.debug("DEBUG: SCANNER STRATEGY CLASS | class=%s", self.strategy.__class__.__name__)
 
     async def _fetch_ohlcv(self, symbol: str) -> pd.DataFrame | None:
         try:
@@ -176,7 +176,7 @@ class MarketScanner:
             self.runtime["mode"],
         )
         for symbol in active_symbols:
-            logger.info(f"{self.log_prefix} 🔍 Scanning {symbol}".strip())
+            logger.debug(f"{self.log_prefix} 🔍 Scanning {symbol}".strip())
             df = await self._fetch_ohlcv(symbol)
             if df is None:
                 logger.warning(f"{self.log_prefix} ⚠️ Could not fetch OHLCV for {symbol}".strip())
@@ -214,7 +214,7 @@ class MarketScanner:
                 signals.append(signal)
             else:
                 rejection_counter[str(diagnostics.get("rejection_reason") or "unknown")] += 1
-                logger.info(
+                logger.debug(
                     (
                         f"{self.log_prefix} ❌ No signal: {clean_symbol} | mode={diagnostics.get('mode', self.runtime['mode'])} | "
                         f"score={diagnostics.get('score', 0)} | passed_filters={diagnostics.get('passed_filters', [])} | "

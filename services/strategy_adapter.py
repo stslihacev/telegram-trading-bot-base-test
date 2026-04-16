@@ -666,7 +666,7 @@ class BacktestStrategyAdapter:
         }
 
     def _build_relaxed_signal(self, symbol: str, df: pd.DataFrame, runtime: dict) -> dict | None:
-        logger.info("DEBUG: FALLBACK EXECUTED")
+        logger.debug("DEBUG: FALLBACK EXECUTED")
         if not bool(getattr(config, "ENABLE_RELAXED_SIGNALS", True)):
             self.last_signal_diagnostics = {
                 "mode": runtime["mode"],
@@ -734,7 +734,7 @@ class BacktestStrategyAdapter:
         score_threshold = max(1.0, base_threshold - 0.3) if fallback_mode else base_threshold
         required_ok = all(required_checks[name] for name in required_filters)
         total_score = float(breakdown.score)
-        logger.info(
+        logger.debug(
             "DEBUG: RELAXED FILTERS | symbol=%s | trend=%s | structure=%s | optional_score=%s | "
             "threshold=%s | required_filters=%s | structure_optional_in_fallback=%s | required_ok=%s",
             symbol,
@@ -859,7 +859,7 @@ class BacktestStrategyAdapter:
     def generate_signal(self, symbol: str, candles: pd.DataFrame) -> dict | None:
         """Генерирует сигнал в telegram-формате только если backtest-логика даёт сделку."""
         runtime = self._runtime_settings()
-        logger.info("DEBUG: ENTER SIGNAL GENERATION | symbol=%s | mode=%s", symbol, runtime["mode"])
+        logger.debug("DEBUG: ENTER SIGNAL GENERATION | symbol=%s | mode=%s", symbol, runtime["mode"])
         self.last_signal_diagnostics = {
             "mode": runtime["mode"],
             "score": 0.0,

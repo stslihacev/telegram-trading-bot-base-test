@@ -594,7 +594,7 @@ class TelegramTradingBot:
                     if not is_state_transition:
                         is_duplicate, signal_id = self.signal_deduplicator.mark_and_check(enriched_signal)
                         if is_duplicate:
-                            logger.info("[DEBUG] DUPLICATE SIGNAL | id=%s | fp=%s", signal_id, enriched_signal["fingerprint"])
+                            logger.debug("[DEBUG] DUPLICATE SIGNAL | id=%s | fp=%s", signal_id, enriched_signal["fingerprint"])
                             self.signal_analytics.mark_duplicate()
                             self.signal_analytics.register_signal_decision(
                                 enriched_signal,
@@ -604,11 +604,11 @@ class TelegramTradingBot:
                                 position_block=False,
                             )
                         else:
-                            logger.info("[DEBUG] NEW SIGNAL | id=%s | fp=%s", signal_id, enriched_signal["fingerprint"])
+                            logger.debug("[DEBUG] NEW SIGNAL | id=%s | fp=%s", signal_id, enriched_signal["fingerprint"])
                         if is_duplicate:
                             continue
                     else:
-                        logger.info(
+                        logger.debug(
                             "[DEBUG] STATE TRANSITION SIGNAL | action=%s | id=%s | reason=%s",
                             state_action,
                             signal_id,

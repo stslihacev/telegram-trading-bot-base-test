@@ -11,8 +11,8 @@ from utils.logger import cleanup_old_logs, logger
 
 def main() -> None:
     """Инициализация бота и запуск polling (с автоперезапуском)."""
-    removed_logs = cleanup_old_logs(days=7)
-    logger.info("LOG_CLEANUP: removed_files=%s retention_days=%s", removed_logs, 7)
+    removed_logs = cleanup_old_logs(days=5)
+    logger.info("LOG_CLEANUP: removed_files=%s retention_days=%s", removed_logs, 5)
     init_db()
 
     while True:
