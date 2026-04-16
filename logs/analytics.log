@@ -28190,3 +28190,275 @@ signals_vs_trades_delta=72 trades_vs_closed_delta=0
 - RSI почти не проходит — возможно пороги слишком жёсткие.
 - MACD почти не подтверждает сигналы: проверьте быстрые/медленные периоды.
 
+2026-04-16 22:50:14,644 - [ANALYTICS] 
+📊 SIGNAL ANALYTICS
+
+ANALYTICS REPORT:
+
+Signals:
+* total: 193
+* strict: 193
+* fallback: 0
+* opened: 99
+* blocked_by_limits: 0
+
+Opened:
+* strict: 99
+* fallback: 0
+
+Results:
+* strict: TP=5 / SL=8 / winrate=38.46%
+* fallback: TP=1 / SL=0 / winrate=100.00%
+
+📊 СТАТИСТИКА СИГНАЛОВ
+
+Всего сигналов: 193
+Уникальных: 193
+Дубликатов: 0
+
+LIGHT: 18
+MAIN: 696
+SCALPING: 873
+
+strict source: 1587
+relaxed source: 0
+
+Средний confidence: 0.73
+Средний score: 3.65
+
+🛡️ PORTFOLIO RISK DIAGNOSTICS
+avg_portfolio_risk: 0.00%
+avg_exposure: 0.00%
+signals_blocked_by_risk: 9
+signals_scaled_by_risk: 0
+
+Качество:
+⭐⭐⭐⭐⭐: 3
+⭐⭐⭐⭐: 5
+⭐⭐⭐: 0
+⭐⭐: 0
+⭐: 0
+
+Топ фильтров:
+TREND: 4.1%
+STRUCTURE: 4.1%
+ADX: 3.6%
+MACD: 3.6%
+VOLUME: 2.1%
+
+📈 TRADE OUTCOME ANALYTICS
+
+Trades total: 23
+TP: 12
+SL: 11
+Winrate: 52.17%
+
+💹 PROFITABILITY SUMMARY
+Trades: 23
+Wins/Losses: 12/11
+Winrate: 52.17%
+Profit Factor: 1.84
+Avg R: 1.02
+
+Expectancy: 1.02R
+Max drawdown: 0.00%
+Relaxed share: 4.35%
+
+Execution mode: LIVE
+Risk per trade: 1.00%
+Fee rate: 0.040%
+
+📌 PROFITABILITY BY MODE
+LIGHT: trades=2, wins=2, losses=0, winrate=100.0%, avgR=3.88, PF=∞
+MAIN: trades=11, wins=5, losses=6, winrate=45.5%, avgR=-0.01, PF=0.99
+SCALPING: trades=10, wins=5, losses=5, winrate=50.0%, avgR=1.59, PF=2.09
+
+🧩 PROFITABILITY BY ENTRY SOURCE
+strict: trades=22, wins=11, losses=11, winrate=50.0%, avgR=0.95, PF=1.74
+relaxed: trades=1, wins=1, losses=0, winrate=100.0%, avgR=2.64, PF=∞
+
+REJECTION_STATS:
+MAIN:
+  LOW_SCORE: 104
+SCALPING:
+  LOW_SCORE: 95
+
+🎯 HIGH-CONFIDENCE (conf ≥ 0.70)
+Trades: 11
+Winrate: 81.82%
+Avg R: 3.34
+
+Reversal trades: 0
+Reversal winrate: 0.00%
+
+Avg RR: 3.47
+Avg R: 1.02
+Avg duration: 28h 2m
+High-conf losses: 0
+
+📌 MODE TRADE STATS
+LIGHT: signals=18, closed=0, winrate=0.0%, avgRR=0.00
+MAIN: signals=696, closed=0, winrate=0.0%, avgRR=0.00
+SCALPING: signals=873, closed=0, winrate=0.0%, avgRR=0.00
+
+🧪 FILTER OUTCOME BREAKDOWN
+-
+
+🧬 FILTER SIGNAL PARTICIPATION
+ADX: passed=161, weighted=161, failed=0
+BODY: passed=1, weighted=0, failed=0
+EMA: passed=1, weighted=0, failed=0
+MACD: passed=117, weighted=116, failed=0
+RSI: passed=93, weighted=93, failed=1
+SMA: passed=0, weighted=0, failed=1
+STRUCTURE: passed=165, weighted=165, failed=0
+TREND: passed=165, weighted=165, failed=0
+
+🛡️ ANALYTICS INTEGRITY CHECK
+signals_generated=99 trades_opened=23 trades_closed=23
+signals_vs_trades_delta=76 trades_vs_closed_delta=0
+
+--------------------------------
+
+⚠️ РЕКОМЕНДАЦИИ
+
+- EMA проходит только в 0% случаев — фильтр слишком строгий.
+- RSI почти не проходит — возможно пороги слишком жёсткие.
+- MACD почти не подтверждает сигналы: проверьте быстрые/медленные периоды.
+
+2026-04-16 23:02:04,248 - [ANALYTICS] 
+📊 SIGNAL ANALYTICS
+
+ANALYTICS REPORT:
+
+Signals:
+* total: 205
+* strict: 205
+* fallback: 0
+* opened: 109
+* blocked_by_limits: 0
+
+Opened:
+* strict: 109
+* fallback: 0
+
+Results:
+* strict: TP=5 / SL=8 / winrate=38.46%
+* fallback: TP=1 / SL=0 / winrate=100.00%
+
+📊 СТАТИСТИКА СИГНАЛОВ
+
+Всего сигналов: 205
+Уникальных: 205
+Дубликатов: 0
+
+LIGHT: 18
+MAIN: 708
+SCALPING: 873
+
+strict source: 1599
+relaxed source: 0
+
+Средний confidence: 0.73
+Средний score: 3.64
+
+🛡️ PORTFOLIO RISK DIAGNOSTICS
+avg_portfolio_risk: 0.00%
+avg_exposure: 0.00%
+signals_blocked_by_risk: 9
+signals_scaled_by_risk: 0
+
+Качество:
+⭐⭐⭐⭐⭐: 4
+⭐⭐⭐⭐: 16
+⭐⭐⭐: 0
+⭐⭐: 0
+⭐: 0
+
+Топ фильтров:
+TREND: 9.8%
+STRUCTURE: 9.8%
+MACD: 9.3%
+ADX: 8.8%
+VOLUME: 5.9%
+
+📈 TRADE OUTCOME ANALYTICS
+
+Trades total: 23
+TP: 12
+SL: 11
+Winrate: 52.17%
+
+💹 PROFITABILITY SUMMARY
+Trades: 23
+Wins/Losses: 12/11
+Winrate: 52.17%
+Profit Factor: 1.84
+Avg R: 1.02
+
+Expectancy: 1.02R
+Max drawdown: 0.00%
+Relaxed share: 4.35%
+
+Execution mode: LIVE
+Risk per trade: 1.00%
+Fee rate: 0.040%
+
+📌 PROFITABILITY BY MODE
+LIGHT: trades=2, wins=2, losses=0, winrate=100.0%, avgR=3.88, PF=∞
+MAIN: trades=11, wins=5, losses=6, winrate=45.5%, avgR=-0.01, PF=0.99
+SCALPING: trades=10, wins=5, losses=5, winrate=50.0%, avgR=1.59, PF=2.09
+
+🧩 PROFITABILITY BY ENTRY SOURCE
+strict: trades=22, wins=11, losses=11, winrate=50.0%, avgR=0.95, PF=1.74
+relaxed: trades=1, wins=1, losses=0, winrate=100.0%, avgR=2.64, PF=∞
+
+REJECTION_STATS:
+MAIN:
+  LOW_SCORE: 104
+SCALPING:
+  LOW_SCORE: 95
+
+🎯 HIGH-CONFIDENCE (conf ≥ 0.70)
+Trades: 11
+Winrate: 81.82%
+Avg R: 3.34
+
+Reversal trades: 0
+Reversal winrate: 0.00%
+
+Avg RR: 3.47
+Avg R: 1.02
+Avg duration: 28h 2m
+High-conf losses: 0
+
+📌 MODE TRADE STATS
+LIGHT: signals=18, closed=0, winrate=0.0%, avgRR=0.00
+MAIN: signals=708, closed=0, winrate=0.0%, avgRR=0.00
+SCALPING: signals=873, closed=0, winrate=0.0%, avgRR=0.00
+
+🧪 FILTER OUTCOME BREAKDOWN
+-
+
+🧬 FILTER SIGNAL PARTICIPATION
+ADX: passed=172, weighted=172, failed=0
+BODY: passed=1, weighted=0, failed=0
+EMA: passed=1, weighted=0, failed=0
+MACD: passed=129, weighted=128, failed=0
+RSI: passed=94, weighted=94, failed=1
+SMA: passed=0, weighted=0, failed=1
+STRUCTURE: passed=177, weighted=177, failed=0
+TREND: passed=177, weighted=177, failed=0
+
+🛡️ ANALYTICS INTEGRITY CHECK
+signals_generated=109 trades_opened=23 trades_closed=23
+signals_vs_trades_delta=86 trades_vs_closed_delta=0
+
+--------------------------------
+
+⚠️ РЕКОМЕНДАЦИИ
+
+- EMA проходит только в 0% случаев — фильтр слишком строгий.
+- RSI почти не проходит — возможно пороги слишком жёсткие.
+- MACD почти не подтверждает сигналы: проверьте быстрые/медленные периоды.
+

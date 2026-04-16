@@ -622,11 +622,6 @@ class TelegramTradingBot:
                         reason=state_reason,
                         timestamp=str(enriched_signal.get("timestamp") or datetime.now(timezone.utc).isoformat()),
                     )
-                    self.signal_state.transition_signal(
-                        symbol=str(enriched_signal.get("symbol") or ""),
-                        status="OPEN",
-                        timestamp=str(enriched_signal.get("timestamp") or datetime.now(timezone.utc).isoformat()),
-                    )
                     if state_action in {"NEW", "REVERSAL"}:
                         self.risk_guard.register_symbol_signal(str(enriched_signal.get("symbol") or ""))
                         runtime_mode = str(enriched_signal.get("live_mode") or "MAIN").upper()
@@ -674,11 +669,39 @@ class TelegramTradingBot:
                             )
                             if order_decision.accepted:
                                 executed_qty = float(order_decision.details.get("qty") or 0.0)
+                                position_idx = order_decision.details.get("position_idx") if isinstance(order_decision.details, dict) else None
                                 self.position_manager.register_opened_position(
                                     enriched_signal,
                                     qty=executed_qty,
+                                    position_idx=int(position_idx) if position_idx is not None else None,
+                                )
+                                self.signal_state.transition_signal(
+                                    symbol=str(enriched_signal.get("symbol") or ""),
+                                    status="OPEN",
+                                    timestamp=str(enriched_signal.get("timestamp") or datetime.now(timezone.utc).isoformat()),
+                                )
+                                logger.info(
+                                    "SIGNAL_EXECUTION_RESULT: symbol=%s result=SUCCESS state=OPEN qty=%.6f",
+                                    enriched_signal.get("symbol"),
+                                    executed_qty,
                                 )
                                 self.signal_analytics.register_real_trade_event("OPEN")
+                            else:
+                                logger.warning(
+                                    "SIGNAL_EXECUTION_RESULT: symbol=%s result=FAILED reason=%s state=UNCHANGED",
+                                    enriched_signal.get("symbol"),
+                                    order_decision.reason,
+                                )
+                        else:
+                            self.signal_state.transition_signal(
+                                symbol=str(enriched_signal.get("symbol") or ""),
+                                status="OPEN",
+                                timestamp=str(enriched_signal.get("timestamp") or datetime.now(timezone.utc).isoformat()),
+                            )
+                            logger.info(
+                                "SIGNAL_EXECUTION_RESULT: symbol=%s result=SUCCESS state=OPEN reason=SIMULATION_MODE",
+                                enriched_signal.get("symbol"),
+                            )
                     self.signal_state.mark_seen(signal_id, datetime.now(timezone.utc).isoformat())
                     self.signal_state.cleanup_stale()
                     self.signal_state.save()

@@ -6,7 +6,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Any
 
-from utils.logger import logger
+from utils.logger import execution_logger, logger
 
 from execution.bybit_client import BybitExecutionClient
 from execution.exit_manager import SmartExitManager
@@ -30,6 +30,7 @@ class ManagedPosition:
     initial_sl: float = 0.0
     breakeven_moved: bool = False
     partial_15r_done: bool = False
+    position_idx: int | None = None
 
 
 class PositionManager:
@@ -63,6 +64,7 @@ class PositionManager:
                     mode=str(trade.get("mode") or "MAIN").upper(),
                     signal_confidence=float(trade.get("confidence") or 0.5),
                     initial_sl=float(trade.get("sl") or 0.0),
+                    position_idx=int(trade.get("position_idx")) if trade.get("position_idx") not in (None, "") else None,
                 )
 
         previous_positions = dict(self.positions)
@@ -85,6 +87,7 @@ class PositionManager:
                 tp=float(row.get("takeProfit") or 0.0),
                 mode="MAIN",
                 initial_sl=float(row.get("stopLoss") or 0.0),
+                position_idx=int(row.get("positionIdx")) if row.get("positionIdx") not in (None, "") else None,
             )
             restored += 1
         for symbol in sorted(set(previous_positions) | set(next_positions)):
@@ -117,7 +120,7 @@ class PositionManager:
         logger.info("POSITION_SYNCED: restored_positions=%s", restored)
         return reconciliation_events
 
-    def register_opened_position(self, signal: dict[str, Any], qty: float) -> None:
+    def register_opened_position(self, signal: dict[str, Any], qty: float, position_idx: int | None = None) -> None:
         symbol = str(signal.get("symbol") or "").upper()
         direction = str(signal.get("direction") or "").upper()
         mode = str(signal.get("live_mode") or signal.get("mode") or "MAIN").upper().strip("[]")
@@ -135,6 +138,7 @@ class PositionManager:
             mode=mode,
             signal_confidence=float(signal.get("confidence") or 0.5),
             initial_sl=sl,
+            position_idx=position_idx,
         )
         if mode == "MAIN":
             risk = abs(entry - sl)
@@ -142,7 +146,129 @@ class PositionManager:
                 pos.tp1 = entry + (1.5 * risk) if direction == "LONG" else entry - (1.5 * risk)
                 pos.tp2 = entry + (2.5 * risk) if direction == "LONG" else entry - (2.5 * risk)
         self.positions[symbol] = pos
-        logger.info("POSITION_OPENED: symbol=%s side=%s qty=%s mode=%s", symbol, direction, qty, mode)
+        logger.info("POSITION_OPENED: symbol=%s side=%s qty=%s mode=%s position_idx=%s", symbol, direction, qty, mode, position_idx)
+
+    def _apply_sl_tp(self, position: ManagedPosition, new_sl: float | None, new_tp: float | None) -> bool:
+        current_sl = float(position.sl or 0.0)
+        active_tp = position.tp2 if position.mode == "MAIN" and position.tp1_hit and position.tp2 else position.tp
+        current_tp = float(active_tp or 0.0)
+        normalized_sl = float(new_sl or 0.0)
+        normalized_tp = float(new_tp or 0.0)
+        if abs(normalized_sl - current_sl) < 1e-9 and abs(normalized_tp - current_tp) < 1e-9:
+            logger.info(
+                "SLTP_SKIP: symbol=%s position_idx=%s sl=%.8f tp=%.8f reason=UNCHANGED",
+                position.symbol,
+                position.position_idx,
+                current_sl,
+                current_tp,
+            )
+            execution_logger.debug(
+                "SLTP_SKIP: symbol=%s position_idx=%s sl=%.8f tp=%.8f reason=UNCHANGED",
+                position.symbol,
+                position.position_idx,
+                current_sl,
+                current_tp,
+            )
+            return False
+
+        logger.info(
+            "SLTP_REQUEST: symbol=%s position_idx=%s old_sl=%.8f old_tp=%.8f new_sl=%.8f new_tp=%.8f",
+            position.symbol,
+            position.position_idx,
+            current_sl,
+            current_tp,
+            normalized_sl,
+            normalized_tp,
+        )
+        execution_logger.debug(
+            "SLTP_REQUEST: symbol=%s position_idx=%s old_sl=%.8f old_tp=%.8f new_sl=%.8f new_tp=%.8f",
+            position.symbol,
+            position.position_idx,
+            current_sl,
+            current_tp,
+            normalized_sl,
+            normalized_tp,
+        )
+        try:
+            self.bybit.set_sl_tp(
+                symbol=position.symbol,
+                stop_loss=normalized_sl,
+                take_profit=normalized_tp,
+                position_idx=position.position_idx,
+            )
+            position.sl = normalized_sl
+            if position.mode == "MAIN" and position.tp1_hit and position.tp2 is not None:
+                position.tp2 = normalized_tp
+            else:
+                position.tp = normalized_tp
+            logger.info(
+                "SLTP_RESPONSE: symbol=%s position_idx=%s status=SUCCESS sl=%.8f tp=%.8f",
+                position.symbol,
+                position.position_idx,
+                normalized_sl,
+                normalized_tp,
+            )
+            execution_logger.debug(
+                "SLTP_RESPONSE: symbol=%s position_idx=%s status=SUCCESS sl=%.8f tp=%.8f",
+                position.symbol,
+                position.position_idx,
+                normalized_sl,
+                normalized_tp,
+            )
+            exchange_sl: float | None = None
+            exchange_tp: float | None = None
+            exchange_idx: int | None = None
+            for row in self.bybit.get_positions(symbol=position.symbol):
+                size = float(row.get("size") or 0.0)
+                if size <= 0:
+                    continue
+                exchange_idx = int(row.get("positionIdx")) if row.get("positionIdx") not in (None, "") else None
+                if position.position_idx is not None and exchange_idx != position.position_idx:
+                    continue
+                exchange_sl = float(row.get("stopLoss") or 0.0)
+                exchange_tp = float(row.get("takeProfit") or 0.0)
+                break
+            logger.info(
+                "POSITION_STATE_CHECK: symbol=%s position_idx=%s internal_sl=%.8f exchange_sl=%.8f internal_tp=%.8f exchange_tp=%.8f",
+                position.symbol,
+                position.position_idx if position.position_idx is not None else exchange_idx,
+                float(position.sl or 0.0),
+                float(exchange_sl or 0.0),
+                float(normalized_tp or 0.0),
+                float(exchange_tp or 0.0),
+            )
+            execution_logger.debug(
+                "POSITION_STATE_CHECK: symbol=%s position_idx=%s internal_sl=%.8f exchange_sl=%.8f internal_tp=%.8f exchange_tp=%.8f",
+                position.symbol,
+                position.position_idx if position.position_idx is not None else exchange_idx,
+                float(position.sl or 0.0),
+                float(exchange_sl or 0.0),
+                float(normalized_tp or 0.0),
+                float(exchange_tp or 0.0),
+            )
+            return True
+        except Exception as exc:
+            logger.error(
+                "SLTP_ERROR: symbol=%s position_idx=%s old_sl=%.8f old_tp=%.8f new_sl=%.8f new_tp=%.8f error=%s",
+                position.symbol,
+                position.position_idx,
+                current_sl,
+                current_tp,
+                normalized_sl,
+                normalized_tp,
+                exc,
+            )
+            execution_logger.error(
+                "SLTP_ERROR: symbol=%s position_idx=%s old_sl=%.8f old_tp=%.8f new_sl=%.8f new_tp=%.8f error=%s",
+                position.symbol,
+                position.position_idx,
+                current_sl,
+                current_tp,
+                normalized_sl,
+                normalized_tp,
+                exc,
+            )
+            return False
 
     def handle_price_update(
         self,
@@ -170,10 +296,9 @@ class PositionManager:
                     self.bybit.close_position(symbol=position.symbol, side=position.side, qty=close_qty)
                     position.size -= close_qty
                 position.tp1_hit = True
-                position.sl = position.entry_price
-                self.bybit.set_sl_tp(symbol=position.symbol, stop_loss=position.sl, take_profit=position.tp2)
+                self._apply_sl_tp(position, new_sl=position.entry_price, new_tp=position.tp2)
                 logger.info("POSITION_PARTIAL_CLOSED: symbol=%s closed_qty=%s tp_stage=TP1", position.symbol, close_qty)
-                logger.info("SL_MOVED: symbol=%s new_sl=%s reason=BREAKEVEN_AFTER_TP1", position.symbol, position.sl)
+                logger.info("SL_MOVED: symbol=%s new_sl=%s reason=BREAKEVEN_AFTER_TP1", position.symbol, position.entry_price)
                 events.append("TP1")
 
         protection_action = self.exit_manager.evaluate_profit_protection(
@@ -183,9 +308,9 @@ class PositionManager:
             indicators=runtime_indicators,
         )
         if protection_action.move_to_breakeven:
-            position.sl = position.entry_price
-            position.breakeven_moved = True
-            self.bybit.set_sl_tp(symbol=position.symbol, stop_loss=position.sl, take_profit=position.tp2 if position.tp2 else position.tp)
+            applied = self._apply_sl_tp(position, new_sl=position.entry_price, new_tp=position.tp2 if position.tp2 else position.tp)
+            if applied:
+                position.breakeven_moved = True
             logger.info("PROFIT_PROTECTION: symbol=%s action=MOVE_SL_TO_BREAKEVEN", position.symbol)
         if protection_action.partial_close and position.size > 0:
             close_qty = max(position.size * protection_action.partial_close_ratio, 0.0)
@@ -198,12 +323,10 @@ class PositionManager:
         if protection_action.trailing_stop is not None:
             next_sl = float(protection_action.trailing_stop)
             if position.side == "LONG" and next_sl > position.sl:
-                position.sl = next_sl
-                self.bybit.set_sl_tp(symbol=position.symbol, stop_loss=position.sl, take_profit=position.tp2 if position.tp2 else position.tp)
+                self._apply_sl_tp(position, new_sl=next_sl, new_tp=position.tp2 if position.tp2 else position.tp)
                 logger.info("PROFIT_PROTECTION: symbol=%s action=TRAIL_SL", position.symbol)
             if position.side == "SHORT" and next_sl < position.sl:
-                position.sl = next_sl
-                self.bybit.set_sl_tp(symbol=position.symbol, stop_loss=position.sl, take_profit=position.tp2 if position.tp2 else position.tp)
+                self._apply_sl_tp(position, new_sl=next_sl, new_tp=position.tp2 if position.tp2 else position.tp)
                 logger.info("PROFIT_PROTECTION: symbol=%s action=TRAIL_SL", position.symbol)
 
         active_tp = position.tp2 if position.mode == "MAIN" and position.tp1_hit and position.tp2 else position.tp

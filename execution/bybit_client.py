@@ -19,7 +19,7 @@ except Exception:  # pragma: no cover - optional dependency fallback
         return False
 from pybit.unified_trading import HTTP
 
-from utils.logger import logger
+from utils.logger import execution_logger, logger
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env", override=False)
@@ -113,7 +113,14 @@ class BybitExecutionClient:
             ),
         )
 
-    def set_sl_tp(self, *, symbol: str, stop_loss: float | None, take_profit: float | None) -> dict[str, Any]:
+    def set_sl_tp(
+        self,
+        *,
+        symbol: str,
+        stop_loss: float | None,
+        take_profit: float | None,
+        position_idx: int | None = None,
+    ) -> dict[str, Any]:
         payload: dict[str, Any] = {
             "category": "linear",
             "symbol": str(symbol).upper(),
@@ -123,7 +130,17 @@ class BybitExecutionClient:
             payload["stopLoss"] = str(float(stop_loss))
         if take_profit is not None:
             payload["takeProfit"] = str(float(take_profit))
-        return self._call("set_trading_stop", lambda: self._session.set_trading_stop(**payload))
+        if position_idx is not None:
+            payload["positionIdx"] = int(position_idx)
+        result = self._call("set_trading_stop", lambda: self._session.set_trading_stop(**payload))
+        execution_logger.debug(
+            "SLTP_RESPONSE: symbol=%s position_idx=%s retCode=%s retMsg=%s",
+            str(symbol).upper(),
+            position_idx,
+            result.get("retCode"),
+            result.get("retMsg"),
+        )
+        return result
 
     def close_position(self, *, symbol: str, side: str, qty: float) -> dict[str, Any]:
         close_side = "Sell" if str(side).upper() == "LONG" else "Buy"

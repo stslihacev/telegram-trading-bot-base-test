@@ -8,7 +8,7 @@ from typing import Any
 import core.config as config
 from risk.portfolio_risk_manager import PortfolioRiskManager
 from services.risk_guard import SignalRiskGuard
-from utils.logger import logger
+from utils.logger import execution_logger, logger
 
 from execution.bybit_client import BybitExecutionClient
 
@@ -77,6 +77,11 @@ class OrderManager:
                 symbol,
                 block_reason,
             )
+            execution_logger.debug(
+                "EXECUTION_DECISION: symbol=%s decision=SKIP reason=%s",
+                symbol,
+                block_reason,
+            )
             return OrderDecision(
                 False,
                 block_reason,
@@ -102,6 +107,16 @@ class OrderManager:
             effective_score,
             required_score,
         )
+        execution_logger.debug(
+            "EXECUTION_SCORE: symbol=%s base_score=%.2f bonus_raw=%.2f penalty=%.2f final_bonus=%.2f effective_score=%.2f threshold=%.2f",
+            symbol,
+            score,
+            bonus_raw,
+            penalty,
+            execution_bonus,
+            effective_score,
+            required_score,
+        )
         strong_override_threshold = float(getattr(config, "STRONG_SIGNAL_MIN_SCORE", 3.2))
         if score >= strong_override_threshold:
             logger.info(
@@ -114,6 +129,7 @@ class OrderManager:
             )
             logger.info("SIGNAL_ALLOWED_STRONG: symbol=%s score=%.2f threshold=%.2f", symbol, score, strong_override_threshold)
             logger.info("EXECUTION_DECISION: symbol=%s decision=OPEN reason=STRONG_SIGNAL", symbol)
+            execution_logger.debug("EXECUTION_DECISION: symbol=%s decision=OPEN reason=STRONG_SIGNAL", symbol)
         elif effective_score < required_score:
             if effective_score >= base_score_threshold:
                 logger.info(
@@ -127,6 +143,7 @@ class OrderManager:
                     float(risk_decision.metrics.get("total_exposure_pct", 0.0)),
                 )
                 logger.info("EXECUTION_DECISION: symbol=%s decision=SKIP reason=LOW_SCORE_PORTFOLIO", symbol)
+                execution_logger.debug("EXECUTION_DECISION: symbol=%s decision=SKIP reason=LOW_SCORE_PORTFOLIO", symbol)
                 return OrderDecision(
                     False,
                     "LOW_SCORE_PORTFOLIO",
@@ -153,6 +170,7 @@ class OrderManager:
                 float(risk_decision.metrics.get("total_exposure_pct", 0.0)),
             )
             logger.info("EXECUTION_DECISION: symbol=%s decision=SKIP reason=LOW_SCORE_EXECUTION", symbol)
+            execution_logger.debug("EXECUTION_DECISION: symbol=%s decision=SKIP reason=LOW_SCORE_EXECUTION", symbol)
             return OrderDecision(
                 False,
                 "LOW_SCORE_EXECUTION",
@@ -168,6 +186,8 @@ class OrderManager:
                     "risk_blocked": False,
                 },
             )
+        logger.info("EXECUTION_DECISION: symbol=%s decision=OPEN reason=OK", symbol)
+        execution_logger.debug("EXECUTION_DECISION: symbol=%s decision=OPEN reason=OK", symbol)
         return OrderDecision(
             True,
             "OK",
@@ -198,18 +218,18 @@ class OrderManager:
         trend_present = self._has_filter(signal, "TREND")
 
         bonus = 0.0
-        if structure_state == "weak" and trend_present:
-            bonus += 0.1
         if trend_present:
             bonus += 0.1
+        if structure_state == "weak" and trend_present:
+            bonus += 0.1
         if confidence >= 0.85:
-            bonus += 0.2
+            bonus += 0.15
         elif confidence >= 0.7:
             bonus += 0.1
 
         penalty = 0.0
         if "VOLUME" in failed_filters:
-            penalty += 0.05
+            penalty += 0.1
         if "MACD" in failed_filters:
             penalty += 0.05
 
@@ -291,7 +311,27 @@ class OrderManager:
             return OrderDecision(False, "INVALID_ORDER_QTY", {"symbol": symbol, "qty": qty})
         try:
             order_result = self.bybit.place_market_order(symbol=symbol, side=side, qty=float(qty))
-            self.bybit.set_sl_tp(symbol=symbol, stop_loss=signal.get("sl"), take_profit=signal.get("tp"))
+            position_idx: int | None = None
+            try:
+                positions = self.bybit.get_positions(symbol=symbol)
+                side_bybit = side.upper()
+                for row in positions:
+                    row_side = str(row.get("side") or "").upper()
+                    row_size = float(row.get("size") or 0.0)
+                    if row_size <= 0:
+                        continue
+                    if row_side == side_bybit:
+                        if row.get("positionIdx") not in (None, ""):
+                            position_idx = int(row.get("positionIdx"))
+                        break
+            except Exception:
+                position_idx = None
+            self.bybit.set_sl_tp(
+                symbol=symbol,
+                stop_loss=signal.get("sl"),
+                take_profit=signal.get("tp"),
+                position_idx=position_idx,
+            )
             logger.info(
                 "ORDER_EXECUTED: symbol=%s side=%s qty=%s mode=%s score=%s adjusted_risk_pct=%s",
                 symbol,
@@ -310,6 +350,7 @@ class OrderManager:
                     "mode": self._normalize_mode(signal),
                     "qty": qty,
                     "adjusted_risk_pct": adjusted_risk_pct,
+                    "position_idx": position_idx,
                 },
             )
         except Exception as exc:

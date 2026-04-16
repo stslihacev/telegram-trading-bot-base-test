@@ -191,8 +191,9 @@ def test_effective_score_applies_penalties_and_confidence_tier(monkeypatch):
         },
         active_trades={},
     )
-    assert decision.accepted is True
-    assert decision.details["execution_bonus"] == pytest.approx(0.2)
+    assert decision.accepted is False
+    assert decision.reason == "LOW_SCORE_EXECUTION"
+    assert decision.details["execution_bonus"] == pytest.approx(0.15)
 
 
 def test_closed_trade_in_state_does_not_trigger_duplicate_block(monkeypatch):
