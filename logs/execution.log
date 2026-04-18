@@ -41,3 +41,27 @@
 2026-04-16 23:01:58,946 - [EXECUTION] DEBUG - EXECUTION_SCORE: symbol=PENGUUSDT base_score=3.65 bonus_raw=0.20 penalty=0.00 final_bonus=0.20 effective_score=3.85 threshold=3.20
 2026-04-16 23:01:58,947 - [EXECUTION] DEBUG - EXECUTION_DECISION: symbol=PENGUUSDT decision=OPEN reason=STRONG_SIGNAL
 2026-04-16 23:01:58,947 - [EXECUTION] DEBUG - EXECUTION_DECISION: symbol=PENGUUSDT decision=OPEN reason=OK
+2026-04-17 19:33:18,767 - [EXECUTION] DEBUG - EXECUTION_SCORE: symbol=TIAUSDT base_score=3.25 bonus_raw=0.10 penalty=0.00 final_bonus=0.10 effective_score=3.35 threshold=3.20
+2026-04-17 19:33:18,768 - [EXECUTION] DEBUG - EXECUTION_DECISION: symbol=TIAUSDT decision=OPEN reason=STRONG_SIGNAL
+2026-04-17 19:33:18,769 - [EXECUTION] DEBUG - EXECUTION_DECISION: symbol=TIAUSDT decision=OPEN reason=OK
+2026-04-17 19:33:19,790 - [EXECUTION] DEBUG - SLTP_RESPONSE: symbol=TIAUSDT position_idx=0 retCode=0 retMsg=OK
+2026-04-17 20:04:40,406 - [EXECUTION] DEBUG - EXECUTION_SCORE: symbol=RAVEUSDT base_score=3.25 bonus_raw=0.10 penalty=0.00 final_bonus=0.10 effective_score=3.35 threshold=3.20
+2026-04-17 20:04:40,408 - [EXECUTION] DEBUG - EXECUTION_DECISION: symbol=RAVEUSDT decision=OPEN reason=STRONG_SIGNAL
+2026-04-17 20:04:40,408 - [EXECUTION] DEBUG - EXECUTION_DECISION: symbol=RAVEUSDT decision=OPEN reason=OK
+2026-04-17 20:04:41,482 - [EXECUTION] DEBUG - SLTP_RESPONSE: symbol=RAVEUSDT position_idx=0 retCode=0 retMsg=OK
+2026-04-17 20:04:41,934 - [EXECUTION] DEBUG - EXECUTION_SCORE: symbol=IPUSDT base_score=3.00 bonus_raw=0.10 penalty=0.00 final_bonus=0.10 effective_score=3.10 threshold=3.20
+2026-04-17 20:04:41,935 - [EXECUTION] DEBUG - EXECUTION_DECISION: symbol=IPUSDT decision=SKIP reason=LOW_SCORE_EXECUTION
+2026-04-17 21:02:14,525 - [EXECUTION] DEBUG - EXECUTION_SCORE: symbol=XPLUSDT base_score=3.25 bonus_raw=0.10 penalty=0.00 final_bonus=0.10 effective_score=3.35 threshold=3.20
+2026-04-17 21:02:14,526 - [EXECUTION] DEBUG - EXECUTION_DECISION: symbol=XPLUSDT decision=OPEN reason=STRONG_SIGNAL
+2026-04-17 21:02:14,527 - [EXECUTION] DEBUG - EXECUTION_DECISION: symbol=XPLUSDT decision=OPEN reason=OK
+2026-04-18 19:01:21,939 - [EXECUTION] DEBUG - EXECUTION_SCORE: symbol=ETHUSDT base_score=3.25 bonus_raw=0.10 penalty=0.00 final_bonus=0.10 effective_score=3.35 threshold=3.20
+2026-04-18 19:01:21,940 - [EXECUTION] DEBUG - EXECUTION_DECISION: symbol=ETHUSDT decision=OPEN reason=STRONG_SIGNAL
+2026-04-18 19:01:21,941 - [EXECUTION] DEBUG - EXECUTION_DECISION: symbol=ETHUSDT decision=OPEN reason=OK
+2026-04-18 19:01:25,530 - [EXECUTION] DEBUG - EXECUTION_SCORE: symbol=XAUTUSDT base_score=3.00 bonus_raw=0.10 penalty=0.00 final_bonus=0.10 effective_score=3.10 threshold=3.20
+2026-04-18 19:01:25,531 - [EXECUTION] DEBUG - EXECUTION_DECISION: symbol=XAUTUSDT decision=SKIP reason=LOW_SCORE_EXECUTION
+2026-04-18 19:01:25,963 - [EXECUTION] DEBUG - EXECUTION_SCORE: symbol=CLUSDT base_score=3.00 bonus_raw=0.10 penalty=0.00 final_bonus=0.10 effective_score=3.10 threshold=3.20
+2026-04-18 19:01:25,964 - [EXECUTION] DEBUG - EXECUTION_DECISION: symbol=CLUSDT decision=SKIP reason=LOW_SCORE_EXECUTION
+2026-04-18 19:01:26,408 - [EXECUTION] DEBUG - EXECUTION_SCORE: symbol=ONTUSDT base_score=3.00 bonus_raw=0.10 penalty=0.00 final_bonus=0.10 effective_score=3.10 threshold=3.20
+2026-04-18 19:01:26,410 - [EXECUTION] DEBUG - EXECUTION_DECISION: symbol=ONTUSDT decision=SKIP reason=LOW_SCORE_EXECUTION
+2026-04-18 19:01:26,851 - [EXECUTION] DEBUG - EXECUTION_SCORE: symbol=EDGEUSDT base_score=3.00 bonus_raw=0.10 penalty=0.00 final_bonus=0.10 effective_score=3.10 threshold=3.20
+2026-04-18 19:01:26,855 - [EXECUTION] DEBUG - EXECUTION_DECISION: symbol=EDGEUSDT decision=SKIP reason=LOW_SCORE_EXECUTION

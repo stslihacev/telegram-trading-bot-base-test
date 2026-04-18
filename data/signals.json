@@ -988,5 +988,95 @@
     "signal_type": "strict",
     "score": 3.65,
     "timestamp": "2026-04-16T18:00:00+00:00"
+  },
+  {
+    "signal_id": "TIAUSDT_1h_LONG_2026-04-17 14:00:00+00:00",
+    "symbol": "TIAUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.25,
+    "timestamp": "2026-04-17T14:00:00+00:00"
+  },
+  {
+    "signal_id": "RAVEUSDT_1h_LONG_2026-04-17 15:00:00+00:00",
+    "symbol": "RAVEUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.25,
+    "timestamp": "2026-04-17T15:00:00+00:00"
+  },
+  {
+    "signal_id": "IPUSDT_1h_LONG_2026-04-17 15:00:00+00:00",
+    "symbol": "IPUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-17T15:00:00+00:00"
+  },
+  {
+    "signal_id": "XPLUSDT_1h_LONG_2026-04-17 16:00:00+00:00",
+    "symbol": "XPLUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.25,
+    "timestamp": "2026-04-17T16:00:00+00:00"
+  },
+  {
+    "signal_id": "1000NEIROCTOUSDT_1h_LONG_2026-04-17 17:00:00+00:00",
+    "symbol": "1000NEIROCTOUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-17T17:00:00+00:00"
+  },
+  {
+    "signal_id": "ETHUSDT_1h_LONG_2026-04-18 14:00:00+00:00",
+    "symbol": "ETHUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.25,
+    "timestamp": "2026-04-18T14:00:00+00:00"
+  },
+  {
+    "signal_id": "XAUTUSDT_1h_LONG_2026-04-18 14:00:00+00:00",
+    "symbol": "XAUTUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-18T14:00:00+00:00"
+  },
+  {
+    "signal_id": "CLUSDT_1h_SHORT_2026-04-18 14:00:00+00:00",
+    "symbol": "CLUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-18T14:00:00+00:00"
+  },
+  {
+    "signal_id": "ONTUSDT_1h_LONG_2026-04-18 14:00:00+00:00",
+    "symbol": "ONTUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-18T14:00:00+00:00"
+  },
+  {
+    "signal_id": "EDGEUSDT_1h_LONG_2026-04-18 14:00:00+00:00",
+    "symbol": "EDGEUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-18T14:00:00+00:00"
   }
 ]

@@ -1,0 +1,4 @@
+2026-04-17 21:02:17,650 - crypto_bot - ERROR - ORDER_FAILED: symbol=XPLUSDT reason=place_order failed after 3 attempts: ab not enough for new order (ErrCode: 110007) (ErrTime: 18:02:17).
+Request → POST https://api-demo.bybit.com/v5/order/create: {"category": "linear", "symbol": "XPLUSDT", "side": "Buy", "orderType": "Market", "qty": "1762.0", "reduceOnly": false, "timeInForce": "IOC"}. retry_count=3
+2026-04-18 19:01:25,083 - crypto_bot - ERROR - ORDER_FAILED: symbol=ETHUSDT reason=place_order failed after 3 attempts: ab not enough for new order (ErrCode: 110007) (ErrTime: 16:01:25).
+Request → POST https://api-demo.bybit.com/v5/order/create: {"category": "linear", "symbol": "ETHUSDT", "side": "Buy", "orderType": "Market", "qty": "0.4", "reduceOnly": false, "timeInForce": "IOC"}. retry_count=3
