@@ -145,6 +145,12 @@ class PositionManager:
             if risk > 0:
                 pos.tp1 = entry + (1.5 * risk) if direction == "LONG" else entry - (1.5 * risk)
                 pos.tp2 = entry + (2.5 * risk) if direction == "LONG" else entry - (2.5 * risk)
+        sl_distance = abs(entry - sl)
+        tp_distance = abs(tp - entry)
+        rr = (tp_distance / sl_distance) if sl_distance > 0 else 0.0
+        logger.info("RR_CHECK: symbol=%s rr=%.3f", symbol, rr)
+        if rr < 1.3:
+            logger.warning("RR_LOW_WARNING: symbol=%s rr=%.3f", symbol, rr)
         self.positions[symbol] = pos
         logger.info("POSITION_OPENED: symbol=%s side=%s qty=%s mode=%s position_idx=%s", symbol, direction, qty, mode, position_idx)
 
@@ -318,8 +324,8 @@ class PositionManager:
                 self.bybit.close_position(symbol=position.symbol, side=position.side, qty=close_qty)
                 position.size -= close_qty
                 position.partial_15r_done = True
-                logger.info("PROFIT_PROTECTION: symbol=%s action=PARTIAL_CLOSE_1_5R", position.symbol)
-                events.append("PARTIAL_1_5R")
+                logger.info("PROFIT_PROTECTION: symbol=%s action=PARTIAL_CLOSE_EARLY", position.symbol)
+                events.append("PARTIAL_EARLY")
         if protection_action.trailing_stop is not None:
             next_sl = float(protection_action.trailing_stop)
             if position.side == "LONG" and next_sl > position.sl:
@@ -332,11 +338,17 @@ class PositionManager:
         active_tp = position.tp2 if position.mode == "MAIN" and position.tp1_hit and position.tp2 else position.tp
         tp_hit = (position.side == "LONG" and price >= active_tp) or (position.side == "SHORT" and price <= active_tp)
         sl_hit = (position.side == "LONG" and price <= position.sl) or (position.side == "SHORT" and price >= position.sl)
+        early_exit_hit = bool(protection_action.close_position) and not tp_hit and not sl_hit
 
-        if tp_hit or sl_hit:
+        if tp_hit or sl_hit or early_exit_hit:
             if position.size > 0:
                 self.bybit.close_position(symbol=position.symbol, side=position.side, qty=position.size)
-            reason = "TP" if tp_hit else "SL"
+            if tp_hit:
+                reason = "TP"
+            elif sl_hit:
+                reason = "SL"
+            else:
+                reason = f"EARLY_EXIT:{protection_action.close_reason or 'profit_protection'}"
             logger.info("POSITION_CLOSED: symbol=%s reason=%s", position.symbol, reason)
             self.positions.pop(position.symbol, None)
             events.append(reason)
