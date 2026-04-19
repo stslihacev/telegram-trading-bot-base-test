@@ -8,6 +8,7 @@ from typing import Any
 import core.config as config
 from utils.logger import logger
 
+from execution.adaptive_execution import AdaptiveExecutionLayer, AdaptiveOutcome, TimedExecution
 from execution.bybit_client import BybitExecutionClient
 from execution.decision_engine import DecisionAction, ExecutionDecisionEngine
 from execution.safe_order_compiler import SafeOrderCompiler
@@ -27,6 +28,7 @@ class OrderManager:
         self.risk_guard = risk_guard
         self.decision_engine = ExecutionDecisionEngine(bybit_client)
         self.order_compiler = SafeOrderCompiler()
+        self.adaptive_layer = AdaptiveExecutionLayer()
 
     @staticmethod
     def _normalize_mode(signal: dict[str, Any]) -> str:
@@ -49,18 +51,44 @@ class OrderManager:
             "safety_buffer": 0.88,
         }
         portfolio_state = {"open_positions": active_trades or {}}
-        decision = self.decision_engine.evaluate_order(signal, market_data, portfolio_state)
+
+        adaptive = self.adaptive_layer.adapt(signal=signal, market_data=market_data)
+        if adaptive.outcome == AdaptiveOutcome.EMERGENCY_REJECT:
+            self.adaptive_layer.record_decision_outcome(rejected=True)
+            return OrderDecision(False, adaptive.reason, {"decision": adaptive.outcome.value})
+        if adaptive.outcome == AdaptiveOutcome.DEFER_EXECUTION:
+            self.adaptive_layer.record_decision_outcome(rejected=True)
+            return OrderDecision(False, adaptive.reason, {"decision": adaptive.outcome.value, "context": adaptive.context})
+        if adaptive.outcome == AdaptiveOutcome.REDUCE_RISK_ONLY:
+            self.adaptive_layer.record_decision_outcome(rejected=True)
+            return OrderDecision(False, adaptive.reason, {"decision": adaptive.outcome.value, "context": adaptive.context})
+
+        decision = self.decision_engine.evaluate_order(adaptive.adjusted_signal, adaptive.adjusted_market_data, portfolio_state)
 
         if decision.action in {DecisionAction.REJECT, DecisionAction.EMERGENCY_REJECT}:
+            self.adaptive_layer.record_decision_outcome(rejected=True)
             log_label = "ORDER_REJECTED"
             logger.info("%s: symbol=%s reason=%s", log_label, signal.get("symbol"), decision.reason)
             return OrderDecision(False, decision.reason, {"decision": decision.action.value, **decision.details})
 
-        if decision.action == DecisionAction.SCALE_DOWN:
+        self.adaptive_layer.record_decision_outcome(rejected=False)
+        if decision.action == DecisionAction.SCALE_DOWN or adaptive.outcome == AdaptiveOutcome.SCALE_DOWN:
             logger.info("ORDER_SCALED_DOWN: symbol=%s qty=%.8f", signal.get("symbol"), decision.final_qty)
 
         logger.info("ORDER_APPROVED: symbol=%s qty=%.8f", signal.get("symbol"), decision.final_qty)
-        return OrderDecision(True, decision.reason, {"decision": decision.action.value, **decision.details, "qty": decision.final_qty})
+        return OrderDecision(
+            True,
+            decision.reason,
+            {
+                "decision": decision.action.value,
+                "adaptive_outcome": adaptive.outcome.value,
+                "adaptive_mode": adaptive.context.mode.value,
+                "risk_multiplier": adaptive.context.risk_multiplier,
+                "execution_confidence": adaptive.context.execution_confidence,
+                **decision.details,
+                "qty": decision.final_qty,
+            },
+        )
 
     def execute_signal(self, signal: dict[str, Any], *, active_trades: dict[str, dict], fallback_qty: float = 1.0) -> OrderDecision:
         _ = fallback_qty
@@ -75,12 +103,16 @@ class OrderManager:
             return OrderDecision(False, "INVALID_ORDER_QTY", {"symbol": symbol, "qty": qty})
 
         compiled_order = self.order_compiler.compile(symbol=symbol, side=side, qty=qty)
+        timed = TimedExecution.start()
         try:
             order_result = self.bybit.place_market_order(symbol=compiled_order.symbol, side=compiled_order.side, qty=compiled_order.qty)
+            self.adaptive_layer.record_order_outcome(latency_ms=timed.elapsed_ms(), raw_result=order_result)
             logger.info(
                 "ORDER_EXECUTED: symbol=%s side=%s qty=%.8f", compiled_order.symbol, signal.get("direction"), compiled_order.qty
             )
             return OrderDecision(True, "ORDER_EXECUTED", {**decision.details, "order": order_result, "qty": compiled_order.qty})
         except Exception as exc:
+            self.adaptive_layer.record_order_outcome(latency_ms=timed.elapsed_ms(), raw_result=None)
+            self.adaptive_layer.record_decision_outcome(rejected=True)
             logger.error("ORDER_FAILED: symbol=%s reason=%s", symbol, exc)
             return OrderDecision(False, "ORDER_FAILED", {"error": str(exc)})

@@ -19509,3 +19509,91 @@ Reject reason: -
 🧠 Regime: N/A
 🕒 Time:   2026-04-19 11:00:00+00:00
 Fingerprint: 40a8ef691b5f9281
+2026-04-19 18:48:27,488 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    PIEVERSEUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.648300
+🎯 TP:    0.720794
+🛑 SL:    0.602991
+RR:    1.60
+
+Score:      3.00 / 5.00
+⭐ Confidence: 0.60 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-19 13:00:00+00:00
+Fingerprint: ef8d4e74c973746b
+2026-04-19 18:48:27,960 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    API3USDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.341300
+🎯 TP:    0.365209
+🛑 SL:    0.326357
+RR:    1.60
+
+Score:      3.00 / 5.00
+⭐ Confidence: 0.60 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-19 13:00:00+00:00
+Fingerprint: 785ca593fffe8cc1
+2026-04-19 19:03:58,055 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    BLURUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.035306
+🎯 TP:    0.043873
+🛑 SL:    0.029952
+RR:    1.60
+
+Score:      3.65 / 5.00
+⭐ Confidence: 0.73 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, ADX, VOLUME, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-19 14:00:00+00:00
+Fingerprint: 1aefc11932bd57f2
+2026-04-19 19:03:59,661 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    MOVEUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.020930
+🎯 TP:    0.023049
+🛑 SL:    0.019606
+RR:    1.60
+
+Score:      4.40 / 5.00
+⭐ Confidence: 0.88 ⭐⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-19 14:00:00+00:00
+Fingerprint: bacbe44e3bc482b1

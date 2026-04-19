@@ -1294,5 +1294,41 @@
     "signal_type": "strict",
     "score": 3.0,
     "timestamp": "2026-04-19T11:00:00+00:00"
+  },
+  {
+    "signal_id": "PIEVERSEUSDT_1h_LONG_2026-04-19 13:00:00+00:00",
+    "symbol": "PIEVERSEUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-19T13:00:00+00:00"
+  },
+  {
+    "signal_id": "API3USDT_1h_LONG_2026-04-19 13:00:00+00:00",
+    "symbol": "API3USDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-19T13:00:00+00:00"
+  },
+  {
+    "signal_id": "BLURUSDT_1h_LONG_2026-04-19 14:00:00+00:00",
+    "symbol": "BLURUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.65,
+    "timestamp": "2026-04-19T14:00:00+00:00"
+  },
+  {
+    "signal_id": "MOVEUSDT_1h_LONG_2026-04-19 14:00:00+00:00",
+    "symbol": "MOVEUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 4.4,
+    "timestamp": "2026-04-19T14:00:00+00:00"
   }
 ]
