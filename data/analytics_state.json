@@ -1,29 +1,29 @@
 {
   "analytics": {
-    "signals_total": 327,
-    "signals_strict": 327,
+    "signals_total": 329,
+    "signals_strict": 329,
     "signals_fallback": 0,
-    "signals_opened": 147,
+    "signals_opened": 149,
     "signals_blocked_by_limits": 0,
-    "opened_from_strict": 147,
+    "opened_from_strict": 149,
     "opened_from_fallback": 0,
     "closed_strict_tp": 5,
     "closed_strict_sl": 8,
     "closed_fallback_tp": 1,
     "closed_fallback_sl": 0,
-    "trades_opened_real": 45,
+    "trades_opened_real": 47,
     "trades_closed_real": 26,
     "pnl_tracking_real": 0,
     "signals_blocked_by_risk": 9,
     "signals_scaled_by_risk": 0
   },
   "mode_counter": {
-    "SCALPING": 1215,
-    "MAIN": 1623,
-    "LIGHT": 27
+    "SCALPING": 1253,
+    "MAIN": 1734,
+    "LIGHT": 28
   },
   "entry_source_counter": {
-    "strict": 2865
+    "strict": 3015
   },
   "rejection_counter": {
     "SCALPING": {
@@ -33,36 +33,36 @@
       "LOW_SCORE": 104
     }
   },
-  "total_signals": 327,
-  "unique_signals": 327,
+  "total_signals": 329,
+  "unique_signals": 329,
   "duplicates": 0,
-  "confidence_sum": 233.0534620000001,
-  "score_sum": 1165.3999999999992,
-  "scored_count": 327,
+  "confidence_sum": 234.35346200000012,
+  "score_sum": 1171.8999999999992,
+  "scored_count": 329,
   "portfolio_risk_sum": 0.0,
   "portfolio_exposure_sum": 0.0,
   "portfolio_risk_samples": 67,
   "signal_filter_counter": {
     "TREND": {
-      "passed": 299,
-      "weighted": 299
+      "passed": 301,
+      "weighted": 301
     },
     "STRUCTURE": {
-      "passed": 299,
-      "weighted": 299
+      "passed": 301,
+      "weighted": 301
     },
     "RSI": {
-      "passed": 177,
-      "weighted": 177,
+      "passed": 179,
+      "weighted": 179,
       "failed": 1
     },
     "ADX": {
-      "passed": 294,
-      "weighted": 294
+      "passed": 296,
+      "weighted": 296
     },
     "VOLUME": {
-      "passed": 177,
-      "weighted": 177,
+      "passed": 179,
+      "weighted": 179,
       "failed": 1
     },
     "MACD": {

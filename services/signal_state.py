@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Any
 
 from utils.logger import logger
+from utils.observability import log_structured_event
 
 def _utc_now() -> datetime:
     return datetime.now(timezone.utc)
@@ -254,13 +255,14 @@ class SignalStateService:
             prev_status = str(current.get("status") or "CREATED").upper()
             allowed = self._state_machine.get(prev_status, set())
             if target_status != "CANCELLED" and target_status not in allowed:
-                logger.warning(
-                    "SIGNAL_STATE_TRANSITION_BLOCKED: symbol=%s signal_id=%s from=%s to=%s reason=%s",
-                    normalized_symbol,
-                    current.get("signal_id"),
-                    prev_status,
-                    target_status,
-                    reason or "invalid_transition",
+                log_structured_event(
+                    "SIGNAL_STATE_TRANSITION",
+                    symbol=normalized_symbol,
+                    signal_id=str(current.get("signal_id") or "") or None,
+                    execution_id=str(current.get("execution_id") or "") or None,
+                    position_id=str(current.get("position_id") or "") or None,
+                    context={"previous_state": prev_status, "new_state": target_status, "reason": reason or "invalid_transition", "status": "BLOCKED"},
+                    level=30,
                 )
                 return False
             if target_status in {"EXECUTED", "OPEN"} and not (execution_id or current.get("execution_id")):
@@ -277,14 +279,24 @@ class SignalStateService:
             history.append({"from": prev_status, "to": target_status, "reason": reason or "", "timestamp": ts})
             current["history"] = history[-50:]
             self.active_signals[normalized_symbol] = current
-        logger.info(
-            "SIGNAL_STATE_TRANSITION: signal_id=%s symbol=%s timestamp=%s from=%s to=%s context=%s",
-            current.get("signal_id"),
-            normalized_symbol,
-            ts,
-            prev_status,
-            target_status,
-            {"reason": reason or "", "execution_id": current.get("execution_id"), "position_id": current.get("position_id")},
+        log_structured_event(
+            "SIGNAL_STATE_TRANSITION",
+            symbol=normalized_symbol,
+            signal_id=str(current.get("signal_id") or "") or None,
+            execution_id=str(current.get("execution_id") or "") or None,
+            position_id=str(current.get("position_id") or "") or None,
+            context={
+                "previous_state": prev_status,
+                "new_state": target_status,
+                "reason": reason or "",
+                "snapshot": {
+                    "direction": current.get("direction"),
+                    "entry": current.get("entry"),
+                    "sl": current.get("sl"),
+                    "tp": current.get("tp"),
+                    "confidence": current.get("confidence"),
+                },
+            },
         )
         return True
 
@@ -322,9 +334,10 @@ class SignalStateService:
                 "signal_without_position": signal_without_position[:3],
             },
         }
-        logger.info(
-            "LIFECYCLE_LINK_CHECK: signal_id=SYSTEM symbol=ALL timestamp=%s context=%s",
-            _utc_now().isoformat(),
-            payload,
+        log_structured_event(
+            "LIFECYCLE_LINK_CHECK",
+            symbol="ALL",
+            signal_id="SYSTEM",
+            context=payload,
         )
         return payload

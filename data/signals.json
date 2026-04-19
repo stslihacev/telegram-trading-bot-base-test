@@ -1330,5 +1330,23 @@
     "signal_type": "strict",
     "score": 4.4,
     "timestamp": "2026-04-19T14:00:00+00:00"
+  },
+  {
+    "signal_id": "AVAXUSDT_1h_SHORT_2026-04-19 16:00:00+00:00",
+    "symbol": "AVAXUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.25,
+    "timestamp": "2026-04-19T16:00:00+00:00"
+  },
+  {
+    "signal_id": "MONUSDT_1h_SHORT_2026-04-19 16:00:00+00:00",
+    "symbol": "MONUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.25,
+    "timestamp": "2026-04-19T16:00:00+00:00"
   }
 ]

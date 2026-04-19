@@ -54,3 +54,43 @@ Request → POST https://api-demo.bybit.com/v5/order/create: {"category": "linea
 2026-04-19 19:08:08,740 - crypto_bot - CRITICAL - CRITICAL_POSITION_NO_SL: symbol=MOVEUSDT action=FORCE_CLOSED
 2026-04-19 19:08:24,665 - crypto_bot - CRITICAL - CRITICAL_POSITION_NO_SL: symbol=MOVEUSDT action=FORCE_CLOSED
 2026-04-19 19:08:40,936 - crypto_bot - CRITICAL - CRITICAL_POSITION_NO_SL: symbol=MOVEUSDT action=FORCE_CLOSED
+2026-04-19 21:09:51,385 - crypto_bot - ERROR - position_price_loop error
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 193, in _position_price_loop
+    close_events = self.position_manager.handle_price_update(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\execution\position_manager.py", line 636, in handle_price_update
+    closed_qty = self._safe_reduce_close(position, close_qty, orchestrator_decision.reason)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\execution\position_manager.py", line 117, in _safe_reduce_close
+    self.bybit.close_position(symbol=position.symbol, side=position.side, qty=executable_qty)
+  File "C:\Users\user\Desktop\crypto_botV2\execution\bybit_client.py", line 291, in close_position
+    return self.place_market_order(symbol=symbol, side=close_side, qty=qty, reduce_only=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\execution\bybit_client.py", line 104, in place_market_order
+    return self._call(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\execution\bybit_client.py", line 100, in _call
+    raise RuntimeError(f"{name} failed after {self.max_retries} attempts: {last_exc}")
+RuntimeError: place_order failed after 3 attempts: Qty invalid (ErrCode: 10001) (ErrTime: 18:09:51).
+Request → POST https://api-demo.bybit.com/v5/order/create: {"category": "linear", "symbol": "MONUSDT", "side": "Buy", "orderType": "Market", "qty": "287.34999999999997", "reduceOnly": true, "timeInForce": "IOC"}.
+2026-04-19 21:10:40,822 - crypto_bot - ERROR - position_price_loop error
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 193, in _position_price_loop
+    close_events = self.position_manager.handle_price_update(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\execution\position_manager.py", line 636, in handle_price_update
+    closed_qty = self._safe_reduce_close(position, close_qty, orchestrator_decision.reason)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\execution\position_manager.py", line 117, in _safe_reduce_close
+    self.bybit.close_position(symbol=position.symbol, side=position.side, qty=executable_qty)
+  File "C:\Users\user\Desktop\crypto_botV2\execution\bybit_client.py", line 291, in close_position
+    return self.place_market_order(symbol=symbol, side=close_side, qty=qty, reduce_only=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\execution\bybit_client.py", line 104, in place_market_order
+    return self._call(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\execution\bybit_client.py", line 100, in _call
+    raise RuntimeError(f"{name} failed after {self.max_retries} attempts: {last_exc}")
+RuntimeError: place_order failed after 3 attempts: Qty invalid (ErrCode: 10001) (ErrTime: 18:10:40).
+Request → POST https://api-demo.bybit.com/v5/order/create: {"category": "linear", "symbol": "MONUSDT", "side": "Buy", "orderType": "Market", "qty": "287.34999999999997", "reduceOnly": true, "timeInForce": "IOC"}.

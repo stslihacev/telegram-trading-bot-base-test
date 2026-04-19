@@ -13,6 +13,7 @@ from typing import Any
 
 from execution.adaptive_execution import MicrostructureEngine, MicrostructureSnapshot
 from utils.logger import logger
+from utils.observability import log_structured_event, observability
 
 
 @dataclass
@@ -445,7 +446,7 @@ class SmartExitManager:
     def _sampled_debug(self, message: str, *args: Any) -> None:
         self._debug_counter += 1
         if self._debug_counter % self._debug_sample_rate == 0:
-            logger.info(message, *args)
+            logger.debug(message, *args)
 
     def _micro_snapshot(self, *, position: Any, market_data: dict[str, Any], indicators: dict[str, Any]) -> MicrostructureSnapshot:
         signal_like = {
@@ -465,20 +466,25 @@ class SmartExitManager:
             self._exit_state_tracker[symbol] = tracker
         changed = tracker.current_state != state or tracker.state_reason != reason
         if changed:
+            previous_state = tracker.current_state
             tracker.current_state = state
             tracker.state_reason = reason
             tracker.duration_in_state = 1
-            logger.info(
-                "EXIT_STATE_UPDATE: symbol=%s current_state=%s bars_alive=%s required=%s status=%s reason=%s",
-                symbol,
-                state,
-                bars_alive if bars_alive is not None else "na",
-                required if required is not None else "na",
-                "WAITING" if state not in {"exit_triggered"} else "TRIGGERED",
-                reason,
+            observability.flush_symbol(symbol, reason="state_change")
+            log_structured_event(
+                "EXIT_STATE_TRANSITION",
+                symbol=symbol,
+                context={
+                    "previous_state": previous_state,
+                    "new_state": state,
+                    "reason": reason,
+                    "bars_alive": bars_alive if bars_alive is not None else "na",
+                    "required": required if required is not None else "na",
+                },
             )
             return
         tracker.duration_in_state += 1
+        observability.increment(symbol, "exit_blocked_count")
 
     def _evaluate_structure_break(
         self,
@@ -734,8 +740,9 @@ class SmartExitManager:
                 action.recommended_sl = entry + (0.2 * risk)
             else:
                 action.recommended_sl = entry - (0.2 * risk)
-            logger.info(
-                "PULLBACK_PROTECTION: symbol=%s max_profit_r=%.4f current_pnl_r=%.4f drawdown_r=%.4f allowed_dd=%.4f closed_ratio=0.5",
+            if observability.should_sample_debug(symbol, "PULLBACK_PROTECTION", cooldown_sec=30):
+                logger.debug(
+                    "PULLBACK_PROTECTION: symbol=%s max_profit_r=%.4f current_pnl_r=%.4f drawdown_r=%.4f allowed_dd=%.4f closed_ratio=0.5",
                 symbol,
                 max_profit_r,
                 pnl_r,
@@ -745,13 +752,14 @@ class SmartExitManager:
 
 
         breakeven_allowed = pnl_r >= 1.2 and bars_alive >= 3 and not bool(getattr(position, "breakeven_moved", False))
-        logger.info(
-            "BREAKEVEN_CHECK: symbol=%s pnl_r=%.3f bars_alive=%s decision=%s",
-            symbol,
-            pnl_r,
-            bars_alive,
-            "ALLOW" if breakeven_allowed else "BLOCK",
-        )
+        if observability.should_sample_debug(symbol, "BREAKEVEN_CHECK", cooldown_sec=30):
+            logger.debug(
+                "BREAKEVEN_CHECK: symbol=%s pnl_r=%.3f bars_alive=%s decision=%s",
+                symbol,
+                pnl_r,
+                bars_alive,
+                "ALLOW" if breakeven_allowed else "BLOCK",
+            )
         if breakeven_allowed:
             action.move_to_breakeven = True
 
@@ -759,8 +767,9 @@ class SmartExitManager:
         if pnl_r >= 1.2 and not partial_done:
             action.partial_close = True
             action.partial_close_ratio = 0.35
-            logger.info(
-                "PARTIAL_CLOSE_EARLY: symbol=%s pnl_r=%.3f closed_ratio=%.2f",
+            if observability.should_sample_debug(symbol, "PARTIAL_CLOSE_EARLY", cooldown_sec=30):
+                logger.debug(
+                    "PARTIAL_CLOSE_EARLY: symbol=%s pnl_r=%.3f closed_ratio=%.2f",
                 symbol,
                 pnl_r,
                 action.partial_close_ratio,
@@ -792,36 +801,41 @@ class SmartExitManager:
         if pnl_r >= 1.3 and distance_to_tp_r < 0.7 and momentum_weakening:
             action.close_position = True
             action.close_reason = "momentum_loss_near_tp"
-            logger.info(
-                "EARLY_EXIT_SIGNAL: symbol=%s pnl_r=%.3f reason=momentum_loss_near_tp",
+            if observability.should_sample_debug(symbol, "EARLY_EXIT_SIGNAL", cooldown_sec=30):
+                logger.debug(
+                    "EARLY_EXIT_SIGNAL: symbol=%s pnl_r=%.3f reason=momentum_loss_near_tp",
                 symbol,
                 pnl_r,
             )
 
         if pnl_r >= 1.5:
-            logger.info("TRAILING_ACTIVATED: symbol=%s pnl_r=%.3f", symbol, pnl_r)
+            if observability.should_sample_debug(symbol, "TRAILING_ACTIVATED", cooldown_sec=30):
+                logger.debug("TRAILING_ACTIVATED: symbol=%s pnl_r=%.3f", symbol, pnl_r)
             trend_strength = self._resolve_trend_strength(indicators, market_data)
             trailing_distance_r = 1.0 if trend_strength == "strong" else (0.6 if trend_strength == "weak" else 0.8)
             if distance_to_tp_r < 0.5:
                 trailing_distance_r += 0.1
-                logger.info(
-                    "TRAILING_ADJUSTED_NEAR_TP: symbol=%s distance_to_tp_R=%.3f",
-                    symbol,
-                    distance_to_tp_r,
-                )
+                if observability.should_sample_debug(symbol, "TRAILING_ADJUSTED_NEAR_TP", cooldown_sec=30):
+                    logger.debug(
+                        "TRAILING_ADJUSTED_NEAR_TP: symbol=%s distance_to_tp_R=%.3f",
+                        symbol,
+                        distance_to_tp_r,
+                    )
             if side == "LONG":
                 trail_ref = current_price - (risk * trailing_distance_r)
                 action.trailing_stop = max(entry, trail_ref)
             else:
                 trail_ref = current_price + (risk * trailing_distance_r)
                 action.trailing_stop = min(entry, trail_ref)
-            logger.info(
-                "TRAILING_GUARD: symbol=%s distance_to_tp_R=%.3f action=UPDATE",
+            if observability.should_sample_debug(symbol, "TRAILING_GUARD", cooldown_sec=30):
+                logger.debug(
+                    "TRAILING_GUARD: symbol=%s distance_to_tp_R=%.3f action=UPDATE",
                 symbol,
                 distance_to_tp_r,
             )
-            logger.info(
-                "TRAILING_UPDATE: symbol=%s distance=%.2fR trend_strength=%s",
+            if observability.should_sample_debug(symbol, "TRAILING_UPDATE", cooldown_sec=30):
+                logger.debug(
+                    "TRAILING_UPDATE: symbol=%s distance=%.2fR trend_strength=%s",
                 symbol,
                 trailing_distance_r,
                 trend_strength,

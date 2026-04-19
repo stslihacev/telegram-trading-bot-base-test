@@ -19729,3 +19729,47 @@ Reject reason: -
 🧠 Regime: N/A
 🕒 Time:   2026-04-19 14:00:00+00:00
 Fingerprint: bacbe44e3bc482b1
+2026-04-19 21:09:22,630 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    AVAXUSDT
+Direction: 🔻 SHORT
+Timeframe: 1h
+
+💰 Entry: 9.219000
+🎯 TP:    8.978657
+🛑 SL:    9.369214
+RR:    1.60
+
+Score:      3.25 / 5.00
+⭐ Confidence: 0.65 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX, VOLUME
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-19 16:00:00+00:00
+Fingerprint: f58d03e4321529c6
+2026-04-19 21:09:23,940 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    MONUSDT
+Direction: 🔻 SHORT
+Timeframe: 1h
+
+💰 Entry: 0.032259
+🎯 TP:    0.029775
+🛑 SL:    0.033811
+RR:    1.60
+
+Score:      3.25 / 5.00
+⭐ Confidence: 0.65 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX, VOLUME
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-19 16:00:00+00:00
+Fingerprint: d8d38fd85f9a41a6

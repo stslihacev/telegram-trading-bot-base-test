@@ -8,6 +8,7 @@ import time
 from typing import Any
 
 from utils.logger import execution_logger, logger
+from utils.observability import log_structured_event, observability
 
 from execution.bybit_client import BybitExecutionClient
 from execution.exit_manager import SmartExitManager
@@ -64,21 +65,26 @@ class PositionManager:
         logger.info("POSITION_REMOVED_LOCAL: symbol=%s reason=%s", symbol, reason)
 
     def _handle_position_desync(self, position: ManagedPosition, reason: str) -> None:
-        logger.warning(
-            "POSITION_DESYNC: signal_id=%s symbol=%s timestamp=%s context=%s",
-            position.signal_id,
-            position.symbol,
-            datetime.now(timezone.utc).isoformat(),
-            {"reason": reason, "execution_id": position.execution_id, "position_id": position.position_id},
-        )
+        if observability.allow_desync_event(position.symbol, reason):
+            log_structured_event(
+                "POSITION_DESYNC_EVENT",
+                symbol=position.symbol,
+                signal_id=position.signal_id,
+                execution_id=position.execution_id,
+                position_id=position.position_id,
+                context={"reason": reason},
+                level=30,
+            )
+            observability.increment(position.symbol, "desync_events")
         self._zero_position_markers.add(position.symbol)
         self._release_position_state(position.symbol, reason="CLOSED_EXTERNALLY")
-        logger.info(
-            "POSITION_DESYNC_RESOLVED: signal_id=%s symbol=%s timestamp=%s context=%s",
-            position.signal_id,
-            position.symbol,
-            datetime.now(timezone.utc).isoformat(),
-            {"reason": reason, "execution_id": position.execution_id, "position_id": position.position_id},
+        log_structured_event(
+            "POSITION_STATE_CHANGE",
+            symbol=position.symbol,
+            signal_id=position.signal_id,
+            execution_id=position.execution_id,
+            position_id=position.position_id,
+            context={"event": "DESYNC_RESOLVED", "reason": reason},
         )
 
     def _exchange_position_for_local(self, position: ManagedPosition) -> dict[str, Any] | None:
@@ -178,7 +184,17 @@ class PositionManager:
             if reason == "POSITION_NOT_FOUND":
                 self._handle_position_desync(position, f"{context}:{reason}")
                 return False
-            logger.warning("PROTECTION_DESYNC: symbol=%s context=%s reason=%s", position.symbol, context, reason)
+            if observability.allow_desync_event(position.symbol, f"{context}:{reason}"):
+                log_structured_event(
+                    "POSITION_DESYNC_EVENT",
+                    symbol=position.symbol,
+                    signal_id=position.signal_id,
+                    execution_id=position.execution_id,
+                    position_id=position.position_id,
+                    context={"reason": reason, "source": context},
+                    level=30,
+                )
+                observability.increment(position.symbol, "desync_events")
         else:
             reason = "MISSING_LOCAL_SLTP"
 
@@ -197,19 +213,13 @@ class PositionManager:
                     position.tp = float(tp_value)
                 verified, verify_reason = self._verify_protection_on_exchange(position)
                 if verified:
-                    logger.info(
-                        "SLTP_OPERATION: signal_id=%s symbol=%s timestamp=%s context=%s",
-                        position.signal_id,
-                        position.symbol,
-                        datetime.now(timezone.utc).isoformat(),
-                        {"result": "SL_UPDATED", "context": context, "attempt": attempt, "sl": float(position.sl)},
-                    )
-                    logger.info(
-                        "SLTP_OPERATION: signal_id=%s symbol=%s timestamp=%s context=%s",
-                        position.signal_id,
-                        position.symbol,
-                        datetime.now(timezone.utc).isoformat(),
-                        {"result": "TP_UPDATED", "context": context, "attempt": attempt, "tp": float(position.tp)},
+                    log_structured_event(
+                        "SLTP_OPERATION_RESULT",
+                        symbol=position.symbol,
+                        signal_id=position.signal_id,
+                        execution_id=position.execution_id,
+                        position_id=position.position_id,
+                        context={"success": True, "attempts": attempt, "reason": context, "is_position_valid": True},
                     )
                     return True
                 if verify_reason == "POSITION_NOT_FOUND":
@@ -222,14 +232,17 @@ class PositionManager:
                     self._handle_position_desync(position, f"{context}:{reason}")
                     return False
                 self._exchange_rejection_count += 1
-                logger.warning(
-                    "SLTP_RETRY_FAILED: symbol=%s context=%s attempt=%s reason=%s",
-                    position.symbol,
-                    context,
-                    attempt,
-                    reason,
-                )
+                observability.increment(position.symbol, "sltp_failures_count")
         self._protection_failure_count += 1
+        log_structured_event(
+            "SLTP_OPERATION_RESULT",
+            symbol=position.symbol,
+            signal_id=position.signal_id,
+            execution_id=position.execution_id,
+            position_id=position.position_id,
+            context={"success": False, "attempts": 2, "final_error_code": reason, "reason": context, "is_position_valid": False},
+            level=30,
+        )
         if self._protection_failure_count >= 2 or self._exchange_rejection_count >= 3:
             self._activate_emergency_mode("REPEATED_SLTP_FAILURES")
         return self._emergency_flatten(position, f"{context}:{reason}")
@@ -530,23 +543,22 @@ class PositionManager:
             position.current_profit_r = 0.0
             position.max_profit_r = 0.0
         position.last_price = live_price
-        self._throttled_debug(
-            position.symbol,
-            "REAL_PRICE_UPDATE",
-            "REAL_PRICE_UPDATE: symbol=%s price=%.8f bars_alive=%s"
-            % (position.symbol, live_price, position.bars_alive),
-            cooldown_sec=60,
-        )
+        observability.increment(position.symbol, "price_updates_count")
+        if observability.should_sample_debug(position.symbol, "REAL_PRICE_UPDATE", cooldown_sec=30):
+            execution_logger.debug("REAL_PRICE_UPDATE: symbol=%s price=%.8f bars_alive=%s", position.symbol, live_price, position.bars_alive)
         pnl_r = float(position.current_profit_r or 0.0)
         prev_pnl = self._last_pnl_log_r.get(position.symbol)
+        drawdown_r = max(0.0, float(position.max_profit_r or 0.0) - pnl_r)
+        observability.track_pnl(position.symbol, pnl_r, drawdown_r)
         if prev_pnl is None or abs(pnl_r - prev_pnl) >= 0.1:
             self._last_pnl_log_r[position.symbol] = pnl_r
-            execution_logger.debug(
-                "POSITION_PNL_UPDATE: symbol=%s pnl_r=%.3f max_profit_r=%.3f",
-                position.symbol,
-                pnl_r,
-                float(position.max_profit_r or 0.0),
-            )
+            if observability.should_sample_debug(position.symbol, "POSITION_PNL_UPDATE", cooldown_sec=30):
+                execution_logger.debug(
+                    "POSITION_PNL_UPDATE: symbol=%s pnl_r=%.3f max_profit_r=%.3f",
+                    position.symbol,
+                    pnl_r,
+                    float(position.max_profit_r or 0.0),
+                )
         if not self._ensure_position_protection(position, context="POSITION_LOOP_GUARD"):
             if position.symbol in self.positions:
                 logger.critical("CRITICAL_POSITION_NO_SL: symbol=%s action=FORCE_CLOSED", position.symbol)
@@ -565,15 +577,20 @@ class PositionManager:
             hard_sl_hit=sl_hit,
         )
         if orchestrator_decision.action != "HOLD":
-            execution_logger.debug(
-                "EXIT_DECISION: symbol=%s action=%s reason=%s priority=%s pnl_r=%.3f max_profit_r=%.3f drawdown=%.3f",
-                position.symbol,
-                orchestrator_decision.action,
-                orchestrator_decision.reason,
-                orchestrator_decision.priority,
-                float(metrics.get("current_profit_r", 0.0)),
-                float(metrics.get("max_profit_r", 0.0)),
-                float(metrics.get("drawdown_r", 0.0)),
+            log_structured_event(
+                "EXIT_DECISION_FINAL",
+                symbol=position.symbol,
+                signal_id=position.signal_id,
+                execution_id=position.execution_id,
+                position_id=position.position_id,
+                context={
+                    "action": orchestrator_decision.action,
+                    "reason": orchestrator_decision.reason,
+                    "priority": orchestrator_decision.priority,
+                    "pnl_r": float(metrics.get("current_profit_r", 0.0)),
+                    "max_profit_r": float(metrics.get("max_profit_r", 0.0)),
+                    "drawdown_r": float(metrics.get("drawdown_r", 0.0)),
+                },
             )
 
         if orchestrator_decision.action == "FULL_CLOSE":
@@ -581,8 +598,16 @@ class PositionManager:
                 closed_qty = self._safe_reduce_close(position, position.size, orchestrator_decision.reason)
                 position.size -= closed_qty
             reason = orchestrator_decision.close_reason or orchestrator_decision.reason
-            logger.info("POSITION_CLOSED: symbol=%s reason=%s", position.symbol, reason)
+            log_structured_event(
+                "POSITION_STATE_CHANGE",
+                symbol=position.symbol,
+                signal_id=position.signal_id,
+                execution_id=position.execution_id,
+                position_id=position.position_id,
+                context={"new_state": "CLOSED", "reason": reason},
+            )
             self.positions.pop(position.symbol, None)
+            observability.flush_symbol(position.symbol, reason="lifecycle_transition")
             events.append(reason)
             return events
 
@@ -595,8 +620,14 @@ class PositionManager:
                     position.size -= closed_qty
                 position.tp1_hit = True
                 self._apply_sl_tp(position, new_sl=position.entry_price, new_tp=position.tp2)
-                logger.info("PARTIAL_CLOSE: symbol=%s closed_qty=%s tp_stage=TP1", position.symbol, close_qty)
-                logger.info("SL_UPDATED: symbol=%s new_sl=%s reason=BREAKEVEN_AFTER_TP1", position.symbol, position.entry_price)
+                log_structured_event(
+                    "POSITION_STATE_CHANGE",
+                    symbol=position.symbol,
+                    signal_id=position.signal_id,
+                    execution_id=position.execution_id,
+                    position_id=position.position_id,
+                    context={"event": "PARTIAL_CLOSE", "closed_qty": close_qty, "tp_stage": "TP1"},
+                )
                 events.append("TP1")
 
         if orchestrator_decision.action == "PARTIAL_CLOSE" and position.size > 0:
@@ -608,11 +639,13 @@ class PositionManager:
                     position.partial_pullback_done = True
                 else:
                     position.partial_15r_done = True
-                logger.info(
-                    "PARTIAL_CLOSE: symbol=%s closed_qty=%.8f reason=%s",
-                    position.symbol,
-                    closed_qty,
-                    orchestrator_decision.reason,
+                log_structured_event(
+                    "POSITION_STATE_CHANGE",
+                    symbol=position.symbol,
+                    signal_id=position.signal_id,
+                    execution_id=position.execution_id,
+                    position_id=position.position_id,
+                    context={"event": "PARTIAL_CLOSE", "closed_qty": closed_qty, "reason": orchestrator_decision.reason},
                 )
                 events.append("PARTIAL_EARLY")
         if orchestrator_decision.action == "TIGHTEN_SL" and orchestrator_decision.recommended_sl is not None:
@@ -622,7 +655,14 @@ class PositionManager:
                 applied = self._apply_sl_tp(position, new_sl=next_sl, new_tp=position.tp2 if position.tp2 else position.tp)
                 if applied and orchestrator_decision.reason == "stage2_breakeven":
                     position.breakeven_moved = True
-                logger.info("SL_UPDATED: symbol=%s action=TIGHTEN_SL reason=%s", position.symbol, orchestrator_decision.reason)
+                log_structured_event(
+                    "POSITION_STATE_CHANGE",
+                    symbol=position.symbol,
+                    signal_id=position.signal_id,
+                    execution_id=position.execution_id,
+                    position_id=position.position_id,
+                    context={"event": "SL_UPDATED", "reason": orchestrator_decision.reason},
+                )
 
         exit_decision = self.exit_manager.evaluate_exit(
             position=position,
@@ -637,14 +677,18 @@ class PositionManager:
         if exit_decision.should_exit and position.size > 0:
             self._safe_reduce_close(position, position.size, "smart_exit")
             if position.symbol in self.positions:
-                logger.info(
-                    "POSITION_CLOSED: symbol=%s reason=SMART_EXIT exit_type=%s confidence=%.2f details=%s",
-                    position.symbol,
-                    exit_decision.exit_type,
-                    exit_decision.confidence,
-                    exit_decision.reason,
+                log_structured_event(
+                    "POSITION_STATE_CHANGE",
+                    symbol=position.symbol,
+                    signal_id=position.signal_id,
+                    execution_id=position.execution_id,
+                    position_id=position.position_id,
+                    context={"new_state": "CLOSED", "reason": "SMART_EXIT", "exit_type": exit_decision.exit_type, "confidence": exit_decision.confidence, "details": exit_decision.reason},
                 )
                 self.positions.pop(position.symbol, None)
+                observability.flush_symbol(position.symbol, reason="lifecycle_transition")
                 events.append("SMART_EXIT")
             
+        observability.flush_due()
+        observability.emit_system_health(active_symbols=len(self.positions))
         return events
