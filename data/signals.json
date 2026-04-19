@@ -1078,5 +1078,122 @@
     "signal_type": "strict",
     "score": 3.0,
     "timestamp": "2026-04-18T14:00:00+00:00"
+  },
+  {
+    "signal_id": "MOVRUSDT_1h_LONG_2026-04-18 19:00:00+00:00",
+    "symbol": "MOVRUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-18T19:00:00+00:00"
+  },
+  {
+    "signal_id": "DYDXUSDT_1h_LONG_2026-04-18 19:00:00+00:00",
+    "symbol": "DYDXUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-18T19:00:00+00:00"
+  },
+  {
+    "signal_id": "ENAUSDT_1h_LONG_2026-04-18 20:00:00+00:00",
+    "symbol": "ENAUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-18T20:00:00+00:00"
+  },
+  {
+    "signal_id": "API3USDT_1h_LONG_2026-04-18 20:00:00+00:00",
+    "symbol": "API3USDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.4,
+    "timestamp": "2026-04-18T20:00:00+00:00"
+  },
+  {
+    "signal_id": "1000PEPEUSDT_1h_LONG_2026-04-18 21:00:00+00:00",
+    "symbol": "1000PEPEUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-18T21:00:00+00:00"
+  },
+  {
+    "signal_id": "SUIUSDT_1h_LONG_2026-04-18 21:00:00+00:00",
+    "symbol": "SUIUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-18T21:00:00+00:00"
+  },
+  {
+    "signal_id": "BNBUSDT_1h_LONG_2026-04-18 21:00:00+00:00",
+    "symbol": "BNBUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.25,
+    "timestamp": "2026-04-18T21:00:00+00:00"
+  },
+  {
+    "signal_id": "ARBUSDT_1h_LONG_2026-04-18 21:00:00+00:00",
+    "symbol": "ARBUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-18T21:00:00+00:00"
+  },
+  {
+    "signal_id": "MONUSDT_1h_SHORT_2026-04-18 21:00:00+00:00",
+    "symbol": "MONUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.65,
+    "timestamp": "2026-04-18T21:00:00+00:00"
+  },
+  {
+    "signal_id": "HYPEUSDT_1h_LONG_2026-04-19 08:00:00+00:00",
+    "symbol": "HYPEUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-19T08:00:00+00:00"
+  },
+  {
+    "signal_id": "PROMUSDT_1h_LONG_2026-04-19 08:00:00+00:00",
+    "symbol": "PROMUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-19T08:00:00+00:00"
+  },
+  {
+    "signal_id": "API3USDT_1h_LONG_2026-04-19 09:00:00+00:00",
+    "symbol": "API3USDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-19T09:00:00+00:00"
+  },
+  {
+    "signal_id": "PIEVERSEUSDT_1h_LONG_2026-04-19 09:00:00+00:00",
+    "symbol": "PIEVERSEUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-19T09:00:00+00:00"
   }
 ]

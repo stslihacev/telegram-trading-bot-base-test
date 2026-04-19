@@ -564,6 +564,19 @@ class SignalAnalytics:
             return default
 
     @staticmethod
+    def _calculate_pnl_r(trade: dict[str, Any], price: float) -> float:
+        direction = str(trade.get("direction") or "").upper()
+        entry = SignalAnalytics._safe_float(trade.get("entry"), default=float("nan"))
+        initial_risk = SignalAnalytics._safe_float(trade.get("initial_risk"), default=float("nan"))
+        if initial_risk != initial_risk or initial_risk <= 0:
+            sl = SignalAnalytics._safe_float(trade.get("sl"), default=float("nan"))
+            initial_risk = abs(entry - sl) if entry == entry and sl == sl else float("nan")
+        if entry != entry or initial_risk != initial_risk or initial_risk <= 0:
+            return 0.0
+        pnl_points = (price - entry) if direction == "LONG" else (entry - price)
+        return pnl_points / initial_risk
+
+    @staticmethod
     def _serialize_trade(trade: dict[str, Any]) -> dict[str, Any]:
         serialized = dict(trade)
         open_time = serialized.get("open_time")
@@ -612,6 +625,13 @@ class SignalAnalytics:
             "entry_source": str(payload.get("entry_source") or "strict").lower(),
             "signal_type": self._normalize_signal_type(payload),
             "is_reversal": bool(payload.get("is_reversal", False)),
+            "initial_risk": self._safe_float(payload.get("initial_risk")),
+            "tp1": self._safe_float(payload.get("tp1")),
+            "tp2": self._safe_float(payload.get("tp2")),
+            "partial_tp_taken": bool(payload.get("partial_tp_taken", False)),
+            "remaining_size": self._safe_float(payload.get("remaining_size"), default=1.0),
+            "max_profit_r": self._safe_float(payload.get("max_profit_r")),
+            "partial_pullback_done": bool(payload.get("partial_pullback_done", False)),
             "passed_filters": [
                 str(name).upper().strip()
                 for name in (payload.get("passed_filters") or [])
@@ -993,12 +1013,15 @@ class SignalAnalytics:
             risk = abs(entry - sl)
             direction = str(trade.get("direction") or "").upper()
             if risk > 0:
+                trade["initial_risk"] = float(risk)
                 tp1 = entry + (1.5 * risk) if direction == "LONG" else entry - (1.5 * risk)
                 tp2 = entry + (2.5 * risk) if direction == "LONG" else entry - (2.5 * risk)
                 trade["tp1"] = float(tp1)
                 trade["tp2"] = float(tp2)
                 trade["partial_tp_taken"] = False
                 trade["remaining_size"] = 1.0
+                trade["max_profit_r"] = 0.0
+                trade["partial_pullback_done"] = False
         if self.trade_registry:
             version = str(getattr(config, "STRATEGY_VERSION", "v1"))
             registry_trade = self.trade_registry.register_signal_trade(signal, strategy_version=version, status="OPEN")
@@ -1050,6 +1073,8 @@ class SignalAnalytics:
         tp = self._safe_float(trade.get("tp"))
         sl = self._safe_float(trade.get("sl"))
         mode = str(trade.get("mode") or "").upper()
+        current_pnl_r = self._calculate_pnl_r(trade, price)
+        trade["max_profit_r"] = max(self._safe_float(trade.get("max_profit_r")), current_pnl_r)
 
         if mode == "MAIN" and not bool(trade.get("partial_tp_taken")):
             tp1 = self._safe_float(trade.get("tp1"))
@@ -1076,16 +1101,53 @@ class SignalAnalytics:
         if mode == "MAIN" and bool(trade.get("partial_tp_taken")):
             tp = self._safe_float(trade.get("tp2"), default=tp)
 
+        tp_hit = False
+        sl_hit = False
+
         if direction == "LONG":
             if price >= tp:
-                self._close_trade(symbol_key, price, timestamp, result="TP")
+                tp_hit = True
             elif price <= sl:
-                self._close_trade(symbol_key, price, timestamp, result="SL")
+                sl_hit = True
         elif direction == "SHORT":
             if price <= tp:
-                self._close_trade(symbol_key, price, timestamp, result="TP")
+                tp_hit = True
             elif price >= sl:
-                self._close_trade(symbol_key, price, timestamp, result="SL")
+                sl_hit = True
+
+        if tp_hit:
+            self._close_trade(symbol_key, price, timestamp, result="TP")
+            return
+        if sl_hit:
+            self._close_trade(symbol_key, price, timestamp, result="SL")
+            return
+
+        if mode == "MAIN" and not bool(trade.get("partial_pullback_done")):
+            max_profit_r = self._safe_float(trade.get("max_profit_r"))
+            drawdown_r = max_profit_r - current_pnl_r
+            if current_pnl_r >= 0.8 and max_profit_r >= 1.2 and drawdown_r >= 0.4:
+                remaining_size = max(0.0, self._safe_float(trade.get("remaining_size"), default=1.0))
+                if remaining_size > 0:
+                    closed_size = remaining_size * 0.5
+                    trade["remaining_size"] = remaining_size - closed_size
+                    trade["partial_pullback_done"] = True
+                    entry = self._safe_float(trade.get("entry"))
+                    initial_risk = self._safe_float(trade.get("initial_risk"))
+                    if direction == "LONG":
+                        target_sl = entry + (0.2 * initial_risk)
+                        trade["sl"] = max(self._safe_float(trade.get("sl")), target_sl)
+                    elif direction == "SHORT":
+                        target_sl = entry - (0.2 * initial_risk)
+                        trade["sl"] = min(self._safe_float(trade.get("sl")), target_sl)
+                    logger.info(
+                        "PULLBACK_PROTECTION: symbol=%s max_profit_r=%.4f current_pnl_r=%.4f drawdown_r=%.4f closed_ratio=0.5",
+                        symbol_key,
+                        max_profit_r,
+                        current_pnl_r,
+                        drawdown_r,
+                    )
+                    self.active_trades[symbol_key] = trade
+                    self._save_active_trades()
 
     def register_real_trade_event(self, event: str, pnl: float | None = None) -> None:
         event_key = str(event or "").upper()

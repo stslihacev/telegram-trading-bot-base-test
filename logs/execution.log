@@ -65,3 +65,35 @@
 2026-04-18 19:01:26,410 - [EXECUTION] DEBUG - EXECUTION_DECISION: symbol=ONTUSDT decision=SKIP reason=LOW_SCORE_EXECUTION
 2026-04-18 19:01:26,851 - [EXECUTION] DEBUG - EXECUTION_SCORE: symbol=EDGEUSDT base_score=3.00 bonus_raw=0.10 penalty=0.00 final_bonus=0.10 effective_score=3.10 threshold=3.20
 2026-04-18 19:01:26,855 - [EXECUTION] DEBUG - EXECUTION_DECISION: symbol=EDGEUSDT decision=SKIP reason=LOW_SCORE_EXECUTION
+2026-04-19 00:04:10,873 - [EXECUTION] DEBUG - EXECUTION_SCORE: symbol=MOVRUSDT base_score=3.00 bonus_raw=0.10 penalty=0.00 final_bonus=0.10 effective_score=3.10 threshold=3.20
+2026-04-19 00:04:10,874 - [EXECUTION] DEBUG - EXECUTION_DECISION: symbol=MOVRUSDT decision=SKIP reason=LOW_SCORE_EXECUTION
+2026-04-19 00:04:11,317 - [EXECUTION] DEBUG - EXECUTION_SCORE: symbol=DYDXUSDT base_score=3.00 bonus_raw=0.10 penalty=0.00 final_bonus=0.10 effective_score=3.10 threshold=3.20
+2026-04-19 00:04:11,318 - [EXECUTION] DEBUG - EXECUTION_DECISION: symbol=DYDXUSDT decision=SKIP reason=LOW_SCORE_EXECUTION
+2026-04-19 01:01:34,015 - [EXECUTION] DEBUG - EXECUTION_SCORE: symbol=ENAUSDT base_score=3.00 bonus_raw=0.10 penalty=0.00 final_bonus=0.10 effective_score=3.10 threshold=3.20
+2026-04-19 01:01:34,016 - [EXECUTION] DEBUG - EXECUTION_DECISION: symbol=ENAUSDT decision=SKIP reason=LOW_SCORE_EXECUTION
+2026-04-19 01:01:34,471 - [EXECUTION] DEBUG - EXECUTION_SCORE: symbol=API3USDT base_score=3.40 bonus_raw=0.10 penalty=0.00 final_bonus=0.10 effective_score=3.50 threshold=3.20
+2026-04-19 01:01:34,473 - [EXECUTION] DEBUG - EXECUTION_DECISION: symbol=API3USDT decision=OPEN reason=STRONG_SIGNAL
+2026-04-19 01:01:34,474 - [EXECUTION] DEBUG - EXECUTION_DECISION: symbol=API3USDT decision=OPEN reason=OK
+2026-04-19 01:01:35,531 - [EXECUTION] DEBUG - SLTP_RESPONSE: symbol=API3USDT position_idx=0 retCode=0 retMsg=OK
+2026-04-19 02:04:23,133 - [EXECUTION] DEBUG - EXECUTION_SCORE: symbol=1000PEPEUSDT base_score=3.00 bonus_raw=0.10 penalty=0.00 final_bonus=0.10 effective_score=3.10 threshold=3.20
+2026-04-19 02:04:23,135 - [EXECUTION] DEBUG - EXECUTION_DECISION: symbol=1000PEPEUSDT decision=SKIP reason=LOW_SCORE_EXECUTION
+2026-04-19 02:04:23,611 - [EXECUTION] DEBUG - EXECUTION_SCORE: symbol=SUIUSDT base_score=3.00 bonus_raw=0.10 penalty=0.00 final_bonus=0.10 effective_score=3.10 threshold=3.20
+2026-04-19 02:04:23,612 - [EXECUTION] DEBUG - EXECUTION_DECISION: symbol=SUIUSDT decision=SKIP reason=LOW_SCORE_EXECUTION
+2026-04-19 02:04:24,062 - [EXECUTION] DEBUG - EXECUTION_SCORE: symbol=BNBUSDT base_score=3.25 bonus_raw=0.10 penalty=0.00 final_bonus=0.10 effective_score=3.35 threshold=3.20
+2026-04-19 02:04:24,063 - [EXECUTION] DEBUG - EXECUTION_DECISION: symbol=BNBUSDT decision=OPEN reason=STRONG_SIGNAL
+2026-04-19 02:04:24,064 - [EXECUTION] DEBUG - EXECUTION_DECISION: symbol=BNBUSDT decision=OPEN reason=OK
+2026-04-19 02:04:25,134 - [EXECUTION] DEBUG - SLTP_RESPONSE: symbol=BNBUSDT position_idx=0 retCode=0 retMsg=OK
+2026-04-19 02:04:25,595 - [EXECUTION] DEBUG - EXECUTION_SCORE: symbol=ARBUSDT base_score=3.00 bonus_raw=0.10 penalty=0.00 final_bonus=0.10 effective_score=3.10 threshold=3.20
+2026-04-19 02:04:25,596 - [EXECUTION] DEBUG - EXECUTION_DECISION: symbol=ARBUSDT decision=SKIP reason=LOW_SCORE_EXECUTION
+2026-04-19 02:04:26,054 - [EXECUTION] DEBUG - EXECUTION_SCORE: symbol=MONUSDT base_score=3.65 bonus_raw=0.20 penalty=0.00 final_bonus=0.20 effective_score=3.85 threshold=3.20
+2026-04-19 02:04:26,055 - [EXECUTION] DEBUG - EXECUTION_DECISION: symbol=MONUSDT decision=OPEN reason=STRONG_SIGNAL
+2026-04-19 02:04:26,057 - [EXECUTION] DEBUG - EXECUTION_DECISION: symbol=MONUSDT decision=OPEN reason=OK
+2026-04-19 02:04:27,109 - [EXECUTION] DEBUG - SLTP_RESPONSE: symbol=MONUSDT position_idx=0 retCode=0 retMsg=OK
+2026-04-19 13:44:52,984 - [EXECUTION] DEBUG - EXECUTION_SCORE: symbol=HYPEUSDT base_score=3.00 bonus_raw=0.10 penalty=0.00 final_bonus=0.10 effective_score=3.10 threshold=3.20
+2026-04-19 13:44:52,985 - [EXECUTION] DEBUG - EXECUTION_DECISION: symbol=HYPEUSDT decision=SKIP reason=LOW_SCORE_EXECUTION
+2026-04-19 13:44:53,431 - [EXECUTION] DEBUG - EXECUTION_SCORE: symbol=PROMUSDT base_score=3.00 bonus_raw=0.10 penalty=0.00 final_bonus=0.10 effective_score=3.10 threshold=3.20
+2026-04-19 13:44:53,431 - [EXECUTION] DEBUG - EXECUTION_DECISION: symbol=PROMUSDT decision=SKIP reason=LOW_SCORE_EXECUTION
+2026-04-19 14:00:27,304 - [EXECUTION] DEBUG - EXECUTION_SCORE: symbol=API3USDT base_score=3.00 bonus_raw=0.10 penalty=0.00 final_bonus=0.10 effective_score=3.10 threshold=3.20
+2026-04-19 14:00:27,304 - [EXECUTION] DEBUG - EXECUTION_DECISION: symbol=API3USDT decision=SKIP reason=LOW_SCORE_EXECUTION
+2026-04-19 14:00:27,783 - [EXECUTION] DEBUG - EXECUTION_SCORE: symbol=PIEVERSEUSDT base_score=3.00 bonus_raw=0.10 penalty=0.00 final_bonus=0.10 effective_score=3.10 threshold=3.20
+2026-04-19 14:00:27,784 - [EXECUTION] DEBUG - EXECUTION_DECISION: symbol=PIEVERSEUSDT decision=SKIP reason=LOW_SCORE_EXECUTION
