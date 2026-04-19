@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
+import time
 from typing import Any
 
 from utils.logger import execution_logger, logger
@@ -15,6 +16,9 @@ from execution.safety_state import activate_emergency_mode
 
 @dataclass
 class ManagedPosition:
+    signal_id: str
+    execution_id: str
+    position_id: str
     symbol: str
     side: str
     size: float
@@ -60,9 +64,22 @@ class PositionManager:
         logger.info("POSITION_REMOVED_LOCAL: symbol=%s reason=%s", symbol, reason)
 
     def _handle_position_desync(self, position: ManagedPosition, reason: str) -> None:
-        logger.warning("POSITION_DESYNC_DETECTED: symbol=%s reason=%s", position.symbol, reason)
+        logger.warning(
+            "POSITION_DESYNC: signal_id=%s symbol=%s timestamp=%s context=%s",
+            position.signal_id,
+            position.symbol,
+            datetime.now(timezone.utc).isoformat(),
+            {"reason": reason, "execution_id": position.execution_id, "position_id": position.position_id},
+        )
         self._zero_position_markers.add(position.symbol)
         self._release_position_state(position.symbol, reason="CLOSED_EXTERNALLY")
+        logger.info(
+            "POSITION_DESYNC_RESOLVED: signal_id=%s symbol=%s timestamp=%s context=%s",
+            position.signal_id,
+            position.symbol,
+            datetime.now(timezone.utc).isoformat(),
+            {"reason": reason, "execution_id": position.execution_id, "position_id": position.position_id},
+        )
 
     def _exchange_position_for_local(self, position: ManagedPosition) -> dict[str, Any] | None:
         expected_side = "BUY" if position.side == "LONG" else "SELL"
@@ -181,18 +198,18 @@ class PositionManager:
                 verified, verify_reason = self._verify_protection_on_exchange(position)
                 if verified:
                     logger.info(
-                        "SL_UPDATED: symbol=%s context=%s attempt=%s sl=%.8f",
+                        "SLTP_OPERATION: signal_id=%s symbol=%s timestamp=%s context=%s",
+                        position.signal_id,
                         position.symbol,
-                        context,
-                        attempt,
-                        float(position.sl),
+                        datetime.now(timezone.utc).isoformat(),
+                        {"result": "SL_UPDATED", "context": context, "attempt": attempt, "sl": float(position.sl)},
                     )
                     logger.info(
-                        "TP_UPDATED: symbol=%s context=%s attempt=%s tp=%.8f",
+                        "SLTP_OPERATION: signal_id=%s symbol=%s timestamp=%s context=%s",
+                        position.signal_id,
                         position.symbol,
-                        context,
-                        attempt,
-                        float(position.tp),
+                        datetime.now(timezone.utc).isoformat(),
+                        {"result": "TP_UPDATED", "context": context, "attempt": attempt, "tp": float(position.tp)},
                     )
                     return True
                 if verify_reason == "POSITION_NOT_FOUND":
@@ -233,6 +250,9 @@ class PositionManager:
                     continue
                 direction = str(trade.get("direction") or "LONG").upper()
                 self.positions[symbol_key] = ManagedPosition(
+                    signal_id=str(trade.get("signal_id") or f"recovered_{symbol_key}"),
+                    execution_id=str(trade.get("execution_id") or f"recovered_exec_{symbol_key}"),
+                    position_id=str(trade.get("position_id") or f"recovered_pos_{symbol_key}"),
                     symbol=symbol_key,
                     side=direction,
                     size=float(trade.get("remaining_size") or trade.get("size") or 1.0),
@@ -257,6 +277,9 @@ class PositionManager:
             if not symbol or size <= 0 or entry <= 0:
                 continue
             next_positions[symbol] = ManagedPosition(
+                signal_id=f"exchange_sync_{symbol}",
+                execution_id=f"exchange_sync_exec_{symbol}",
+                position_id=f"exchange_sync_pos_{symbol}",
                 symbol=symbol,
                 side=side,
                 size=size,
@@ -300,7 +323,16 @@ class PositionManager:
         logger.info("POSITION_SYNCED: restored_positions=%s", restored)
         return reconciliation_events
 
-    def register_opened_position(self, signal: dict[str, Any], qty: float, position_idx: int | None = None) -> None:
+    def register_opened_position(
+        self,
+        signal: dict[str, Any],
+        qty: float,
+        position_idx: int | None = None,
+        *,
+        execution_id: str,
+        signal_id: str,
+        position_id: str,
+    ) -> None:
         symbol = str(signal.get("symbol") or "").upper()
         direction = str(signal.get("direction") or "").upper()
         mode = str(signal.get("live_mode") or signal.get("mode") or "MAIN").upper().strip("[]")
@@ -309,6 +341,9 @@ class PositionManager:
         tp = float(signal.get("tp") or 0.0)
 
         pos = ManagedPosition(
+            signal_id=signal_id,
+            execution_id=execution_id,
+            position_id=position_id,
             symbol=symbol,
             side=direction,
             size=float(qty),
@@ -332,8 +367,27 @@ class PositionManager:
         if rr < 1.3:
             logger.warning("RR_LOW_WARNING: symbol=%s rr=%.3f", symbol, rr)
         self.positions[symbol] = pos
-        logger.info("POSITION_OPENED: symbol=%s side=%s qty=%s mode=%s position_idx=%s", symbol, direction, qty, mode, position_idx)
+        logger.info(
+            "POSITION_REGISTRATION: signal_id=%s symbol=%s timestamp=%s context=%s",
+            signal_id,
+            symbol,
+            datetime.now(timezone.utc).isoformat(),
+            {"execution_id": execution_id, "position_id": position_id, "side": direction, "qty": qty, "mode": mode, "position_idx": position_idx},
+        )
         self._ensure_position_protection(pos, context="POST_TRADE_VALIDATION")
+
+    def confirm_position_on_exchange(self, symbol: str, side: str, *, confirmation_window_sec: int = 3) -> bool:
+        deadline = time.time() + max(1, int(confirmation_window_sec))
+        expected_side = "BUY" if str(side).upper() == "LONG" else "SELL"
+        while time.time() < deadline:
+            for row in self.bybit.get_positions(symbol=symbol):
+                size = float(row.get("size") or 0.0)
+                if size <= 0:
+                    continue
+                if str(row.get("side") or "").upper() == expected_side:
+                    return True
+            time.sleep(1.0)
+        return False
 
     def _apply_sl_tp(self, position: ManagedPosition, new_sl: float | None, new_tp: float | None) -> bool:
         current_sl = float(position.sl or 0.0)

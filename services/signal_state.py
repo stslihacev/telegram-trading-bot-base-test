@@ -1,4 +1,4 @@
-"""Runtime state for live signals: active, dedup cache and cooldowns."""
+"""Runtime state for live signals: unified lifecycle and strict link integrity."""
 
 from __future__ import annotations
 
@@ -10,6 +10,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
+from utils.logger import logger
 
 def _utc_now() -> datetime:
     return datetime.now(timezone.utc)
@@ -35,7 +36,7 @@ def parse_datetime_utc(value: str | None) -> datetime | None:
 @dataclass
 class SignalStateService:
     state_path: Path
-    schema_version: int = 2
+    schema_version: int = 3
     min_upgrade_score: float = 4.5
     strong_signal_score: float = 3.2
     min_score_diff: float = 0.5
@@ -49,7 +50,20 @@ class SignalStateService:
     failed_signals: dict[str, str] = field(default_factory=dict)
     last_reversal_at: dict[str, str] = field(default_factory=dict)
     _lock: threading.RLock = field(default_factory=threading.RLock, init=False, repr=False)
-    _terminal_statuses: tuple[str, ...] = field(default=("CLOSED", "REJECTED"), init=False, repr=False)
+    _state_machine: dict[str, set[str]] = field(
+        default_factory=lambda: {
+            "CREATED": {"PENDING_EXECUTION", "CANCELLED"},
+            "PENDING_EXECUTION": {"EXECUTED", "FAILED", "REJECTED", "CANCELLED"},
+            "EXECUTED": {"OPEN", "FAILED", "CANCELLED"},
+            "OPEN": {"CLOSED", "CANCELLED"},
+            "FAILED": {"PENDING_EXECUTION"},
+            "REJECTED": {"PENDING_EXECUTION"},
+            "CLOSED": {"PENDING_EXECUTION"},
+            "CANCELLED": {"PENDING_EXECUTION"},
+        },
+        init=False,
+        repr=False,
+    )
 
     def load(self) -> None:
         with self._lock:
@@ -139,14 +153,6 @@ class SignalStateService:
                 self.active_signals.pop(symbol, None)
 
     def evaluate_signal(self, signal: dict[str, Any]) -> tuple[str, str]:
-        """
-        Return action and reason:
-        - NEW
-        - UPDATE
-        - REVERSAL
-        - IGNORE
-        - COOLDOWN
-        """
         symbol = str(signal.get("symbol") or "").strip()
         if not symbol:
             return "IGNORE", "empty symbol"
@@ -163,7 +169,7 @@ class SignalStateService:
         with self._lock:
             current = self.active_signals.get(symbol)
 
-        if not current:
+        if not current or str(current.get("status") or "").upper() in {"FAILED", "REJECTED", "CLOSED", "CANCELLED"}:
             return "NEW", "no active signal"
 
         old_direction = str(current.get("direction") or "").upper()
@@ -171,6 +177,8 @@ class SignalStateService:
         is_strong_signal = score >= self.strong_signal_score
 
         if direction == old_direction:
+            if str(current.get("status") or "").upper() != "OPEN":
+                return "IGNORE", "update requires active position"
             if is_strong_signal:
                 return "UPDATE", "STRONG_SIGNAL_OVERRIDE"
             if score < self.min_upgrade_score and old_score < self.min_upgrade_score:
@@ -194,69 +202,129 @@ class SignalStateService:
             return "REVERSAL", "direction changed with stronger setup"
         return "IGNORE", "reversal blocked"
 
-    def upsert_active(self, signal: dict[str, Any], status: str = "OPEN") -> None:
-        symbol = str(signal.get("symbol") or "").strip()
+    def upsert_active(self, signal: dict[str, Any], status: str = "CREATED") -> None:
+        symbol = str(signal.get("symbol") or "").strip().upper()
         if not symbol:
             return
 
+        signal_id = str(signal.get("signal_id") or "").strip()
+        if not signal_id:
+            raise ValueError("signal_id is required")
+
         timestamp = str(signal.get("timestamp") or _utc_now().isoformat())
-        existing = self.active_signals.get(symbol) or {}
-        normalized_status = str(status or "OPEN").upper()
-        lifecycle = {
-            "pending_since": existing.get("pending_since"),
-            "confirmation_reason": existing.get("confirmation_reason"),
-            "rejection_reason": existing.get("rejection_reason"),
-            "opened_at": existing.get("opened_at"),
-            "closed_at": existing.get("closed_at"),
-        }
-        if normalized_status == "PENDING":
-            lifecycle["pending_since"] = lifecycle["pending_since"] or timestamp
-        elif normalized_status == "CONFIRMED":
-            lifecycle["confirmation_reason"] = str(signal.get("confirmation_reason") or existing.get("confirmation_reason") or "state_confirmed")
-            lifecycle["rejection_reason"] = None
-        elif normalized_status == "REJECTED":
-            lifecycle["rejection_reason"] = str(signal.get("rejection_reason") or "state_rejected")
-            lifecycle["closed_at"] = timestamp
-        elif normalized_status == "OPEN":
-            lifecycle["opened_at"] = lifecycle["opened_at"] or timestamp
-            lifecycle["rejection_reason"] = None
-        elif normalized_status == "CLOSED":
-            lifecycle["closed_at"] = timestamp
+        existing = dict(self.active_signals.get(symbol) or {})
+        execution_id = str(signal.get("execution_id") or existing.get("execution_id") or "").strip() or None
+        position_id = str(signal.get("position_id") or existing.get("position_id") or "").strip() or None
 
         with self._lock:
             self.active_signals[symbol] = {
+                "signal_id": signal_id,
+                "execution_id": execution_id,
+                "position_id": position_id,
                 "direction": signal.get("direction"),
                 "entry": float(signal.get("entry") or 0.0),
                 "sl": float(signal.get("sl") or 0.0),
                 "tp": float(signal.get("tp") or 0.0),
                 "score": float(signal.get("score") or 0.0),
                 "confidence": float(signal.get("confidence") or 0.0),
-                "status": normalized_status,
+                "status": str(status or "CREATED").upper(),
                 "timestamp": timestamp,
-                **lifecycle,
+                "history": list(existing.get("history") or []),
             }
 
-    def transition_signal(self, symbol: str, status: str, reason: str | None = None, timestamp: str | None = None) -> None:
-        normalized_symbol = str(symbol or "").strip()
+    def transition_signal(
+        self,
+        symbol: str,
+        status: str,
+        reason: str | None = None,
+        timestamp: str | None = None,
+        *,
+        execution_id: str | None = None,
+        position_id: str | None = None,
+    ) -> bool:
+        normalized_symbol = str(symbol or "").strip().upper()
         if not normalized_symbol:
-            return
+            return False
         ts = str(timestamp or _utc_now().isoformat())
         target_status = str(status or "").upper()
         with self._lock:
             current = dict(self.active_signals.get(normalized_symbol) or {})
             if not current:
-                return
+                return False
+            prev_status = str(current.get("status") or "CREATED").upper()
+            allowed = self._state_machine.get(prev_status, set())
+            if target_status != "CANCELLED" and target_status not in allowed:
+                logger.warning(
+                    "SIGNAL_STATE_TRANSITION_BLOCKED: symbol=%s signal_id=%s from=%s to=%s reason=%s",
+                    normalized_symbol,
+                    current.get("signal_id"),
+                    prev_status,
+                    target_status,
+                    reason or "invalid_transition",
+                )
+                return False
+            if target_status in {"EXECUTED", "OPEN"} and not (execution_id or current.get("execution_id")):
+                return False
+            if target_status == "OPEN" and not (position_id or current.get("position_id")):
+                return False
             current["status"] = target_status
             current["timestamp"] = ts
-            if target_status == "CONFIRMED":
-                current["confirmation_reason"] = reason or current.get("confirmation_reason") or "state_confirmed"
-                current["rejection_reason"] = None
-            elif target_status == "REJECTED":
-                current["rejection_reason"] = reason or current.get("rejection_reason") or "state_rejected"
-                current["closed_at"] = ts
-            elif target_status == "OPEN":
-                current["opened_at"] = current.get("opened_at") or ts
-                current["rejection_reason"] = None
-            elif target_status == "CLOSED":
-                current["closed_at"] = ts
+            if execution_id:
+                current["execution_id"] = execution_id
+            if position_id:
+                current["position_id"] = position_id
+            history = list(current.get("history") or [])
+            history.append({"from": prev_status, "to": target_status, "reason": reason or "", "timestamp": ts})
+            current["history"] = history[-50:]
             self.active_signals[normalized_symbol] = current
+        logger.info(
+            "SIGNAL_STATE_TRANSITION: signal_id=%s symbol=%s timestamp=%s from=%s to=%s context=%s",
+            current.get("signal_id"),
+            normalized_symbol,
+            ts,
+            prev_status,
+            target_status,
+            {"reason": reason or "", "execution_id": current.get("execution_id"), "position_id": current.get("position_id")},
+        )
+        return True
+
+    def lifecycle_link_check(self) -> dict[str, Any]:
+        with self._lock:
+            records = list(self.active_signals.items())
+        accepted_without_execution: list[str] = []
+        executed_without_position: list[str] = []
+        position_without_signal: list[str] = []
+        signal_without_position: list[str] = []
+        for symbol, rec in records:
+            status = str(rec.get("status") or "").upper()
+            signal_id = str(rec.get("signal_id") or "")
+            execution_id = str(rec.get("execution_id") or "")
+            position_id = str(rec.get("position_id") or "")
+            if not signal_id:
+                position_without_signal.append(symbol)
+            if status in {"PENDING_EXECUTION", "EXECUTED", "OPEN", "CLOSED"} and not execution_id:
+                accepted_without_execution.append(symbol)
+            if status in {"EXECUTED", "OPEN", "CLOSED"} and not position_id:
+                executed_without_position.append(symbol)
+            if status in {"OPEN", "CLOSED"} and not signal_id:
+                position_without_signal.append(symbol)
+            if status in {"EXECUTED", "OPEN"} and not position_id:
+                signal_without_position.append(symbol)
+        payload = {
+            "accepted_without_execution": len(accepted_without_execution),
+            "executed_without_position": len(executed_without_position),
+            "position_without_signal": len(position_without_signal),
+            "signal_without_position": len(signal_without_position),
+            "samples": {
+                "accepted_without_execution": accepted_without_execution[:3],
+                "executed_without_position": executed_without_position[:3],
+                "position_without_signal": position_without_signal[:3],
+                "signal_without_position": signal_without_position[:3],
+            },
+        }
+        logger.info(
+            "LIFECYCLE_LINK_CHECK: signal_id=SYSTEM symbol=ALL timestamp=%s context=%s",
+            _utc_now().isoformat(),
+            payload,
+        )
+        return payload

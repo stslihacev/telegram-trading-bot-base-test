@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import hashlib
+import uuid
 import logging
 import os
 import queue
@@ -517,6 +518,13 @@ class TelegramTradingBot:
                         )
                     self.signal_state.maybe_register_exit(enriched_signal)
                     state_action, state_reason = self.signal_state.evaluate_signal(enriched_signal)
+                    logger.info(
+                        "SIGNAL_DECISION: signal_id=%s symbol=%s timestamp=%s context=%s",
+                        enriched_signal.get("signal_id"),
+                        enriched_signal.get("symbol"),
+                        enriched_signal.get("timestamp"),
+                        {"action": state_action, "reason": state_reason, "mode": mode_name},
+                    )
                     enriched_signal["pending_since"] = enriched_signal.get("timestamp")
                     if state_action in {"NEW", "UPDATE", "REVERSAL"}:
                         enriched_signal["confirmation_reason"] = state_reason
@@ -638,10 +646,10 @@ class TelegramTradingBot:
                             state_reason,
                         )
 
-                    self.signal_state.upsert_active(enriched_signal, status="PENDING")
+                    self.signal_state.upsert_active(enriched_signal, status="CREATED")
                     self.signal_state.transition_signal(
                         symbol=str(enriched_signal.get("symbol") or ""),
-                        status="CONFIRMED",
+                        status="PENDING_EXECUTION",
                         reason=state_reason,
                         timestamp=str(enriched_signal.get("timestamp") or datetime.now(timezone.utc).isoformat()),
                     )
@@ -649,6 +657,8 @@ class TelegramTradingBot:
                         self.risk_guard.register_symbol_signal(str(enriched_signal.get("symbol") or ""))
                         runtime_mode = str(enriched_signal.get("live_mode") or "MAIN").upper()
                         if runtime_mode != "LIGHT" and bool(TRADING_ENABLED):
+                            execution_id = f"exec_{uuid.uuid4().hex[:12]}"
+                            enriched_signal["execution_id"] = execution_id
                             order_decision = self.order_manager.execute_signal(
                                 enriched_signal,
                                 active_trades=self.signal_analytics.active_trades,
@@ -693,37 +703,93 @@ class TelegramTradingBot:
                             if order_decision.accepted:
                                 executed_qty = float(order_decision.details.get("qty") or 0.0)
                                 position_idx = order_decision.details.get("position_idx") if isinstance(order_decision.details, dict) else None
+                                position_id = f"pos_{str(enriched_signal.get('symbol') or '').upper()}_{execution_id}"
+                                self.signal_state.transition_signal(
+                                    symbol=str(enriched_signal.get("symbol") or ""),
+                                    status="EXECUTED",
+                                    timestamp=str(enriched_signal.get("timestamp") or datetime.now(timezone.utc).isoformat()),
+                                    execution_id=execution_id,
+                                )
+                                confirmed = self.position_manager.confirm_position_on_exchange(
+                                    str(enriched_signal.get("symbol") or "").upper(),
+                                    str(enriched_signal.get("direction") or "").upper(),
+                                    confirmation_window_sec=3,
+                                )
+                                if not confirmed:
+                                    self.signal_state.transition_signal(
+                                        symbol=str(enriched_signal.get("symbol") or ""),
+                                        status="FAILED",
+                                        timestamp=str(datetime.now(timezone.utc).isoformat()),
+                                        execution_id=execution_id,
+                                        reason="POSITION_NOT_FOUND_IN_CONFIRMATION_WINDOW",
+                                    )
+                                    logger.warning(
+                                        "ORDER_RESULT: signal_id=%s symbol=%s timestamp=%s context=%s",
+                                        enriched_signal.get("signal_id"),
+                                        enriched_signal.get("symbol"),
+                                        datetime.now(timezone.utc).isoformat(),
+                                        {"result": "FAILED", "reason": "POSITION_NOT_FOUND_IN_CONFIRMATION_WINDOW", "execution_id": execution_id},
+                                    )
+                                    continue
                                 self.position_manager.register_opened_position(
                                     enriched_signal,
                                     qty=executed_qty,
                                     position_idx=int(position_idx) if position_idx is not None else None,
+                                    execution_id=execution_id,
+                                    signal_id=str(enriched_signal.get("signal_id") or ""),
+                                    position_id=position_id,
                                 )
-                                self.signal_state.transition_signal(
+                                opened = self.signal_state.transition_signal(
                                     symbol=str(enriched_signal.get("symbol") or ""),
                                     status="OPEN",
                                     timestamp=str(enriched_signal.get("timestamp") or datetime.now(timezone.utc).isoformat()),
+                                    execution_id=execution_id,
+                                    position_id=position_id,
                                 )
                                 logger.info(
-                                    "SIGNAL_EXECUTION_RESULT: symbol=%s result=SUCCESS state=OPEN qty=%.6f",
+                                    "ORDER_RESULT: signal_id=%s symbol=%s timestamp=%s context=%s",
+                                    enriched_signal.get("signal_id"),
                                     enriched_signal.get("symbol"),
-                                    executed_qty,
+                                    datetime.now(timezone.utc).isoformat(),
+                                    {"result": "SUCCESS", "state": "OPEN" if opened else "EXECUTED", "qty": executed_qty, "execution_id": execution_id, "position_id": position_id},
                                 )
                                 self.signal_analytics.register_real_trade_event("OPEN")
                             else:
+                                self.signal_state.transition_signal(
+                                    symbol=str(enriched_signal.get("symbol") or ""),
+                                    status="FAILED" if str(order_decision.reason).upper() not in {"DEFER_EXECUTION", "REDUCE_RISK_ONLY"} else "REJECTED",
+                                    timestamp=str(datetime.now(timezone.utc).isoformat()),
+                                    execution_id=execution_id,
+                                    reason=order_decision.reason,
+                                )
                                 logger.warning(
-                                    "SIGNAL_EXECUTION_RESULT: symbol=%s result=FAILED reason=%s state=UNCHANGED",
+                                    "ORDER_RESULT: signal_id=%s symbol=%s timestamp=%s context=%s",
+                                    enriched_signal.get("signal_id"),
                                     enriched_signal.get("symbol"),
-                                    order_decision.reason,
+                                    datetime.now(timezone.utc).isoformat(),
+                                    {"result": "FAILED", "reason": order_decision.reason, "execution_id": execution_id},
                                 )
                         else:
+                            simulation_execution_id = f"exec_sim_{uuid.uuid4().hex[:10]}"
+                            self.signal_state.transition_signal(
+                                symbol=str(enriched_signal.get("symbol") or ""),
+                                status="EXECUTED",
+                                timestamp=str(enriched_signal.get("timestamp") or datetime.now(timezone.utc).isoformat()),
+                                execution_id=simulation_execution_id,
+                            )
                             self.signal_state.transition_signal(
                                 symbol=str(enriched_signal.get("symbol") or ""),
                                 status="OPEN",
                                 timestamp=str(enriched_signal.get("timestamp") or datetime.now(timezone.utc).isoformat()),
+                                execution_id=simulation_execution_id,
+                                position_id=f"pos_sim_{str(enriched_signal.get('symbol') or '').upper()}",
                             )
                             logger.info(
-                                "SIGNAL_EXECUTION_RESULT: symbol=%s result=SUCCESS state=OPEN reason=SIMULATION_MODE",
+                                "ORDER_RESULT: signal_id=%s symbol=%s timestamp=%s context=%s",
+                                enriched_signal.get("signal_id"),
                                 enriched_signal.get("symbol"),
+                                datetime.now(timezone.utc).isoformat(),
+                                {"result": "SUCCESS", "state": "OPEN", "reason": "SIMULATION_MODE", "execution_id": simulation_execution_id},
                             )
                     self.signal_state.mark_seen(signal_id, datetime.now(timezone.utc).isoformat())
                     self.signal_state.cleanup_stale()
@@ -755,6 +821,7 @@ class TelegramTradingBot:
                 if self.signal_analytics.should_emit_report(signals_step=20, minutes_step=10) or scan_iteration % 3 == 0:
                     analytics_logger.info("\n%s\n", self.generate_analytics_report())
                 portfolio_diag = self.signal_analytics.get_portfolio_risk_diagnostics()
+                self.signal_state.lifecycle_link_check()
                 logger.info(
                     "AUTO_DIAGNOSTIC_PORTFOLIO: avg_portfolio_risk=%.2f avg_exposure=%.2f signals_blocked_by_risk=%s signals_scaled_by_risk=%s",
                     portfolio_diag["avg_portfolio_risk"],

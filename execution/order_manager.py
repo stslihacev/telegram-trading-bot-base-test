@@ -35,6 +35,13 @@ class OrderManager:
         return str(signal.get("live_mode") or signal.get("mode") or "MAIN").upper().strip("[]")
 
     def _can_execute(self, signal: dict[str, Any], active_trades: dict[str, dict]) -> OrderDecision:
+        logger.info(
+            "EXECUTION_DECISION: signal_id=%s symbol=%s timestamp=%s context=%s",
+            signal.get("signal_id"),
+            signal.get("symbol"),
+            signal.get("timestamp"),
+            {"stage": "PRECHECK", "mode": self._normalize_mode(signal)},
+        )
         if is_emergency_mode():
             return OrderDecision(False, "EMERGENCY_MODE_ACTIVE", {"decision": DecisionAction.EMERGENCY_REJECT.value})
         mode = self._normalize_mode(signal)
@@ -81,6 +88,13 @@ class OrderManager:
 
         logger.info("EXECUTION_APPROVED: symbol=%s mode=%s risk_multiplier=%.3f", signal.get("symbol"), adaptive.context.mode.value, adaptive.context.risk_multiplier)
         logger.info("ORDER_APPROVED: symbol=%s qty=%.8f", signal.get("symbol"), decision.final_qty)
+        logger.info(
+            "EXECUTION_DECISION: signal_id=%s symbol=%s timestamp=%s context=%s",
+            signal.get("signal_id"),
+            signal.get("symbol"),
+            signal.get("timestamp"),
+            {"stage": "APPROVED", "qty": decision.final_qty, "adaptive_outcome": adaptive.outcome.value},
+        )
         return OrderDecision(
             True,
             decision.reason,
