@@ -160,10 +160,55 @@ class TelegramTradingBot:
 
         self.application: Application | None = None
         self.scan_task: asyncio.Task | None = None
+        self.position_update_task: asyncio.Task | None = None
         self.signal_queue: queue.Queue[str] = queue.Queue()
         self.gui_thread: threading.Thread | None = None
         self.gui_started = False
         self.gui_summary_queue: queue.Queue[dict[str, str]] = queue.Queue()
+
+    async def _position_price_loop(self, interval_sec: int = 10) -> None:
+        update_interval = max(5, int(interval_sec))
+        logger.info("⚙️ Position price loop started interval=%ss", update_interval)
+        while True:
+            try:
+                open_symbols = sorted(self.position_manager.positions.keys())
+                for symbol in open_symbols:
+                    market_symbol = f"{symbol.replace('USDT', '/USDT')}:USDT"
+                    try:
+                        ticker = await asyncio.get_running_loop().run_in_executor(
+                            None,
+                            lambda m=market_symbol: self.request_manager.fetch_ticker(self.scanner.exchange, m, ttl_sec=2),
+                        )
+                    except Exception as exc:
+                        logger.warning("REAL_PRICE_UPDATE_FAILED: symbol=%s error=%s", symbol, exc)
+                        continue
+                    last_price = ticker.get("last")
+                    if last_price is None:
+                        logger.warning("REAL_PRICE_UPDATE_FAILED: symbol=%s error=last_price_missing", symbol)
+                        continue
+                    high = ticker.get("high")
+                    low = ticker.get("low")
+                    timestamp = ticker.get("datetime") or datetime.now(timezone.utc).isoformat()
+                    close_events = self.position_manager.handle_price_update(
+                        symbol=symbol,
+                        price=float(last_price),
+                        market_data={
+                            "current_price": float(last_price),
+                            "current_high": float(high if high is not None else last_price),
+                            "current_low": float(low if low is not None else last_price),
+                            "timestamp": timestamp,
+                        },
+                        indicators={},
+                    )
+                    for event in close_events:
+                        if event in {"TP", "SL", "SMART_EXIT"}:
+                            self.signal_analytics.register_real_trade_event("CLOSE")
+            except asyncio.CancelledError:
+                logger.info("position_price_loop cancelled")
+                raise
+            except Exception:
+                logger.error("position_price_loop error", exc_info=True)
+            await asyncio.sleep(update_interval)
 
     def _verify_bybit_connectivity(self) -> None:
         """Проверка авторизованного подключения к Bybit при старте."""
@@ -470,28 +515,6 @@ class TelegramTradingBot:
                             symbol=str(enriched_signal.get("symbol") or ""),
                             timestamp=enriched_signal.get("timestamp"),
                         )
-                    if bool(TRADING_ENABLED):
-                        try:
-                            close_events = self.position_manager.handle_price_update(
-                                symbol=str(enriched_signal.get("symbol") or ""),
-                                price=float(enriched_signal.get("entry") or 0.0),
-                                market_data={
-                                    "current_price": float(enriched_signal.get("entry") or 0.0),
-                                    "current_high": float(enriched_signal.get("high") or enriched_signal.get("entry") or 0.0),
-                                    "current_low": float(enriched_signal.get("low") or enriched_signal.get("entry") or 0.0),
-                                    "timestamp": enriched_signal.get("timestamp"),
-                                },
-                                indicators={
-                                    "adx": enriched_signal.get("adx"),
-                                    "atr": enriched_signal.get("atr"),
-                                    "confidence": enriched_signal.get("confidence"),
-                                },
-                            )
-                            for event in close_events:
-                                if event in {"TP", "SL"}:
-                                    self.signal_analytics.register_real_trade_event("CLOSE")
-                        except Exception:
-                            logger.error("POSITION_MANAGEMENT_ERROR", exc_info=True)
                     self.signal_state.maybe_register_exit(enriched_signal)
                     state_action, state_reason = self.signal_state.evaluate_signal(enriched_signal)
                     enriched_signal["pending_since"] = enriched_signal.get("timestamp")
@@ -761,7 +784,12 @@ class TelegramTradingBot:
         if self.application is None:
             if not self.telegram_enabled:
                 logger.info("📡 Telegram polling disabled, running standalone scan loop")
-                asyncio.run(self.scan_loop())
+                async def _run_without_telegram() -> None:
+                    self.position_update_task = asyncio.create_task(self._position_price_loop())
+                    self.scan_task = asyncio.create_task(self.scan_loop())
+                    await asyncio.gather(self.scan_task, self.position_update_task)
+
+                asyncio.run(_run_without_telegram())
                 return
             raise RuntimeError("Application not initialized")
         self.application.run_polling(drop_pending_updates=True)
@@ -775,11 +803,15 @@ class TelegramTradingBot:
     async def _post_init(self, _app: Application) -> None:
         logger.info("⚙️ Post init: starting scan_loop task")
         self.scan_task = asyncio.create_task(self.scan_loop())
+        self.position_update_task = asyncio.create_task(self._position_price_loop())
 
     async def _post_shutdown(self, _app: Application) -> None:
         if self.scan_task and not self.scan_task.done():
             self.scan_task.cancel()
             await asyncio.gather(self.scan_task, return_exceptions=True)
+        if self.position_update_task and not self.position_update_task.done():
+            self.position_update_task.cancel()
+            await asyncio.gather(self.position_update_task, return_exceptions=True)
 
     def initialize(self) -> None:
         """Создаёт Telegram Application в текущем asyncio loop и поднимает GUI для сигналов."""

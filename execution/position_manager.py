@@ -30,7 +30,11 @@ class ManagedPosition:
     initial_sl: float = 0.0
     breakeven_moved: bool = False
     partial_15r_done: bool = False
+    partial_pullback_done: bool = False
     position_idx: int | None = None
+    last_price: float = 0.0
+    current_profit_r: float = 0.0
+    max_profit_r: float = 0.0
 
 
 class PositionManager:
@@ -289,13 +293,40 @@ class PositionManager:
         if not position:
             return []
         events: list[str] = []
+        live_price = float(price)
         position.bars_alive += 1
         runtime_market_data = dict(market_data or {})
-        runtime_market_data.setdefault("current_price", float(price))
+        runtime_market_data.setdefault("current_price", live_price)
         runtime_indicators = dict(indicators or {})
+        entry = float(position.entry_price or 0.0)
+        initial_sl = float(position.initial_sl or position.sl or 0.0)
+        risk = abs(entry - initial_sl)
+        if risk > 0:
+            if position.side == "LONG":
+                current_profit_r = (live_price - entry) / risk
+            else:
+                current_profit_r = (entry - live_price) / risk
+            position.current_profit_r = current_profit_r
+            position.max_profit_r = max(float(position.max_profit_r or 0.0), current_profit_r)
+        else:
+            position.current_profit_r = 0.0
+            position.max_profit_r = 0.0
+        position.last_price = live_price
+        logger.info(
+            "REAL_PRICE_UPDATE: symbol=%s price=%.8f bars_alive=%s",
+            position.symbol,
+            live_price,
+            position.bars_alive,
+        )
+        logger.info(
+            "POSITION_PNL_UPDATE: symbol=%s pnl_r=%.3f max_profit_r=%.3f",
+            position.symbol,
+            float(position.current_profit_r or 0.0),
+            float(position.max_profit_r or 0.0),
+        )
 
         if position.mode == "MAIN" and not position.tp1_hit and position.tp1 is not None:
-            tp1_hit = (position.side == "LONG" and price >= position.tp1) or (position.side == "SHORT" and price <= position.tp1)
+            tp1_hit = (position.side == "LONG" and live_price >= position.tp1) or (position.side == "SHORT" and live_price <= position.tp1)
             if tp1_hit:
                 close_qty = max(position.size * 0.5, 0.0)
                 if close_qty > 0:
@@ -309,9 +340,14 @@ class PositionManager:
 
         protection_action = self.exit_manager.evaluate_profit_protection(
             position=position,
-            current_price=float(price),
+            current_price=live_price,
             market_data=runtime_market_data,
             indicators=runtime_indicators,
+        )
+        logger.info(
+            "EXIT_CHECK_TRIGGERED: symbol=%s source=profit_protection pnl_r=%.3f",
+            position.symbol,
+            float(position.current_profit_r or 0.0),
         )
         if protection_action.move_to_breakeven:
             applied = self._apply_sl_tp(position, new_sl=position.entry_price, new_tp=position.tp2 if position.tp2 else position.tp)
@@ -324,8 +360,21 @@ class PositionManager:
                 self.bybit.close_position(symbol=position.symbol, side=position.side, qty=close_qty)
                 position.size -= close_qty
                 position.partial_15r_done = True
+                if protection_action.reason == "pullback_protection":
+                    position.partial_pullback_done = True
                 logger.info("PROFIT_PROTECTION: symbol=%s action=PARTIAL_CLOSE_EARLY", position.symbol)
                 events.append("PARTIAL_EARLY")
+        if protection_action.recommended_sl is not None:
+            self._apply_sl_tp(
+                position,
+                new_sl=float(protection_action.recommended_sl),
+                new_tp=position.tp2 if position.tp2 else position.tp,
+            )
+            logger.info(
+                "PROFIT_PROTECTION: symbol=%s action=PULLBACK_SL_UPDATE new_sl=%.8f",
+                position.symbol,
+                float(protection_action.recommended_sl),
+            )
         if protection_action.trailing_stop is not None:
             next_sl = float(protection_action.trailing_stop)
             if position.side == "LONG" and next_sl > position.sl:
@@ -336,8 +385,8 @@ class PositionManager:
                 logger.info("PROFIT_PROTECTION: symbol=%s action=TRAIL_SL", position.symbol)
 
         active_tp = position.tp2 if position.mode == "MAIN" and position.tp1_hit and position.tp2 else position.tp
-        tp_hit = (position.side == "LONG" and price >= active_tp) or (position.side == "SHORT" and price <= active_tp)
-        sl_hit = (position.side == "LONG" and price <= position.sl) or (position.side == "SHORT" and price >= position.sl)
+        tp_hit = (position.side == "LONG" and live_price >= active_tp) or (position.side == "SHORT" and live_price <= active_tp)
+        sl_hit = (position.side == "LONG" and live_price <= position.sl) or (position.side == "SHORT" and live_price >= position.sl)
         early_exit_hit = bool(protection_action.close_position) and not tp_hit and not sl_hit
 
         if tp_hit or sl_hit or early_exit_hit:
@@ -358,6 +407,11 @@ class PositionManager:
             position=position,
             market_data=runtime_market_data,
             indicators=runtime_indicators,
+        )
+        logger.info(
+            "EXIT_CHECK_TRIGGERED: symbol=%s source=smart_exit pnl_r=%.3f",
+            position.symbol,
+            float(position.current_profit_r or 0.0),
         )
         if exit_decision.should_exit and position.size > 0:
             self.bybit.close_position(symbol=position.symbol, side=position.side, qty=position.size)

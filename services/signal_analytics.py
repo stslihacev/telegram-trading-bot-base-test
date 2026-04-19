@@ -16,6 +16,7 @@ from typing import Any
 from uuid import uuid4
 
 import core.config as config
+from execution.exit_manager import SmartExitManager
 from services.signal_formatter import get_stars_bucket
 from services.trade_registry import TradeRegistry
 from utils.logger import logger
@@ -1124,8 +1125,12 @@ class SignalAnalytics:
 
         if mode == "MAIN" and not bool(trade.get("partial_pullback_done")):
             max_profit_r = self._safe_float(trade.get("max_profit_r"))
-            drawdown_r = max_profit_r - current_pnl_r
-            if current_pnl_r >= 0.8 and max_profit_r >= 1.2 and drawdown_r >= 0.4:
+            pullback_triggered, drawdown_r = SmartExitManager.assess_pullback_protection(
+                current_pnl_r=current_pnl_r,
+                max_profit_r=max_profit_r,
+                partial_done=bool(trade.get("partial_pullback_done")),
+            )
+            if pullback_triggered:
                 remaining_size = max(0.0, self._safe_float(trade.get("remaining_size"), default=1.0))
                 if remaining_size > 0:
                     closed_size = remaining_size * 0.5

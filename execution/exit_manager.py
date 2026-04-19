@@ -32,6 +32,7 @@ class ProfitProtectionAction:
     close_position: bool = False
     close_reason: str = ""
     reason: str = ""
+    recommended_sl: float | None = None
 
 
 class SmartExitManager:
@@ -328,6 +329,15 @@ class SmartExitManager:
             return "weak"
         return "neutral"
 
+    @staticmethod
+    def assess_pullback_protection(current_pnl_r: float, max_profit_r: float, partial_done: bool) -> tuple[bool, float]:
+        """Shared pullback rule for simulation and live execution."""
+        if partial_done:
+            return False, 0.0
+        drawdown_r = max(0.0, float(max_profit_r) - float(current_pnl_r))
+        should_trigger = current_pnl_r >= 0.8 and max_profit_r >= 1.2 and drawdown_r >= 0.4
+        return should_trigger, drawdown_r
+
     def evaluate_profit_protection(
         self,
         position: Any,
@@ -352,6 +362,30 @@ class SmartExitManager:
         symbol = str(getattr(position, "symbol", "")).upper()
         tp = self._to_float(getattr(position, "tp", 0.0))
         distance_to_tp_r = abs(tp - current_price) / risk if tp > 0 else float("inf")
+        max_profit_r = self._to_float(getattr(position, "max_profit_r", pnl_r), pnl_r)
+        partial_pullback_done = bool(getattr(position, "partial_pullback_done", False))
+
+        pullback_triggered, drawdown_r = self.assess_pullback_protection(
+            current_pnl_r=pnl_r,
+            max_profit_r=max_profit_r,
+            partial_done=partial_pullback_done,
+        )
+        if pullback_triggered:
+            action.partial_close = True
+            action.partial_close_ratio = max(action.partial_close_ratio, 0.5)
+            action.reason = "pullback_protection"
+            if side == "LONG":
+                action.recommended_sl = entry + (0.2 * risk)
+            else:
+                action.recommended_sl = entry - (0.2 * risk)
+            logger.info(
+                "PULLBACK_PROTECTION: symbol=%s max_profit_r=%.4f current_pnl_r=%.4f drawdown_r=%.4f closed_ratio=0.5",
+                symbol,
+                max_profit_r,
+                pnl_r,
+                drawdown_r,
+            )
+
 
         breakeven_allowed = pnl_r >= 1.2 and bars_alive >= 3 and not bool(getattr(position, "breakeven_moved", False))
         logger.info(
