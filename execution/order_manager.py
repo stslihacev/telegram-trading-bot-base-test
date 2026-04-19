@@ -55,12 +55,15 @@ class OrderManager:
         adaptive = self.adaptive_layer.adapt(signal=signal, market_data=market_data)
         if adaptive.outcome == AdaptiveOutcome.EMERGENCY_REJECT:
             self.adaptive_layer.record_decision_outcome(rejected=True)
+            logger.info("EXECUTION_REJECTED: symbol=%s reason=%s outcome=%s", signal.get("symbol"), adaptive.reason, adaptive.outcome.value)
             return OrderDecision(False, adaptive.reason, {"decision": adaptive.outcome.value})
         if adaptive.outcome == AdaptiveOutcome.DEFER_EXECUTION:
             self.adaptive_layer.record_decision_outcome(rejected=True)
+            logger.info("EXECUTION_REJECTED: symbol=%s reason=%s outcome=%s", signal.get("symbol"), adaptive.reason, adaptive.outcome.value)
             return OrderDecision(False, adaptive.reason, {"decision": adaptive.outcome.value, "context": adaptive.context})
         if adaptive.outcome == AdaptiveOutcome.REDUCE_RISK_ONLY:
             self.adaptive_layer.record_decision_outcome(rejected=True)
+            logger.info("EXECUTION_REJECTED: symbol=%s reason=%s outcome=%s", signal.get("symbol"), adaptive.reason, adaptive.outcome.value)
             return OrderDecision(False, adaptive.reason, {"decision": adaptive.outcome.value, "context": adaptive.context})
 
         decision = self.decision_engine.evaluate_order(adaptive.adjusted_signal, adaptive.adjusted_market_data, portfolio_state)
@@ -69,12 +72,14 @@ class OrderManager:
             self.adaptive_layer.record_decision_outcome(rejected=True)
             log_label = "ORDER_REJECTED"
             logger.info("%s: symbol=%s reason=%s", log_label, signal.get("symbol"), decision.reason)
+            logger.info("EXECUTION_REJECTED: symbol=%s reason=%s outcome=%s", signal.get("symbol"), decision.reason, decision.action.value)
             return OrderDecision(False, decision.reason, {"decision": decision.action.value, **decision.details})
 
         self.adaptive_layer.record_decision_outcome(rejected=False)
         if decision.action == DecisionAction.SCALE_DOWN or adaptive.outcome == AdaptiveOutcome.SCALE_DOWN:
             logger.info("ORDER_SCALED_DOWN: symbol=%s qty=%.8f", signal.get("symbol"), decision.final_qty)
 
+        logger.info("EXECUTION_APPROVED: symbol=%s mode=%s risk_multiplier=%.3f", signal.get("symbol"), adaptive.context.mode.value, adaptive.context.risk_multiplier)
         logger.info("ORDER_APPROVED: symbol=%s qty=%.8f", signal.get("symbol"), decision.final_qty)
         return OrderDecision(
             True,

@@ -49,13 +49,23 @@ class PositionManager:
         self._price_log_ts: dict[str, datetime] = {}
         self._last_pnl_log_r: dict[str, float] = {}
         self._debug_cooldown_sec = 60
+        self._zero_position_markers: set[str] = set()
 
-    def _safe_reduce_close(self, position: ManagedPosition, qty: float, reason: str) -> float:
-        safe_qty = max(0.0, min(float(qty or 0.0), float(position.size or 0.0)))
-        if safe_qty <= 0:
-            return 0.0
+    def _release_position_state(self, symbol: str, *, reason: str) -> None:
+        removed = self.positions.pop(symbol, None)
+        if removed is None:
+            return
+        self._last_pnl_log_r.pop(symbol, None)
+        self._price_log_ts = {k: v for k, v in self._price_log_ts.items() if not k.startswith(f"{symbol}:")}
+        logger.info("POSITION_REMOVED_LOCAL: symbol=%s reason=%s", symbol, reason)
+
+    def _handle_position_desync(self, position: ManagedPosition, reason: str) -> None:
+        logger.warning("POSITION_DESYNC_DETECTED: symbol=%s reason=%s", position.symbol, reason)
+        self._zero_position_markers.add(position.symbol)
+        self._release_position_state(position.symbol, reason="CLOSED_EXTERNALLY")
+
+    def _exchange_position_for_local(self, position: ManagedPosition) -> dict[str, Any] | None:
         expected_side = "BUY" if position.side == "LONG" else "SELL"
-        exchange_row: dict[str, Any] | None = None
         for row in self.bybit.get_positions(symbol=position.symbol):
             row_size = float(row.get("size") or 0.0)
             if row_size <= 0:
@@ -63,23 +73,23 @@ class PositionManager:
             row_idx = int(row.get("positionIdx")) if row.get("positionIdx") not in (None, "") else None
             if position.position_idx is not None and row_idx != position.position_idx:
                 continue
-            exchange_row = row
-            break
+            if str(row.get("side") or "").upper() != expected_side:
+                continue
+            return row
+        return None
+
+    def _safe_reduce_close(self, position: ManagedPosition, qty: float, reason: str) -> float:
+        safe_qty = max(0.0, min(float(qty or 0.0), float(position.size or 0.0)))
+        if safe_qty <= 0:
+            return 0.0
+        exchange_row = self._exchange_position_for_local(position)
         if not exchange_row:
-            logger.warning("REDUCE_CLOSE_BLOCKED: symbol=%s reason=no_exchange_position", position.symbol)
+            self._handle_position_desync(position, "NO_EXCHANGE_POSITION_BEFORE_CLOSE")
             return 0.0
-        exchange_side = str(exchange_row.get("side") or "").upper()
         exchange_size = float(exchange_row.get("size") or 0.0)
-        if exchange_side != expected_side:
-            logger.warning(
-                "REDUCE_CLOSE_BLOCKED: symbol=%s reason=side_mismatch expected=%s exchange=%s",
-                position.symbol,
-                expected_side,
-                exchange_side,
-            )
-            return 0.0
         executable_qty = max(0.0, min(safe_qty, exchange_size))
         if executable_qty <= 0:
+            self._handle_position_desync(position, "ZERO_EXCHANGE_SIZE_BEFORE_CLOSE")
             return 0.0
         self.bybit.close_position(symbol=position.symbol, side=position.side, qty=executable_qty)
         logger.info(
@@ -123,25 +133,20 @@ class PositionManager:
 
     def _verify_protection_on_exchange(self, position: ManagedPosition) -> tuple[bool, str]:
         try:
-            for row in self.bybit.get_positions(symbol=position.symbol):
-                size = float(row.get("size") or 0.0)
-                if size <= 0:
-                    continue
-                exchange_idx = int(row.get("positionIdx")) if row.get("positionIdx") not in (None, "") else None
-                if position.position_idx is not None and exchange_idx != position.position_idx:
-                    continue
-                exchange_sl = float(row.get("stopLoss") or 0.0)
-                exchange_tp = float(row.get("takeProfit") or 0.0)
-                sl_ok = self._is_valid_protection_price(exchange_sl)
-                tp_ok = self._is_valid_protection_price(exchange_tp) or self._is_valid_protection_price(position.tp1)
-                if not sl_ok:
-                    return False, "MISSING_SL"
-                if not tp_ok:
-                    return False, "MISSING_TP"
-                return True, "OK"
+            row = self._exchange_position_for_local(position)
+            if not row:
+                return False, "POSITION_NOT_FOUND"
+            exchange_sl = float(row.get("stopLoss") or 0.0)
+            exchange_tp = float(row.get("takeProfit") or 0.0)
+            sl_ok = self._is_valid_protection_price(exchange_sl)
+            tp_ok = self._is_valid_protection_price(exchange_tp) or self._is_valid_protection_price(position.tp1)
+            if not sl_ok:
+                return False, "MISSING_SL"
+            if not tp_ok:
+                return False, "MISSING_TP"
+            return True, "OK"
         except Exception as exc:
             return False, f"EXCHANGE_CHECK_FAILED:{exc}"
-        return False, "POSITION_NOT_FOUND"
 
     def _ensure_position_protection(self, position: ManagedPosition, *, context: str) -> bool:
         if position.size <= 0:
@@ -153,6 +158,9 @@ class PositionManager:
             verified, reason = self._verify_protection_on_exchange(position)
             if verified:
                 return True
+            if reason == "POSITION_NOT_FOUND":
+                self._handle_position_desync(position, f"{context}:{reason}")
+                return False
             logger.warning("PROTECTION_DESYNC: symbol=%s context=%s reason=%s", position.symbol, context, reason)
         else:
             reason = "MISSING_LOCAL_SLTP"
@@ -187,9 +195,15 @@ class PositionManager:
                         float(position.tp),
                     )
                     return True
+                if verify_reason == "POSITION_NOT_FOUND":
+                    self._handle_position_desync(position, f"{context}:{verify_reason}")
+                    return False
                 reason = verify_reason
             else:
                 reason = str(result.get("error") or "UNKNOWN")
+                if "zero position" in reason.lower() or "position not found" in reason.lower():
+                    self._handle_position_desync(position, f"{context}:{reason}")
+                    return False
                 self._exchange_rejection_count += 1
                 logger.warning(
                     "SLTP_RETRY_FAILED: symbol=%s context=%s attempt=%s reason=%s",
@@ -439,6 +453,9 @@ class PositionManager:
         position = self.positions.get(symbol_key)
         if not position:
             return []
+        if symbol_key in self._zero_position_markers:
+            self._release_position_state(symbol_key, reason="CLOSED_EXTERNALLY")
+            return []
         events: list[str] = []
         live_price = float(price)
         position.bars_alive += 1
@@ -477,8 +494,9 @@ class PositionManager:
                 float(position.max_profit_r or 0.0),
             )
         if not self._ensure_position_protection(position, context="POSITION_LOOP_GUARD"):
-            logger.critical("CRITICAL_POSITION_NO_SL: symbol=%s action=FORCE_CLOSED", position.symbol)
-            events.append("EMERGENCY_CLOSE")
+            if position.symbol in self.positions:
+                logger.critical("CRITICAL_POSITION_NO_SL: symbol=%s action=FORCE_CLOSED", position.symbol)
+                events.append("EMERGENCY_CLOSE")
             return events
         active_tp = position.tp2 if position.mode == "MAIN" and position.tp1_hit and position.tp2 else position.tp
         tp_hit = (position.side == "LONG" and live_price >= active_tp) or (position.side == "SHORT" and live_price <= active_tp)
@@ -564,14 +582,15 @@ class PositionManager:
         )
         if exit_decision.should_exit and position.size > 0:
             self._safe_reduce_close(position, position.size, "smart_exit")
-            logger.info(
-                "POSITION_CLOSED: symbol=%s reason=SMART_EXIT exit_type=%s confidence=%.2f details=%s",
-                position.symbol,
-                exit_decision.exit_type,
-                exit_decision.confidence,
-                exit_decision.reason,
-            )
-            self.positions.pop(position.symbol, None)
-            events.append("SMART_EXIT")
+            if position.symbol in self.positions:
+                logger.info(
+                    "POSITION_CLOSED: symbol=%s reason=SMART_EXIT exit_type=%s confidence=%.2f details=%s",
+                    position.symbol,
+                    exit_decision.exit_type,
+                    exit_decision.confidence,
+                    exit_decision.reason,
+                )
+                self.positions.pop(position.symbol, None)
+                events.append("SMART_EXIT")
             
         return events

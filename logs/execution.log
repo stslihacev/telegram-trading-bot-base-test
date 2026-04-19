@@ -618,3 +618,360 @@
 2026-04-19 19:08:19,856 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=MOVEUSDT price=0.01980000 bars_alive=17
 2026-04-19 19:08:35,123 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=-0.561
 2026-04-19 19:08:35,567 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=-0.050
+2026-04-19 19:31:59,865 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=BLURUSDT price=0.03295600 bars_alive=1
+2026-04-19 19:31:59,866 - [EXECUTION] DEBUG - POSITION_PNL_UPDATE: symbol=BLURUSDT pnl_r=0.234 max_profit_r=0.234
+2026-04-19 19:32:00,077 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:32:00,077 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.234
+2026-04-19 19:32:00,298 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=MONUSDT price=0.03258000 bars_alive=1
+2026-04-19 19:32:00,298 - [EXECUTION] DEBUG - POSITION_PNL_UPDATE: symbol=MONUSDT pnl_r=0.215 max_profit_r=0.215
+2026-04-19 19:32:00,517 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:32:00,518 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.215
+2026-04-19 19:32:10,972 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:32:10,973 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.223
+2026-04-19 19:32:11,411 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:32:11,411 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.223
+2026-04-19 19:32:21,844 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:32:21,844 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.265
+2026-04-19 19:32:22,274 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:32:22,275 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.224
+2026-04-19 19:32:32,715 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:32:32,715 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.283
+2026-04-19 19:32:33,150 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:32:33,151 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.231
+2026-04-19 19:32:43,394 - [EXECUTION] DEBUG - POSITION_PNL_UPDATE: symbol=BLURUSDT pnl_r=0.373 max_profit_r=0.373
+2026-04-19 19:32:43,614 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:32:43,614 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.373
+2026-04-19 19:32:43,823 - [EXECUTION] DEBUG - POSITION_PNL_UPDATE: symbol=MONUSDT pnl_r=0.327 max_profit_r=0.327
+2026-04-19 19:32:44,043 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:32:44,043 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.327
+2026-04-19 19:32:54,465 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:32:54,466 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.396
+2026-04-19 19:32:54,896 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:32:54,897 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.304
+2026-04-19 19:33:05,122 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=BLURUSDT price=0.03326300 bars_alive=7
+2026-04-19 19:33:05,339 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:33:05,341 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.360
+2026-04-19 19:33:05,553 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=MONUSDT price=0.03249400 bars_alive=7
+2026-04-19 19:33:05,764 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:33:05,765 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.289
+2026-04-19 19:33:16,210 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:33:16,211 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.393
+2026-04-19 19:33:16,657 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:33:16,658 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.313
+2026-04-19 19:33:27,086 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:33:27,088 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.384
+2026-04-19 19:33:27,529 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:33:27,532 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.293
+2026-04-19 19:33:37,960 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:33:37,961 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.335
+2026-04-19 19:33:38,415 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:33:38,416 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.291
+2026-04-19 19:33:48,856 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:33:48,856 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.315
+2026-04-19 19:33:49,285 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:33:49,285 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.268
+2026-04-19 19:33:59,721 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:33:59,722 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.297
+2026-04-19 19:34:00,149 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:34:00,149 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.268
+2026-04-19 19:34:10,371 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=BLURUSDT price=0.03305800 bars_alive=13
+2026-04-19 19:34:10,606 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:34:10,607 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.276
+2026-04-19 19:34:10,819 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=MONUSDT price=0.03256900 bars_alive=13
+2026-04-19 19:34:10,819 - [EXECUTION] DEBUG - POSITION_PNL_UPDATE: symbol=MONUSDT pnl_r=0.225 max_profit_r=0.327
+2026-04-19 19:34:11,038 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:34:11,039 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.225
+2026-04-19 19:34:21,463 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:34:21,464 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.315
+2026-04-19 19:34:21,894 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:34:21,894 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.218
+2026-04-19 19:34:32,346 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:34:32,346 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.300
+2026-04-19 19:34:32,774 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:34:32,774 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.180
+2026-04-19 19:34:43,209 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:34:43,210 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.326
+2026-04-19 19:34:43,646 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:34:43,647 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.178
+2026-04-19 19:34:54,098 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:34:54,099 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.327
+2026-04-19 19:34:54,895 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:34:54,896 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.197
+2026-04-19 19:35:05,326 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:35:05,327 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.274
+2026-04-19 19:35:05,759 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:35:05,760 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.190
+2026-04-19 19:35:15,979 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=BLURUSDT price=0.03300600 bars_alive=19
+2026-04-19 19:35:15,979 - [EXECUTION] DEBUG - POSITION_PNL_UPDATE: symbol=BLURUSDT pnl_r=0.255 max_profit_r=0.396
+2026-04-19 19:35:16,197 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:35:16,198 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.255
+2026-04-19 19:35:16,410 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=MONUSDT price=0.03260900 bars_alive=19
+2026-04-19 19:35:16,619 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:35:16,619 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.190
+2026-04-19 19:35:27,056 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:35:27,057 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.286
+2026-04-19 19:35:27,524 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:35:27,525 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.190
+2026-04-19 19:35:37,982 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:35:37,983 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.300
+2026-04-19 19:35:38,428 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:35:38,429 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.191
+2026-04-19 19:35:48,882 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:35:48,882 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.288
+2026-04-19 19:35:49,326 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:35:49,326 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.215
+2026-04-19 19:35:59,783 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:35:59,784 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.300
+2026-04-19 19:36:00,204 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:36:00,205 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.219
+2026-04-19 19:36:10,642 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:36:10,644 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.295
+2026-04-19 19:36:11,077 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:36:11,077 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.212
+2026-04-19 19:36:21,292 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=BLURUSDT price=0.03321500 bars_alive=25
+2026-04-19 19:36:21,511 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:36:21,511 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.340
+2026-04-19 19:36:21,721 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=MONUSDT price=0.03256500 bars_alive=25
+2026-04-19 19:36:21,940 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:36:21,940 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.228
+2026-04-19 19:36:32,376 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:36:32,377 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.347
+2026-04-19 19:36:32,805 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:36:32,806 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.232
+2026-04-19 19:36:43,020 - [EXECUTION] DEBUG - POSITION_PNL_UPDATE: symbol=BLURUSDT pnl_r=0.369 max_profit_r=0.396
+2026-04-19 19:36:43,231 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:36:43,232 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.369
+2026-04-19 19:36:43,673 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:36:43,673 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.247
+2026-04-19 19:36:54,114 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:36:54,115 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.395
+2026-04-19 19:36:54,543 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:36:54,544 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.243
+2026-04-19 19:37:04,983 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:37:04,984 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.406
+2026-04-19 19:37:05,406 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:37:05,406 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.225
+2026-04-19 19:37:16,134 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:37:16,134 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.392
+2026-04-19 19:37:16,563 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:37:16,563 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.220
+2026-04-19 19:37:26,779 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=BLURUSDT price=0.03345600 bars_alive=31
+2026-04-19 19:37:26,999 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:37:27,000 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.439
+2026-04-19 19:37:27,225 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=MONUSDT price=0.03258000 bars_alive=31
+2026-04-19 19:37:27,442 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:37:27,442 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.215
+2026-04-19 19:37:37,886 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:37:37,887 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.349
+2026-04-19 19:37:38,326 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:37:38,329 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.216
+2026-04-19 19:37:48,759 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:37:48,759 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.384
+2026-04-19 19:37:49,195 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:37:49,196 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.221
+2026-04-19 19:37:59,637 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:37:59,638 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.378
+2026-04-19 19:38:00,073 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:38:00,073 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.220
+2026-04-19 19:38:10,512 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:38:10,513 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.409
+2026-04-19 19:38:10,944 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:38:10,945 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.214
+2026-04-19 19:38:21,391 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:38:21,392 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.407
+2026-04-19 19:38:21,829 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:38:21,830 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.211
+2026-04-19 19:38:32,045 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=BLURUSDT price=0.03332600 bars_alive=37
+2026-04-19 19:38:32,257 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:38:32,258 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.386
+2026-04-19 19:38:32,475 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=MONUSDT price=0.03259400 bars_alive=37
+2026-04-19 19:38:32,693 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:38:32,693 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.203
+2026-04-19 19:38:43,134 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:38:43,135 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.423
+2026-04-19 19:38:43,577 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:38:43,578 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.205
+2026-04-19 19:38:54,013 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:38:54,015 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.415
+2026-04-19 19:38:54,462 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:38:54,463 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.215
+2026-04-19 19:39:04,886 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:39:04,887 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.425
+2026-04-19 19:39:05,313 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:39:05,315 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.227
+2026-04-19 19:39:15,751 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:39:15,752 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.424
+2026-04-19 19:39:16,183 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:39:16,184 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.275
+2026-04-19 19:39:26,612 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:39:26,612 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.395
+2026-04-19 19:39:27,061 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:39:27,062 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.275
+2026-04-19 19:39:37,282 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=BLURUSDT price=0.03329500 bars_alive=43
+2026-04-19 19:39:37,507 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:39:37,508 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.373
+2026-04-19 19:39:37,727 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=MONUSDT price=0.03250400 bars_alive=43
+2026-04-19 19:39:37,947 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:39:37,948 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.280
+2026-04-19 19:39:48,383 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:39:48,384 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.386
+2026-04-19 19:39:48,819 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:39:48,821 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.272
+2026-04-19 19:39:59,262 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:39:59,263 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.408
+2026-04-19 19:39:59,685 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:39:59,686 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.268
+2026-04-19 19:40:10,123 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:40:10,124 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.426
+2026-04-19 19:40:10,565 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:40:10,566 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.316
+2026-04-19 19:40:21,005 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:40:21,005 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.407
+2026-04-19 19:40:21,446 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:40:21,446 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.291
+2026-04-19 19:40:31,877 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:40:31,878 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.434
+2026-04-19 19:40:32,307 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:40:32,308 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.312
+2026-04-19 19:40:42,531 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=BLURUSDT price=0.03355900 bars_alive=49
+2026-04-19 19:40:42,532 - [EXECUTION] DEBUG - POSITION_PNL_UPDATE: symbol=BLURUSDT pnl_r=0.482 max_profit_r=0.482
+2026-04-19 19:40:42,761 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:40:42,763 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.482
+2026-04-19 19:40:42,981 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=MONUSDT price=0.03239600 bars_alive=49
+2026-04-19 19:40:42,981 - [EXECUTION] DEBUG - POSITION_PNL_UPDATE: symbol=MONUSDT pnl_r=0.373 max_profit_r=0.373
+2026-04-19 19:40:43,195 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:40:43,196 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.373
+2026-04-19 19:40:53,651 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:40:53,652 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.545
+2026-04-19 19:40:54,085 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:40:54,086 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.386
+2026-04-19 19:41:04,533 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:41:04,533 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.434
+2026-04-19 19:41:04,971 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:41:04,972 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.381
+2026-04-19 19:41:15,401 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:41:15,402 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.409
+2026-04-19 19:41:15,836 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:41:15,837 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.404
+2026-04-19 19:41:26,283 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:41:26,283 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.408
+2026-04-19 19:41:26,720 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:41:26,721 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.423
+2026-04-19 19:41:37,159 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:41:37,160 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.421
+2026-04-19 19:41:37,581 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:41:37,581 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.444
+2026-04-19 19:41:47,792 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=BLURUSDT price=0.03332000 bars_alive=55
+2026-04-19 19:41:48,002 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:41:48,003 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.384
+2026-04-19 19:41:48,214 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=MONUSDT price=0.03232100 bars_alive=55
+2026-04-19 19:41:48,425 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:41:48,426 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.437
+2026-04-19 19:41:58,864 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:41:58,865 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.390
+2026-04-19 19:41:59,283 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:41:59,283 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.435
+2026-04-19 19:42:09,505 - [EXECUTION] DEBUG - POSITION_PNL_UPDATE: symbol=BLURUSDT pnl_r=0.381 max_profit_r=0.545
+2026-04-19 19:42:09,716 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:42:09,717 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.381
+2026-04-19 19:42:09,936 - [EXECUTION] DEBUG - POSITION_PNL_UPDATE: symbol=MONUSDT pnl_r=0.511 max_profit_r=0.511
+2026-04-19 19:42:10,156 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:42:10,157 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.511
+2026-04-19 19:42:20,965 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:42:20,966 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.416
+2026-04-19 19:42:21,391 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:42:21,391 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.489
+2026-04-19 19:42:31,807 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:42:31,808 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.395
+2026-04-19 19:42:32,221 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:42:32,222 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.460
+2026-04-19 19:42:42,658 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:42:42,659 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.324
+2026-04-19 19:42:43,079 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:42:43,080 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.448
+2026-04-19 19:42:53,284 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=BLURUSDT price=0.03311700 bars_alive=61
+2026-04-19 19:42:53,497 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:42:53,498 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.300
+2026-04-19 19:42:53,703 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=MONUSDT price=0.03227500 bars_alive=61
+2026-04-19 19:42:53,916 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:42:53,917 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.477
+2026-04-19 19:43:04,334 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:43:04,335 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.327
+2026-04-19 19:43:04,755 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:43:04,756 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.467
+2026-04-19 19:43:15,176 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:43:15,177 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.336
+2026-04-19 19:43:15,600 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:43:15,601 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.481
+2026-04-19 19:43:26,041 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:43:26,042 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.308
+2026-04-19 19:43:26,456 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:43:26,457 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.470
+2026-04-19 19:43:36,885 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:43:36,886 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.323
+2026-04-19 19:43:37,304 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:43:37,304 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.467
+2026-04-19 19:43:47,519 - [EXECUTION] DEBUG - POSITION_PNL_UPDATE: symbol=BLURUSDT pnl_r=0.278 max_profit_r=0.545
+2026-04-19 19:43:47,730 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:43:47,731 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.278
+2026-04-19 19:43:48,148 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:43:48,149 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.461
+2026-04-19 19:43:58,367 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=BLURUSDT price=0.03313500 bars_alive=67
+2026-04-19 19:43:58,589 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:43:58,590 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.308
+2026-04-19 19:43:58,792 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=MONUSDT price=0.03229300 bars_alive=67
+2026-04-19 19:43:59,005 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:43:59,006 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.461
+2026-04-19 19:44:09,426 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:44:09,427 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.333
+2026-04-19 19:44:09,844 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:44:09,845 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.456
+2026-04-19 19:44:20,284 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:44:20,285 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.338
+2026-04-19 19:44:20,697 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:44:20,698 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.456
+2026-04-19 19:44:31,134 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:44:31,134 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.303
+2026-04-19 19:44:31,560 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:44:31,560 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.456
+2026-04-19 19:44:41,977 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:44:41,978 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.299
+2026-04-19 19:44:42,399 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:44:42,401 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.489
+2026-04-19 19:44:52,827 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:44:52,828 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.297
+2026-04-19 19:44:53,243 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:44:53,244 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.482
+2026-04-19 19:45:03,464 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=BLURUSDT price=0.03321700 bars_alive=73
+2026-04-19 19:45:03,683 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:45:03,685 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.341
+2026-04-19 19:45:03,888 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=MONUSDT price=0.03229600 bars_alive=73
+2026-04-19 19:45:04,114 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:45:04,115 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.459
+2026-04-19 19:45:14,544 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:45:14,545 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.314
+2026-04-19 19:45:14,966 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:45:14,967 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.449
+2026-04-19 19:45:25,394 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:45:25,395 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.299
+2026-04-19 19:45:25,871 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:45:25,871 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.460
+2026-04-19 19:45:36,291 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:45:36,291 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.299
+2026-04-19 19:45:36,709 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:45:36,710 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.476
+2026-04-19 19:45:47,131 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:45:47,131 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.313
+2026-04-19 19:45:47,546 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:45:47,547 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.450
+2026-04-19 19:45:57,977 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:45:57,978 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.317
+2026-04-19 19:45:58,406 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:45:58,407 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.445
+2026-04-19 19:46:08,642 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=BLURUSDT price=0.03312300 bars_alive=79
+2026-04-19 19:46:08,852 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:46:08,852 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BLURUSDT source=smart_exit pnl_r=0.303
+2026-04-19 19:46:09,055 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=MONUSDT price=0.03235500 bars_alive=79
+2026-04-19 19:46:09,055 - [EXECUTION] DEBUG - POSITION_PNL_UPDATE: symbol=MONUSDT pnl_r=0.408 max_profit_r=0.511
+2026-04-19 19:46:09,276 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-19 19:46:09,276 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MONUSDT source=smart_exit pnl_r=0.408

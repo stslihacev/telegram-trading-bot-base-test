@@ -223,6 +223,21 @@ class BybitExecutionClient:
                         "response": response,
                     }
                 last_error = str(response.get("retMsg") or "unknown_rejection") if isinstance(response, dict) else "invalid_response"
+                lowered_error = last_error.lower()
+                if "zero position" in lowered_error or "position not found" in lowered_error:
+                    logger.warning(
+                        "SLTP_POSITION_NOT_FOUND: symbol=%s position_idx=%s reason=%s",
+                        symbol_key,
+                        position_idx,
+                        last_error,
+                    )
+                    return {
+                        "ok": False,
+                        "attempts": attempt,
+                        "stop_loss": sl_candidate,
+                        "take_profit": tp_candidate,
+                        "error": last_error,
+                    }
                 logger.warning(
                     "SLTP_REJECTED: symbol=%s position_idx=%s attempt=%s/%s reason=%s sl=%s tp=%s",
                     symbol_key,
@@ -235,6 +250,21 @@ class BybitExecutionClient:
                 )
             except Exception as exc:  # pragma: no cover - runtime exchange branch
                 last_error = str(exc)
+                lowered_error = last_error.lower()
+                if "zero position" in lowered_error or "position not found" in lowered_error:
+                    logger.warning(
+                        "SLTP_POSITION_NOT_FOUND: symbol=%s position_idx=%s reason=%s",
+                        symbol_key,
+                        position_idx,
+                        last_error,
+                    )
+                    return {
+                        "ok": False,
+                        "attempts": attempt,
+                        "stop_loss": sl_candidate,
+                        "take_profit": tp_candidate,
+                        "error": last_error,
+                    }
                 logger.warning(
                     "SLTP_ATTEMPT_FAILED: symbol=%s position_idx=%s attempt=%s/%s error=%s",
                     symbol_key,

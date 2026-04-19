@@ -38,10 +38,10 @@
       "tp": 0.04387262857142856,
       "score": 3.65,
       "confidence": 0.73,
-      "status": "OPEN",
+      "status": "CONFIRMED",
       "timestamp": "2026-04-19 14:00:00+00:00",
       "pending_since": "2026-04-19 14:00:00+00:00",
-      "confirmation_reason": "no active signal",
+      "confirmation_reason": "STRONG_SIGNAL_OVERRIDE",
       "rejection_reason": null,
       "opened_at": "2026-04-19 14:00:00+00:00",
       "closed_at": null
@@ -53,10 +53,10 @@
       "tp": 0.023048857142857145,
       "score": 4.4,
       "confidence": 0.8800000000000001,
-      "status": "OPEN",
+      "status": "CONFIRMED",
       "timestamp": "2026-04-19 14:00:00+00:00",
       "pending_since": "2026-04-19 14:00:00+00:00",
-      "confirmation_reason": "no active signal",
+      "confirmation_reason": "STRONG_SIGNAL_OVERRIDE",
       "rejection_reason": null,
       "opened_at": "2026-04-19 14:00:00+00:00",
       "closed_at": null
@@ -76,8 +76,8 @@
     "ALICEUSDT_1h_LONG_2026-04-19 11:00:00+00:00": "2026-04-19T13:15:06.610924+00:00",
     "PIEVERSEUSDT_1h_LONG_2026-04-19 13:00:00+00:00": "2026-04-19T15:48:27.486479+00:00",
     "API3USDT_1h_LONG_2026-04-19 13:00:00+00:00": "2026-04-19T15:48:27.957480+00:00",
-    "BLURUSDT_1h_LONG_2026-04-19 14:00:00+00:00": "2026-04-19T16:03:58.053032+00:00",
-    "MOVEUSDT_1h_LONG_2026-04-19 14:00:00+00:00": "2026-04-19T16:03:59.659015+00:00"
+    "BLURUSDT_1h_LONG_2026-04-19 14:00:00+00:00": "2026-04-19T16:42:28.517284+00:00",
+    "MOVEUSDT_1h_LONG_2026-04-19 14:00:00+00:00": "2026-04-19T16:42:28.525022+00:00"
   },
   "failed_signals": {},
   "last_reversal_at": {}

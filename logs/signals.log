@@ -19597,3 +19597,135 @@ Reject reason: -
 🧠 Regime: N/A
 🕒 Time:   2026-04-19 14:00:00+00:00
 Fingerprint: bacbe44e3bc482b1
+2026-04-19 19:32:06,593 - [SIGNAL] INFO - [UPDATE] MAIN 📡 SIGNAL
+
+Symbol:    BLURUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.035306
+🎯 TP:    0.043873
+🛑 SL:    0.029952
+RR:    1.60
+
+Score:      3.65 / 5.00
+⭐ Confidence: 0.73 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, ADX, VOLUME, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-19 14:00:00+00:00
+Fingerprint: 1aefc11932bd57f2
+2026-04-19 19:32:06,599 - [SIGNAL] INFO - [UPDATE] MAIN 📡 SIGNAL
+
+Symbol:    MOVEUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.020930
+🎯 TP:    0.023049
+🛑 SL:    0.019606
+RR:    1.60
+
+Score:      4.40 / 5.00
+⭐ Confidence: 0.88 ⭐⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-19 14:00:00+00:00
+Fingerprint: bacbe44e3bc482b1
+2026-04-19 19:37:17,286 - [SIGNAL] INFO - [UPDATE] MAIN 📡 SIGNAL
+
+Symbol:    BLURUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.035306
+🎯 TP:    0.043873
+🛑 SL:    0.029952
+RR:    1.60
+
+Score:      3.65 / 5.00
+⭐ Confidence: 0.73 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, ADX, VOLUME, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-19 14:00:00+00:00
+Fingerprint: 1aefc11932bd57f2
+2026-04-19 19:37:17,292 - [SIGNAL] INFO - [UPDATE] MAIN 📡 SIGNAL
+
+Symbol:    MOVEUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.020930
+🎯 TP:    0.023049
+🛑 SL:    0.019606
+RR:    1.60
+
+Score:      4.40 / 5.00
+⭐ Confidence: 0.88 ⭐⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-19 14:00:00+00:00
+Fingerprint: bacbe44e3bc482b1
+2026-04-19 19:42:28,519 - [SIGNAL] INFO - [UPDATE] MAIN 📡 SIGNAL
+
+Symbol:    BLURUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.035306
+🎯 TP:    0.043873
+🛑 SL:    0.029952
+RR:    1.60
+
+Score:      3.65 / 5.00
+⭐ Confidence: 0.73 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, ADX, VOLUME, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-19 14:00:00+00:00
+Fingerprint: 1aefc11932bd57f2
+2026-04-19 19:42:28,527 - [SIGNAL] INFO - [UPDATE] MAIN 📡 SIGNAL
+
+Symbol:    MOVEUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.020930
+🎯 TP:    0.023049
+🛑 SL:    0.019606
+RR:    1.60
+
+Score:      4.40 / 5.00
+⭐ Confidence: 0.88 ⭐⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-19 14:00:00+00:00
+Fingerprint: bacbe44e3bc482b1

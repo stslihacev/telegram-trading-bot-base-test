@@ -11,6 +11,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
+from execution.adaptive_execution import MicrostructureEngine, MicrostructureSnapshot
 from utils.logger import logger
 
 
@@ -44,6 +45,11 @@ class ExitOrchestratorDecision:
     close_reason: str = ""
     momentum_score: float = 0.0
 
+@dataclass
+class ExitStateTracker:
+    current_state: str | None = None
+    state_reason: str | None = None
+    duration_in_state: int = 0
 
 class ExitOrchestrator:
     """Single decision layer for all exit/profit-protection actions."""
@@ -265,6 +271,10 @@ class SmartExitManager:
         self.structure_lookback = max(4, int(structure_lookback))
         self.momentum_stall_bars = max(3, int(momentum_stall_bars))
         self.orchestrator = ExitOrchestrator(self)
+        self.microstructure_engine = MicrostructureEngine()
+        self._exit_state_tracker: dict[str, ExitStateTracker] = {}
+        self._debug_counter: int = 0
+        self._debug_sample_rate: int = 10
 
     @staticmethod
     def _to_float(value: Any, default: float = 0.0) -> float:
@@ -343,9 +353,17 @@ class SmartExitManager:
         if mode == "LIGHT":
             return ExitDecision(False, "none", 0.0, "LIGHT mode: exit engine disabled", False)
 
+        micro = self._micro_snapshot(position=position, market_data=market_data, indicators=indicators)
+
         if bars_alive < self.min_bars_before_exit:
             reason = f"min bars guard: bars_alive={bars_alive} < {self.min_bars_before_exit}"
-            logger.info("EXIT_BLOCKED: symbol=%s reason=%s", symbol, reason)
+            self._log_exit_state_update(
+                symbol=symbol,
+                state="min_bars_guard",
+                reason=reason,
+                bars_alive=bars_alive,
+                required=self.min_bars_before_exit,
+            )
             return ExitDecision(False, "none", 0.0, reason, False)
 
         current_price = self._to_float(market_data.get("current_price"), self._to_float(market_data.get("price"), 0.0))
@@ -354,28 +372,24 @@ class SmartExitManager:
         trailing_active = current_profit_r >= 2.0
 
         if distance_to_tp_r <= 0.2:
-            logger.info(
-                "EXIT_BLOCKED: symbol=%s reason=tp_proximity guard=near_tp_protection distance_to_tp_R=%.3f",
-                symbol,
-                distance_to_tp_r,
-            )
+            self._log_exit_state_update(symbol=symbol, state="tp_priority_zone", reason=f"distance_to_tp_r={distance_to_tp_r:.3f}")
             return ExitDecision(False, "none", 0.0, "tp priority zone (<=0.2R)", False)
 
         if distance_to_tp_r <= 0.3:
-            logger.info(
-                "EXIT_BLOCKED: symbol=%s reason=tp_proximity guard=near_tp_protection distance_to_tp_R=%.3f",
-                symbol,
-                distance_to_tp_r,
-            )
+            self._log_exit_state_update(symbol=symbol, state="near_tp_protection", reason=f"distance_to_tp_r={distance_to_tp_r:.3f}")
             return ExitDecision(False, "none", 0.0, "near TP protection", False)
 
         if current_profit_r < 0.5:
-            logger.info(
-                "EXIT_BLOCKED: symbol=%s reason=low_profit current_profit_R=%.3f",
-                symbol,
-                current_profit_r,
-            )
+            self._log_exit_state_update(symbol=symbol, state="near_tp_protection", reason=f"distance_to_tp_r={distance_to_tp_r:.3f}")
             return ExitDecision(False, "none", 0.0, "minimum profit guard (<0.5R)", False)
+
+        if current_profit_r < 0.3 and micro.impulse_quality < 0.45 and micro.noise_level >= 0.70:
+            reason = (
+                "exit_suppressed: low_profit_and_noisy_microstructure "
+                f"pnl_r={current_profit_r:.3f} impulse={micro.impulse_quality:.3f} noise={micro.noise_level:.3f}"
+            )
+            self._log_exit_state_update(symbol=symbol, state="micro_noise_suppression", reason=reason)
+            return ExitDecision(False, "none", 0.0, reason, False)
 
         req = self._required_confirmation(confidence)
         strong_confidence = confidence >= 0.8
@@ -384,7 +398,8 @@ class SmartExitManager:
         momentum_decision = self._evaluate_momentum_loss(side, highs, lows, closes, indicators, is_scalping=mode == "SCALPING")
 
         if structure_decision.confirmed and structure_decision.confidence >= (0.5 + req * 0.12):
-            logger.info(
+            self._log_exit_state_update(symbol=symbol, state="exit_triggered", reason=structure_decision.reason)
+            self._sampled_debug(
                 "EXIT_DEBUG: symbol=%s exit_type=%s confirmed=%s confidence=%.2f current_profit_R=%.3f distance_to_tp_R=%.3f trailing_active=%s reason=%s",
                 symbol,
                 structure_decision.exit_type,
@@ -412,10 +427,12 @@ class SmartExitManager:
                     indicators.get("bars_without_extreme", "na"),
                     momentum_decision.reason,
                 )
+                self._log_exit_state_update(symbol=symbol, state="exit_triggered", reason=momentum_decision.reason)
                 return momentum_decision
 
         fallback_reason = "no confirmed structure/momentum exit"
-        logger.info(
+        self._log_exit_state_update(symbol=symbol, state="monitoring", reason=fallback_reason)
+        self._sampled_debug(
             "EXIT_DEBUG: symbol=%s exit_type=none confirmed=False confidence=0.00 current_profit_R=%.3f distance_to_tp_R=%.3f trailing_active=%s reason=%s",
             symbol,
             current_profit_r,
@@ -424,6 +441,44 @@ class SmartExitManager:
             fallback_reason,
         )
         return ExitDecision(False, "none", 0.0, fallback_reason, False)
+
+    def _sampled_debug(self, message: str, *args: Any) -> None:
+        self._debug_counter += 1
+        if self._debug_counter % self._debug_sample_rate == 0:
+            logger.info(message, *args)
+
+    def _micro_snapshot(self, *, position: Any, market_data: dict[str, Any], indicators: dict[str, Any]) -> MicrostructureSnapshot:
+        signal_like = {
+            "symbol": getattr(position, "symbol", ""),
+            "momentum_consistency": self._to_float(indicators.get("momentum_consistency"), 0.5),
+            "breakout": bool(indicators.get("breakout") or market_data.get("is_breakout")),
+            "volatility_expansion": self._to_float(indicators.get("volatility_expansion"), 0.0),
+            "wick_dominance": self._to_float(indicators.get("wick_dominance"), 0.5),
+            "body_volume_ratio": self._to_float(indicators.get("body_volume_ratio"), 0.6),
+        }
+        return self.microstructure_engine.analyze(signal_like, market_data)
+
+    def _log_exit_state_update(self, *, symbol: str, state: str, reason: str, bars_alive: int | None = None, required: int | None = None) -> None:
+        tracker = self._exit_state_tracker.get(symbol)
+        if tracker is None:
+            tracker = ExitStateTracker()
+            self._exit_state_tracker[symbol] = tracker
+        changed = tracker.current_state != state or tracker.state_reason != reason
+        if changed:
+            tracker.current_state = state
+            tracker.state_reason = reason
+            tracker.duration_in_state = 1
+            logger.info(
+                "EXIT_STATE_UPDATE: symbol=%s current_state=%s bars_alive=%s required=%s status=%s reason=%s",
+                symbol,
+                state,
+                bars_alive if bars_alive is not None else "na",
+                required if required is not None else "na",
+                "WAITING" if state not in {"exit_triggered"} else "TRIGGERED",
+                reason,
+            )
+            return
+        tracker.duration_in_state += 1
 
     def _evaluate_structure_break(
         self,

@@ -39,6 +39,23 @@ class AdaptiveOutcome(str, Enum):
     REDUCE_RISK_ONLY = "REDUCE_RISK_ONLY"
     EMERGENCY_REJECT = "EMERGENCY_REJECT"
 
+@dataclass
+class MicrostructureSnapshot:
+    liquidity_score: float
+    impulse_quality: float
+    noise_level: float
+    breakout_quality: float
+
+
+@dataclass
+class ExecutionTimingScore:
+    entry_aggressiveness: float
+    exit_speed: float
+    partial_close_sensitivity: float
+    allow_trailing: bool
+    defer_entry: bool
+    size_multiplier: float
+    suppress_early_exit: bool
 
 @dataclass
 class MarketRegimeSnapshot:
@@ -73,7 +90,8 @@ class AdaptiveExecutionDecision:
     adjusted_market_data: dict[str, Any]
     regime: MarketRegimeSnapshot
     context: ExecutionContextSnapshot
-
+    microstructure: MicrostructureSnapshot
+    timing: ExecutionTimingScore
 
 class _RollingWindow:
     def __init__(self, size: int = 50) -> None:
@@ -204,11 +222,101 @@ class ExecutionContextScorer:
         )
         return confidence
 
+class MicrostructureEngine:
+    def analyze(self, signal: dict[str, Any], market_data: dict[str, Any]) -> MicrostructureSnapshot:
+        spread_proxy = _clamp(
+            _to_float(
+                market_data.get("spread_proxy"),
+                _to_float(signal.get("spread_proxy"), _to_float(market_data.get("spread_bps"), 0.0) / 100.0),
+            ),
+            0.0,
+            0.05,
+        )
+        body_volume_ratio = _clamp(
+            _to_float(
+                market_data.get("body_volume_ratio"),
+                _to_float(signal.get("body_volume_ratio"), _to_float(signal.get("momentum_consistency"), 0.5)),
+            ),
+            0.0,
+            2.0,
+        )
+        volatility_expansion = _clamp(
+            _to_float(market_data.get("volatility_expansion"), _to_float(signal.get("volatility_expansion"), 0.0)),
+            -1.0,
+            1.0,
+        )
+        wick_dominance = _clamp(
+            _to_float(market_data.get("wick_dominance"), _to_float(signal.get("wick_dominance"), 0.5)),
+            0.0,
+            1.0,
+        )
+        breakout_flag = bool(signal.get("breakout") or signal.get("is_breakout") or market_data.get("is_breakout"))
+
+        liquidity_score = _clamp(
+            (1.0 - (spread_proxy / 0.05)) * 0.45
+            + _clamp(body_volume_ratio / 1.2, 0.0, 1.0) * 0.35
+            + _clamp((volatility_expansion + 1.0) / 2.0, 0.0, 1.0) * 0.20,
+            0.0,
+            1.0,
+        )
+        impulse_quality = _clamp(
+            _clamp(body_volume_ratio / 1.5, 0.0, 1.0) * 0.55
+            + _clamp(volatility_expansion, 0.0, 1.0) * 0.25
+            + (1.0 - wick_dominance) * 0.20,
+            0.0,
+            1.0,
+        )
+        noise_level = _clamp(wick_dominance * 0.55 + (1.0 - impulse_quality) * 0.35 + (spread_proxy / 0.05) * 0.10, 0.0, 1.0)
+        breakout_quality = _clamp(
+            impulse_quality * 0.45 + liquidity_score * 0.35 + (1.0 - noise_level) * 0.20 + (0.10 if breakout_flag else -0.05),
+            0.0,
+            1.0,
+        )
+
+        execution_logger.debug(
+            "MICROSTRUCTURE_DEBUG: spread=%.4f body_volume_ratio=%.3f vol_exp=%.3f wick=%.3f liq=%.3f impulse=%.3f noise=%.3f breakout=%.3f",
+            spread_proxy,
+            body_volume_ratio,
+            volatility_expansion,
+            wick_dominance,
+            liquidity_score,
+            impulse_quality,
+            noise_level,
+            breakout_quality,
+        )
+        return MicrostructureSnapshot(
+            liquidity_score=liquidity_score,
+            impulse_quality=impulse_quality,
+            noise_level=noise_level,
+            breakout_quality=breakout_quality,
+        )
+
+
+class ExecutionTimingEngine:
+    def score(self, *, micro: MicrostructureSnapshot, confidence: float, regime: MarketRegimeSnapshot) -> ExecutionTimingScore:
+        entry_aggressiveness = _clamp(confidence * 0.4 + micro.liquidity_score * 0.35 + micro.breakout_quality * 0.25, 0.0, 1.0)
+        exit_speed = _clamp((1.0 - micro.noise_level) * 0.45 + micro.impulse_quality * 0.35 + confidence * 0.20, 0.0, 1.0)
+        partial_close_sensitivity = _clamp(1.0 - (micro.impulse_quality * 0.5 + (1.0 - micro.noise_level) * 0.5), 0.0, 1.0)
+        allow_trailing = micro.impulse_quality >= 0.62 and micro.noise_level <= 0.52 and regime.regime != MarketRegime.CHOPPY
+        defer_entry = micro.liquidity_score < 0.25 or (micro.noise_level >= 0.78 and micro.impulse_quality < 0.45)
+        size_multiplier = _clamp(micro.liquidity_score * 0.65 + (1.0 - micro.noise_level) * 0.35, 0.25, 1.15)
+        suppress_early_exit = micro.noise_level >= 0.70 and micro.impulse_quality <= 0.45
+        return ExecutionTimingScore(
+            entry_aggressiveness=entry_aggressiveness,
+            exit_speed=exit_speed,
+            partial_close_sensitivity=partial_close_sensitivity,
+            allow_trailing=allow_trailing,
+            defer_entry=defer_entry,
+            size_multiplier=size_multiplier,
+            suppress_early_exit=suppress_early_exit,
+        )
 
 class AdaptiveExecutionLayer:
     def __init__(self) -> None:
         self.regime_engine = MarketRegimeEngine()
         self.context_scorer = ExecutionContextScorer()
+        self.microstructure_engine = MicrostructureEngine()
+        self.timing_engine = ExecutionTimingEngine()
         self.stress_monitor = ExecutionStressMonitor()
         self._last_mode: ExecutionMode = ExecutionMode.NORMAL
         self._last_regime: MarketRegime | None = None
@@ -235,12 +343,17 @@ class AdaptiveExecutionLayer:
                     risk_multiplier=0.0,
                     stress=self.stress_monitor.snapshot(),
                 ),
+                microstructure=MicrostructureSnapshot(0.0, 0.0, 1.0, 0.0),
+                timing=ExecutionTimingScore(0.0, 0.0, 1.0, False, True, 0.25, True),
             )
 
         regime = self.regime_engine.classify(signal)
         stress = self.stress_monitor.snapshot()
         confidence = self.context_scorer.score(regime=regime, signal=signal, stress=stress)
-        risk_multiplier = self._risk_multiplier(regime=regime, confidence=confidence, stress=stress)
+        micro = self.microstructure_engine.analyze(signal, market_data)
+        timing = self.timing_engine.score(micro=micro, confidence=confidence, regime=regime)
+        risk_multiplier = self._risk_multiplier(regime=regime, confidence=confidence, stress=stress) * timing.size_multiplier
+        risk_multiplier = _clamp(risk_multiplier, 0.20, 1.50)
         mode = self._mode_from_context(regime=regime, confidence=confidence, stress=stress)
 
         if self._last_regime != regime.regime:
@@ -265,18 +378,30 @@ class AdaptiveExecutionLayer:
         adjusted_signal = dict(signal)
         adjusted_signal["execution_confidence"] = confidence
         adjusted_signal["execution_mode"] = mode.value
+        adjusted_signal["micro_liquidity_score"] = micro.liquidity_score
+        adjusted_signal["micro_impulse_quality"] = micro.impulse_quality
+        adjusted_signal["micro_noise_level"] = micro.noise_level
+        adjusted_signal["micro_breakout_quality"] = micro.breakout_quality
+        adjusted_signal["execution_entry_aggressiveness"] = timing.entry_aggressiveness
+        adjusted_signal["execution_exit_speed"] = timing.exit_speed
+        adjusted_signal["execution_partial_close_sensitivity"] = timing.partial_close_sensitivity
+        adjusted_signal["execution_allow_trailing"] = timing.allow_trailing
+        adjusted_signal["execution_suppress_early_exit"] = timing.suppress_early_exit
 
         outcome = AdaptiveOutcome.APPROVE
         reason = "ADAPTIVE_CONTEXT_OK"
-        if mode == ExecutionMode.NO_TRADE:
+        if mode == ExecutionMode.NO_TRADE or timing.defer_entry:
             outcome = AdaptiveOutcome.DEFER_EXECUTION
-            reason = "CONTEXT_UNSTABLE_DEFER"
+            reason = "LIQUIDITY_TIMING_DEFER" if timing.defer_entry else "CONTEXT_UNSTABLE_DEFER"
         elif mode == ExecutionMode.DEFENSIVE and risk_multiplier < 0.60:
             outcome = AdaptiveOutcome.SCALE_DOWN
             reason = "DEFENSIVE_SCALING"
         elif confidence < 0.25 and str(signal.get("reduce_only") or "").lower() not in {"1", "true", "yes"}:
             outcome = AdaptiveOutcome.REDUCE_RISK_ONLY
             reason = "LOW_CONFIDENCE_RISK_ONLY"
+        elif micro.liquidity_score < 0.30 or (micro.impulse_quality < 0.35 and micro.noise_level > 0.70):
+            outcome = AdaptiveOutcome.SCALE_DOWN
+            reason = "MICROSTRUCTURE_SIZE_GUARD"
 
         return AdaptiveExecutionDecision(
             outcome=outcome,
@@ -290,6 +415,8 @@ class AdaptiveExecutionLayer:
                 risk_multiplier=risk_multiplier,
                 stress=stress,
             ),
+            microstructure=micro,
+            timing=timing,
         )
 
     def record_decision_outcome(self, *, rejected: bool) -> None:
