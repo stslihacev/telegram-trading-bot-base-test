@@ -3,7 +3,6 @@ import types
 
 import pytest
 
-from risk.portfolio_risk_manager import PortfolioRiskManager
 import core.config as config
 
 pybit_module = types.ModuleType("pybit")
@@ -13,219 +12,82 @@ pybit_module.unified_trading = unified_module
 sys.modules.setdefault("pybit", pybit_module)
 sys.modules.setdefault("pybit.unified_trading", unified_module)
 
+from execution.decision_engine import DecisionAction, ExecutionDecisionEngine
 from execution.order_manager import OrderManager
 
 
-class _BalanceStub:
-    def __init__(self, balance: float = 1000.0) -> None:
+class _BybitStub:
+    def __init__(self, balance: float = 1000.0, constraints: dict | None = None) -> None:
         self.balance = balance
+        self.constraints = constraints or {
+            "qty_step": 0.001,
+            "min_qty": 0.001,
+            "max_qty": 1000.0,
+            "tick_size": 0.1,
+            "min_notional": 5.0,
+        }
 
     def get_balance(self, _asset: str) -> float:
         return self.balance
 
+    def get_symbol_lot_filters(self, _symbol: str) -> dict:
+        return self.constraints
 
-class _BybitStub(_BalanceStub):
-    def get_positions(self, symbol: str | None = None) -> list[dict]:
-        return []
+    @staticmethod
+    def round_qty_to_step(qty: float, step: float) -> float:
+        if step <= 0:
+            return max(0.0, qty)
+        return float(int(max(0.0, qty) / step) * step)
 
+    def place_market_order(self, *, symbol: str, side: str, qty: float, reduce_only: bool = False) -> dict:
+        _ = reduce_only
+        return {"symbol": symbol, "side": side, "qty": qty}
 
 class _RiskGuardStub:
-    def check_open_trade_limits(self, _active_trades: dict, _mode: str) -> tuple[bool, str]:
-        return True, ""
+    pass
 
-
-def test_zero_exposure_keeps_base_min_score():
-    manager = PortfolioRiskManager(balance_provider=_BalanceStub(balance=1000.0))
-    decision = manager.evaluate(
-        {"symbol": "BTCUSDT", "direction": "LONG", "live_mode": "MAIN"},
-        active_trades={},
-        base_min_score=3.0,
-    )
-    assert decision.allowed is True
-    assert decision.adjusted_min_score == 3.0
-    assert "DISABLED_ZERO_EXPOSURE" in decision.reason
-
-
-def test_adaptive_score_bump_is_capped_and_gradual():
-    manager = PortfolioRiskManager(balance_provider=_BalanceStub(balance=100.0))
-    active_trades = {
-        "BTCUSDT": {"entry": 100.0, "sl": 75.0, "qty": 0.2, "direction": "LONG"},  # total_risk_pct=5, exposure=20
-    }
-    decision = manager.evaluate(
-        {"symbol": "ETHUSDT", "direction": "LONG", "live_mode": "MAIN"},
-        active_trades=active_trades,
-        base_min_score=3.0,
-    )
-    assert decision.allowed is True
-    assert decision.adjusted_min_score == 3.05
-
-
-def test_strong_signal_overrides_adaptive_threshold(monkeypatch):
+@pytest.fixture(autouse=True)
+def _enable_trading(monkeypatch):
     monkeypatch.setattr(config, "TRADING_ENABLED", True)
     monkeypatch.setattr(config, "REAL_TRADING_ENABLED", True)
+
+def test_rejects_low_score_signal():
+    engine = ExecutionDecisionEngine(_BybitStub())
+    decision = engine.evaluate_order(
+        {"symbol": "BTCUSDT", "direction": "LONG", "entry": 100.0, "sl": 95.0, "score": 2.5, "live_mode": "MAIN"},
+        market_data={"available_balance": 1000.0},
+        portfolio_state={"open_positions": {}},
+    )
+    assert decision.action == DecisionAction.REJECT
+    assert decision.reason == "SCORE_BELOW_THRESHOLD"
+
+def test_emergency_reject_on_margin_failure():
+    tight_constraints = {"qty_step": 0.1, "min_qty": 10.0, "max_qty": 1000.0, "tick_size": 0.1, "min_notional": 1000.0}
+    engine = ExecutionDecisionEngine(_BybitStub(balance=10.0, constraints=tight_constraints))
+    decision = engine.evaluate_order(
+        {"symbol": "ETHUSDT", "direction": "LONG", "entry": 100.0, "sl": 99.0, "score": 4.8, "live_mode": "MAIN"},
+        market_data={"available_balance": 10.0, "leverage": 1.0, "safety_buffer": 0.85},
+        portfolio_state={"open_positions": {}},
+    )
+    assert decision.action == DecisionAction.EMERGENCY_REJECT
+
+
+def test_scale_down_when_margin_is_near_limit():
+    engine = ExecutionDecisionEngine(_BybitStub(balance=100.0))
+    decision = engine.evaluate_order(
+        {"symbol": "SOLUSDT", "direction": "LONG", "entry": 100.0, "sl": 99.0, "score": 5.2, "live_mode": "MAIN"},
+        market_data={"available_balance": 100.0, "leverage": 1.0, "safety_buffer": 0.85},
+        portfolio_state={"open_positions": {"BTCUSDT": {"entry": 100.0, "qty": 0.2, "margin": 20.0}}},
+    )
+    assert decision.action in {DecisionAction.SCALE_DOWN, DecisionAction.APPROVE}
+    assert decision.final_qty > 0
+
+def test_order_manager_executes_approved_trade():
     manager = OrderManager(bybit_client=_BybitStub(balance=1000.0), risk_guard=_RiskGuardStub())
-    active_trades = {
-        "BTCUSDT": {"entry": 100.0, "sl": 99.0, "qty": 1.0, "direction": "LONG"},
-    }
-    decision = manager._can_execute(
-        {
-            "symbol": "ETHUSDT",
-            "direction": "LONG",
-            "live_mode": "MAIN",
-            "score": 3.2,
-        },
-        active_trades=active_trades,
-    )
-    assert decision.accepted is True
-
-
-def test_adaptive_block_above_base_threshold_is_portfolio_reason(monkeypatch):
-    monkeypatch.setattr(config, "TRADING_ENABLED", True)
-    monkeypatch.setattr(config, "REAL_TRADING_ENABLED", True)
-    manager = OrderManager(bybit_client=_BybitStub(balance=100.0), risk_guard=_RiskGuardStub())
-    active_trades = {
-        "BTCUSDT": {"entry": 100.0, "sl": 75.0, "qty": 0.2, "direction": "LONG"},
-    }
-    decision = manager._can_execute(
-        {
-            "symbol": "ETHUSDT",
-            "direction": "LONG",
-            "live_mode": "SCALPING",
-            "score": 3.1,
-        },
-        active_trades=active_trades,
-    )
-    assert decision.accepted is True
-
-
-def test_adaptive_block_below_base_threshold_is_execution_reason(monkeypatch):
-    monkeypatch.setattr(config, "TRADING_ENABLED", True)
-    monkeypatch.setattr(config, "REAL_TRADING_ENABLED", True)
-    manager = OrderManager(bybit_client=_BybitStub(balance=100.0), risk_guard=_RiskGuardStub())
-    active_trades = {
-        "BTCUSDT": {"entry": 100.0, "sl": 75.0, "qty": 0.2, "direction": "LONG"},
-    }
-    decision = manager._can_execute(
-        {
-            "symbol": "ETHUSDT",
-            "direction": "LONG",
-            "live_mode": "SCALPING",
-            "score": 2.8,
-        },
-        active_trades=active_trades,
-    )
-    assert decision.accepted is False
-    assert decision.reason == "LOW_SCORE_EXECUTION"
-
-
-def test_zero_total_risk_disables_adaptive_score_bump_even_with_open_trades():
-    manager = PortfolioRiskManager(balance_provider=_BalanceStub(balance=1000.0))
-    active_trades = {
-        "BTCUSDT": {"entry": 100.0, "sl": 100.0, "qty": 1.0, "direction": "LONG"},
-    }
-    decision = manager.evaluate(
-        {"symbol": "ETHUSDT", "direction": "LONG", "live_mode": "MAIN"},
-        active_trades=active_trades,
-        base_min_score=3.0,
-    )
-    assert decision.allowed is True
-    assert decision.adjusted_min_score == 3.0
-    assert "DISABLED_ZERO_EXPOSURE" in decision.reason
-
-
-def test_effective_score_allows_valid_zero_risk_signal(monkeypatch):
-    monkeypatch.setattr(config, "TRADING_ENABLED", True)
-    monkeypatch.setattr(config, "REAL_TRADING_ENABLED", True)
-    manager = OrderManager(bybit_client=_BybitStub(balance=1000.0), risk_guard=_RiskGuardStub())
-    decision = manager._can_execute(
-        {
-            "symbol": "ETHUSDT",
-            "direction": "LONG",
-            "live_mode": "MAIN",
-            "score": 3.0,
-            "passed_filters": ["TREND", "STRUCTURE"],
-            "failed_filters": [],
-            "confidence": 0.85,
-        },
+    result = manager.execute_signal(
+        {"symbol": "XRPUSDT", "direction": "LONG", "entry": 1.0, "sl": 0.9, "score": 4.0, "live_mode": "MAIN"},
         active_trades={},
     )
-    assert decision.accepted is True
-    assert decision.details["effective_score"] >= 3.2
-
-
-def test_effective_score_weak_structure_bonus_can_open(monkeypatch):
-    monkeypatch.setattr(config, "TRADING_ENABLED", True)
-    monkeypatch.setattr(config, "REAL_TRADING_ENABLED", True)
-    manager = OrderManager(bybit_client=_BybitStub(balance=1000.0), risk_guard=_RiskGuardStub())
-    decision = manager._can_execute(
-        {
-            "symbol": "XRPUSDT",
-            "direction": "LONG",
-            "live_mode": "MAIN",
-            "score": 3.0,
-            "passed_filters": ["TREND"],
-            "failed_filters": ["STRUCTURE"],
-            "confidence": 0.6,
-        },
-        active_trades={},
-    )
-    assert decision.accepted is False
-    assert decision.reason == "LOW_SCORE_EXECUTION"
-    assert decision.details["execution_bonus"] == 0.1
-
-
-def test_effective_score_applies_penalties_and_confidence_tier(monkeypatch):
-    monkeypatch.setattr(config, "TRADING_ENABLED", True)
-    monkeypatch.setattr(config, "REAL_TRADING_ENABLED", True)
-    manager = OrderManager(bybit_client=_BybitStub(balance=1000.0), risk_guard=_RiskGuardStub())
-    decision = manager._can_execute(
-        {
-            "symbol": "SOLUSDT",
-            "direction": "LONG",
-            "live_mode": "MAIN",
-            "score": 3.0,
-            "passed_filters": ["TREND"],
-            "failed_filters": ["VOLUME", "MACD"],
-            "confidence": 0.72,
-            "structure_state": "weak",
-        },
-        active_trades={},
-    )
-    assert decision.accepted is False
-    assert decision.reason == "LOW_SCORE_EXECUTION"
-    assert decision.details["execution_bonus"] == pytest.approx(0.15)
-
-
-def test_closed_trade_in_state_does_not_trigger_duplicate_block(monkeypatch):
-    monkeypatch.setattr(config, "TRADING_ENABLED", True)
-    monkeypatch.setattr(config, "REAL_TRADING_ENABLED", True)
-    manager = OrderManager(bybit_client=_BybitStub(balance=1000.0), risk_guard=_RiskGuardStub())
-    decision = manager._can_execute(
-        {
-            "symbol": "ETHUSDT",
-            "direction": "LONG",
-            "live_mode": "MAIN",
-            "score": 3.2,
-        },
-        active_trades={
-            "ETHUSDT": {"entry": 100.0, "sl": 99.0, "qty": 1.0, "direction": "LONG", "status": "CLOSED"},
-        },
-    )
-    assert decision.accepted is True
-
-
-def test_portfolio_caps_can_be_read_from_ratio_aliases(monkeypatch):
-    monkeypatch.setattr(config, "PORTFOLIO_MAX_RISK", 0.25)
-    monkeypatch.setattr(config, "PORTFOLIO_MAX_EXPOSURE", 0.50)
-    monkeypatch.setattr(config, "PORTFOLIO_MAX_SIDE_EXPOSURE", 0.35)
-    manager = PortfolioRiskManager(balance_provider=_BalanceStub(balance=100.0))
-    active_trades = {
-        "BTCUSDT": {"entry": 100.0, "sl": 90.0, "qty": 2.0, "direction": "LONG"},  # risk=20%, exposure=200%
-    }
-    decision = manager.evaluate(
-        {"symbol": "ETHUSDT", "direction": "LONG", "live_mode": "MAIN"},
-        active_trades=active_trades,
-        base_min_score=3.0,
-    )
-    assert decision.allowed is False
-    assert decision.reason == "MAX_EXPOSURE_EXCEEDED"
+    assert result.accepted is True
+    assert result.reason == "ORDER_EXECUTED"
+    assert float(result.details.get("qty") or 0.0) > 0

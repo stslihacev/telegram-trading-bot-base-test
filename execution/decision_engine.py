@@ -1,0 +1,256 @@
+"""Unified execution decision engine: single source of truth for order admission."""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+from enum import Enum
+from typing import Any
+
+import core.config as config
+from utils.logger import execution_logger
+
+
+class DecisionAction(str, Enum):
+    APPROVE = "APPROVE"
+    REJECT = "REJECT"
+    SCALE_DOWN = "SCALE_DOWN"
+    EMERGENCY_REJECT = "EMERGENCY_REJECT"
+
+
+@dataclass
+class PortfolioSnapshot:
+    total_exposure: float
+    symbol_exposure: float
+    margin_used: float
+    open_positions_count: int
+
+
+@dataclass
+class ExecutionDecision:
+    action: DecisionAction
+    reason: str
+    final_qty: float
+    side: str
+    symbol: str
+    details: dict[str, Any]
+
+
+class ExecutionDecisionEngine:
+    """Single execution brain for sizing, risk and exchange validation."""
+
+    def __init__(self, bybit_client: Any):
+        self.bybit = bybit_client
+        self._portfolio_snapshot = PortfolioSnapshot(0.0, 0.0, 0.0, 0)
+
+    def evaluate_order(self, signal: dict[str, Any], market_data: dict[str, Any], portfolio_state: dict[str, Any]) -> ExecutionDecision:
+        symbol = str(signal.get("symbol") or "").upper()
+        direction = str(signal.get("direction") or "LONG").upper()
+        side = "Buy" if direction == "LONG" else "Sell"
+        score = self._safe_float(signal.get("score"), 0.0)
+        entry = self._safe_float(signal.get("entry"), 0.0)
+        sl = self._safe_float(signal.get("sl"), 0.0)
+
+        constraints = self._load_constraints(symbol)
+        if entry <= 0 or sl <= 0 or constraints["max_qty"] <= 0:
+            return self._decision(DecisionAction.EMERGENCY_REJECT, "INVALID_SPEC", 0.0, side, symbol, {"constraints": constraints})
+
+        snapshot = self._snapshot_from_portfolio(portfolio_state, symbol)
+
+        # Priority 1: emergency blockers.
+        max_open = int(getattr(config, "MAX_OPEN_TRADES_GLOBAL", 40))
+        if snapshot.open_positions_count >= max_open:
+            return self._decision(DecisionAction.EMERGENCY_REJECT, "PORTFOLIO_OVERLOAD", 0.0, side, symbol, {"snapshot": snapshot.__dict__})
+
+        # Priority 2: reject (score/risk policy)
+        min_score = self._resolve_min_score(signal)
+        if score < min_score:
+            return self._decision(DecisionAction.REJECT, "SCORE_BELOW_THRESHOLD", 0.0, side, symbol, {"score": score, "min_score": min_score})
+
+        base_risk = self._resolve_base_risk(signal)
+        score_mult = self._score_multiplier(score)
+        balance = max(0.0, self._safe_float(market_data.get("available_balance"), self.bybit.get_balance("USDT")))
+        cap_mult, cap_reason = self._portfolio_cap_multiplier(snapshot, balance=balance)
+        if cap_mult <= 0:
+            return self._decision(DecisionAction.EMERGENCY_REJECT, "PORTFOLIO_EXPOSURE_BLOCK", 0.0, side, symbol, {"snapshot": snapshot.__dict__})
+
+        risk_distance = abs(entry - sl)
+        raw_qty = (balance * base_risk * score_mult * cap_mult) / max(risk_distance, 1e-9)
+        qty = self.bybit.round_qty_to_step(raw_qty, constraints["step_size"])
+
+        sizing_meta = {
+            "base_risk": base_risk,
+            "score_multiplier": score_mult,
+            "portfolio_cap_multiplier": cap_mult,
+            "raw_qty": raw_qty,
+            "balance": balance,
+        }
+
+        validated = self._validate_and_scale(
+            qty=qty,
+            entry=entry,
+            constraints=constraints,
+            snapshot=snapshot,
+            balance=balance,
+            market_data=market_data,
+            meta=sizing_meta,
+        )
+        if validated["final_qty"] <= 0:
+            return self._decision(validated["action"], validated["reason"], 0.0, side, symbol, validated)
+
+        final_action = DecisionAction.SCALE_DOWN if validated["scaled"] or cap_reason else DecisionAction.APPROVE
+        final_reason = "SCALED_FOR_CONSTRAINTS" if final_action == DecisionAction.SCALE_DOWN else "ORDER_VALID"
+        return self._decision(
+            final_action,
+            final_reason,
+            validated["final_qty"],
+            side,
+            symbol,
+            {
+                **validated,
+                **sizing_meta,
+                "portfolio_snapshot": snapshot.__dict__,
+                "constraints": constraints,
+            },
+        )
+
+    def _validate_and_scale(
+        self,
+        *,
+        qty: float,
+        entry: float,
+        constraints: dict[str, float],
+        snapshot: PortfolioSnapshot,
+        balance: float,
+        market_data: dict[str, Any],
+        meta: dict[str, float],
+    ) -> dict[str, Any]:
+        working_qty = max(0.0, float(qty))
+        scale_factor = 0.9
+        attempts = 0
+        leverage = max(1.0, self._safe_float(market_data.get("leverage"), getattr(config, "MAX_NOTIONAL_LEVERAGE", 3.0)))
+        safety_buffer = min(0.9, max(0.85, self._safe_float(market_data.get("safety_buffer"), 0.88)))
+
+        while attempts < 40:
+            attempts += 1
+            aligned_qty = self.bybit.round_qty_to_step(working_qty, constraints["step_size"])
+            if aligned_qty < constraints["min_qty"] or aligned_qty > constraints["max_qty"]:
+                execution_logger.debug(
+                    "qty adjustments: aligned_qty=%s min_qty=%s max_qty=%s", aligned_qty, constraints["min_qty"], constraints["max_qty"]
+                )
+                working_qty *= scale_factor
+                continue
+
+            notional = aligned_qty * entry
+            if notional < constraints["min_notional"]:
+                working_qty *= scale_factor
+                continue
+
+            required_margin = notional / leverage
+            margin_limit = balance * safety_buffer
+            execution_logger.debug(
+                "margin calculation: required_margin=%.6f margin_limit=%.6f leverage=%.3f", required_margin, margin_limit, leverage
+            )
+            execution_logger.debug(
+                "portfolio constraints: total_exposure=%.6f symbol_exposure=%.6f margin_used=%.6f", snapshot.total_exposure, snapshot.symbol_exposure, snapshot.margin_used
+            )
+            if snapshot.margin_used + required_margin > margin_limit:
+                working_qty *= scale_factor
+                continue
+
+            return {
+                "action": DecisionAction.SCALE_DOWN if aligned_qty < qty else DecisionAction.APPROVE,
+                "reason": "VALID",
+                "final_qty": aligned_qty,
+                "scaled": aligned_qty < qty,
+                "required_margin": required_margin,
+                "margin_limit": margin_limit,
+                "attempts": attempts,
+                "leverage": leverage,
+                "safety_buffer": safety_buffer,
+            }
+
+        return {
+            "action": DecisionAction.EMERGENCY_REJECT,
+            "reason": "MARGIN_OR_VALIDATION_FAILURE",
+            "final_qty": 0.0,
+            "scaled": True,
+            "attempts": attempts,
+            "input_qty": qty,
+            "meta": meta,
+        }
+
+    def _load_constraints(self, symbol: str) -> dict[str, float]:
+        base = self.bybit.get_symbol_lot_filters(symbol)
+        return {
+            "step_size": self._safe_float(base.get("qty_step"), 0.0),
+            "min_qty": self._safe_float(base.get("min_qty"), 0.0),
+            "max_qty": self._safe_float(base.get("max_qty"), 0.0),
+            "tick_size": self._safe_float(base.get("tick_size"), 0.0),
+            "min_notional": self._safe_float(base.get("min_notional"), 5.0),
+        }
+
+    def _snapshot_from_portfolio(self, portfolio_state: dict[str, Any], symbol: str) -> PortfolioSnapshot:
+        positions = portfolio_state.get("open_positions") if isinstance(portfolio_state, dict) else None
+        if not isinstance(positions, dict):
+            positions = {}
+        total_exposure = 0.0
+        symbol_exposure = 0.0
+        margin_used = 0.0
+        for sym, row in positions.items():
+            if not isinstance(row, dict):
+                continue
+            entry = self._safe_float(row.get("entry"), 0.0)
+            qty = self._safe_float(row.get("qty"), 0.0)
+            exposure = abs(entry * qty)
+            total_exposure += exposure
+            if str(sym).upper() == symbol:
+                symbol_exposure += exposure
+            margin_used += self._safe_float(row.get("margin"), 0.0)
+        snap = PortfolioSnapshot(total_exposure, symbol_exposure, margin_used, len(positions))
+        self._portfolio_snapshot = snap
+        return snap
+
+    @staticmethod
+    def _resolve_min_score(signal: dict[str, Any]) -> float:
+        mode = str(signal.get("live_mode") or signal.get("mode") or "MAIN").upper()
+        return float(getattr(config, f"MIN_SCORE_THRESHOLD_{mode}", getattr(config, "MIN_SCORE_THRESHOLD_MAIN", 3.0)))
+
+    @staticmethod
+    def _resolve_base_risk(signal: dict[str, Any]) -> float:
+        mode = str(signal.get("live_mode") or signal.get("mode") or "MAIN").upper()
+        if mode == "SCALPING":
+            return max(0.0, float(getattr(config, "RISK_PER_TRADE_SCALPING", getattr(config, "RISK_PER_TRADE", 0.01))))
+        return max(0.0, float(getattr(config, "RISK_PER_TRADE_MAIN", getattr(config, "RISK_PER_TRADE", 0.01))))
+
+    @staticmethod
+    def _score_multiplier(score: float) -> float:
+        if score < 3.5:
+            return 0.5
+        if score <= 4.5:
+            return 1.0
+        if score <= 5.5:
+            return 1.2
+        return 1.5
+
+    @staticmethod
+    def _portfolio_cap_multiplier(snapshot: PortfolioSnapshot, *, balance: float) -> tuple[float, str | None]:
+        max_exposure_ratio = float(getattr(config, "PORTFOLIO_MAX_EXPOSURE", 0.50))
+        current_load = snapshot.total_exposure / max(float(balance), 1e-9)
+        if current_load >= max_exposure_ratio:
+            return 0.0, "CAP_BLOCK"
+        if current_load >= max_exposure_ratio * 0.9:
+            return 0.5, "NEAR_CAP"
+        if current_load >= max_exposure_ratio * 0.7:
+            return 0.75, "HIGH_LOAD"
+        return 1.0, None
+
+    @staticmethod
+    def _safe_float(value: Any, default: float) -> float:
+        try:
+            return float(value)
+        except (TypeError, ValueError):
+            return float(default)
+
+    @staticmethod
+    def _decision(action: DecisionAction, reason: str, qty: float, side: str, symbol: str, details: dict[str, Any]) -> ExecutionDecision:
+        return ExecutionDecision(action=action, reason=reason, final_qty=max(0.0, float(qty)), side=side, symbol=symbol, details=details)

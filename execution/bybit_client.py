@@ -292,13 +292,16 @@ class BybitExecutionClient:
         )
         rows = payload.get("result", {}).get("list", [])
         if not rows:
-            return {"qty_step": 0.0, "min_qty": 0.0, "max_qty": 0.0}
+            return {"qty_step": 0.0, "min_qty": 0.0, "max_qty": 0.0, "tick_size": 0.0, "min_notional": 0.0}
         row = rows[0] if isinstance(rows[0], dict) else {}
         lot_filter = row.get("lotSizeFilter", {}) if isinstance(row.get("lotSizeFilter"), dict) else {}
+        price_filter = row.get("priceFilter", {}) if isinstance(row.get("priceFilter"), dict) else {}
         return {
             "qty_step": float(lot_filter.get("qtyStep") or 0.0),
             "min_qty": float(lot_filter.get("minOrderQty") or 0.0),
             "max_qty": float(lot_filter.get("maxOrderQty") or 0.0),
+            "tick_size": float(price_filter.get("tickSize") or 0.0),
+            "min_notional": float(lot_filter.get("minNotionalValue") or 0.0),
         }
 
     @staticmethod
