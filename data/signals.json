@@ -1195,5 +1195,23 @@
     "signal_type": "strict",
     "score": 3.0,
     "timestamp": "2026-04-19T09:00:00+00:00"
+  },
+  {
+    "signal_id": "ZROUSDT_1h_SHORT_2026-04-19 10:00:00+00:00",
+    "symbol": "ZROUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.4,
+    "timestamp": "2026-04-19T10:00:00+00:00"
+  },
+  {
+    "signal_id": "BIOUSDT_1h_LONG_2026-04-19 10:00:00+00:00",
+    "symbol": "BIOUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 4.4,
+    "timestamp": "2026-04-19T10:00:00+00:00"
   }
 ]

@@ -1,36 +1,6 @@
 {
   "version": 2,
   "active_signals": {
-    "HYPEUSDT": {
-      "direction": "LONG",
-      "entry": 43.281,
-      "sl": 42.7931,
-      "tp": 44.06163999999999,
-      "score": 3.0,
-      "confidence": 0.6,
-      "status": "CONFIRMED",
-      "timestamp": "2026-04-19 08:00:00+00:00",
-      "pending_since": "2026-04-19 08:00:00+00:00",
-      "confirmation_reason": "no active signal",
-      "rejection_reason": null,
-      "opened_at": null,
-      "closed_at": null
-    },
-    "PROMUSDT": {
-      "direction": "LONG",
-      "entry": 2.1731,
-      "sl": 1.912785714285714,
-      "tp": 2.589602857142857,
-      "score": 3.0,
-      "confidence": 0.6,
-      "status": "CONFIRMED",
-      "timestamp": "2026-04-19 08:00:00+00:00",
-      "pending_since": "2026-04-19 08:00:00+00:00",
-      "confirmation_reason": "no active signal",
-      "rejection_reason": null,
-      "opened_at": null,
-      "closed_at": null
-    },
     "API3USDT": {
       "direction": "LONG",
       "entry": 0.3483,
@@ -60,13 +30,45 @@
       "rejection_reason": null,
       "opened_at": null,
       "closed_at": null
+    },
+    "ZROUSDT": {
+      "direction": "SHORT",
+      "entry": 1.5491,
+      "sl": 1.6678528571428572,
+      "tp": 1.359095428571428,
+      "score": 3.4,
+      "confidence": 0.6799999999999999,
+      "status": "CONFIRMED",
+      "timestamp": "2026-04-19 10:00:00+00:00",
+      "pending_since": "2026-04-19 10:00:00+00:00",
+      "confirmation_reason": "STRONG_SIGNAL_OVERRIDE",
+      "rejection_reason": null,
+      "opened_at": null,
+      "closed_at": null
+    },
+    "BIOUSDT": {
+      "direction": "LONG",
+      "entry": 0.0309,
+      "sl": 0.029052857142857144,
+      "tp": 0.03385542857142857,
+      "score": 4.4,
+      "confidence": 0.8800000000000001,
+      "status": "CONFIRMED",
+      "timestamp": "2026-04-19 10:00:00+00:00",
+      "pending_since": "2026-04-19 10:00:00+00:00",
+      "confirmation_reason": "STRONG_SIGNAL_OVERRIDE",
+      "rejection_reason": null,
+      "opened_at": "2026-04-19 10:00:00+00:00",
+      "closed_at": null
     }
   },
   "seen_signals": {
     "HYPEUSDT_1h_LONG_2026-04-19 08:00:00+00:00": "2026-04-19T10:44:52.987151+00:00",
     "PROMUSDT_1h_LONG_2026-04-19 08:00:00+00:00": "2026-04-19T10:44:53.433219+00:00",
     "API3USDT_1h_LONG_2026-04-19 09:00:00+00:00": "2026-04-19T11:00:27.306891+00:00",
-    "PIEVERSEUSDT_1h_LONG_2026-04-19 09:00:00+00:00": "2026-04-19T11:00:27.786939+00:00"
+    "PIEVERSEUSDT_1h_LONG_2026-04-19 09:00:00+00:00": "2026-04-19T11:00:27.786939+00:00",
+    "ZROUSDT_1h_SHORT_2026-04-19 10:00:00+00:00": "2026-04-19T12:52:51.892249+00:00",
+    "BIOUSDT_1h_LONG_2026-04-19 10:00:00+00:00": "2026-04-19T12:52:51.897250+00:00"
   },
   "failed_signals": {},
   "last_reversal_at": {}

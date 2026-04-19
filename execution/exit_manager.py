@@ -34,6 +34,222 @@ class ProfitProtectionAction:
     reason: str = ""
     recommended_sl: float | None = None
 
+@dataclass
+class ExitOrchestratorDecision:
+    action: str = "HOLD"
+    size: float = 0.0
+    reason: str = "no_action"
+    priority: int = 99
+    recommended_sl: float | None = None
+    close_reason: str = ""
+    momentum_score: float = 0.0
+
+
+class ExitOrchestrator:
+    """Single decision layer for all exit/profit-protection actions."""
+
+    PRIORITY_HARD_EXIT = 1
+    PRIORITY_FULL_EXIT = 2
+    PRIORITY_PARTIAL = 3
+    PRIORITY_SL_UPDATE = 4
+    PRIORITY_HOLD = 99
+
+    def __init__(self, manager: "SmartExitManager") -> None:
+        self.manager = manager
+
+    def decide(
+        self,
+        *,
+        position: Any,
+        current_price: float,
+        market_data: dict[str, Any],
+        indicators: dict[str, Any],
+        hard_tp_hit: bool,
+        hard_sl_hit: bool,
+    ) -> tuple[ExitOrchestratorDecision, dict[str, float]]:
+        metrics = self.manager.collect_exit_metrics(
+            position=position,
+            current_price=current_price,
+            market_data=market_data,
+            indicators=indicators,
+        )
+        current_profit_r = float(metrics.get("current_profit_r", 0.0))
+        max_profit_r = float(metrics.get("max_profit_r", current_profit_r))
+        drawdown_r = float(metrics.get("drawdown_r", 0.0))
+        atr_in_r = float(metrics.get("atr_in_r", 0.0))
+        side = self.manager._position_side(position)
+        entry = self.manager._to_float(getattr(position, "entry_price", 0.0))
+        risk = self.manager._to_float(metrics.get("risk", 0.0))
+        bars_alive = int(metrics.get("bars_alive", 0))
+        distance_to_tp_r = float(metrics.get("distance_to_tp_r", float("inf")))
+
+        if hard_tp_hit or hard_sl_hit:
+            reason = "hard_tp_hit" if hard_tp_hit else "hard_sl_hit"
+            return (
+                ExitOrchestratorDecision(
+                    action="FULL_CLOSE",
+                    size=1.0,
+                    reason=reason,
+                    priority=self.PRIORITY_HARD_EXIT,
+                    close_reason=reason.upper(),
+                ),
+                metrics,
+            )
+
+        momentum_score = self.manager.compute_momentum_exit_score(
+            position=position,
+            market_data=market_data,
+            indicators=indicators,
+        )
+
+        # Stage 1: 0.8R-1.2R early pullback protection
+        pullback_triggered, _, allowed_dd = self.manager.assess_pullback_protection(
+            current_pnl_r=current_profit_r,
+            max_profit_r=max_profit_r,
+            partial_done=bool(getattr(position, "partial_pullback_done", False)),
+            atr_in_r=atr_in_r,
+            volatility_k=0.75,
+        )
+        if pullback_triggered and current_profit_r < 1.2:
+            close_ratio = min(0.4, max(0.25, 0.3 + max(0.0, current_profit_r - 0.8) * 0.15))
+            recommended_sl = entry + (0.2 * risk) if side == "LONG" else entry - (0.2 * risk)
+            logger.info(
+                "EARLY_PULLBACK_TRIGGERED: symbol=%s pnl_r=%.3f max_profit_r=%.3f drawdown_r=%.3f allowed_dd=%.3f close_ratio=%.2f",
+                str(getattr(position, "symbol", "")).upper(),
+                current_profit_r,
+                max_profit_r,
+                drawdown_r,
+                allowed_dd,
+                close_ratio,
+            )
+            return (
+                ExitOrchestratorDecision(
+                    action="PARTIAL_CLOSE",
+                    size=close_ratio,
+                    reason="early_pullback_protection",
+                    priority=self.PRIORITY_PARTIAL,
+                    recommended_sl=recommended_sl,
+                    momentum_score=momentum_score,
+                ),
+                metrics,
+            )
+
+        # Stage 2: >=1.2R (existing breakeven + partial behavior)
+        if current_profit_r >= 1.2 and not bool(getattr(position, "breakeven_moved", False)):
+            return (
+                ExitOrchestratorDecision(
+                    action="TIGHTEN_SL",
+                    size=0.0,
+                    reason="stage2_breakeven",
+                    priority=self.PRIORITY_SL_UPDATE,
+                    recommended_sl=entry,
+                    momentum_score=momentum_score,
+                ),
+                metrics,
+            )
+        if current_profit_r >= 1.2 and not bool(getattr(position, "partial_15r_done", False) or getattr(position, "tp1_hit", False)):
+            return (
+                ExitOrchestratorDecision(
+                    action="PARTIAL_CLOSE",
+                    size=0.35,
+                    reason="stage2_partial_1p2r",
+                    priority=self.PRIORITY_PARTIAL,
+                    momentum_score=momentum_score,
+                ),
+                metrics,
+            )
+
+        # Stage 3: >=1.5R trailing stop management
+        if current_profit_r >= 1.5 and risk > 0:
+            trend_strength = self.manager._resolve_trend_strength(indicators, market_data)
+            trailing_distance_r = 1.0 if trend_strength == "strong" else (0.6 if trend_strength == "weak" else 0.8)
+            if distance_to_tp_r < 0.5:
+                trailing_distance_r += 0.1
+            if side == "LONG":
+                trail_ref = current_price - (risk * trailing_distance_r)
+                trailing_stop = max(entry, trail_ref)
+            else:
+                trail_ref = current_price + (risk * trailing_distance_r)
+                trailing_stop = min(entry, trail_ref)
+            return (
+                ExitOrchestratorDecision(
+                    action="TIGHTEN_SL",
+                    size=0.0,
+                    reason=f"stage3_trailing_{trend_strength}",
+                    priority=self.PRIORITY_SL_UPDATE,
+                    recommended_sl=trailing_stop,
+                    momentum_score=momentum_score,
+                ),
+                metrics,
+            )
+
+        # Momentum-based exits
+        if momentum_score >= 0.85 and current_profit_r >= 0.8:
+            logger.info(
+                "MOMENTUM_EXIT_TRIGGERED: symbol=%s score=%.2f strength=strong pnl_r=%.3f",
+                str(getattr(position, "symbol", "")).upper(),
+                momentum_score,
+                current_profit_r,
+            )
+            return (
+                ExitOrchestratorDecision(
+                    action="FULL_CLOSE",
+                    size=1.0,
+                    reason="momentum_exit_strong",
+                    close_reason="momentum_exit_strong",
+                    priority=self.PRIORITY_FULL_EXIT,
+                    momentum_score=momentum_score,
+                ),
+                metrics,
+            )
+        if momentum_score >= 0.65 and current_profit_r >= 0.8:
+            logger.info(
+                "MOMENTUM_EXIT_TRIGGERED: symbol=%s score=%.2f strength=medium pnl_r=%.3f",
+                str(getattr(position, "symbol", "")).upper(),
+                momentum_score,
+                current_profit_r,
+            )
+            return (
+                ExitOrchestratorDecision(
+                    action="PARTIAL_CLOSE",
+                    size=0.25,
+                    reason="momentum_exit_medium",
+                    priority=self.PRIORITY_PARTIAL,
+                    momentum_score=momentum_score,
+                ),
+                metrics,
+            )
+        if momentum_score >= 0.45 and current_profit_r >= 0.8 and risk > 0:
+            logger.info(
+                "MOMENTUM_EXIT_TRIGGERED: symbol=%s score=%.2f strength=weak pnl_r=%.3f",
+                str(getattr(position, "symbol", "")).upper(),
+                momentum_score,
+                current_profit_r,
+            )
+            tighten_sl = entry + (0.1 * risk) if side == "LONG" else entry - (0.1 * risk)
+            return (
+                ExitOrchestratorDecision(
+                    action="TIGHTEN_SL",
+                    size=0.0,
+                    reason="momentum_exit_weak_tighten",
+                    priority=self.PRIORITY_SL_UPDATE,
+                    recommended_sl=tighten_sl,
+                    momentum_score=momentum_score,
+                ),
+                metrics,
+            )
+
+        return (
+            ExitOrchestratorDecision(
+                action="HOLD",
+                size=0.0,
+                reason="no_exit_signal",
+                priority=self.PRIORITY_HOLD,
+                momentum_score=momentum_score,
+            ),
+            metrics,
+        )
+
 
 class SmartExitManager:
     """Rule-based exit manager with multi-condition confirmation."""
@@ -48,6 +264,7 @@ class SmartExitManager:
         self.min_bars_before_exit = max(3, int(min_bars_before_exit))
         self.structure_lookback = max(4, int(structure_lookback))
         self.momentum_stall_bars = max(3, int(momentum_stall_bars))
+        self.orchestrator = ExitOrchestrator(self)
 
     @staticmethod
     def _to_float(value: Any, default: float = 0.0) -> float:
@@ -330,13 +547,96 @@ class SmartExitManager:
         return "neutral"
 
     @staticmethod
-    def assess_pullback_protection(current_pnl_r: float, max_profit_r: float, partial_done: bool) -> tuple[bool, float]:
+    def assess_pullback_protection(
+        current_pnl_r: float,
+        max_profit_r: float,
+        partial_done: bool,
+        atr_in_r: float = 0.0,
+        volatility_k: float = 0.75,
+    ) -> tuple[bool, float, float]:
         """Shared pullback rule for simulation and live execution."""
         if partial_done:
-            return False, 0.0
+            return False, 0.0, 0.0
         drawdown_r = max(0.0, float(max_profit_r) - float(current_pnl_r))
-        should_trigger = current_pnl_r >= 0.8 and max_profit_r >= 1.2 and drawdown_r >= 0.4
-        return should_trigger, drawdown_r
+        allowed_dd = max(0.25, float(max_profit_r) * 0.3, max(0.0, float(atr_in_r)) * max(0.5, float(volatility_k)))
+        should_trigger = current_pnl_r >= 0.8 and max_profit_r >= 0.8 and drawdown_r >= allowed_dd
+        return should_trigger, drawdown_r, allowed_dd
+
+    def collect_exit_metrics(
+        self,
+        *,
+        position: Any,
+        current_price: float,
+        market_data: dict[str, Any],
+        indicators: dict[str, Any],
+    ) -> dict[str, float]:
+        current_profit_r, distance_to_tp_r, risk = self._r_metrics(position, current_price)
+        max_profit_r = max(
+            self._to_float(getattr(position, "max_profit_r", current_profit_r), current_profit_r),
+            current_profit_r,
+        )
+        drawdown_r = max(0.0, max_profit_r - current_profit_r)
+        atr_value = self._to_float(indicators.get("atr"), 0.0)
+        if atr_value <= 0:
+            atr_series = indicators.get("atr_series") if isinstance(indicators.get("atr_series"), list) else []
+            if atr_series:
+                atr_value = self._to_float(atr_series[-1], 0.0)
+        atr_in_r = (atr_value / risk) if risk > 0 else 0.0
+        return {
+            "current_profit_r": current_profit_r,
+            "max_profit_r": max_profit_r,
+            "drawdown_r": drawdown_r,
+            "bars_alive": float(int(getattr(position, "bars_alive", 0) or 0)),
+            "distance_to_tp_r": distance_to_tp_r,
+            "risk": risk,
+            "atr_in_r": atr_in_r,
+        }
+
+    def compute_momentum_exit_score(self, *, position: Any, market_data: dict[str, Any], indicators: dict[str, Any]) -> float:
+        side = self._position_side(position)
+        current_price = self._to_float(market_data.get("current_price"), self._to_float(market_data.get("price"), 0.0))
+        highs, lows, closes = self._extract_candles(market_data, current_price)
+        if len(closes) < 7:
+            return 0.0
+        bodies = [abs(closes[i] - closes[i - 1]) for i in range(1, len(closes))]
+        recent_n = min(3, len(bodies))
+        previous_n = min(3, max(0, len(bodies) - recent_n))
+        if recent_n <= 0 or previous_n <= 0:
+            return 0.0
+        recent_body_mean = sum(bodies[-recent_n:]) / recent_n
+        prev_body_mean = sum(bodies[-(recent_n + previous_n):-recent_n]) / previous_n
+        body_shrink_ratio = (recent_body_mean / prev_body_mean) if prev_body_mean > 0 else 1.0
+        body_shrink_score = max(0.0, min(1.0, (1.0 - body_shrink_ratio) / 0.5))
+
+        recent_returns = [closes[i] - closes[i - 1] for i in range(max(1, len(closes) - 4), len(closes))]
+        if len(recent_returns) >= 3:
+            acceleration = recent_returns[-1] - recent_returns[-2]
+            prev_acc = recent_returns[-2] - recent_returns[-3]
+            acceleration_slow_score = 1.0 if abs(acceleration) < abs(prev_acc) else 0.0
+        else:
+            acceleration_slow_score = 0.0
+
+        if side == "LONG":
+            no_new_extreme = max(highs[-3:]) <= max(highs[-6:-3])
+        else:
+            no_new_extreme = min(lows[-3:]) >= min(lows[-6:-3])
+        no_new_extreme_score = 1.0 if no_new_extreme else 0.0
+
+        volume_drop_score = 0.0
+        volume_series = indicators.get("volume_series") if isinstance(indicators.get("volume_series"), list) else []
+        if len(volume_series) >= 6:
+            recent_vol = sum(self._to_float(v, 0.0) for v in volume_series[-3:]) / 3
+            prev_vol = sum(self._to_float(v, 0.0) for v in volume_series[-6:-3]) / 3
+            if prev_vol > 0 and recent_vol < prev_vol:
+                volume_drop_score = min(1.0, (prev_vol - recent_vol) / prev_vol)
+
+        score = (
+            body_shrink_score * 0.30
+            + acceleration_slow_score * 0.30
+            + no_new_extreme_score * 0.30
+            + volume_drop_score * 0.10
+        )
+        return max(0.0, min(1.0, score))
 
     def evaluate_profit_protection(
         self,
@@ -365,10 +665,11 @@ class SmartExitManager:
         max_profit_r = self._to_float(getattr(position, "max_profit_r", pnl_r), pnl_r)
         partial_pullback_done = bool(getattr(position, "partial_pullback_done", False))
 
-        pullback_triggered, drawdown_r = self.assess_pullback_protection(
+        pullback_triggered, drawdown_r, allowed_dd = self.assess_pullback_protection(
             current_pnl_r=pnl_r,
             max_profit_r=max_profit_r,
             partial_done=partial_pullback_done,
+            atr_in_r=0.0,
         )
         if pullback_triggered:
             action.partial_close = True
@@ -379,11 +680,12 @@ class SmartExitManager:
             else:
                 action.recommended_sl = entry - (0.2 * risk)
             logger.info(
-                "PULLBACK_PROTECTION: symbol=%s max_profit_r=%.4f current_pnl_r=%.4f drawdown_r=%.4f closed_ratio=0.5",
+                "PULLBACK_PROTECTION: symbol=%s max_profit_r=%.4f current_pnl_r=%.4f drawdown_r=%.4f allowed_dd=%.4f closed_ratio=0.5",
                 symbol,
                 max_profit_r,
                 pnl_r,
                 drawdown_r,
+                allowed_dd,
             )
 
 

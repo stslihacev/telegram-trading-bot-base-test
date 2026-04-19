@@ -1125,19 +1125,22 @@ class SignalAnalytics:
 
         if mode == "MAIN" and not bool(trade.get("partial_pullback_done")):
             max_profit_r = self._safe_float(trade.get("max_profit_r"))
-            pullback_triggered, drawdown_r = SmartExitManager.assess_pullback_protection(
+            initial_risk = self._safe_float(trade.get("initial_risk"))
+            atr_in_r = (self._safe_float(trade.get("atr"), default=0.0) / initial_risk) if initial_risk > 0 else 0.0
+            pullback_triggered, drawdown_r, allowed_dd = SmartExitManager.assess_pullback_protection(
                 current_pnl_r=current_pnl_r,
                 max_profit_r=max_profit_r,
                 partial_done=bool(trade.get("partial_pullback_done")),
+                atr_in_r=atr_in_r,
+                volatility_k=0.75,
             )
             if pullback_triggered:
                 remaining_size = max(0.0, self._safe_float(trade.get("remaining_size"), default=1.0))
                 if remaining_size > 0:
-                    closed_size = remaining_size * 0.5
+                    closed_size = remaining_size * 0.3
                     trade["remaining_size"] = remaining_size - closed_size
                     trade["partial_pullback_done"] = True
                     entry = self._safe_float(trade.get("entry"))
-                    initial_risk = self._safe_float(trade.get("initial_risk"))
                     if direction == "LONG":
                         target_sl = entry + (0.2 * initial_risk)
                         trade["sl"] = max(self._safe_float(trade.get("sl")), target_sl)
@@ -1145,11 +1148,12 @@ class SignalAnalytics:
                         target_sl = entry - (0.2 * initial_risk)
                         trade["sl"] = min(self._safe_float(trade.get("sl")), target_sl)
                     logger.info(
-                        "PULLBACK_PROTECTION: symbol=%s max_profit_r=%.4f current_pnl_r=%.4f drawdown_r=%.4f closed_ratio=0.5",
+                        "PULLBACK_PROTECTION: symbol=%s max_profit_r=%.4f current_pnl_r=%.4f drawdown_r=%.4f allowed_dd=%.4f closed_ratio=0.3",
                         symbol_key,
                         max_profit_r,
                         current_pnl_r,
                         drawdown_r,
+                        allowed_dd,
                     )
                     self.active_trades[symbol_key] = trade
                     self._save_active_trades()

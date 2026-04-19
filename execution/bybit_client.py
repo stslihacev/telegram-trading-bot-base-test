@@ -143,7 +143,10 @@ class BybitExecutionClient:
         return result
 
     def close_position(self, *, symbol: str, side: str, qty: float) -> dict[str, Any]:
-        close_side = "Sell" if str(side).upper() == "LONG" else "Buy"
+        side_upper = str(side or "").upper()
+        if side_upper not in {"LONG", "SHORT"}:
+            raise ValueError(f"Unsupported position side for reduce-only close: {side}")
+        close_side = "Sell" if side_upper == "LONG" else "Buy"
         return self.place_market_order(symbol=symbol, side=close_side, qty=qty, reduce_only=True)
 
     def get_positions(self, symbol: str | None = None) -> list[dict[str, Any]]:

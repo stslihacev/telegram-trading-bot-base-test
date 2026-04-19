@@ -3,6 +3,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 
 import core.config as config
+import pytest
 from services.signal_analytics import SignalAnalytics
 
 
@@ -42,5 +43,20 @@ def test_pullback_protection_triggers_after_1_5r_to_1_0r(tmp_path, monkeypatch) 
     analytics.check_trade_exits(current_price=110.0, symbol=symbol, timestamp=now)
     trade_after_pullback = analytics.active_trades[symbol]
     assert trade_after_pullback["partial_pullback_done"] is True
-    assert trade_after_pullback["remaining_size"] == 0.25
+    assert trade_after_pullback["remaining_size"] == 0.35
     assert trade_after_pullback["sl"] >= 102.0
+
+
+def test_pullback_protection_uses_volatility_buffer() -> None:
+    from execution.exit_manager import SmartExitManager
+
+    triggered, drawdown_r, allowed_dd = SmartExitManager.assess_pullback_protection(
+        current_pnl_r=1.05,
+        max_profit_r=1.5,
+        partial_done=False,
+        atr_in_r=0.7,
+        volatility_k=0.75,
+    )
+    assert drawdown_r == pytest.approx(0.45)
+    assert allowed_dd == pytest.approx(0.525)
+    assert triggered is False

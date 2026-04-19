@@ -43,6 +43,46 @@ class PositionManager:
         self.positions: dict[str, ManagedPosition] = {}
         self.exit_manager = SmartExitManager()
 
+    def _safe_reduce_close(self, position: ManagedPosition, qty: float, reason: str) -> float:
+        safe_qty = max(0.0, min(float(qty or 0.0), float(position.size or 0.0)))
+        if safe_qty <= 0:
+            return 0.0
+        expected_side = "BUY" if position.side == "LONG" else "SELL"
+        exchange_row: dict[str, Any] | None = None
+        for row in self.bybit.get_positions(symbol=position.symbol):
+            row_size = float(row.get("size") or 0.0)
+            if row_size <= 0:
+                continue
+            row_idx = int(row.get("positionIdx")) if row.get("positionIdx") not in (None, "") else None
+            if position.position_idx is not None and row_idx != position.position_idx:
+                continue
+            exchange_row = row
+            break
+        if not exchange_row:
+            logger.warning("REDUCE_CLOSE_BLOCKED: symbol=%s reason=no_exchange_position", position.symbol)
+            return 0.0
+        exchange_side = str(exchange_row.get("side") or "").upper()
+        exchange_size = float(exchange_row.get("size") or 0.0)
+        if exchange_side != expected_side:
+            logger.warning(
+                "REDUCE_CLOSE_BLOCKED: symbol=%s reason=side_mismatch expected=%s exchange=%s",
+                position.symbol,
+                expected_side,
+                exchange_side,
+            )
+            return 0.0
+        executable_qty = max(0.0, min(safe_qty, exchange_size))
+        if executable_qty <= 0:
+            return 0.0
+        self.bybit.close_position(symbol=position.symbol, side=position.side, qty=executable_qty)
+        logger.info(
+            "REDUCE_CLOSE_EXECUTED: symbol=%s qty=%.8f reduce_only=true reason=%s",
+            position.symbol,
+            executable_qty,
+            reason,
+        )
+        return executable_qty
+
     def sync_from_exchange(self, known_positions: dict[str, dict[str, Any]] | None = None) -> list[dict[str, Any]]:
         """Recovery/reconciliation with Bybit positions."""
         reconciliation_events: list[dict[str, Any]] = []
@@ -324,84 +364,76 @@ class PositionManager:
             float(position.current_profit_r or 0.0),
             float(position.max_profit_r or 0.0),
         )
+        active_tp = position.tp2 if position.mode == "MAIN" and position.tp1_hit and position.tp2 else position.tp
+        tp_hit = (position.side == "LONG" and live_price >= active_tp) or (position.side == "SHORT" and live_price <= active_tp)
+        sl_hit = (position.side == "LONG" and live_price <= position.sl) or (position.side == "SHORT" and live_price >= position.sl)
+
+        orchestrator_decision, metrics = self.exit_manager.orchestrator.decide(
+            position=position,
+            current_price=live_price,
+            market_data=runtime_market_data,
+            indicators=runtime_indicators,
+            hard_tp_hit=tp_hit,
+            hard_sl_hit=sl_hit,
+        )
+        logger.info(
+            "EXIT_DECISION: symbol=%s action=%s reason=%s priority=%s pnl_r=%.3f max_profit_r=%.3f drawdown=%.3f",
+            position.symbol,
+            orchestrator_decision.action,
+            orchestrator_decision.reason,
+            orchestrator_decision.priority,
+            float(metrics.get("current_profit_r", 0.0)),
+            float(metrics.get("max_profit_r", 0.0)),
+            float(metrics.get("drawdown_r", 0.0)),
+        )
+
+        if orchestrator_decision.action == "FULL_CLOSE":
+            if position.size > 0:
+                closed_qty = self._safe_reduce_close(position, position.size, orchestrator_decision.reason)
+                position.size -= closed_qty
+            reason = orchestrator_decision.close_reason or orchestrator_decision.reason
+            logger.info("POSITION_CLOSED: symbol=%s reason=%s", position.symbol, reason)
+            self.positions.pop(position.symbol, None)
+            events.append(reason)
+            return events
 
         if position.mode == "MAIN" and not position.tp1_hit and position.tp1 is not None:
             tp1_hit = (position.side == "LONG" and live_price >= position.tp1) or (position.side == "SHORT" and live_price <= position.tp1)
             if tp1_hit:
                 close_qty = max(position.size * 0.5, 0.0)
                 if close_qty > 0:
-                    self.bybit.close_position(symbol=position.symbol, side=position.side, qty=close_qty)
-                    position.size -= close_qty
+                    closed_qty = self._safe_reduce_close(position, close_qty, "tp1_scaling")
+                    position.size -= closed_qty
                 position.tp1_hit = True
                 self._apply_sl_tp(position, new_sl=position.entry_price, new_tp=position.tp2)
                 logger.info("POSITION_PARTIAL_CLOSED: symbol=%s closed_qty=%s tp_stage=TP1", position.symbol, close_qty)
                 logger.info("SL_MOVED: symbol=%s new_sl=%s reason=BREAKEVEN_AFTER_TP1", position.symbol, position.entry_price)
                 events.append("TP1")
 
-        protection_action = self.exit_manager.evaluate_profit_protection(
-            position=position,
-            current_price=live_price,
-            market_data=runtime_market_data,
-            indicators=runtime_indicators,
-        )
-        logger.info(
-            "EXIT_CHECK_TRIGGERED: symbol=%s source=profit_protection pnl_r=%.3f",
-            position.symbol,
-            float(position.current_profit_r or 0.0),
-        )
-        if protection_action.move_to_breakeven:
-            applied = self._apply_sl_tp(position, new_sl=position.entry_price, new_tp=position.tp2 if position.tp2 else position.tp)
-            if applied:
-                position.breakeven_moved = True
-            logger.info("PROFIT_PROTECTION: symbol=%s action=MOVE_SL_TO_BREAKEVEN", position.symbol)
-        if protection_action.partial_close and position.size > 0:
-            close_qty = max(position.size * protection_action.partial_close_ratio, 0.0)
+        if orchestrator_decision.action == "PARTIAL_CLOSE" and position.size > 0:
+            close_qty = max(position.size * float(orchestrator_decision.size or 0.0), 0.0)
             if close_qty > 0:
-                self.bybit.close_position(symbol=position.symbol, side=position.side, qty=close_qty)
-                position.size -= close_qty
-                position.partial_15r_done = True
-                if protection_action.reason == "pullback_protection":
+                closed_qty = self._safe_reduce_close(position, close_qty, orchestrator_decision.reason)
+                position.size -= closed_qty
+                if orchestrator_decision.reason == "early_pullback_protection":
                     position.partial_pullback_done = True
-                logger.info("PROFIT_PROTECTION: symbol=%s action=PARTIAL_CLOSE_EARLY", position.symbol)
+                else:
+                    position.partial_15r_done = True
+                logger.info(
+                    "POSITION_PARTIAL_CLOSED: symbol=%s closed_qty=%.8f reason=%s",
+                    position.symbol,
+                    closed_qty,
+                    orchestrator_decision.reason,
+                )
                 events.append("PARTIAL_EARLY")
-        if protection_action.recommended_sl is not None:
-            self._apply_sl_tp(
-                position,
-                new_sl=float(protection_action.recommended_sl),
-                new_tp=position.tp2 if position.tp2 else position.tp,
-            )
-            logger.info(
-                "PROFIT_PROTECTION: symbol=%s action=PULLBACK_SL_UPDATE new_sl=%.8f",
-                position.symbol,
-                float(protection_action.recommended_sl),
-            )
-        if protection_action.trailing_stop is not None:
-            next_sl = float(protection_action.trailing_stop)
-            if position.side == "LONG" and next_sl > position.sl:
-                self._apply_sl_tp(position, new_sl=next_sl, new_tp=position.tp2 if position.tp2 else position.tp)
-                logger.info("PROFIT_PROTECTION: symbol=%s action=TRAIL_SL", position.symbol)
-            if position.side == "SHORT" and next_sl < position.sl:
-                self._apply_sl_tp(position, new_sl=next_sl, new_tp=position.tp2 if position.tp2 else position.tp)
-                logger.info("PROFIT_PROTECTION: symbol=%s action=TRAIL_SL", position.symbol)
-
-        active_tp = position.tp2 if position.mode == "MAIN" and position.tp1_hit and position.tp2 else position.tp
-        tp_hit = (position.side == "LONG" and live_price >= active_tp) or (position.side == "SHORT" and live_price <= active_tp)
-        sl_hit = (position.side == "LONG" and live_price <= position.sl) or (position.side == "SHORT" and live_price >= position.sl)
-        early_exit_hit = bool(protection_action.close_position) and not tp_hit and not sl_hit
-
-        if tp_hit or sl_hit or early_exit_hit:
-            if position.size > 0:
-                self.bybit.close_position(symbol=position.symbol, side=position.side, qty=position.size)
-            if tp_hit:
-                reason = "TP"
-            elif sl_hit:
-                reason = "SL"
-            else:
-                reason = f"EARLY_EXIT:{protection_action.close_reason or 'profit_protection'}"
-            logger.info("POSITION_CLOSED: symbol=%s reason=%s", position.symbol, reason)
-            self.positions.pop(position.symbol, None)
-            events.append(reason)
-            return events
+        if orchestrator_decision.action == "TIGHTEN_SL" and orchestrator_decision.recommended_sl is not None:
+            next_sl = float(orchestrator_decision.recommended_sl)
+            should_apply = (position.side == "LONG" and next_sl > position.sl) or (position.side == "SHORT" and next_sl < position.sl)
+            if should_apply:
+                applied = self._apply_sl_tp(position, new_sl=next_sl, new_tp=position.tp2 if position.tp2 else position.tp)
+                if applied and orchestrator_decision.reason == "stage2_breakeven":
+                    position.breakeven_moved = True
+                logger.info("PROFIT_PROTECTION: symbol=%s action=TIGHTEN_SL reason=%s", position.symbol, orchestrator_decision.reason)
 
         exit_decision = self.exit_manager.evaluate_exit(
             position=position,
@@ -414,7 +446,7 @@ class PositionManager:
             float(position.current_profit_r or 0.0),
         )
         if exit_decision.should_exit and position.size > 0:
-            self.bybit.close_position(symbol=position.symbol, side=position.side, qty=position.size)
+            self._safe_reduce_close(position, position.size, "smart_exit")
             logger.info(
                 "POSITION_CLOSED: symbol=%s reason=SMART_EXIT exit_type=%s confidence=%.2f details=%s",
                 position.symbol,

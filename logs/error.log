@@ -2,3 +2,5 @@
 Request → POST https://api-demo.bybit.com/v5/order/create: {"category": "linear", "symbol": "XPLUSDT", "side": "Buy", "orderType": "Market", "qty": "1762.0", "reduceOnly": false, "timeInForce": "IOC"}. retry_count=3
 2026-04-18 19:01:25,083 - crypto_bot - ERROR - ORDER_FAILED: symbol=ETHUSDT reason=place_order failed after 3 attempts: ab not enough for new order (ErrCode: 110007) (ErrTime: 16:01:25).
 Request → POST https://api-demo.bybit.com/v5/order/create: {"category": "linear", "symbol": "ETHUSDT", "side": "Buy", "orderType": "Market", "qty": "0.4", "reduceOnly": false, "timeInForce": "IOC"}. retry_count=3
+2026-04-19 15:42:30,656 - crypto_bot - ERROR - ORDER_FAILED: symbol=ZROUSDT reason=set_trading_stop failed after 3 attempts: StopLoss:166780000 set for Sell position should greater base_price:169950000??LastPrice (ErrCode: 10001) (ErrTime: 12:42:30).
+Request → POST https://api-demo.bybit.com/v5/position/trading-stop: {"category": "linear", "symbol": "ZROUSDT", "tpslMode": "Full", "stopLoss": "1.6678528571428572", "takeProfit": "1.359095428571428", "positionIdx": 0}. retry_count=3

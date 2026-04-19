@@ -18959,3 +18959,135 @@ Reject reason: -
 🧠 Regime: N/A
 🕒 Time:   2026-04-19 09:00:00+00:00
 Fingerprint: 156dbca9534193f8
+2026-04-19 15:42:30,660 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    ZROUSDT
+Direction: 🔻 SHORT
+Timeframe: 1h
+
+💰 Entry: 1.549100
+🎯 TP:    1.359095
+🛑 SL:    1.667853
+RR:    1.60
+
+Score:      3.40 / 5.00
+⭐ Confidence: 0.68 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, ADX, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-19 10:00:00+00:00
+Fingerprint: da083d49b78c0891
+2026-04-19 15:42:32,248 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    BIOUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.030900
+🎯 TP:    0.033855
+🛑 SL:    0.029053
+RR:    1.60
+
+Score:      4.40 / 5.00
+⭐ Confidence: 0.88 ⭐⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-19 10:00:00+00:00
+Fingerprint: b563632d2a0e753a
+2026-04-19 15:47:42,789 - [SIGNAL] INFO - [UPDATE] MAIN 📡 SIGNAL
+
+Symbol:    ZROUSDT
+Direction: 🔻 SHORT
+Timeframe: 1h
+
+💰 Entry: 1.549100
+🎯 TP:    1.359095
+🛑 SL:    1.667853
+RR:    1.60
+
+Score:      3.40 / 5.00
+⭐ Confidence: 0.68 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, ADX, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-19 10:00:00+00:00
+Fingerprint: da083d49b78c0891
+2026-04-19 15:47:42,795 - [SIGNAL] INFO - [UPDATE] MAIN 📡 SIGNAL
+
+Symbol:    BIOUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.030900
+🎯 TP:    0.033855
+🛑 SL:    0.029053
+RR:    1.60
+
+Score:      4.40 / 5.00
+⭐ Confidence: 0.88 ⭐⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-19 10:00:00+00:00
+Fingerprint: b563632d2a0e753a
+2026-04-19 15:52:51,894 - [SIGNAL] INFO - [UPDATE] MAIN 📡 SIGNAL
+
+Symbol:    ZROUSDT
+Direction: 🔻 SHORT
+Timeframe: 1h
+
+💰 Entry: 1.549100
+🎯 TP:    1.359095
+🛑 SL:    1.667853
+RR:    1.60
+
+Score:      3.40 / 5.00
+⭐ Confidence: 0.68 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, ADX, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-19 10:00:00+00:00
+Fingerprint: da083d49b78c0891
+2026-04-19 15:52:51,899 - [SIGNAL] INFO - [UPDATE] MAIN 📡 SIGNAL
+
+Symbol:    BIOUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.030900
+🎯 TP:    0.033855
+🛑 SL:    0.029053
+RR:    1.60
+
+Score:      4.40 / 5.00
+⭐ Confidence: 0.88 ⭐⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-19 10:00:00+00:00
+Fingerprint: b563632d2a0e753a
