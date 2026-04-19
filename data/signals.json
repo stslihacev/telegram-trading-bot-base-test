@@ -1213,5 +1213,86 @@
     "signal_type": "strict",
     "score": 4.4,
     "timestamp": "2026-04-19T10:00:00+00:00"
+  },
+  {
+    "signal_id": "1000PEPEUSDT_1h_LONG_2026-04-19 11:00:00+00:00",
+    "symbol": "1000PEPEUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 4.4,
+    "timestamp": "2026-04-19T11:00:00+00:00"
+  },
+  {
+    "signal_id": "HYPEUSDT_1h_LONG_2026-04-19 11:00:00+00:00",
+    "symbol": "HYPEUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.25,
+    "timestamp": "2026-04-19T11:00:00+00:00"
+  },
+  {
+    "signal_id": "BLURUSDT_1h_LONG_2026-04-19 11:00:00+00:00",
+    "symbol": "BLURUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.65,
+    "timestamp": "2026-04-19T11:00:00+00:00"
+  },
+  {
+    "signal_id": "MOVEUSDT_1h_LONG_2026-04-19 11:00:00+00:00",
+    "symbol": "MOVEUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 4.4,
+    "timestamp": "2026-04-19T11:00:00+00:00"
+  },
+  {
+    "signal_id": "SIRENUSDT_1h_SHORT_2026-04-19 11:00:00+00:00",
+    "symbol": "SIRENUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.4,
+    "timestamp": "2026-04-19T11:00:00+00:00"
+  },
+  {
+    "signal_id": "AVAXUSDT_1h_LONG_2026-04-19 11:00:00+00:00",
+    "symbol": "AVAXUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 4.65,
+    "timestamp": "2026-04-19T11:00:00+00:00"
+  },
+  {
+    "signal_id": "BNBUSDT_1h_LONG_2026-04-19 11:00:00+00:00",
+    "symbol": "BNBUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.25,
+    "timestamp": "2026-04-19T11:00:00+00:00"
+  },
+  {
+    "signal_id": "DOTUSDT_1h_LONG_2026-04-19 11:00:00+00:00",
+    "symbol": "DOTUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 4.4,
+    "timestamp": "2026-04-19T11:00:00+00:00"
+  },
+  {
+    "signal_id": "ALICEUSDT_1h_LONG_2026-04-19 11:00:00+00:00",
+    "symbol": "ALICEUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-19T11:00:00+00:00"
   }
 ]

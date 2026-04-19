@@ -11,6 +11,7 @@ from services.risk_guard import SignalRiskGuard
 from utils.logger import execution_logger, logger
 
 from execution.bybit_client import BybitExecutionClient
+from execution.safety_state import is_emergency_mode
 
 
 @dataclass
@@ -31,6 +32,8 @@ class OrderManager:
         return str(signal.get("live_mode") or signal.get("mode") or "MAIN").upper().strip("[]")
 
     def _can_execute(self, signal: dict[str, Any], active_trades: dict[str, dict]) -> OrderDecision:
+        if is_emergency_mode():
+            return OrderDecision(False, "EMERGENCY_MODE_ACTIVE", {"reason": "SAFETY_LOCK"})
         mode = self._normalize_mode(signal)
         if mode == "LIGHT":
             return OrderDecision(False, "LIGHT_SIGNAL_ONLY", {"mode": mode})
@@ -326,12 +329,25 @@ class OrderManager:
                         break
             except Exception:
                 position_idx = None
-            self.bybit.set_sl_tp(
+            protection_result = self.bybit.set_sl_tp_with_retry(
                 symbol=symbol,
                 stop_loss=signal.get("sl"),
                 take_profit=signal.get("tp"),
                 position_idx=position_idx,
+                max_attempts=3,
             )
+            if not protection_result.get("ok"):
+                logger.critical(
+                    "CRITICAL_POSITION_RISK: symbol=%s reason=SLTP_PLACEMENT_FAILED rejection=%s action=FORCE_CLOSE",
+                    symbol,
+                    protection_result.get("error"),
+                )
+                close_side = "LONG" if str(signal.get("direction") or "").upper() == "LONG" else "SHORT"
+                try:
+                    self.bybit.close_position(symbol=symbol, side=close_side, qty=float(qty))
+                except Exception as close_exc:
+                    logger.error("EMERGENCY_CLOSE_FAILED: symbol=%s reason=%s", symbol, close_exc)
+                return OrderDecision(False, "SLTP_PLACEMENT_FAILED", {"symbol": symbol, "qty": qty})
             logger.info(
                 "ORDER_EXECUTED: symbol=%s side=%s qty=%s mode=%s score=%s adjusted_risk_pct=%s",
                 symbol,

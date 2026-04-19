@@ -4,3 +4,35 @@ Request → POST https://api-demo.bybit.com/v5/order/create: {"category": "linea
 Request → POST https://api-demo.bybit.com/v5/order/create: {"category": "linear", "symbol": "ETHUSDT", "side": "Buy", "orderType": "Market", "qty": "0.4", "reduceOnly": false, "timeInForce": "IOC"}. retry_count=3
 2026-04-19 15:42:30,656 - crypto_bot - ERROR - ORDER_FAILED: symbol=ZROUSDT reason=set_trading_stop failed after 3 attempts: StopLoss:166780000 set for Sell position should greater base_price:169950000??LastPrice (ErrCode: 10001) (ErrTime: 12:42:30).
 Request → POST https://api-demo.bybit.com/v5/position/trading-stop: {"category": "linear", "symbol": "ZROUSDT", "tpslMode": "Full", "stopLoss": "1.6678528571428572", "takeProfit": "1.359095428571428", "positionIdx": 0}. retry_count=3
+2026-04-19 16:14:46,192 - crypto_bot - ERROR - ORDER_FAILED: symbol=HYPEUSDT reason=place_order failed after 3 attempts: ab not enough for new order (ErrCode: 110007) (ErrTime: 13:14:46).
+Request → POST https://api-demo.bybit.com/v5/order/create: {"category": "linear", "symbol": "HYPEUSDT", "side": "Buy", "orderType": "Market", "qty": "8.03", "reduceOnly": false, "timeInForce": "IOC"}. retry_count=3
+2026-04-19 16:14:51,602 - crypto_bot - ERROR - ORDER_FAILED: symbol=MOVEUSDT reason=place_order failed after 3 attempts: ab not enough for new order (ErrCode: 110007) (ErrTime: 13:14:51).
+Request → POST https://api-demo.bybit.com/v5/order/create: {"category": "linear", "symbol": "MOVEUSDT", "side": "Buy", "orderType": "Market", "qty": "4500.0", "reduceOnly": false, "timeInForce": "IOC"}. retry_count=3
+2026-04-19 16:14:55,232 - crypto_bot - ERROR - ORDER_FAILED: symbol=SIRENUSDT reason=place_order failed after 3 attempts: ab not enough for new order (ErrCode: 110007) (ErrTime: 13:14:55).
+Request → POST https://api-demo.bybit.com/v5/order/create: {"category": "linear", "symbol": "SIRENUSDT", "side": "Sell", "orderType": "Market", "qty": "80.0", "reduceOnly": false, "timeInForce": "IOC"}. retry_count=3
+2026-04-19 16:14:58,875 - crypto_bot - ERROR - ORDER_FAILED: symbol=AVAXUSDT reason=place_order failed after 3 attempts: ab not enough for new order (ErrCode: 110007) (ErrTime: 13:14:58).
+Request → POST https://api-demo.bybit.com/v5/order/create: {"category": "linear", "symbol": "AVAXUSDT", "side": "Buy", "orderType": "Market", "qty": "56.5", "reduceOnly": false, "timeInForce": "IOC"}. retry_count=3
+2026-04-19 16:15:02,509 - crypto_bot - ERROR - ORDER_FAILED: symbol=BNBUSDT reason=place_order failed after 3 attempts: ab not enough for new order (ErrCode: 110007) (ErrTime: 13:15:02).
+Request → POST https://api-demo.bybit.com/v5/order/create: {"category": "linear", "symbol": "BNBUSDT", "side": "Buy", "orderType": "Market", "qty": "1.25", "reduceOnly": false, "timeInForce": "IOC"}. retry_count=3
+2026-04-19 16:15:06,150 - crypto_bot - ERROR - ORDER_FAILED: symbol=DOTUSDT reason=place_order failed after 3 attempts: ab not enough for new order (ErrCode: 110007) (ErrTime: 13:15:06).
+Request → POST https://api-demo.bybit.com/v5/order/create: {"category": "linear", "symbol": "DOTUSDT", "side": "Buy", "orderType": "Market", "qty": "248.6", "reduceOnly": false, "timeInForce": "IOC"}. retry_count=3
+2026-04-19 16:22:53,254 - crypto_bot - ERROR - position_price_loop error
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\crypto_botV2\telegram_bot\bot.py", line 192, in _position_price_loop
+    close_events = self.position_manager.handle_price_update(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\execution\position_manager.py", line 522, in handle_price_update
+    closed_qty = self._safe_reduce_close(position, close_qty, "tp1_scaling")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\execution\position_manager.py", line 84, in _safe_reduce_close
+    self.bybit.close_position(symbol=position.symbol, side=position.side, qty=executable_qty)
+  File "C:\Users\user\Desktop\crypto_botV2\execution\bybit_client.py", line 261, in close_position
+    return self.place_market_order(symbol=symbol, side=close_side, qty=qty, reduce_only=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\execution\bybit_client.py", line 104, in place_market_order
+    return self._call(
+           ^^^^^^^^^^^
+  File "C:\Users\user\Desktop\crypto_botV2\execution\bybit_client.py", line 100, in _call
+    raise RuntimeError(f"{name} failed after {self.max_retries} attempts: {last_exc}")
+RuntimeError: place_order failed after 3 attempts: Qty invalid (ErrCode: 10001) (ErrTime: 13:22:53).
+Request → POST https://api-demo.bybit.com/v5/order/create: {"category": "linear", "symbol": "1000PEPEUSDT", "side": "Sell", "orderType": "Market", "qty": "43712.5", "reduceOnly": true, "timeInForce": "IOC"}.

@@ -10,6 +10,7 @@ from utils.logger import execution_logger, logger
 
 from execution.bybit_client import BybitExecutionClient
 from execution.exit_manager import SmartExitManager
+from execution.safety_state import activate_emergency_mode
 
 
 @dataclass
@@ -42,6 +43,12 @@ class PositionManager:
         self.bybit = bybit_client
         self.positions: dict[str, ManagedPosition] = {}
         self.exit_manager = SmartExitManager()
+        self.emergency_mode = False
+        self._protection_failure_count = 0
+        self._exchange_rejection_count = 0
+        self._price_log_ts: dict[str, datetime] = {}
+        self._last_pnl_log_r: dict[str, float] = {}
+        self._debug_cooldown_sec = 60
 
     def _safe_reduce_close(self, position: ManagedPosition, qty: float, reason: str) -> float:
         safe_qty = max(0.0, min(float(qty or 0.0), float(position.size or 0.0)))
@@ -82,6 +89,119 @@ class PositionManager:
             reason,
         )
         return executable_qty
+
+    @staticmethod
+    def _is_valid_protection_price(price: float | None) -> bool:
+        return price is not None and float(price) > 0
+
+    def _activate_emergency_mode(self, reason: str) -> None:
+        if not self.emergency_mode:
+            logger.critical("EMERGENCY_MODE_ACTIVE: reason=%s", reason)
+        self.emergency_mode = True
+        activate_emergency_mode()
+
+    def _throttled_debug(self, symbol: str, event: str, message: str, *, cooldown_sec: int | None = None) -> bool:
+        key = f"{symbol}:{event}"
+        now = datetime.now(timezone.utc)
+        cooldown = int(cooldown_sec or self._debug_cooldown_sec)
+        prev = self._price_log_ts.get(key)
+        if prev is not None and (now - prev).total_seconds() < cooldown:
+            return False
+        self._price_log_ts[key] = now
+        execution_logger.debug(message)
+        return True
+
+    def _emergency_flatten(self, position: ManagedPosition, reason: str) -> bool:
+        closed_qty = self._safe_reduce_close(position, position.size, reason)
+        if closed_qty <= 0:
+            return False
+        position.size = max(0.0, position.size - closed_qty)
+        logger.critical("CRITICAL_POSITION_RISK: symbol=%s reason=%s action=FORCE_CLOSE", position.symbol, reason)
+        self.positions.pop(position.symbol, None)
+        self._activate_emergency_mode(f"{position.symbol}:{reason}")
+        return True
+
+    def _verify_protection_on_exchange(self, position: ManagedPosition) -> tuple[bool, str]:
+        try:
+            for row in self.bybit.get_positions(symbol=position.symbol):
+                size = float(row.get("size") or 0.0)
+                if size <= 0:
+                    continue
+                exchange_idx = int(row.get("positionIdx")) if row.get("positionIdx") not in (None, "") else None
+                if position.position_idx is not None and exchange_idx != position.position_idx:
+                    continue
+                exchange_sl = float(row.get("stopLoss") or 0.0)
+                exchange_tp = float(row.get("takeProfit") or 0.0)
+                sl_ok = self._is_valid_protection_price(exchange_sl)
+                tp_ok = self._is_valid_protection_price(exchange_tp) or self._is_valid_protection_price(position.tp1)
+                if not sl_ok:
+                    return False, "MISSING_SL"
+                if not tp_ok:
+                    return False, "MISSING_TP"
+                return True, "OK"
+        except Exception as exc:
+            return False, f"EXCHANGE_CHECK_FAILED:{exc}"
+        return False, "POSITION_NOT_FOUND"
+
+    def _ensure_position_protection(self, position: ManagedPosition, *, context: str) -> bool:
+        if position.size <= 0:
+            logger.critical("CRITICAL_POSITION_RISK: symbol=%s reason=INVALID_SIZE context=%s", position.symbol, context)
+            return self._emergency_flatten(position, "INVALID_SIZE")
+        sl_ok = self._is_valid_protection_price(position.sl)
+        tp_ok = self._is_valid_protection_price(position.tp) or self._is_valid_protection_price(position.tp1)
+        if sl_ok and tp_ok:
+            verified, reason = self._verify_protection_on_exchange(position)
+            if verified:
+                return True
+            logger.warning("PROTECTION_DESYNC: symbol=%s context=%s reason=%s", position.symbol, context, reason)
+        else:
+            reason = "MISSING_LOCAL_SLTP"
+
+        for attempt in range(1, 3):
+            result = self.bybit.set_sl_tp_with_retry(
+                symbol=position.symbol,
+                stop_loss=position.sl,
+                take_profit=position.tp if self._is_valid_protection_price(position.tp) else position.tp1,
+                position_idx=position.position_idx,
+                max_attempts=3,
+            )
+            if result.get("ok"):
+                position.sl = float(result.get("stop_loss") or position.sl)
+                tp_value = result.get("take_profit")
+                if tp_value is not None and float(tp_value) > 0:
+                    position.tp = float(tp_value)
+                verified, verify_reason = self._verify_protection_on_exchange(position)
+                if verified:
+                    logger.info(
+                        "SL_UPDATED: symbol=%s context=%s attempt=%s sl=%.8f",
+                        position.symbol,
+                        context,
+                        attempt,
+                        float(position.sl),
+                    )
+                    logger.info(
+                        "TP_UPDATED: symbol=%s context=%s attempt=%s tp=%.8f",
+                        position.symbol,
+                        context,
+                        attempt,
+                        float(position.tp),
+                    )
+                    return True
+                reason = verify_reason
+            else:
+                reason = str(result.get("error") or "UNKNOWN")
+                self._exchange_rejection_count += 1
+                logger.warning(
+                    "SLTP_RETRY_FAILED: symbol=%s context=%s attempt=%s reason=%s",
+                    position.symbol,
+                    context,
+                    attempt,
+                    reason,
+                )
+        self._protection_failure_count += 1
+        if self._protection_failure_count >= 2 or self._exchange_rejection_count >= 3:
+            self._activate_emergency_mode("REPEATED_SLTP_FAILURES")
+        return self._emergency_flatten(position, f"{context}:{reason}")
 
     def sync_from_exchange(self, known_positions: dict[str, dict[str, Any]] | None = None) -> list[dict[str, Any]]:
         """Recovery/reconciliation with Bybit positions."""
@@ -161,6 +281,8 @@ class PositionManager:
                 }
             )
         self.positions = next_positions
+        for restored_position in list(self.positions.values()):
+            self._ensure_position_protection(restored_position, context="RESTART_RECONCILE")
         logger.info("POSITION_SYNCED: restored_positions=%s", restored)
         return reconciliation_events
 
@@ -192,11 +314,12 @@ class PositionManager:
         sl_distance = abs(entry - sl)
         tp_distance = abs(tp - entry)
         rr = (tp_distance / sl_distance) if sl_distance > 0 else 0.0
-        logger.info("RR_CHECK: symbol=%s rr=%.3f", symbol, rr)
+        execution_logger.debug("RR_CHECK: symbol=%s rr=%.3f", symbol, rr)
         if rr < 1.3:
             logger.warning("RR_LOW_WARNING: symbol=%s rr=%.3f", symbol, rr)
         self.positions[symbol] = pos
         logger.info("POSITION_OPENED: symbol=%s side=%s qty=%s mode=%s position_idx=%s", symbol, direction, qty, mode, position_idx)
+        self._ensure_position_protection(pos, context="POST_TRADE_VALIDATION")
 
     def _apply_sl_tp(self, position: ManagedPosition, new_sl: float | None, new_tp: float | None) -> bool:
         current_sl = float(position.sl or 0.0)
@@ -205,13 +328,6 @@ class PositionManager:
         normalized_sl = float(new_sl or 0.0)
         normalized_tp = float(new_tp or 0.0)
         if abs(normalized_sl - current_sl) < 1e-9 and abs(normalized_tp - current_tp) < 1e-9:
-            logger.info(
-                "SLTP_SKIP: symbol=%s position_idx=%s sl=%.8f tp=%.8f reason=UNCHANGED",
-                position.symbol,
-                position.position_idx,
-                current_sl,
-                current_tp,
-            )
             execution_logger.debug(
                 "SLTP_SKIP: symbol=%s position_idx=%s sl=%.8f tp=%.8f reason=UNCHANGED",
                 position.symbol,
@@ -221,15 +337,6 @@ class PositionManager:
             )
             return False
 
-        logger.info(
-            "SLTP_REQUEST: symbol=%s position_idx=%s old_sl=%.8f old_tp=%.8f new_sl=%.8f new_tp=%.8f",
-            position.symbol,
-            position.position_idx,
-            current_sl,
-            current_tp,
-            normalized_sl,
-            normalized_tp,
-        )
         execution_logger.debug(
             "SLTP_REQUEST: symbol=%s position_idx=%s old_sl=%.8f old_tp=%.8f new_sl=%.8f new_tp=%.8f",
             position.symbol,
@@ -240,24 +347,33 @@ class PositionManager:
             normalized_tp,
         )
         try:
-            self.bybit.set_sl_tp(
+            result = self.bybit.set_sl_tp_with_retry(
                 symbol=position.symbol,
                 stop_loss=normalized_sl,
                 take_profit=normalized_tp,
                 position_idx=position.position_idx,
+                max_attempts=3,
             )
+            if not result.get("ok"):
+                self._exchange_rejection_count += 1
+                logger.warning(
+                    "SLTP_RESPONSE: symbol=%s position_idx=%s status=REJECTED reason=%s",
+                    position.symbol,
+                    position.position_idx,
+                    result.get("error"),
+                )
+                if self._exchange_rejection_count >= 3:
+                    self._activate_emergency_mode("EXCHANGE_REJECTION_SPIKE")
+                if self._ensure_position_protection(position, context="SLTP_APPLY_REJECTED"):
+                    return True
+                return False
+            normalized_sl = float(result.get("stop_loss") or normalized_sl)
+            normalized_tp = float(result.get("take_profit") or normalized_tp)
             position.sl = normalized_sl
             if position.mode == "MAIN" and position.tp1_hit and position.tp2 is not None:
                 position.tp2 = normalized_tp
             else:
                 position.tp = normalized_tp
-            logger.info(
-                "SLTP_RESPONSE: symbol=%s position_idx=%s status=SUCCESS sl=%.8f tp=%.8f",
-                position.symbol,
-                position.position_idx,
-                normalized_sl,
-                normalized_tp,
-            )
             execution_logger.debug(
                 "SLTP_RESPONSE: symbol=%s position_idx=%s status=SUCCESS sl=%.8f tp=%.8f",
                 position.symbol,
@@ -278,15 +394,6 @@ class PositionManager:
                 exchange_sl = float(row.get("stopLoss") or 0.0)
                 exchange_tp = float(row.get("takeProfit") or 0.0)
                 break
-            logger.info(
-                "POSITION_STATE_CHECK: symbol=%s position_idx=%s internal_sl=%.8f exchange_sl=%.8f internal_tp=%.8f exchange_tp=%.8f",
-                position.symbol,
-                position.position_idx if position.position_idx is not None else exchange_idx,
-                float(position.sl or 0.0),
-                float(exchange_sl or 0.0),
-                float(normalized_tp or 0.0),
-                float(exchange_tp or 0.0),
-            )
             execution_logger.debug(
                 "POSITION_STATE_CHECK: symbol=%s position_idx=%s internal_sl=%.8f exchange_sl=%.8f internal_tp=%.8f exchange_tp=%.8f",
                 position.symbol,
@@ -352,18 +459,27 @@ class PositionManager:
             position.current_profit_r = 0.0
             position.max_profit_r = 0.0
         position.last_price = live_price
-        logger.info(
-            "REAL_PRICE_UPDATE: symbol=%s price=%.8f bars_alive=%s",
+        self._throttled_debug(
             position.symbol,
-            live_price,
-            position.bars_alive,
+            "REAL_PRICE_UPDATE",
+            "REAL_PRICE_UPDATE: symbol=%s price=%.8f bars_alive=%s"
+            % (position.symbol, live_price, position.bars_alive),
+            cooldown_sec=60,
         )
-        logger.info(
-            "POSITION_PNL_UPDATE: symbol=%s pnl_r=%.3f max_profit_r=%.3f",
-            position.symbol,
-            float(position.current_profit_r or 0.0),
-            float(position.max_profit_r or 0.0),
-        )
+        pnl_r = float(position.current_profit_r or 0.0)
+        prev_pnl = self._last_pnl_log_r.get(position.symbol)
+        if prev_pnl is None or abs(pnl_r - prev_pnl) >= 0.1:
+            self._last_pnl_log_r[position.symbol] = pnl_r
+            execution_logger.debug(
+                "POSITION_PNL_UPDATE: symbol=%s pnl_r=%.3f max_profit_r=%.3f",
+                position.symbol,
+                pnl_r,
+                float(position.max_profit_r or 0.0),
+            )
+        if not self._ensure_position_protection(position, context="POSITION_LOOP_GUARD"):
+            logger.critical("CRITICAL_POSITION_NO_SL: symbol=%s action=FORCE_CLOSED", position.symbol)
+            events.append("EMERGENCY_CLOSE")
+            return events
         active_tp = position.tp2 if position.mode == "MAIN" and position.tp1_hit and position.tp2 else position.tp
         tp_hit = (position.side == "LONG" and live_price >= active_tp) or (position.side == "SHORT" and live_price <= active_tp)
         sl_hit = (position.side == "LONG" and live_price <= position.sl) or (position.side == "SHORT" and live_price >= position.sl)
@@ -376,16 +492,17 @@ class PositionManager:
             hard_tp_hit=tp_hit,
             hard_sl_hit=sl_hit,
         )
-        logger.info(
-            "EXIT_DECISION: symbol=%s action=%s reason=%s priority=%s pnl_r=%.3f max_profit_r=%.3f drawdown=%.3f",
-            position.symbol,
-            orchestrator_decision.action,
-            orchestrator_decision.reason,
-            orchestrator_decision.priority,
-            float(metrics.get("current_profit_r", 0.0)),
-            float(metrics.get("max_profit_r", 0.0)),
-            float(metrics.get("drawdown_r", 0.0)),
-        )
+        if orchestrator_decision.action != "HOLD":
+            execution_logger.debug(
+                "EXIT_DECISION: symbol=%s action=%s reason=%s priority=%s pnl_r=%.3f max_profit_r=%.3f drawdown=%.3f",
+                position.symbol,
+                orchestrator_decision.action,
+                orchestrator_decision.reason,
+                orchestrator_decision.priority,
+                float(metrics.get("current_profit_r", 0.0)),
+                float(metrics.get("max_profit_r", 0.0)),
+                float(metrics.get("drawdown_r", 0.0)),
+            )
 
         if orchestrator_decision.action == "FULL_CLOSE":
             if position.size > 0:
@@ -406,8 +523,8 @@ class PositionManager:
                     position.size -= closed_qty
                 position.tp1_hit = True
                 self._apply_sl_tp(position, new_sl=position.entry_price, new_tp=position.tp2)
-                logger.info("POSITION_PARTIAL_CLOSED: symbol=%s closed_qty=%s tp_stage=TP1", position.symbol, close_qty)
-                logger.info("SL_MOVED: symbol=%s new_sl=%s reason=BREAKEVEN_AFTER_TP1", position.symbol, position.entry_price)
+                logger.info("PARTIAL_CLOSE: symbol=%s closed_qty=%s tp_stage=TP1", position.symbol, close_qty)
+                logger.info("SL_UPDATED: symbol=%s new_sl=%s reason=BREAKEVEN_AFTER_TP1", position.symbol, position.entry_price)
                 events.append("TP1")
 
         if orchestrator_decision.action == "PARTIAL_CLOSE" and position.size > 0:
@@ -420,7 +537,7 @@ class PositionManager:
                 else:
                     position.partial_15r_done = True
                 logger.info(
-                    "POSITION_PARTIAL_CLOSED: symbol=%s closed_qty=%.8f reason=%s",
+                    "PARTIAL_CLOSE: symbol=%s closed_qty=%.8f reason=%s",
                     position.symbol,
                     closed_qty,
                     orchestrator_decision.reason,
@@ -433,14 +550,14 @@ class PositionManager:
                 applied = self._apply_sl_tp(position, new_sl=next_sl, new_tp=position.tp2 if position.tp2 else position.tp)
                 if applied and orchestrator_decision.reason == "stage2_breakeven":
                     position.breakeven_moved = True
-                logger.info("PROFIT_PROTECTION: symbol=%s action=TIGHTEN_SL reason=%s", position.symbol, orchestrator_decision.reason)
+                logger.info("SL_UPDATED: symbol=%s action=TIGHTEN_SL reason=%s", position.symbol, orchestrator_decision.reason)
 
         exit_decision = self.exit_manager.evaluate_exit(
             position=position,
             market_data=runtime_market_data,
             indicators=runtime_indicators,
         )
-        logger.info(
+        execution_logger.debug(
             "EXIT_CHECK_TRIGGERED: symbol=%s source=smart_exit pnl_r=%.3f",
             position.symbol,
             float(position.current_profit_r or 0.0),

@@ -45,6 +45,7 @@ class BybitExecutionClient:
         transport_testnet = bool(self.testnet and not self.demo)
         self.max_retries = max(1, int(max_retries))
         self.retry_backoff_sec = max(0.1, float(retry_backoff_sec))
+        self._tick_size_cache: dict[str, float] = {}
         self._session = HTTP(
             testnet=transport_testnet,
             demo=self.demo,
@@ -141,6 +142,116 @@ class BybitExecutionClient:
             result.get("retMsg"),
         )
         return result
+
+    def _get_symbol_tick_size(self, symbol: str) -> float:
+        symbol_key = str(symbol).upper()
+        cached = self._tick_size_cache.get(symbol_key)
+        if cached is not None:
+            return float(cached)
+        payload = self._call(
+            "get_instruments_info",
+            lambda: self._session.get_instruments_info(category="linear", symbol=symbol_key),
+        )
+        rows = payload.get("result", {}).get("list", [])
+        if not rows:
+            self._tick_size_cache[symbol_key] = 0.0
+            return 0.0
+        row = rows[0] if isinstance(rows[0], dict) else {}
+        price_filter = row.get("priceFilter", {}) if isinstance(row.get("priceFilter"), dict) else {}
+        tick_size = float(price_filter.get("tickSize") or 0.0)
+        self._tick_size_cache[symbol_key] = tick_size
+        return tick_size
+
+    def normalize_price(self, symbol: str, price: float | None) -> float | None:
+        if price is None:
+            return None
+        value = float(price)
+        if value <= 0:
+            return 0.0
+        tick_size = self._get_symbol_tick_size(symbol)
+        if tick_size <= 0:
+            return value
+        return self.round_qty_to_step(value, tick_size)
+
+    def set_sl_tp_with_retry(
+        self,
+        *,
+        symbol: str,
+        stop_loss: float | None,
+        take_profit: float | None,
+        position_idx: int | None = None,
+        max_attempts: int = 3,
+    ) -> dict[str, Any]:
+        symbol_key = str(symbol).upper()
+        attempts = max(1, int(max_attempts))
+        last_error: str | None = None
+        sl_candidate = float(stop_loss) if stop_loss is not None else None
+        tp_candidate = float(take_profit) if take_profit is not None else None
+        for attempt in range(1, attempts + 1):
+            if attempt > 1:
+                sl_candidate = self.normalize_price(symbol_key, sl_candidate)
+                tp_candidate = self.normalize_price(symbol_key, tp_candidate)
+            payload: dict[str, Any] = {
+                "category": "linear",
+                "symbol": symbol_key,
+                "tpslMode": "Full",
+            }
+            if sl_candidate is not None:
+                payload["stopLoss"] = str(float(sl_candidate))
+            if tp_candidate is not None:
+                payload["takeProfit"] = str(float(tp_candidate))
+            if position_idx is not None:
+                payload["positionIdx"] = int(position_idx)
+            try:
+                response = self._session.set_trading_stop(**payload)
+                ret_code = int(response.get("retCode", -1)) if isinstance(response, dict) else -1
+                if ret_code == 0:
+                    execution_logger.debug(
+                        "SLTP_ACCEPTED: symbol=%s attempt=%s/%s position_idx=%s sl=%s tp=%s",
+                        symbol_key,
+                        attempt,
+                        attempts,
+                        position_idx,
+                        sl_candidate,
+                        tp_candidate,
+                    )
+                    return {
+                        "ok": True,
+                        "attempts": attempt,
+                        "stop_loss": sl_candidate,
+                        "take_profit": tp_candidate,
+                        "response": response,
+                    }
+                last_error = str(response.get("retMsg") or "unknown_rejection") if isinstance(response, dict) else "invalid_response"
+                logger.warning(
+                    "SLTP_REJECTED: symbol=%s position_idx=%s attempt=%s/%s reason=%s sl=%s tp=%s",
+                    symbol_key,
+                    position_idx,
+                    attempt,
+                    attempts,
+                    last_error,
+                    sl_candidate,
+                    tp_candidate,
+                )
+            except Exception as exc:  # pragma: no cover - runtime exchange branch
+                last_error = str(exc)
+                logger.warning(
+                    "SLTP_ATTEMPT_FAILED: symbol=%s position_idx=%s attempt=%s/%s error=%s",
+                    symbol_key,
+                    position_idx,
+                    attempt,
+                    attempts,
+                    exc,
+                )
+            if attempt < attempts:
+                time.sleep(min(0.5 * attempt, 1.5))
+        return {
+            "ok": False,
+            "attempts": attempts,
+            "stop_loss": sl_candidate,
+            "take_profit": tp_candidate,
+            "error": last_error or "unknown_error",
+        }
 
     def close_position(self, *, symbol: str, side: str, qty: float) -> dict[str, Any]:
         side_upper = str(side or "").upper()

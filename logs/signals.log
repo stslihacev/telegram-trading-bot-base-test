@@ -19091,3 +19091,421 @@ Reject reason: -
 🧠 Regime: N/A
 🕒 Time:   2026-04-19 10:00:00+00:00
 Fingerprint: b563632d2a0e753a
+2026-04-19 16:14:42,550 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    1000PEPEUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.003743
+🎯 TP:    0.003815
+🛑 SL:    0.003698
+RR:    1.60
+
+Score:      4.40 / 5.00
+⭐ Confidence: 0.88 ⭐⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-19 11:00:00+00:00
+Fingerprint: d6d188a1af66a3b6
+2026-04-19 16:14:46,196 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    HYPEUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 43.374000
+🎯 TP:    44.576583
+🛑 SL:    42.622386
+RR:    1.60
+
+Score:      3.25 / 5.00
+⭐ Confidence: 0.65 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX, VOLUME
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-19 11:00:00+00:00
+Fingerprint: 5069cc5f05da00a4
+2026-04-19 16:14:47,966 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    BLURUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.032127
+🎯 TP:    0.036693
+🛑 SL:    0.029273
+RR:    1.60
+
+Score:      3.65 / 5.00
+⭐ Confidence: 0.73 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, ADX, VOLUME, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-19 11:00:00+00:00
+Fingerprint: 37028eed2461f964
+2026-04-19 16:14:51,607 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    MOVEUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.020950
+🎯 TP:    0.023096
+🛑 SL:    0.019609
+RR:    1.60
+
+Score:      4.40 / 5.00
+⭐ Confidence: 0.88 ⭐⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-19 11:00:00+00:00
+Fingerprint: 0ef633ef3f091721
+2026-04-19 16:14:55,237 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    SIRENUSDT
+Direction: 🔻 SHORT
+Timeframe: 1h
+
+💰 Entry: 0.650780
+🎯 TP:    0.531419
+🛑 SL:    0.725381
+RR:    1.60
+
+Score:      3.40 / 5.00
+⭐ Confidence: 0.68 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, ADX, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-19 11:00:00+00:00
+Fingerprint: 48726e9e7d51bed5
+2026-04-19 16:14:58,880 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    AVAXUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 9.238000
+🎯 TP:    9.408811
+🛑 SL:    9.131243
+RR:    1.60
+
+Score:      4.65 / 5.00
+⭐ Confidence: 0.93 ⭐⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX, VOLUME, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-19 11:00:00+00:00
+Fingerprint: 754b13874ed94f92
+2026-04-19 16:15:02,514 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    BNBUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 622.000000
+🎯 TP:    629.716571
+🛑 SL:    617.177143
+RR:    1.60
+
+Score:      3.25 / 5.00
+⭐ Confidence: 0.65 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX, VOLUME
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-19 11:00:00+00:00
+Fingerprint: 40a8ef691b5f9281
+2026-04-19 16:15:06,155 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    DOTUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 1.274400
+🎯 TP:    1.313243
+🛑 SL:    1.250123
+RR:    1.60
+
+Score:      4.40 / 5.00
+⭐ Confidence: 0.88 ⭐⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-19 11:00:00+00:00
+Fingerprint: fbd5f5cfcd84f9c1
+2026-04-19 16:15:06,612 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    ALICEUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.162570
+🎯 TP:    0.179008
+🛑 SL:    0.152296
+RR:    1.60
+
+Score:      3.00 / 5.00
+⭐ Confidence: 0.60 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-19 11:00:00+00:00
+Fingerprint: 4f60bc116bf7fa74
+2026-04-19 16:20:15,758 - [SIGNAL] INFO - [UPDATE] MAIN 📡 SIGNAL
+
+Symbol:    1000PEPEUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.003743
+🎯 TP:    0.003815
+🛑 SL:    0.003698
+RR:    1.60
+
+Score:      4.40 / 5.00
+⭐ Confidence: 0.88 ⭐⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-19 11:00:00+00:00
+Fingerprint: d6d188a1af66a3b6
+2026-04-19 16:20:15,766 - [SIGNAL] INFO - [UPDATE] MAIN 📡 SIGNAL
+
+Symbol:    BLURUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.032127
+🎯 TP:    0.036693
+🛑 SL:    0.029273
+RR:    1.60
+
+Score:      3.65 / 5.00
+⭐ Confidence: 0.73 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, ADX, VOLUME, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-19 11:00:00+00:00
+Fingerprint: 37028eed2461f964
+2026-04-19 16:20:15,772 - [SIGNAL] INFO - [UPDATE] MAIN 📡 SIGNAL
+
+Symbol:    MOVEUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.020950
+🎯 TP:    0.023096
+🛑 SL:    0.019609
+RR:    1.60
+
+Score:      4.40 / 5.00
+⭐ Confidence: 0.88 ⭐⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-19 11:00:00+00:00
+Fingerprint: 0ef633ef3f091721
+2026-04-19 16:20:15,779 - [SIGNAL] INFO - [UPDATE] MAIN 📡 SIGNAL
+
+Symbol:    SIRENUSDT
+Direction: 🔻 SHORT
+Timeframe: 1h
+
+💰 Entry: 0.650780
+🎯 TP:    0.531419
+🛑 SL:    0.725381
+RR:    1.60
+
+Score:      3.40 / 5.00
+⭐ Confidence: 0.68 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, ADX, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-19 11:00:00+00:00
+Fingerprint: 48726e9e7d51bed5
+2026-04-19 16:20:15,785 - [SIGNAL] INFO - [UPDATE] MAIN 📡 SIGNAL
+
+Symbol:    BNBUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 622.000000
+🎯 TP:    629.716571
+🛑 SL:    617.177143
+RR:    1.60
+
+Score:      3.25 / 5.00
+⭐ Confidence: 0.65 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX, VOLUME
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-19 11:00:00+00:00
+Fingerprint: 40a8ef691b5f9281
+2026-04-19 16:25:23,243 - [SIGNAL] INFO - [UPDATE] MAIN 📡 SIGNAL
+
+Symbol:    HYPEUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 43.374000
+🎯 TP:    44.576583
+🛑 SL:    42.622386
+RR:    1.60
+
+Score:      3.25 / 5.00
+⭐ Confidence: 0.65 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX, VOLUME
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-19 11:00:00+00:00
+Fingerprint: 5069cc5f05da00a4
+2026-04-19 16:25:23,252 - [SIGNAL] INFO - [UPDATE] MAIN 📡 SIGNAL
+
+Symbol:    BLURUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.032127
+🎯 TP:    0.036693
+🛑 SL:    0.029273
+RR:    1.60
+
+Score:      3.65 / 5.00
+⭐ Confidence: 0.73 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, ADX, VOLUME, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-19 11:00:00+00:00
+Fingerprint: 37028eed2461f964
+2026-04-19 16:25:23,259 - [SIGNAL] INFO - [UPDATE] MAIN 📡 SIGNAL
+
+Symbol:    MOVEUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.020950
+🎯 TP:    0.023096
+🛑 SL:    0.019609
+RR:    1.60
+
+Score:      4.40 / 5.00
+⭐ Confidence: 0.88 ⭐⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-19 11:00:00+00:00
+Fingerprint: 0ef633ef3f091721
+2026-04-19 16:25:23,265 - [SIGNAL] INFO - [UPDATE] MAIN 📡 SIGNAL
+
+Symbol:    SIRENUSDT
+Direction: 🔻 SHORT
+Timeframe: 1h
+
+💰 Entry: 0.650780
+🎯 TP:    0.531419
+🛑 SL:    0.725381
+RR:    1.60
+
+Score:      3.40 / 5.00
+⭐ Confidence: 0.68 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, ADX, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-19 11:00:00+00:00
+Fingerprint: 48726e9e7d51bed5
+2026-04-19 16:25:23,270 - [SIGNAL] INFO - [UPDATE] MAIN 📡 SIGNAL
+
+Symbol:    BNBUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 622.000000
+🎯 TP:    629.716571
+🛑 SL:    617.177143
+RR:    1.60
+
+Score:      3.25 / 5.00
+⭐ Confidence: 0.65 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX, VOLUME
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-19 11:00:00+00:00
+Fingerprint: 40a8ef691b5f9281
