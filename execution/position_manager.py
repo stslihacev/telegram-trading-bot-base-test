@@ -11,6 +11,7 @@ from utils.logger import execution_logger, logger
 from utils.observability import log_structured_event, observability
 
 from execution.bybit_client import BybitExecutionClient
+from execution.compiler import ExecutionCompiler
 from execution.exit_manager import SmartExitManager
 from execution.safety_state import activate_emergency_mode
 
@@ -46,6 +47,7 @@ class ManagedPosition:
 class PositionManager:
     def __init__(self, bybit_client: BybitExecutionClient):
         self.bybit = bybit_client
+        self.execution_compiler = ExecutionCompiler(bybit_client)
         self.positions: dict[str, ManagedPosition] = {}
         self.exit_manager = SmartExitManager()
         self.emergency_mode = False
@@ -65,17 +67,8 @@ class PositionManager:
         logger.info("POSITION_REMOVED_LOCAL: symbol=%s reason=%s", symbol, reason)
 
     def _handle_position_desync(self, position: ManagedPosition, reason: str) -> None:
-        if observability.allow_desync_event(position.symbol, reason):
-            log_structured_event(
-                "POSITION_DESYNC_EVENT",
-                symbol=position.symbol,
-                signal_id=position.signal_id,
-                execution_id=position.execution_id,
-                position_id=position.position_id,
-                context={"reason": reason},
-                level=30,
-            )
-            observability.increment(position.symbol, "desync_events")
+        logger.info("POSITION_DESYNC: symbol=%s reason=%s", position.symbol, reason)
+        observability.increment(position.symbol, "desync_events")
         self._zero_position_markers.add(position.symbol)
         self._release_position_state(position.symbol, reason="CLOSED_EXTERNALLY")
         log_structured_event(
@@ -114,14 +107,18 @@ class PositionManager:
         if executable_qty <= 0:
             self._handle_position_desync(position, "ZERO_EXCHANGE_SIZE_BEFORE_CLOSE")
             return 0.0
-        self.bybit.close_position(symbol=position.symbol, side=position.side, qty=executable_qty)
-        logger.info(
-            "REDUCE_CLOSE_EXECUTED: symbol=%s qty=%.8f reduce_only=true reason=%s",
-            position.symbol,
-            executable_qty,
-            reason,
-        )
-        return executable_qty
+        try:
+            self.execution_compiler.close_position(
+                symbol=position.symbol,
+                side=position.side,
+                qty=executable_qty,
+                reference_price=position.last_price or position.entry_price,
+                exchange_size=exchange_size,
+            )
+            return executable_qty
+        except Exception as exc:
+            logger.info("ORDER_FAILED_FINAL: symbol=%s reason=%s", position.symbol, exc)
+            return 0.0
 
     @staticmethod
     def _is_valid_protection_price(price: float | None) -> bool:
@@ -198,13 +195,12 @@ class PositionManager:
         else:
             reason = "MISSING_LOCAL_SLTP"
 
-        for attempt in range(1, 3):
-            result = self.bybit.set_sl_tp_with_retry(
+        for attempt in range(1, 2):
+            result = self.execution_compiler.update_sl_tp(
                 symbol=position.symbol,
                 stop_loss=position.sl,
                 take_profit=position.tp if self._is_valid_protection_price(position.tp) else position.tp1,
                 position_idx=position.position_idx,
-                max_attempts=3,
             )
             if result.get("ok"):
                 position.sl = float(result.get("stop_loss") or position.sl)
@@ -233,6 +229,7 @@ class PositionManager:
                     return False
                 self._exchange_rejection_count += 1
                 observability.increment(position.symbol, "sltp_failures_count")
+                logger.info("EXECUTION_REJECTED: symbol=%s reason=%s", position.symbol, reason)
         self._protection_failure_count += 1
         log_structured_event(
             "SLTP_OPERATION_RESULT",
@@ -428,7 +425,7 @@ class PositionManager:
             normalized_tp,
         )
         try:
-            result = self.bybit.set_sl_tp_with_retry(
+            result = self.execution_compiler.update_sl_tp(
                 symbol=position.symbol,
                 stop_loss=normalized_sl,
                 take_profit=normalized_tp,

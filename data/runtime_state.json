@@ -1,80 +1,190 @@
 {
   "version": 3,
   "active_signals": {
-    "AVAXUSDT": {
-      "signal_id": "AVAXUSDT_1h_SHORT_2026-04-19 16:00:00+00:00",
-      "execution_id": "exec_947ffd42140e",
-      "position_id": "pos_AVAXUSDT_exec_947ffd42140e",
-      "direction": "SHORT",
-      "entry": 9.219,
-      "sl": 9.369214285714285,
-      "tp": 8.978657142857141,
-      "score": 3.25,
-      "confidence": 0.65,
-      "status": "OPEN",
-      "timestamp": "2026-04-19 16:00:00+00:00",
+    "ETHUSDT": {
+      "signal_id": "ETHUSDT_1h_LONG_2026-04-22 11:00:00+00:00",
+      "execution_id": "exec_cb3496fef1ab",
+      "position_id": "pos_ETHUSDT_exec_cb3496fef1ab",
+      "direction": "LONG",
+      "entry": 2397.29,
+      "sl": 2377.563857142857,
+      "tp": 2428.8518285714285,
+      "score": 3.4,
+      "confidence": 0.6799999999999999,
+      "status": "PENDING_EXECUTION",
+      "timestamp": "2026-04-22 11:00:00+00:00",
       "history": [
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-19 16:00:00+00:00"
+          "timestamp": "2026-04-22 11:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
           "to": "EXECUTED",
           "reason": "",
-          "timestamp": "2026-04-19 16:00:00+00:00"
+          "timestamp": "2026-04-22 11:00:00+00:00"
         },
         {
           "from": "EXECUTED",
           "to": "OPEN",
           "reason": "",
-          "timestamp": "2026-04-19 16:00:00+00:00"
+          "timestamp": "2026-04-22 11:00:00+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "STRONG_SIGNAL_OVERRIDE",
+          "timestamp": "2026-04-22 11:00:00+00:00"
         }
       ]
     },
-    "MONUSDT": {
-      "signal_id": "MONUSDT_1h_SHORT_2026-04-19 16:00:00+00:00",
-      "execution_id": "exec_145e9a788241",
-      "position_id": "pos_MONUSDT_exec_145e9a788241",
-      "direction": "SHORT",
-      "entry": 0.032259,
-      "sl": 0.033811214285714285,
-      "tp": 0.02977545714285715,
-      "score": 3.25,
-      "confidence": 0.65,
-      "status": "OPEN",
-      "timestamp": "2026-04-19 16:00:00+00:00",
+    "XRPUSDT": {
+      "signal_id": "XRPUSDT_1h_LONG_2026-04-22 11:00:00+00:00",
+      "execution_id": "exec_71f7b593b52a",
+      "position_id": "pos_XRPUSDT_exec_71f7b593b52a",
+      "direction": "LONG",
+      "entry": 1.4537,
+      "sl": 1.445207142857143,
+      "tp": 1.4672885714285713,
+      "score": 3.4,
+      "confidence": 0.6799999999999999,
+      "status": "PENDING_EXECUTION",
+      "timestamp": "2026-04-22 11:00:00+00:00",
       "history": [
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-19 16:00:00+00:00"
+          "timestamp": "2026-04-22 11:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
           "to": "EXECUTED",
           "reason": "",
-          "timestamp": "2026-04-19 16:00:00+00:00"
+          "timestamp": "2026-04-22 11:00:00+00:00"
         },
         {
           "from": "EXECUTED",
           "to": "OPEN",
           "reason": "",
-          "timestamp": "2026-04-19 16:00:00+00:00"
+          "timestamp": "2026-04-22 11:00:00+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "STRONG_SIGNAL_OVERRIDE",
+          "timestamp": "2026-04-22 11:00:00+00:00"
+        }
+      ]
+    },
+    "RIVERUSDT": {
+      "signal_id": "RIVERUSDT_1h_SHORT_2026-04-22 11:00:00+00:00",
+      "execution_id": "exec_c191d9f483de",
+      "position_id": null,
+      "direction": "SHORT",
+      "entry": 6.392,
+      "sl": 6.7203,
+      "tp": 5.866720000000001,
+      "score": 3.0,
+      "confidence": 0.6,
+      "status": "FAILED",
+      "timestamp": "2026-04-22T13:28:06.690768+00:00",
+      "history": [
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-22 11:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-22T13:28:06.690768+00:00"
+        }
+      ]
+    },
+    "BOMEUSDT": {
+      "signal_id": "BOMEUSDT_1h_LONG_2026-04-22 11:00:00+00:00",
+      "execution_id": "exec_495a7b10c103",
+      "position_id": "pos_BOMEUSDT_exec_495a7b10c103",
+      "direction": "LONG",
+      "entry": 0.0005853,
+      "sl": 0.0005562257142857143,
+      "tp": 0.000631818857142857,
+      "score": 3.65,
+      "confidence": 0.73,
+      "status": "PENDING_EXECUTION",
+      "timestamp": "2026-04-22 11:00:00+00:00",
+      "history": [
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-22 11:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "EXECUTED",
+          "reason": "",
+          "timestamp": "2026-04-22 11:00:00+00:00"
+        },
+        {
+          "from": "EXECUTED",
+          "to": "OPEN",
+          "reason": "",
+          "timestamp": "2026-04-22 11:00:00+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "STRONG_SIGNAL_OVERRIDE",
+          "timestamp": "2026-04-22 11:00:00+00:00"
+        }
+      ]
+    },
+    "ENAUSDT": {
+      "signal_id": "ENAUSDT_1h_LONG_2026-04-22 11:00:00+00:00",
+      "execution_id": "exec_fb96ef850f77",
+      "position_id": "pos_ENAUSDT_exec_fb96ef850f77",
+      "direction": "LONG",
+      "entry": 0.11152,
+      "sl": 0.11007928571428571,
+      "tp": 0.11382514285714285,
+      "score": 4.4,
+      "confidence": 0.8800000000000001,
+      "status": "OPEN",
+      "timestamp": "2026-04-22 11:00:00+00:00",
+      "history": [
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-22 11:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "EXECUTED",
+          "reason": "",
+          "timestamp": "2026-04-22 11:00:00+00:00"
+        },
+        {
+          "from": "EXECUTED",
+          "to": "OPEN",
+          "reason": "",
+          "timestamp": "2026-04-22 11:00:00+00:00"
         }
       ]
     }
   },
   "seen_signals": {
-    "PIEVERSEUSDT_1h_LONG_2026-04-19 13:00:00+00:00": "2026-04-19T15:48:27.486479+00:00",
-    "API3USDT_1h_LONG_2026-04-19 13:00:00+00:00": "2026-04-19T15:48:27.957480+00:00",
-    "BLURUSDT_1h_LONG_2026-04-19 14:00:00+00:00": "2026-04-19T16:42:28.517284+00:00",
-    "MOVEUSDT_1h_LONG_2026-04-19 14:00:00+00:00": "2026-04-19T16:42:28.525022+00:00",
-    "AVAXUSDT_1h_SHORT_2026-04-19 16:00:00+00:00": "2026-04-19T18:09:22.628476+00:00",
-    "MONUSDT_1h_SHORT_2026-04-19 16:00:00+00:00": "2026-04-19T18:09:23.939713+00:00"
+    "ETHUSDT_1h_LONG_2026-04-22 11:00:00+00:00": "2026-04-22T13:33:24.910443+00:00",
+    "XRPUSDT_1h_LONG_2026-04-22 11:00:00+00:00": "2026-04-22T13:33:24.916443+00:00",
+    "RIVERUSDT_1h_SHORT_2026-04-22 11:00:00+00:00": "2026-04-22T13:28:06.690768+00:00",
+    "BOMEUSDT_1h_LONG_2026-04-22 11:00:00+00:00": "2026-04-22T13:33:26.972820+00:00",
+    "ENAUSDT_1h_LONG_2026-04-22 11:00:00+00:00": "2026-04-22T13:33:26.953821+00:00"
   },
   "failed_signals": {},
   "last_reversal_at": {}

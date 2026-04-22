@@ -99,8 +99,23 @@ class BybitExecutionClient:
                 time.sleep(backoff)
         raise RuntimeError(f"{name} failed after {self.max_retries} attempts: {last_exc}")
 
-    def place_market_order(self, *, symbol: str, side: str, qty: float, reduce_only: bool = False) -> dict[str, Any]:
+    @staticmethod
+    def _ensure_decimal_string(value: Decimal | str, *, field: str) -> str:
+        if isinstance(value, Decimal):
+            normalized = format(value, "f")
+        elif isinstance(value, str):
+            normalized = value.strip()
+        else:
+            raise ValueError(f"{field} must be Decimal or string")
+        if "e" in normalized.lower():
+            raise ValueError(f"{field} scientific notation is not allowed")
+        if normalized == "":
+            raise ValueError(f"{field} cannot be empty")
+        return normalized
+
+    def place_market_order(self, *, symbol: str, side: str, qty: Decimal | str, reduce_only: bool = False) -> dict[str, Any]:
         side_norm = str(side or "").capitalize()
+        qty_text = self._ensure_decimal_string(qty, field="qty")
         return self._call(
             "place_order",
             lambda: self._session.place_order(
@@ -108,7 +123,7 @@ class BybitExecutionClient:
                 symbol=str(symbol).upper(),
                 side=side_norm,
                 orderType="Market",
-                qty=str(float(qty)),
+                qty=qty_text,
                 reduceOnly=bool(reduce_only),
                 timeInForce="IOC",
             ),
@@ -118,8 +133,8 @@ class BybitExecutionClient:
         self,
         *,
         symbol: str,
-        stop_loss: float | None,
-        take_profit: float | None,
+        stop_loss: Decimal | str | None,
+        take_profit: Decimal | str | None,
         position_idx: int | None = None,
     ) -> dict[str, Any]:
         payload: dict[str, Any] = {
@@ -128,9 +143,9 @@ class BybitExecutionClient:
             "tpslMode": "Full",
         }
         if stop_loss is not None:
-            payload["stopLoss"] = str(float(stop_loss))
+            payload["stopLoss"] = self._ensure_decimal_string(stop_loss, field="stop_loss")
         if take_profit is not None:
-            payload["takeProfit"] = str(float(take_profit))
+            payload["takeProfit"] = self._ensure_decimal_string(take_profit, field="take_profit")
         if position_idx is not None:
             payload["positionIdx"] = int(position_idx)
         result = self._call("set_trading_stop", lambda: self._session.set_trading_stop(**payload))
@@ -177,29 +192,29 @@ class BybitExecutionClient:
         self,
         *,
         symbol: str,
-        stop_loss: float | None,
-        take_profit: float | None,
+        stop_loss: Decimal | str | None,
+        take_profit: Decimal | str | None,
         position_idx: int | None = None,
         max_attempts: int = 3,
     ) -> dict[str, Any]:
         symbol_key = str(symbol).upper()
         attempts = max(1, int(max_attempts))
         last_error: str | None = None
-        sl_candidate = float(stop_loss) if stop_loss is not None else None
-        tp_candidate = float(take_profit) if take_profit is not None else None
+        sl_candidate = Decimal(str(stop_loss)) if stop_loss is not None else None
+        tp_candidate = Decimal(str(take_profit)) if take_profit is not None else None
         for attempt in range(1, attempts + 1):
             if attempt > 1:
-                sl_candidate = self.normalize_price(symbol_key, sl_candidate)
-                tp_candidate = self.normalize_price(symbol_key, tp_candidate)
+                sl_candidate = Decimal(str(self.normalize_price(symbol_key, float(sl_candidate)))) if sl_candidate is not None else None
+                tp_candidate = Decimal(str(self.normalize_price(symbol_key, float(tp_candidate)))) if tp_candidate is not None else None
             payload: dict[str, Any] = {
                 "category": "linear",
                 "symbol": symbol_key,
                 "tpslMode": "Full",
             }
             if sl_candidate is not None:
-                payload["stopLoss"] = str(float(sl_candidate))
+                payload["stopLoss"] = self._ensure_decimal_string(sl_candidate, field="stop_loss")
             if tp_candidate is not None:
-                payload["takeProfit"] = str(float(tp_candidate))
+                payload["takeProfit"] = self._ensure_decimal_string(tp_candidate, field="take_profit")
             if position_idx is not None:
                 payload["positionIdx"] = int(position_idx)
             try:
@@ -225,12 +240,6 @@ class BybitExecutionClient:
                 last_error = str(response.get("retMsg") or "unknown_rejection") if isinstance(response, dict) else "invalid_response"
                 lowered_error = last_error.lower()
                 if "zero position" in lowered_error or "position not found" in lowered_error:
-                    logger.warning(
-                        "SLTP_POSITION_NOT_FOUND: symbol=%s position_idx=%s reason=%s",
-                        symbol_key,
-                        position_idx,
-                        last_error,
-                    )
                     return {
                         "ok": False,
                         "attempts": attempt,
@@ -238,26 +247,11 @@ class BybitExecutionClient:
                         "take_profit": tp_candidate,
                         "error": last_error,
                     }
-                logger.warning(
-                    "SLTP_REJECTED: symbol=%s position_idx=%s attempt=%s/%s reason=%s sl=%s tp=%s",
-                    symbol_key,
-                    position_idx,
-                    attempt,
-                    attempts,
-                    last_error,
-                    sl_candidate,
-                    tp_candidate,
-                )
+                logger.info("EXECUTION_REJECTED: symbol=%s reason=%s", symbol_key, last_error)
             except Exception as exc:  # pragma: no cover - runtime exchange branch
                 last_error = str(exc)
                 lowered_error = last_error.lower()
                 if "zero position" in lowered_error or "position not found" in lowered_error:
-                    logger.warning(
-                        "SLTP_POSITION_NOT_FOUND: symbol=%s position_idx=%s reason=%s",
-                        symbol_key,
-                        position_idx,
-                        last_error,
-                    )
                     return {
                         "ok": False,
                         "attempts": attempt,
@@ -265,14 +259,7 @@ class BybitExecutionClient:
                         "take_profit": tp_candidate,
                         "error": last_error,
                     }
-                logger.warning(
-                    "SLTP_ATTEMPT_FAILED: symbol=%s position_idx=%s attempt=%s/%s error=%s",
-                    symbol_key,
-                    position_idx,
-                    attempt,
-                    attempts,
-                    exc,
-                )
+                logger.info("EXECUTION_REJECTED: symbol=%s reason=%s", symbol_key, exc)
             if attempt < attempts:
                 time.sleep(min(0.5 * attempt, 1.5))
         return {
@@ -283,7 +270,7 @@ class BybitExecutionClient:
             "error": last_error or "unknown_error",
         }
 
-    def close_position(self, *, symbol: str, side: str, qty: float) -> dict[str, Any]:
+    def close_position(self, *, symbol: str, side: str, qty: Decimal | str) -> dict[str, Any]:
         side_upper = str(side or "").upper()
         if side_upper not in {"LONG", "SHORT"}:
             raise ValueError(f"Unsupported position side for reduce-only close: {side}")

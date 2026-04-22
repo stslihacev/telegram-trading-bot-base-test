@@ -11,8 +11,8 @@ from utils.observability import log_structured_event, observability
 
 from execution.adaptive_execution import AdaptiveExecutionLayer, AdaptiveOutcome, TimedExecution
 from execution.bybit_client import BybitExecutionClient
+from execution.compiler import ExecutionCompiler
 from execution.decision_engine import DecisionAction, ExecutionDecisionEngine
-from execution.safe_order_compiler import SafeOrderCompiler
 from execution.safety_state import is_emergency_mode
 
 
@@ -28,7 +28,7 @@ class OrderManager:
         self.bybit = bybit_client
         self.risk_guard = risk_guard
         self.decision_engine = ExecutionDecisionEngine(bybit_client)
-        self.order_compiler = SafeOrderCompiler()
+        self.execution_compiler = ExecutionCompiler(bybit_client)
         self.adaptive_layer = AdaptiveExecutionLayer()
 
     @staticmethod
@@ -125,21 +125,26 @@ class OrderManager:
         if qty <= 0:
             return OrderDecision(False, "INVALID_ORDER_QTY", {"symbol": symbol, "qty": qty})
 
-        compiled_order = self.order_compiler.compile(symbol=symbol, side=side, qty=qty)
         timed = TimedExecution.start()
         try:
-            order_result = self.bybit.place_market_order(symbol=compiled_order.symbol, side=compiled_order.side, qty=compiled_order.qty)
+            order_result = self.execution_compiler.open_order(
+                symbol=symbol,
+                side=side,
+                qty=qty,
+                entry_price=signal.get("entry"),
+            )
             self.adaptive_layer.record_order_outcome(latency_ms=timed.elapsed_ms(), raw_result=order_result)
             log_structured_event(
                 "ORDER_RESULT",
-                symbol=compiled_order.symbol,
+                symbol=symbol,
                 signal_id=str(signal.get("signal_id") or None),
-                context={"status": "SUCCESS", "side": signal.get("direction"), "qty": compiled_order.qty},
+                context={"status": "SUCCESS", "side": signal.get("direction"), "qty": qty},
             )
-            return OrderDecision(True, "ORDER_EXECUTED", {**decision.details, "order": order_result, "qty": compiled_order.qty})
+            return OrderDecision(True, "ORDER_EXECUTED", {**decision.details, "order": order_result, "qty": qty})
         except Exception as exc:
             self.adaptive_layer.record_order_outcome(latency_ms=timed.elapsed_ms(), raw_result=None)
             self.adaptive_layer.record_decision_outcome(rejected=True)
+            logger.info("ORDER_FAILED_FINAL: symbol=%s reason=%s", symbol, exc)
             log_structured_event(
                 "ORDER_RESULT",
                 symbol=symbol,
