@@ -6,6 +6,7 @@ import logging
 from typing import Any
 
 from utils.logger import logger
+from utils.logging_control import log_event, resolve_feature
 
 
 def _utc_now() -> datetime:
@@ -44,9 +45,14 @@ def log_structured_event(
     payload = {
         **build_correlation(signal_id=signal_id, execution_id=execution_id, position_id=position_id),
         "timestamp": _to_iso(),
+        "symbol": symbol,
         "context": context or {},
     }
-    logger.log(level, "%s: symbol=%s payload=%s", event_type, symbol, payload)
+    feature = resolve_feature(event_type)
+    level_name = logging.getLevelName(level)
+    if isinstance(level_name, int):
+        level_name = "INFO"
+    log_event(logger, feature, str(level_name), event_type, **payload)
 
 
 @dataclass

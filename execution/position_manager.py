@@ -8,6 +8,7 @@ import time
 from typing import Any
 
 from utils.logger import execution_logger, logger
+from utils.logging_control import log_event
 from utils.observability import log_structured_event, observability
 
 from execution.bybit_client import BybitExecutionClient
@@ -67,7 +68,7 @@ class PositionManager:
         logger.info("POSITION_REMOVED_LOCAL: symbol=%s reason=%s", symbol, reason)
 
     def _handle_position_desync(self, position: ManagedPosition, reason: str) -> None:
-        logger.info("POSITION_DESYNC: symbol=%s reason=%s", position.symbol, reason)
+        log_event(logger, "DESYNC", "INFO", "POSITION_DESYNC", symbol=position.symbol, reason=reason)
         observability.increment(position.symbol, "desync_events")
         self._zero_position_markers.add(position.symbol)
         self._release_position_state(position.symbol, reason="CLOSED_EXTERNALLY")
@@ -430,7 +431,6 @@ class PositionManager:
                 stop_loss=normalized_sl,
                 take_profit=normalized_tp,
                 position_idx=position.position_idx,
-                max_attempts=3,
             )
             if not result.get("ok"):
                 self._exchange_rejection_count += 1

@@ -1,11 +1,11 @@
 {
   "analytics": {
-    "signals_total": 366,
-    "signals_strict": 366,
+    "signals_total": 379,
+    "signals_strict": 379,
     "signals_fallback": 0,
-    "signals_opened": 180,
+    "signals_opened": 192,
     "signals_blocked_by_limits": 0,
-    "opened_from_strict": 180,
+    "opened_from_strict": 192,
     "opened_from_fallback": 0,
     "closed_strict_tp": 5,
     "closed_strict_sl": 8,
@@ -18,12 +18,12 @@
     "signals_scaled_by_risk": 0
   },
   "mode_counter": {
-    "SCALPING": 1329,
-    "MAIN": 1999,
-    "LIGHT": 30
+    "SCALPING": 1519,
+    "MAIN": 2629,
+    "LIGHT": 35
   },
   "entry_source_counter": {
-    "strict": 3358
+    "strict": 4183
   },
   "rejection_counter": {
     "SCALPING": {
@@ -31,44 +31,44 @@
     },
     "MAIN": {
       "LOW_SCORE": 104,
-      "DUPLICATE": 20
+      "DUPLICATE": 30
     }
   },
-  "total_signals": 366,
-  "unique_signals": 346,
-  "duplicates": 20,
-  "confidence_sum": 258.0134620000001,
-  "score_sum": 1290.2000000000007,
-  "scored_count": 366,
+  "total_signals": 379,
+  "unique_signals": 349,
+  "duplicates": 30,
+  "confidence_sum": 266.24346200000025,
+  "score_sum": 1331.3500000000013,
+  "scored_count": 379,
   "portfolio_risk_sum": 0.0,
   "portfolio_exposure_sum": 0.0,
   "portfolio_risk_samples": 67,
   "signal_filter_counter": {
     "TREND": {
-      "passed": 338,
-      "weighted": 338
+      "passed": 351,
+      "weighted": 351
     },
     "STRUCTURE": {
-      "passed": 338,
-      "weighted": 338
+      "passed": 351,
+      "weighted": 351
     },
     "RSI": {
-      "passed": 200,
-      "weighted": 200,
+      "passed": 208,
+      "weighted": 208,
       "failed": 1
     },
     "ADX": {
-      "passed": 323,
-      "weighted": 323
+      "passed": 331,
+      "weighted": 331
     },
     "VOLUME": {
-      "passed": 197,
-      "weighted": 197,
+      "passed": 202,
+      "weighted": 202,
       "failed": 1
     },
     "MACD": {
-      "passed": 199,
-      "weighted": 198
+      "passed": 205,
+      "weighted": 204
     },
     "EMA": {
       "passed": 1

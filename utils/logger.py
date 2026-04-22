@@ -1,8 +1,9 @@
 import logging
 import sys
-from logging.handlers import RotatingFileHandler
 from pathlib import Path
 from datetime import datetime, timedelta, timezone
+
+from utils.logging_control import create_rotating_handler, get_logging_level
 
 # Определяем путь для логов
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -12,8 +13,11 @@ LOG_FILE = LOG_DIR / "main.log"
 ERROR_LOG_FILE = LOG_DIR / "error.log"
 
 # Настройка логгера
+
+logging.basicConfig(level=get_logging_level())
+
 logger = logging.getLogger("crypto_bot")
-logger.setLevel(logging.INFO)
+logger.setLevel(get_logging_level())
 logger.propagate = False
 
 # Формат сообщений
@@ -25,12 +29,7 @@ has_file = any(
     for handler in logger.handlers
 )
 if not has_file:
-    file_handler = RotatingFileHandler(
-        LOG_FILE,
-        encoding="utf-8",
-        maxBytes=5 * 1024 * 1024,
-        backupCount=5,
-    )
+    file_handler = create_rotating_handler(LOG_FILE)
     file_handler.setFormatter(formatter)
     logger.addHandler(file_handler)
 
@@ -40,12 +39,7 @@ has_error_file = any(
     for handler in logger.handlers
 )
 if not has_error_file:
-    error_file_handler = RotatingFileHandler(
-        ERROR_LOG_FILE,
-        encoding="utf-8",
-        maxBytes=5 * 1024 * 1024,
-        backupCount=5,
-    )
+    error_file_handler = create_rotating_handler(ERROR_LOG_FILE)
     error_file_handler.setLevel(logging.ERROR)
     error_file_handler.setFormatter(formatter)
     logger.addHandler(error_file_handler)
@@ -78,12 +72,7 @@ def ensure_named_file_logger(
         for handler in named_logger.handlers
     )
     if not has_target_file_handler:
-        file_handler = RotatingFileHandler(
-            target_path,
-            encoding="utf-8",
-            maxBytes=5 * 1024 * 1024,
-            backupCount=5,
-        )
+        file_handler = create_rotating_handler(target_path)
         file_handler.setLevel(level)
         file_handler.setFormatter(logging.Formatter(fmt))
         named_logger.addHandler(file_handler)

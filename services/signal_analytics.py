@@ -20,6 +20,7 @@ from execution.exit_manager import SmartExitManager
 from services.signal_formatter import get_stars_bucket
 from services.trade_registry import TradeRegistry
 from utils.logger import logger
+from utils.logging_control import log_event
 
 if "logger" not in globals():
     logger = logging.getLogger("crypto_bot")
@@ -410,28 +411,34 @@ class SignalAnalytics:
         score = self._safe_float(signal.get("score"), default=0.0)
         normalized_reason = self._normalize_rejection_reason(reason if normalized_status == "REJECTED" else "OPEN")
         if normalized_status == "UPDATED":
-            logger.info(
-                "SIGNAL_DECISION: symbol=%s mode=%s status=%s score=%.2f threshold=%s entry_source=%s reason=%s",
-                signal.get("symbol"),
-                mode,
-                normalized_status,
-                score,
-                f"{float(threshold):.2f}" if threshold is not None else "n/a",
-                str(signal.get("entry_source") or "strict").lower(),
-                normalized_reason,
+            log_event(
+                logger,
+                "SIGNAL",
+                "INFO",
+                "SIGNAL_DECISION",
+                symbol=signal.get("symbol"),
+                mode=mode,
+                status=normalized_status,
+                score=round(score, 2),
+                threshold=f"{float(threshold):.2f}" if threshold is not None else "n/a",
+                entry_source=str(signal.get("entry_source") or "strict").lower(),
+                reason=normalized_reason,
             )
             self._save_analytics_state()
             return
         if normalized_status in {"IGNORE", "NO_ACTION"}:
-            logger.info(
-                "SIGNAL_DECISION: symbol=%s mode=%s status=%s score=%.2f threshold=%s entry_source=%s reason=%s",
-                signal.get("symbol"),
-                mode,
-                normalized_status,
-                score,
-                f"{float(threshold):.2f}" if threshold is not None else "n/a",
-                str(signal.get("entry_source") or "strict").lower(),
-                normalized_reason,
+            log_event(
+                logger,
+                "SIGNAL",
+                "INFO",
+                "SIGNAL_DECISION",
+                symbol=signal.get("symbol"),
+                mode=mode,
+                status=normalized_status,
+                score=round(score, 2),
+                threshold=f"{float(threshold):.2f}" if threshold is not None else "n/a",
+                entry_source=str(signal.get("entry_source") or "strict").lower(),
+                reason=normalized_reason,
             )
             self._save_analytics_state()
             return
@@ -447,24 +454,25 @@ class SignalAnalytics:
                 self.analytics["opened_from_fallback"] += 1
             else:
                 self.analytics["opened_from_strict"] += 1
-        logger.info(
-            "SIGNAL_DECISION: symbol=%s mode=%s status=%s score=%.2f threshold=%s entry_source=%s "
-            "passed_filters=%s failed_filters=%s reason=%s position_block=%s mode_position_count=%s mode_limit=%s "
-            "global_position_count=%s global_limit=%s",
-            signal.get("symbol"),
-            mode,
-            normalized_status,
-            score,
-            f"{float(threshold):.2f}" if threshold is not None else "n/a",
-            str(signal.get("entry_source") or "strict").lower(),
-            list(signal.get("passed_filters") or []),
-            list(signal.get("failed_filters") or []),
-            normalized_reason,
-            bool(position_block),
-            mode_position_count if mode_position_count is not None else "n/a",
-            mode_limit if mode_limit is not None else "n/a",
-            global_position_count if global_position_count is not None else "n/a",
-            global_limit if global_limit is not None else "n/a",
+        log_event(
+            logger,
+            "SIGNAL",
+            "INFO",
+            "SIGNAL_DECISION",
+            symbol=signal.get("symbol"),
+            mode=mode,
+            status=normalized_status,
+            score=round(score, 2),
+            threshold=f"{float(threshold):.2f}" if threshold is not None else "n/a",
+            entry_source=str(signal.get("entry_source") or "strict").lower(),
+            passed_filters=list(signal.get("passed_filters") or []),
+            failed_filters=list(signal.get("failed_filters") or []),
+            reason=normalized_reason,
+            position_block=bool(position_block),
+            mode_position_count=mode_position_count if mode_position_count is not None else "n/a",
+            mode_limit=mode_limit if mode_limit is not None else "n/a",
+            global_position_count=global_position_count if global_position_count is not None else "n/a",
+            global_limit=global_limit if global_limit is not None else "n/a",
         )
         self._save_analytics_state()
 
