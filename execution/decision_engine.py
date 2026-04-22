@@ -212,6 +212,12 @@ class ExecutionDecisionEngine:
 
     @staticmethod
     def _resolve_min_score(signal: dict[str, Any]) -> float:
+        explicit = ExecutionDecisionEngine._safe_float(signal.get("min_score_threshold"), -1.0)
+        if explicit > 0:
+            return explicit
+        explicit = ExecutionDecisionEngine._safe_float(signal.get("score_threshold"), -1.0)
+        if explicit > 0:
+            return explicit
         mode = str(signal.get("live_mode") or signal.get("mode") or "MAIN").upper()
         return float(getattr(config, f"MIN_SCORE_THRESHOLD_{mode}", getattr(config, "MIN_SCORE_THRESHOLD_MAIN", 3.0)))
 

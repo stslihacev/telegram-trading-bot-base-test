@@ -17583,3 +17583,367 @@ Fingerprint: 786242f095b40809
 2026-04-22 17:35:26,384 - crypto_bot - INFO - AUTO_DIAGNOSTIC_PORTFOLIO: avg_portfolio_risk=0.00 avg_exposure=0.00 signals_blocked_by_risk=9 signals_scaled_by_risk=0
 2026-04-22 17:35:26,385 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
 2026-04-22 17:35:42,341 - crypto_bot - INFO - 🛑 Остановка по KeyboardInterrupt
+2026-04-22 17:52:53,680 - crypto_bot - INFO - LOGGER INIT OK: crypto_bot handlers=3 level=INFO propagate=False
+2026-04-22 17:52:53,680 - crypto_bot - INFO - LOGGER INIT OK: signals_logger handlers=1 level=INFO propagate=False
+2026-04-22 17:52:53,681 - crypto_bot - INFO - LOGGER INIT OK: analytics_logger handlers=1 level=INFO propagate=False
+2026-04-22 17:52:53,681 - crypto_bot - INFO - LOGGER INIT OK: snapshot_logger handlers=1 level=INFO propagate=False
+2026-04-22 17:52:53,683 - crypto_bot - INFO - LOG_CLEANUP: removed_files=0 retention_days=5
+2026-04-22 17:52:53,684 - crypto_bot - INFO - 🚀 Starting bot...
+2026-04-22 17:52:53,684 - crypto_bot - WARNING - TELEGRAM_TOKEN не задан — бот запустится в режиме scanner + GUI без Telegram polling
+2026-04-22 17:52:53,684 - crypto_bot - INFO - [ANALYTICS INIT] trade tracking enabled
+2026-04-22 17:52:53,686 - crypto_bot - INFO - [PERSISTENCE] loaded trades: 0
+2026-04-22 17:52:53,687 - crypto_bot - INFO - PERSISTENCE_DEBUG: loaded_trades=23 restored_positions=0 missing_links=23
+2026-04-22 17:52:53,687 - crypto_bot - INFO - ANALYTICS_DEBUG: total_signals_loaded=383 total_trades_loaded=23 orphan_trades=23 orphan_signals=383
+2026-04-22 17:52:53,688 - crypto_bot - WARNING - CONFIG_WARNINGS:
+2026-04-22 17:52:53,688 - crypto_bot - WARNING - - BOS ADX blocked band overlaps allowed range; this can suppress otherwise valid BOS entries
+2026-04-22 17:52:53,693 - crypto_bot - INFO - [MAIN] scanner initialized | mode=MAIN | timeframe=1h | candle_limit=220 | execution_tfs=4h, 1h, 30m, 15m
+2026-04-22 17:52:53,731 - crypto_bot - INFO - 🖥️ Signal GUI thread started
+2026-04-22 17:52:53,732 - crypto_bot - INFO - BYBIT_CONNECTIVITY_CHECK start: execution_mode=LIVE testnet=True trading_enabled=True real_trading_enabled=True
+2026-04-22 17:52:54,826 - crypto_bot - INFO - BYBIT_CONNECTIVITY_CHECK OK: testnet=True coin=USDT balance=92.81194947 positions=5
+2026-04-22 17:52:54,827 - crypto_bot - INFO - ✅ Telegram отключён: инициализированы scanner + GUI режим
+2026-04-22 17:52:54,827 - crypto_bot - INFO - 📡 Starting polling...
+2026-04-22 17:52:54,828 - crypto_bot - INFO - 📡 Telegram polling disabled, running standalone scan loop
+2026-04-22 17:52:54,829 - crypto_bot - INFO - ⚙️ Position price loop started interval=10s
+2026-04-22 17:52:54,831 - crypto_bot - INFO - 🚀 SCAN LOOP STARTED
+2026-04-22 17:52:55,036 - crypto_bot - INFO - SYNC_RECONCILIATION: symbol=BOMEUSDT previous_size=0.0 current_size=69900.0 detected_event=opened_or_restored
+2026-04-22 17:52:55,036 - crypto_bot - INFO - SYNC_RECONCILIATION: symbol=ETHUSDT previous_size=0.0 current_size=0.04 detected_event=opened_or_restored
+2026-04-22 17:52:55,037 - crypto_bot - INFO - SYNC_RECONCILIATION: symbol=TAOUSDT previous_size=0.0 current_size=0.115 detected_event=opened_or_restored
+2026-04-22 17:52:55,037 - crypto_bot - INFO - SYNC_RECONCILIATION: symbol=XPLUSDT previous_size=0.0 current_size=154.0 detected_event=opened_or_restored
+2026-04-22 17:52:55,037 - crypto_bot - INFO - SYNC_RECONCILIATION: symbol=XRPUSDT previous_size=0.0 current_size=56.5 detected_event=opened_or_restored
+2026-04-22 17:52:56,056 - crypto_bot - INFO - POSITION_SYNCED: restored_positions=5
+2026-04-22 17:52:56,056 - crypto_bot - WARNING - [RECONCILE] issues=['registry_open_without_active:DOGEUSDT:00577e29762d4c19bf0babb939afb413', 'registry_open_without_active:HYPEUSDT:ce573ef672b84b6b968d2da71de7e282', 'registry_open_without_active:XAUTUSDT:b9de1d5406594539908bd0ca875672f2', 'registry_open_without_active:BTCUSDT:0d0c425f48934fcf9963d0ce3942b3eb', 'registry_closed_missing_snapshot:STOUSDT:5b9848c939f54fe4841b037ee52e5d14', 'registry_open_without_active:XRPUSDT:2da9a39f73cc47cf93398f5d510ea618', 'registry_closed_missing_snapshot:NOMUSDT:4a1f179a161444e99761a11713479df4', 'registry_open_without_active:SOLUSDT:48ad4dc572d54874b859516b524ba5fd', 'registry_open_without_active:XPLUSDT:69bd74d26b2e4984921a0b072a6058d6', 'registry_open_without_active:PIPPINUSDT:a30b3d6e0b7d46619fe30025b6a5b229', 'registry_open_without_active:EDGEUSDT:2f6d6fbc391141ddad8ca2ae73bd0b71', 'registry_open_without_active:ADAUSDT:8cfdea4978314c9690385c8e9edf2e4f', 'registry_open_without_active:1000PEPEUSDT:fefcbb7d73b542ef99a3dcfb3fb10bc0', 'registry_open_without_active:TAOUSDT:a9933b7408924cc8a299407b9966385e', 'registry_open_without_active:ONTUSDT:7f27789f834d4b3ca50ddddec8acb256', 'registry_open_without_active:SIRENUSDT:6f30e4e468f2451d94cab781a1acd3de', 'registry_open_without_active:PUFFERUSDT:18fb2cedb8324f4e9ecb2ca1edcd24a5', 'registry_open_without_active:RIVERUSDT:cae3629d20fa4eda97d54206bd27ba98', 'registry_open_without_active:ALGOUSDT:11470a0db0f64a3bbd5d22cb18a6e78b', 'registry_closed_missing_snapshot:ZECUSDT:a7543cfde51140c69100a23f6f3ab106', 'registry_open_without_active:JCTUSDT:e757104f4199417196abe9e349214691', 'registry_closed_missing_snapshot:FARTCOINUSDT:9960dd0b4f2445ae843112c6443459ef', 'registry_open_without_active:ARIAUSDT:33a6f44070604fa582d044cb5faee669', 'registry_open_without_active:BERAUSDT:be69a869f7404fdda9d3e3d2d40055e7', 'registry_closed_missing_snapshot:NEARUSDT:0b9330556c9e4c2ea5f2ebc01ff8d62b', 'registry_open_without_active:TRUMPUSDT:529512db726f4990822f2ced81f4916d', 'registry_open_without_active:MONUSDT:36074d9c7453412ca6e38dad0a81c0de', 'registry_open_without_active:ETHUSDT:82e4b171dbc14f23b1268a1ca2fa0cfc', 'registry_open_without_active:ENAUSDT:94c35f6ae24e492ba8ac4012972a30dc', 'registry_closed_missing_snapshot:BARDUSDT:8cb7d26ab5734142b52d76de2209d353', 'registry_open_without_active:FARTCOINUSDT:6fb64c642ccb4826b119af97a628257d', 'registry_open_without_active:STOUSDT:dea41bfc72994b6faa1f84bbdb1edd22', 'registry_open_without_active:MMTUSDT:05699846b6014a99a1dce2446735c010', 'registry_open_without_active:NEARUSDT:98c05e902398401b9e9e65ca81ffe816', 'registry_open_without_active:SOLVUSDT:78ccb710e7e54001bc238d095e827ace', 'registry_open_without_active:TREEUSDT:c34f1e5bd3af4d92b57998478774a52d', 'registry_open_without_active:LINKUSDT:cee67131158c4af59543502ce0ba4e07', 'registry_open_without_active:APRUSDT:c94760972c084ae2b3cd8a6a7605de9b', 'registry_open_without_active:ZECUSDT:823108509d6b48af89f19b9ad2796ce8', 'registry_open_without_active:AAVEUSDT:e5850bbc757748f0a78912fa6390a243', 'registry_open_without_active:REDUSDT:02515c4a20f146d6af37147773ffd6c4', 'registry_open_without_active:MUSDT:6b3bbaf3ed6f47fca33d3f3239dd4205', 'registry_open_without_active:GALAUSDT:75c20b1d803d49b0a8bf3ecb259a12d4', 'registry_open_without_active:SUIUSDT:2085f58a1b0444c1a6cfd215e3d04359', 'registry_open_without_active:BARDUSDT:83fef0d2a6c443d3bc1f1b42b80859bf', 'registry_open_without_active:SUPERUSDT:e01806b0d9cc40c39d33935e4bc8b7e1', 'registry_open_without_active:BCHUSDT:21ba042c91aa4594859d1e5950990285', 'registry_open_without_active:CLUSDT:8bffe3f30eb647e5b79fcf0fdd0a312f', 'registry_open_without_active:LTCUSDT:59dbc32a71a54396a9f41bc65018a222', 'registry_open_without_active:VIRTUALUSDT:1eff8576f445433d9b06dc04ba8bdffc', 'registry_open_without_active:RENDERUSDT:9c62d217541246df843de9f2ccab6c96', 'registry_open_without_active:XMRUSDT:92b89042ad6947029135322e69ace8ab', 'registry_open_without_active:HBARUSDT:22ce226076bb462f99a044e9c67f61b7', 'registry_open_without_active:LABUSDT:bef82b59f9bf4efdbdff0616ffa24bac']
+2026-04-22 17:52:56,057 - crypto_bot - INFO - 🔍 Starting market scan for top-50 symbols...
+2026-04-22 17:52:59,997 - crypto_bot - INFO - [MARKET] get_top_usdt_pairs prepared 537 liquid swap symbols
+2026-04-22 17:52:59,998 - crypto_bot - INFO - 📈 Top-50 symbols fetched: 50
+2026-04-22 17:52:59,998 - crypto_bot - INFO - 🔥 Active symbols after filter: 41 / 50
+2026-04-22 17:52:59,998 - crypto_bot - INFO -  RAW_CANDIDATES_BEFORE_STRICT_FILTERS: count=41 mode=MAIN
+2026-04-22 17:53:04,713 - crypto_bot - INFO - FILTER_CHECK: symbol=BTCUSDT trend_ok=True structure_state=weak structure_ok=True rsi_ok=False adx_ok=True volume_ok=False macd_ok=True
+2026-04-22 17:53:04,714 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=BTCUSDT trend=LONG recent_highs=[78087.8, 78172.3, 78174.8, 78145.5, 78406.5] recent_lows=[77767.3, 77886.7, 77912.0, 77903.8, 78040.2] bos_detected=False structure_state=weak reason=no BOS but higher lows / developing uptrend
+2026-04-22 17:53:04,714 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=BTCUSDT trend_score=1.00 structure_score=0.50 rsi_score=0.00 adx_score=0.50 volume_score=0.00 macd_score=1.40 total_score=3.40 min_required_score=3.00
+2026-04-22 17:53:04,715 - crypto_bot - INFO - FILTER_REJECTION: symbol=BTCUSDT hard_failed=[] soft_failed=['RSI', 'VOLUME', 'STRUCTURE']
+2026-04-22 17:53:04,724 - crypto_bot - INFO - ENTRY_RISK_ADJUSTMENT: structure_state=weak position_size_factor=0.50 confirmation_passed=False reason="impulse candle missing (body_ratio=0.17)" symbol=BTCUSDT
+2026-04-22 17:53:04,724 - crypto_bot - INFO - ENTRY_DEBUG: symbol=BTCUSDT structure_state=weak entry_type=continuation rr=0.00 entry_valid=False reason="impulse candle missing (body_ratio=0.17)"
+2026-04-22 17:53:04,725 - crypto_bot - INFO - BTCUSDT | signal_trace strict_result=False fallback_executed=True required_filters=None required_filters_result=None score=0.0 rejection_reason=relaxed signals disabled by config
+2026-04-22 17:53:04,947 - crypto_bot - INFO - FILTER_CHECK: symbol=ETHUSDT trend_ok=True structure_state=weak structure_ok=True rsi_ok=False adx_ok=True volume_ok=False macd_ok=True
+2026-04-22 17:53:04,948 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=ETHUSDT trend=LONG recent_highs=[2396.22, 2392.77, 2393.41, 2392.8, 2399.63] recent_lows=[2382.45, 2381.42, 2381.46, 2383.63, 2385.01] bos_detected=False structure_state=weak reason=no BOS but higher lows / developing uptrend
+2026-04-22 17:53:04,948 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=ETHUSDT trend_score=1.00 structure_score=0.50 rsi_score=0.00 adx_score=0.50 volume_score=0.00 macd_score=1.40 total_score=3.40 min_required_score=3.00
+2026-04-22 17:53:04,948 - crypto_bot - INFO - FILTER_REJECTION: symbol=ETHUSDT hard_failed=[] soft_failed=['RSI', 'VOLUME', 'STRUCTURE']
+2026-04-22 17:53:04,961 - crypto_bot - INFO - ENTRY_RISK_ADJUSTMENT: structure_state=weak position_size_factor=0.50 confirmation_passed=True reason="weak-risk checks passed" symbol=ETHUSDT
+2026-04-22 17:53:04,962 - crypto_bot - INFO - ENTRY_DEBUG: symbol=ETHUSDT structure_state=weak entry_type=continuation rr=1.60 entry_valid=True reason="adaptive weak entry accepted"
+2026-04-22 17:53:04,963 - crypto_bot - INFO - ETHUSDT | signal_trace strict_result=True fallback_executed=False required_filters=None required_filters_result=None score=3.4 rejection_reason=None
+2026-04-22 17:53:04,963 - crypto_bot - INFO - ✅ Signal generated: ETHUSDT | strict | tf=1h | mode=MAIN | score=3.4 | entry_source=strict | passed_filters=['TREND', 'STRUCTURE', 'ADX', 'MACD'] | failed_filters=[]
+2026-04-22 17:53:05,285 - crypto_bot - INFO - FILTER_CHECK: symbol=SOLUSDT trend_ok=True structure_state=strong structure_ok=True rsi_ok=False adx_ok=True volume_ok=False macd_ok=True
+2026-04-22 17:53:05,285 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=SOLUSDT trend=LONG recent_highs=[88.24, 88.25, 88.9, 88.43, 88.45] recent_lows=[87.66, 87.57, 87.8, 88.09, 88.12] bos_detected=True structure_state=strong reason=BOS confirmed with higher lows
+2026-04-22 17:53:05,285 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=SOLUSDT trend_score=1.00 structure_score=1.00 rsi_score=0.00 adx_score=0.50 volume_score=0.00 macd_score=1.40 total_score=3.90 min_required_score=4.00
+2026-04-22 17:53:05,286 - crypto_bot - INFO - FILTER_REJECTION: symbol=SOLUSDT hard_failed=[] soft_failed=['RSI', 'VOLUME']
+2026-04-22 17:53:05,286 - crypto_bot - INFO - SOLUSDT | signal_trace strict_result=False fallback_executed=False required_filters=None required_filters_result=None score=3.9 rejection_reason=score below adaptive threshold (3.90 < 4.00)
+2026-04-22 17:53:06,320 - crypto_bot - INFO - FILTER_CHECK: symbol=RAVEUSDT trend_ok=True structure_state=weak structure_ok=True rsi_ok=False adx_ok=False volume_ok=True macd_ok=True
+2026-04-22 17:53:06,320 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=RAVEUSDT trend=SHORT recent_highs=[1.39867, 1.41999, 1.43348, 1.42255, 1.38117] recent_lows=[1.30329, 1.33313, 1.36648, 1.30256, 1.321] bos_detected=True structure_state=weak reason=no BOS but lower highs / developing downtrend
+2026-04-22 17:53:06,321 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=RAVEUSDT trend_score=1.00 structure_score=0.50 rsi_score=0.00 adx_score=0.00 volume_score=0.25 macd_score=1.40 total_score=3.15 min_required_score=3.00
+2026-04-22 17:53:06,321 - crypto_bot - INFO - FILTER_REJECTION: symbol=RAVEUSDT hard_failed=[] soft_failed=['RSI', 'ADX', 'STRUCTURE']
+2026-04-22 17:53:06,329 - crypto_bot - INFO - ENTRY_RISK_ADJUSTMENT: structure_state=weak position_size_factor=0.50 confirmation_passed=True reason="weak-risk checks passed" symbol=RAVEUSDT
+2026-04-22 17:53:06,330 - crypto_bot - INFO - ENTRY_DEBUG: symbol=RAVEUSDT structure_state=weak entry_type=continuation rr=1.60 entry_valid=True reason="adaptive weak entry accepted"
+2026-04-22 17:53:06,331 - crypto_bot - INFO - RAVEUSDT | signal_trace strict_result=True fallback_executed=False required_filters=None required_filters_result=None score=3.15 rejection_reason=None
+2026-04-22 17:53:06,332 - crypto_bot - INFO - ✅ Signal generated: RAVEUSDT | strict | tf=1h | mode=MAIN | score=3.15 | entry_source=strict | passed_filters=['TREND', 'STRUCTURE', 'VOLUME', 'MACD'] | failed_filters=[]
+2026-04-22 17:53:06,729 - crypto_bot - INFO - FILTER_CHECK: symbol=XRPUSDT trend_ok=True structure_state=weak structure_ok=True rsi_ok=False adx_ok=True volume_ok=True macd_ok=True
+2026-04-22 17:53:06,730 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=XRPUSDT trend=LONG recent_highs=[1.4576, 1.455, 1.454, 1.4519, 1.4541] recent_lows=[1.4507, 1.4491, 1.4493, 1.4478, 1.4482] bos_detected=False structure_state=weak reason=no BOS but higher lows / developing uptrend
+2026-04-22 17:53:06,730 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=XRPUSDT trend_score=1.00 structure_score=0.50 rsi_score=0.00 adx_score=0.50 volume_score=0.25 macd_score=1.40 total_score=3.65 min_required_score=3.00
+2026-04-22 17:53:06,731 - crypto_bot - INFO - FILTER_REJECTION: symbol=XRPUSDT hard_failed=[] soft_failed=['RSI', 'STRUCTURE']
+2026-04-22 17:53:06,739 - crypto_bot - INFO - ENTRY_RISK_ADJUSTMENT: structure_state=weak position_size_factor=0.50 confirmation_passed=False reason="impulse candle missing (body_ratio=0.48)" symbol=XRPUSDT
+2026-04-22 17:53:06,739 - crypto_bot - INFO - ENTRY_DEBUG: symbol=XRPUSDT structure_state=weak entry_type=continuation rr=0.00 entry_valid=False reason="impulse candle missing (body_ratio=0.48)"
+2026-04-22 17:53:06,740 - crypto_bot - INFO - XRPUSDT | signal_trace strict_result=False fallback_executed=True required_filters=None required_filters_result=None score=0.0 rejection_reason=relaxed signals disabled by config
+2026-04-22 17:53:07,458 - crypto_bot - INFO - FILTER_CHECK: symbol=HYPEUSDT trend_ok=True structure_state=invalid structure_ok=False rsi_ok=True adx_ok=True volume_ok=True macd_ok=False
+2026-04-22 17:53:07,459 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=HYPEUSDT trend=SHORT recent_highs=[40.624, 40.59, 40.636, 41.033, 41.097] recent_lows=[40.269, 40.28, 40.425, 40.438, 40.726] bos_detected=False structure_state=invalid reason=higher high detected in downtrend -> invalid
+2026-04-22 17:53:07,459 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=HYPEUSDT trend_score=1.00 structure_score=0.00 rsi_score=1.00 adx_score=0.50 volume_score=0.25 macd_score=0.00 total_score=2.75 min_required_score=3.20
+2026-04-22 17:53:07,459 - crypto_bot - INFO - FILTER_REJECTION: symbol=HYPEUSDT hard_failed=['STRUCTURE'] soft_failed=['MACD']
+2026-04-22 17:53:07,460 - crypto_bot - INFO - HYPEUSDT | signal_trace strict_result=False fallback_executed=False required_filters=None required_filters_result=None score=2.75 rejection_reason=hard filters failed
+2026-04-22 17:53:07,873 - crypto_bot - INFO - FILTER_CHECK: symbol=DOGEUSDT trend_ok=True structure_state=strong structure_ok=True rsi_ok=False adx_ok=True volume_ok=True macd_ok=True
+2026-04-22 17:53:07,874 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=DOGEUSDT trend=LONG recent_highs=[0.09825, 0.09816, 0.09811, 0.09841, 0.09857] recent_lows=[0.09689, 0.09742, 0.09747, 0.09722, 0.09767] bos_detected=True structure_state=strong reason=BOS confirmed with higher lows
+2026-04-22 17:53:07,875 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=DOGEUSDT trend_score=1.00 structure_score=1.00 rsi_score=0.00 adx_score=0.50 volume_score=0.25 macd_score=1.40 total_score=4.15 min_required_score=4.00
+2026-04-22 17:53:07,875 - crypto_bot - INFO - FILTER_REJECTION: symbol=DOGEUSDT hard_failed=[] soft_failed=['RSI']
+2026-04-22 17:53:07,883 - crypto_bot - INFO - DOGEUSDT | signal_trace strict_result=False fallback_executed=True required_filters=None required_filters_result=None score=0.0 rejection_reason=relaxed signals disabled by config
+2026-04-22 17:53:08,100 - crypto_bot - INFO - FILTER_CHECK: symbol=1000PEPEUSDT trend_ok=True structure_state=weak structure_ok=True rsi_ok=False adx_ok=True volume_ok=False macd_ok=True
+2026-04-22 17:53:08,101 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=1000PEPEUSDT trend=LONG recent_highs=[0.003898, 0.003913, 0.003916, 0.00396, 0.003985] recent_lows=[0.003866, 0.003878, 0.003888, 0.003874, 0.003908] bos_detected=False structure_state=weak reason=no BOS but higher lows / developing uptrend
+2026-04-22 17:53:08,101 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=1000PEPEUSDT trend_score=1.00 structure_score=0.50 rsi_score=0.00 adx_score=0.50 volume_score=0.00 macd_score=1.40 total_score=3.40 min_required_score=3.00
+2026-04-22 17:53:08,102 - crypto_bot - INFO - FILTER_REJECTION: symbol=1000PEPEUSDT hard_failed=[] soft_failed=['RSI', 'VOLUME', 'STRUCTURE']
+2026-04-22 17:53:08,110 - crypto_bot - INFO - ENTRY_RISK_ADJUSTMENT: structure_state=weak position_size_factor=0.50 confirmation_passed=False reason="impulse candle missing (body_ratio=0.52)" symbol=1000PEPEUSDT
+2026-04-22 17:53:08,111 - crypto_bot - INFO - ENTRY_DEBUG: symbol=1000PEPEUSDT structure_state=weak entry_type=continuation rr=0.00 entry_valid=False reason="impulse candle missing (body_ratio=0.52)"
+2026-04-22 17:53:08,111 - crypto_bot - INFO - 1000PEPEUSDT | signal_trace strict_result=False fallback_executed=True required_filters=None required_filters_result=None score=0.0 rejection_reason=relaxed signals disabled by config
+2026-04-22 17:53:08,328 - crypto_bot - INFO - FILTER_CHECK: symbol=METUSDT trend_ok=True structure_state=weak structure_ok=True rsi_ok=True adx_ok=True volume_ok=False macd_ok=False
+2026-04-22 17:53:08,329 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=METUSDT trend=LONG recent_highs=[0.19702, 0.1912, 0.19515, 0.19675, 0.19369] recent_lows=[0.18643, 0.18546, 0.18701, 0.18721, 0.18517] bos_detected=False structure_state=weak reason=no BOS but higher lows / developing uptrend
+2026-04-22 17:53:08,329 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=METUSDT trend_score=1.00 structure_score=0.50 rsi_score=1.00 adx_score=0.50 volume_score=0.00 macd_score=0.00 total_score=3.00 min_required_score=3.00
+2026-04-22 17:53:08,329 - crypto_bot - INFO - FILTER_REJECTION: symbol=METUSDT hard_failed=[] soft_failed=['MACD', 'VOLUME', 'STRUCTURE']
+2026-04-22 17:53:08,338 - crypto_bot - INFO - ENTRY_RISK_ADJUSTMENT: structure_state=weak position_size_factor=0.50 confirmation_passed=False reason="impulse candle missing (body_ratio=0.51)" symbol=METUSDT
+2026-04-22 17:53:08,338 - crypto_bot - INFO - ENTRY_DEBUG: symbol=METUSDT structure_state=weak entry_type=continuation rr=0.00 entry_valid=False reason="impulse candle missing (body_ratio=0.51)"
+2026-04-22 17:53:08,340 - crypto_bot - INFO - METUSDT | signal_trace strict_result=False fallback_executed=True required_filters=None required_filters_result=None score=0.0 rejection_reason=relaxed signals disabled by config
+2026-04-22 17:53:08,557 - crypto_bot - INFO - FILTER_CHECK: symbol=ZECUSDT trend_ok=True structure_state=weak structure_ok=True rsi_ok=True adx_ok=False volume_ok=False macd_ok=True
+2026-04-22 17:53:08,557 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=ZECUSDT trend=SHORT recent_highs=[324.68, 322.11, 321.9, 319.3, 320.85] recent_lows=[320.59, 317.59, 315.86, 316.53, 317.2] bos_detected=False structure_state=weak reason=no BOS but lower highs / developing downtrend
+2026-04-22 17:53:08,557 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=ZECUSDT trend_score=1.00 structure_score=0.50 rsi_score=1.00 adx_score=0.00 volume_score=0.00 macd_score=1.40 total_score=3.90 min_required_score=3.00
+2026-04-22 17:53:08,558 - crypto_bot - INFO - FILTER_REJECTION: symbol=ZECUSDT hard_failed=[] soft_failed=['VOLUME', 'ADX', 'STRUCTURE']
+2026-04-22 17:53:08,568 - crypto_bot - INFO - ENTRY_RISK_ADJUSTMENT: structure_state=weak position_size_factor=0.50 confirmation_passed=False reason="impulse candle missing (body_ratio=0.44)" symbol=ZECUSDT
+2026-04-22 17:53:08,568 - crypto_bot - INFO - ENTRY_DEBUG: symbol=ZECUSDT structure_state=weak entry_type=continuation rr=0.00 entry_valid=False reason="impulse candle missing (body_ratio=0.44)"
+2026-04-22 17:53:08,569 - crypto_bot - INFO - ZECUSDT | signal_trace strict_result=False fallback_executed=True required_filters=None required_filters_result=None score=0.0 rejection_reason=relaxed signals disabled by config
+2026-04-22 17:53:08,785 - crypto_bot - INFO - FILTER_CHECK: symbol=ADAUSDT trend_ok=True structure_state=weak structure_ok=True rsi_ok=False adx_ok=True volume_ok=False macd_ok=True
+2026-04-22 17:53:08,785 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=ADAUSDT trend=LONG recent_highs=[0.2557, 0.2554, 0.2556, 0.2562, 0.2564] recent_lows=[0.254, 0.2542, 0.2544, 0.2546, 0.2549] bos_detected=False structure_state=weak reason=no BOS but higher lows / developing uptrend
+2026-04-22 17:53:08,785 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=ADAUSDT trend_score=1.00 structure_score=0.50 rsi_score=0.00 adx_score=0.50 volume_score=0.00 macd_score=1.40 total_score=3.40 min_required_score=3.00
+2026-04-22 17:53:08,786 - crypto_bot - INFO - FILTER_REJECTION: symbol=ADAUSDT hard_failed=[] soft_failed=['RSI', 'VOLUME', 'STRUCTURE']
+2026-04-22 17:53:08,793 - crypto_bot - INFO - ENTRY_RISK_ADJUSTMENT: structure_state=weak position_size_factor=0.50 confirmation_passed=False reason="impulse candle missing (body_ratio=0.59)" symbol=ADAUSDT
+2026-04-22 17:53:08,794 - crypto_bot - INFO - ENTRY_DEBUG: symbol=ADAUSDT structure_state=weak entry_type=continuation rr=0.00 entry_valid=False reason="impulse candle missing (body_ratio=0.59)"
+2026-04-22 17:53:08,794 - crypto_bot - INFO - ADAUSDT | signal_trace strict_result=False fallback_executed=True required_filters=None required_filters_result=None score=0.0 rejection_reason=relaxed signals disabled by config
+2026-04-22 17:53:09,010 - crypto_bot - INFO - FILTER_CHECK: symbol=CLUSDT trend_ok=True structure_state=invalid structure_ok=False rsi_ok=True adx_ok=True volume_ok=True macd_ok=False
+2026-04-22 17:53:09,011 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=CLUSDT trend=SHORT recent_highs=[89.446, 91.472, 91.14, 90.962, 90.611] recent_lows=[88.542, 89.251, 90.151, 89.967, 89.799] bos_detected=False structure_state=invalid reason=higher high detected in downtrend -> invalid
+2026-04-22 17:53:09,011 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=CLUSDT trend_score=1.00 structure_score=0.00 rsi_score=1.00 adx_score=0.50 volume_score=0.25 macd_score=0.00 total_score=2.75 min_required_score=3.20
+2026-04-22 17:53:09,012 - crypto_bot - INFO - FILTER_REJECTION: symbol=CLUSDT hard_failed=['STRUCTURE'] soft_failed=['MACD']
+2026-04-22 17:53:09,012 - crypto_bot - INFO - CLUSDT | signal_trace strict_result=False fallback_executed=False required_filters=None required_filters_result=None score=2.75 rejection_reason=hard filters failed
+2026-04-22 17:53:09,230 - crypto_bot - INFO - FILTER_CHECK: symbol=FARTCOINUSDT trend_ok=True structure_state=weak structure_ok=True rsi_ok=False adx_ok=True volume_ok=False macd_ok=True
+2026-04-22 17:53:09,230 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=FARTCOINUSDT trend=LONG recent_highs=[0.21214, 0.21272, 0.21262, 0.21255, 0.21364] recent_lows=[0.20964, 0.2095, 0.2101, 0.2073, 0.21013] bos_detected=False structure_state=weak reason=no BOS but higher lows / developing uptrend
+2026-04-22 17:53:09,231 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=FARTCOINUSDT trend_score=1.00 structure_score=0.50 rsi_score=0.00 adx_score=0.50 volume_score=0.00 macd_score=1.40 total_score=3.40 min_required_score=3.00
+2026-04-22 17:53:09,231 - crypto_bot - INFO - FILTER_REJECTION: symbol=FARTCOINUSDT hard_failed=[] soft_failed=['RSI', 'VOLUME', 'STRUCTURE']
+2026-04-22 17:53:09,243 - crypto_bot - INFO - ENTRY_RISK_ADJUSTMENT: structure_state=weak position_size_factor=0.50 confirmation_passed=False reason="impulse candle missing (body_ratio=0.33)" symbol=FARTCOINUSDT
+2026-04-22 17:53:09,243 - crypto_bot - INFO - ENTRY_DEBUG: symbol=FARTCOINUSDT structure_state=weak entry_type=continuation rr=0.00 entry_valid=False reason="impulse candle missing (body_ratio=0.33)"
+2026-04-22 17:53:09,244 - crypto_bot - INFO - FARTCOINUSDT | signal_trace strict_result=False fallback_executed=True required_filters=None required_filters_result=None score=0.0 rejection_reason=relaxed signals disabled by config
+2026-04-22 17:53:09,461 - crypto_bot - INFO - FILTER_CHECK: symbol=PIEVERSEUSDT trend_ok=True structure_state=strong structure_ok=True rsi_ok=False adx_ok=False volume_ok=True macd_ok=True
+2026-04-22 17:53:09,461 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=PIEVERSEUSDT trend=LONG recent_highs=[0.9416, 0.9446, 0.9269, 0.9421, 1.031] recent_lows=[0.8974, 0.9046, 0.9044, 0.9105, 0.9247] bos_detected=True structure_state=strong reason=BOS confirmed with higher lows
+2026-04-22 17:53:09,461 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=PIEVERSEUSDT trend_score=1.00 structure_score=1.00 rsi_score=0.00 adx_score=0.00 volume_score=0.25 macd_score=1.40 total_score=3.65 min_required_score=4.00
+2026-04-22 17:53:09,462 - crypto_bot - INFO - FILTER_REJECTION: symbol=PIEVERSEUSDT hard_failed=[] soft_failed=['RSI', 'ADX']
+2026-04-22 17:53:09,462 - crypto_bot - INFO - PIEVERSEUSDT | signal_trace strict_result=False fallback_executed=False required_filters=None required_filters_result=None score=3.65 rejection_reason=score below adaptive threshold (3.65 < 4.00)
+2026-04-22 17:53:09,678 - crypto_bot - INFO - FILTER_CHECK: symbol=SUIUSDT trend_ok=True structure_state=weak structure_ok=True rsi_ok=False adx_ok=True volume_ok=False macd_ok=True
+2026-04-22 17:53:09,679 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=SUIUSDT trend=LONG recent_highs=[0.9685, 0.9696, 0.9705, 0.9727, 0.9755] recent_lows=[0.9641, 0.965, 0.9662, 0.9652, 0.9687] bos_detected=False structure_state=weak reason=no BOS but higher lows / developing uptrend
+2026-04-22 17:53:09,679 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=SUIUSDT trend_score=1.00 structure_score=0.50 rsi_score=0.00 adx_score=0.50 volume_score=0.00 macd_score=1.40 total_score=3.40 min_required_score=3.00
+2026-04-22 17:53:09,679 - crypto_bot - INFO - FILTER_REJECTION: symbol=SUIUSDT hard_failed=[] soft_failed=['RSI', 'VOLUME', 'STRUCTURE']
+2026-04-22 17:53:09,688 - crypto_bot - INFO - ENTRY_RISK_ADJUSTMENT: structure_state=weak position_size_factor=0.50 confirmation_passed=False reason="impulse candle missing (body_ratio=0.35)" symbol=SUIUSDT
+2026-04-22 17:53:09,688 - crypto_bot - INFO - ENTRY_DEBUG: symbol=SUIUSDT structure_state=weak entry_type=continuation rr=0.00 entry_valid=False reason="impulse candle missing (body_ratio=0.35)"
+2026-04-22 17:53:09,688 - crypto_bot - INFO - SUIUSDT | signal_trace strict_result=False fallback_executed=True required_filters=None required_filters_result=None score=0.0 rejection_reason=relaxed signals disabled by config
+2026-04-22 17:53:10,380 - crypto_bot - INFO - FILTER_CHECK: symbol=AAVEUSDT trend_ok=True structure_state=weak structure_ok=True rsi_ok=True adx_ok=True volume_ok=False macd_ok=False
+2026-04-22 17:53:10,381 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=AAVEUSDT trend=SHORT recent_highs=[93.47, 93.73, 94.17, 93.76, 93.57] recent_lows=[92.6, 93.02, 93.48, 93.23, 92.68] bos_detected=False structure_state=weak reason=no BOS but lower highs / developing downtrend
+2026-04-22 17:53:10,381 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=AAVEUSDT trend_score=1.00 structure_score=0.50 rsi_score=1.00 adx_score=0.50 volume_score=0.00 macd_score=0.00 total_score=3.00 min_required_score=3.00
+2026-04-22 17:53:10,382 - crypto_bot - INFO - FILTER_REJECTION: symbol=AAVEUSDT hard_failed=[] soft_failed=['MACD', 'VOLUME', 'STRUCTURE']
+2026-04-22 17:53:10,390 - crypto_bot - INFO - ENTRY_RISK_ADJUSTMENT: structure_state=weak position_size_factor=0.50 confirmation_passed=False reason="impulse candle missing (body_ratio=0.27)" symbol=AAVEUSDT
+2026-04-22 17:53:10,391 - crypto_bot - INFO - ENTRY_DEBUG: symbol=AAVEUSDT structure_state=weak entry_type=continuation rr=0.00 entry_valid=False reason="impulse candle missing (body_ratio=0.27)"
+2026-04-22 17:53:10,391 - crypto_bot - INFO - AAVEUSDT | signal_trace strict_result=False fallback_executed=True required_filters=None required_filters_result=None score=0.0 rejection_reason=relaxed signals disabled by config
+2026-04-22 17:53:10,607 - crypto_bot - INFO - FILTER_CHECK: symbol=PENGUUSDT trend_ok=True structure_state=strong structure_ok=True rsi_ok=False adx_ok=True volume_ok=True macd_ok=True
+2026-04-22 17:53:10,608 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=PENGUUSDT trend=LONG recent_highs=[0.008148, 0.008346, 0.008471, 0.00889, 0.009018] recent_lows=[0.008047, 0.008123, 0.00824, 0.00838, 0.008565] bos_detected=True structure_state=strong reason=BOS confirmed with higher lows
+2026-04-22 17:53:10,608 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=PENGUUSDT trend_score=1.00 structure_score=1.00 rsi_score=0.00 adx_score=0.50 volume_score=0.25 macd_score=1.40 total_score=4.15 min_required_score=4.00
+2026-04-22 17:53:10,608 - crypto_bot - INFO - FILTER_REJECTION: symbol=PENGUUSDT hard_failed=[] soft_failed=['RSI']
+2026-04-22 17:53:10,620 - crypto_bot - INFO - PENGUUSDT | signal_trace strict_result=False fallback_executed=True required_filters=None required_filters_result=None score=0.0 rejection_reason=relaxed signals disabled by config
+2026-04-22 17:53:10,839 - crypto_bot - INFO - FILTER_CHECK: symbol=BCHUSDT trend_ok=True structure_state=weak structure_ok=True rsi_ok=False adx_ok=True volume_ok=False macd_ok=True
+2026-04-22 17:53:10,840 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=BCHUSDT trend=LONG recent_highs=[470.7, 473.7, 473.1, 471.3, 470.9] recent_lows=[466.6, 469.6, 469.3, 467.7, 465.9] bos_detected=False structure_state=weak reason=no BOS but higher lows / developing uptrend
+2026-04-22 17:53:10,840 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=BCHUSDT trend_score=1.00 structure_score=0.50 rsi_score=0.00 adx_score=0.50 volume_score=0.00 macd_score=1.40 total_score=3.40 min_required_score=3.00
+2026-04-22 17:53:10,841 - crypto_bot - INFO - FILTER_REJECTION: symbol=BCHUSDT hard_failed=[] soft_failed=['RSI', 'VOLUME', 'STRUCTURE']
+2026-04-22 17:53:10,849 - crypto_bot - INFO - ENTRY_RISK_ADJUSTMENT: structure_state=weak position_size_factor=0.50 confirmation_passed=False reason="impulse candle missing (body_ratio=0.65)" symbol=BCHUSDT
+2026-04-22 17:53:10,849 - crypto_bot - INFO - ENTRY_DEBUG: symbol=BCHUSDT structure_state=weak entry_type=continuation rr=0.00 entry_valid=False reason="impulse candle missing (body_ratio=0.65)"
+2026-04-22 17:53:10,850 - crypto_bot - INFO - BCHUSDT | signal_trace strict_result=False fallback_executed=True required_filters=None required_filters_result=None score=0.0 rejection_reason=relaxed signals disabled by config
+2026-04-22 17:53:11,067 - crypto_bot - INFO - FILTER_CHECK: symbol=RIVERUSDT trend_ok=True structure_state=invalid structure_ok=False rsi_ok=True adx_ok=True volume_ok=False macd_ok=False
+2026-04-22 17:53:11,067 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=RIVERUSDT trend=SHORT recent_highs=[6.697, 6.664, 6.549, 6.626, 6.618] recent_lows=[6.405, 6.118, 6.188, 6.298, 6.32] bos_detected=False structure_state=invalid reason=higher high detected in downtrend -> invalid
+2026-04-22 17:53:11,068 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=RIVERUSDT trend_score=1.00 structure_score=0.00 rsi_score=1.00 adx_score=0.50 volume_score=0.00 macd_score=0.00 total_score=2.50 min_required_score=3.20
+2026-04-22 17:53:11,068 - crypto_bot - INFO - FILTER_REJECTION: symbol=RIVERUSDT hard_failed=['STRUCTURE'] soft_failed=['MACD', 'VOLUME']
+2026-04-22 17:53:11,068 - crypto_bot - INFO - RIVERUSDT | signal_trace strict_result=False fallback_executed=False required_filters=None required_filters_result=None score=2.5 rejection_reason=hard filters failed
+2026-04-22 17:53:11,927 - crypto_bot - INFO - FILTER_CHECK: symbol=TRUMPUSDT trend_ok=True structure_state=strong structure_ok=True rsi_ok=False adx_ok=True volume_ok=True macd_ok=True
+2026-04-22 17:53:11,927 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=TRUMPUSDT trend=LONG recent_highs=[2.982, 3.025, 3.028, 3.011, 3.015] recent_lows=[2.954, 2.97, 2.994, 2.964, 2.993] bos_detected=True structure_state=strong reason=BOS confirmed with higher lows
+2026-04-22 17:53:11,928 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=TRUMPUSDT trend_score=1.00 structure_score=1.00 rsi_score=0.00 adx_score=0.50 volume_score=0.25 macd_score=1.40 total_score=4.15 min_required_score=4.00
+2026-04-22 17:53:11,928 - crypto_bot - INFO - FILTER_REJECTION: symbol=TRUMPUSDT hard_failed=[] soft_failed=['RSI']
+2026-04-22 17:53:11,937 - crypto_bot - INFO - TRUMPUSDT | signal_trace strict_result=False fallback_executed=True required_filters=None required_filters_result=None score=0.0 rejection_reason=relaxed signals disabled by config
+2026-04-22 17:53:12,154 - crypto_bot - INFO - FILTER_CHECK: symbol=BNBUSDT trend_ok=True structure_state=strong structure_ok=True rsi_ok=False adx_ok=True volume_ok=False macd_ok=True
+2026-04-22 17:53:12,155 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=BNBUSDT trend=LONG recent_highs=[642.6, 642.8, 643.7, 643.1, 642.8] recent_lows=[641.2, 640.9, 641.6, 641.3, 640.9] bos_detected=True structure_state=strong reason=BOS confirmed with higher lows
+2026-04-22 17:53:12,155 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=BNBUSDT trend_score=1.00 structure_score=1.00 rsi_score=0.00 adx_score=0.50 volume_score=0.00 macd_score=1.40 total_score=3.90 min_required_score=4.00
+2026-04-22 17:53:12,155 - crypto_bot - INFO - FILTER_REJECTION: symbol=BNBUSDT hard_failed=[] soft_failed=['RSI', 'VOLUME']
+2026-04-22 17:53:12,156 - crypto_bot - INFO - BNBUSDT | signal_trace strict_result=False fallback_executed=False required_filters=None required_filters_result=None score=3.9 rejection_reason=score below adaptive threshold (3.90 < 4.00)
+2026-04-22 17:53:12,846 - crypto_bot - INFO - FILTER_CHECK: symbol=BASEDUSDT trend_ok=True structure_state=invalid structure_ok=False rsi_ok=True adx_ok=True volume_ok=True macd_ok=False
+2026-04-22 17:53:12,847 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=BASEDUSDT trend=LONG recent_highs=[0.1306, 0.1293, 0.1257, 0.1256, 0.1237] recent_lows=[0.1275, 0.1215, 0.1236, 0.1185, 0.1192] bos_detected=False structure_state=invalid reason=lower low detected in uptrend -> invalid
+2026-04-22 17:53:12,847 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=BASEDUSDT trend_score=1.00 structure_score=0.00 rsi_score=1.00 adx_score=0.50 volume_score=0.25 macd_score=0.00 total_score=2.75 min_required_score=3.20
+2026-04-22 17:53:12,848 - crypto_bot - INFO - FILTER_REJECTION: symbol=BASEDUSDT hard_failed=['STRUCTURE'] soft_failed=['MACD']
+2026-04-22 17:53:12,848 - crypto_bot - INFO - BASEDUSDT | signal_trace strict_result=False fallback_executed=False required_filters=None required_filters_result=None score=2.75 rejection_reason=hard filters failed
+2026-04-22 17:53:13,081 - crypto_bot - INFO - FILTER_CHECK: symbol=AVAXUSDT trend_ok=True structure_state=weak structure_ok=True rsi_ok=False adx_ok=True volume_ok=False macd_ok=True
+2026-04-22 17:53:13,081 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=AVAXUSDT trend=LONG recent_highs=[9.606, 9.587, 9.643, 9.631, 9.596] recent_lows=[9.545, 9.533, 9.538, 9.545, 9.559] bos_detected=False structure_state=weak reason=no BOS but higher lows / developing uptrend
+2026-04-22 17:53:13,082 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=AVAXUSDT trend_score=1.00 structure_score=0.50 rsi_score=0.00 adx_score=0.50 volume_score=0.00 macd_score=1.40 total_score=3.40 min_required_score=3.00
+2026-04-22 17:53:13,082 - crypto_bot - INFO - FILTER_REJECTION: symbol=AVAXUSDT hard_failed=[] soft_failed=['RSI', 'VOLUME', 'STRUCTURE']
+2026-04-22 17:53:13,090 - crypto_bot - INFO - ENTRY_RISK_ADJUSTMENT: structure_state=weak position_size_factor=0.50 confirmation_passed=False reason="impulse candle missing (body_ratio=0.65)" symbol=AVAXUSDT
+2026-04-22 17:53:13,091 - crypto_bot - INFO - ENTRY_DEBUG: symbol=AVAXUSDT structure_state=weak entry_type=continuation rr=0.00 entry_valid=False reason="impulse candle missing (body_ratio=0.65)"
+2026-04-22 17:53:13,092 - crypto_bot - INFO - AVAXUSDT | signal_trace strict_result=False fallback_executed=True required_filters=None required_filters_result=None score=0.0 rejection_reason=relaxed signals disabled by config
+2026-04-22 17:53:13,949 - crypto_bot - INFO - FILTER_CHECK: symbol=ORDIUSDT trend_ok=False structure_state=invalid structure_ok=False rsi_ok=True adx_ok=False volume_ok=False macd_ok=False
+2026-04-22 17:53:13,949 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=ORDIUSDT trend=LONG recent_highs=[4.626, 4.544, 4.581, 4.54, 4.521] recent_lows=[4.457, 4.499, 4.522, 4.443, 4.443] bos_detected=False structure_state=invalid reason=lower low detected in uptrend -> invalid
+2026-04-22 17:53:13,949 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=ORDIUSDT trend_score=0.00 structure_score=0.00 rsi_score=1.00 adx_score=0.00 volume_score=0.00 macd_score=0.00 total_score=1.00 min_required_score=3.20
+2026-04-22 17:53:13,950 - crypto_bot - INFO - FILTER_REJECTION: symbol=ORDIUSDT hard_failed=['TREND', 'STRUCTURE'] soft_failed=['MACD', 'VOLUME', 'ADX']
+2026-04-22 17:53:13,950 - crypto_bot - INFO - ORDIUSDT | signal_trace strict_result=False fallback_executed=False required_filters=None required_filters_result=None score=1.0 rejection_reason=hard filters failed
+2026-04-22 17:53:14,167 - crypto_bot - INFO - FILTER_CHECK: symbol=BSBUSDT trend_ok=True structure_state=invalid structure_ok=False rsi_ok=True adx_ok=True volume_ok=False macd_ok=False
+2026-04-22 17:53:14,167 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=BSBUSDT trend=LONG recent_highs=[0.3038, 0.2941, 0.288, 0.2831, 0.3065] recent_lows=[0.2822, 0.2838, 0.2702, 0.2702, 0.2797] bos_detected=False structure_state=invalid reason=lower low detected in uptrend -> invalid
+2026-04-22 17:53:14,168 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=BSBUSDT trend_score=1.00 structure_score=0.00 rsi_score=1.00 adx_score=0.50 volume_score=0.00 macd_score=0.00 total_score=2.50 min_required_score=3.20
+2026-04-22 17:53:14,168 - crypto_bot - INFO - FILTER_REJECTION: symbol=BSBUSDT hard_failed=['STRUCTURE'] soft_failed=['MACD', 'VOLUME']
+2026-04-22 17:53:14,168 - crypto_bot - INFO - BSBUSDT | signal_trace strict_result=False fallback_executed=False required_filters=None required_filters_result=None score=2.5 rejection_reason=hard filters failed
+2026-04-22 17:53:15,079 - crypto_bot - INFO - FILTER_CHECK: symbol=DOTUSDT trend_ok=True structure_state=weak structure_ok=True rsi_ok=False adx_ok=True volume_ok=False macd_ok=True
+2026-04-22 17:53:15,080 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=DOTUSDT trend=LONG recent_highs=[1.3086, 1.3132, 1.3131, 1.3117, 1.314] recent_lows=[1.3035, 1.3042, 1.3044, 1.301, 1.2969] bos_detected=False structure_state=weak reason=no BOS but higher lows / developing uptrend
+2026-04-22 17:53:15,080 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=DOTUSDT trend_score=1.00 structure_score=0.50 rsi_score=0.00 adx_score=0.50 volume_score=0.00 macd_score=1.40 total_score=3.40 min_required_score=3.00
+2026-04-22 17:53:15,080 - crypto_bot - INFO - FILTER_REJECTION: symbol=DOTUSDT hard_failed=[] soft_failed=['RSI', 'VOLUME', 'STRUCTURE']
+2026-04-22 17:53:15,089 - crypto_bot - INFO - ENTRY_RISK_ADJUSTMENT: structure_state=weak position_size_factor=0.50 confirmation_passed=False reason="impulse candle missing (body_ratio=0.74)" symbol=DOTUSDT
+2026-04-22 17:53:15,089 - crypto_bot - INFO - ENTRY_DEBUG: symbol=DOTUSDT structure_state=weak entry_type=continuation rr=0.00 entry_valid=False reason="impulse candle missing (body_ratio=0.74)"
+2026-04-22 17:53:15,090 - crypto_bot - INFO - DOTUSDT | signal_trace strict_result=False fallback_executed=True required_filters=None required_filters_result=None score=0.0 rejection_reason=relaxed signals disabled by config
+2026-04-22 17:53:15,307 - crypto_bot - INFO - FILTER_CHECK: symbol=MUSDT trend_ok=True structure_state=weak structure_ok=True rsi_ok=True adx_ok=True volume_ok=False macd_ok=False
+2026-04-22 17:53:15,308 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=MUSDT trend=LONG recent_highs=[4.3431, 4.33, 4.3286, 4.3758, 4.3816] recent_lows=[4.2182, 4.1974, 4.2248, 4.2619, 4.2613] bos_detected=False structure_state=weak reason=no BOS but higher lows / developing uptrend
+2026-04-22 17:53:15,308 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=MUSDT trend_score=1.00 structure_score=0.50 rsi_score=1.00 adx_score=0.50 volume_score=0.00 macd_score=0.00 total_score=3.00 min_required_score=3.00
+2026-04-22 17:53:15,309 - crypto_bot - INFO - FILTER_REJECTION: symbol=MUSDT hard_failed=[] soft_failed=['MACD', 'VOLUME', 'STRUCTURE']
+2026-04-22 17:53:15,318 - crypto_bot - INFO - ENTRY_RISK_ADJUSTMENT: structure_state=weak position_size_factor=0.50 confirmation_passed=False reason="impulse candle missing (body_ratio=0.05)" symbol=MUSDT
+2026-04-22 17:53:15,319 - crypto_bot - INFO - ENTRY_DEBUG: symbol=MUSDT structure_state=weak entry_type=continuation rr=0.00 entry_valid=False reason="impulse candle missing (body_ratio=0.05)"
+2026-04-22 17:53:15,319 - crypto_bot - INFO - MUSDT | signal_trace strict_result=False fallback_executed=True required_filters=None required_filters_result=None score=0.0 rejection_reason=relaxed signals disabled by config
+2026-04-22 17:53:15,536 - crypto_bot - INFO - FILTER_CHECK: symbol=GUNUSDT trend_ok=False structure_state=invalid structure_ok=False rsi_ok=True adx_ok=True volume_ok=True macd_ok=True
+2026-04-22 17:53:15,536 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=GUNUSDT trend=LONG recent_highs=[0.018575, 0.018367, 0.018404, 0.018439, 0.018192] recent_lows=[0.018028, 0.018011, 0.017778, 0.017916, 0.017526] bos_detected=False structure_state=invalid reason=lower low detected in uptrend -> invalid
+2026-04-22 17:53:15,537 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=GUNUSDT trend_score=0.00 structure_score=0.00 rsi_score=1.00 adx_score=0.50 volume_score=0.25 macd_score=1.40 total_score=3.15 min_required_score=3.20
+2026-04-22 17:53:15,537 - crypto_bot - INFO - FILTER_REJECTION: symbol=GUNUSDT hard_failed=['TREND', 'STRUCTURE'] soft_failed=[]
+2026-04-22 17:53:15,538 - crypto_bot - INFO - GUNUSDT | signal_trace strict_result=False fallback_executed=False required_filters=None required_filters_result=None score=3.15 rejection_reason=hard filters failed
+2026-04-22 17:53:15,917 - crypto_bot - INFO - FILTER_CHECK: symbol=NEARUSDT trend_ok=True structure_state=strong structure_ok=True rsi_ok=False adx_ok=True volume_ok=False macd_ok=True
+2026-04-22 17:53:15,917 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=NEARUSDT trend=LONG recent_highs=[1.4136, 1.4166, 1.4202, 1.424, 1.4255] recent_lows=[1.402, 1.4117, 1.4122, 1.4157, 1.4169] bos_detected=True structure_state=strong reason=BOS confirmed with higher lows
+2026-04-22 17:53:15,917 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=NEARUSDT trend_score=1.00 structure_score=1.00 rsi_score=0.00 adx_score=0.50 volume_score=0.00 macd_score=1.40 total_score=3.90 min_required_score=4.00
+2026-04-22 17:53:15,918 - crypto_bot - INFO - FILTER_REJECTION: symbol=NEARUSDT hard_failed=[] soft_failed=['RSI', 'VOLUME']
+2026-04-22 17:53:15,918 - crypto_bot - INFO - NEARUSDT | signal_trace strict_result=False fallback_executed=False required_filters=None required_filters_result=None score=3.9 rejection_reason=score below adaptive threshold (3.90 < 4.00)
+2026-04-22 17:53:16,297 - crypto_bot - INFO - FILTER_CHECK: symbol=BOMEUSDT trend_ok=True structure_state=weak structure_ok=True rsi_ok=False adx_ok=True volume_ok=False macd_ok=True
+2026-04-22 17:53:16,297 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=BOMEUSDT trend=LONG recent_highs=[0.000574, 0.000574, 0.000575, 0.000567, 0.000597] recent_lows=[0.000563, 0.000561, 0.000564, 0.000561, 0.000566] bos_detected=False structure_state=weak reason=no BOS but higher lows / developing uptrend
+2026-04-22 17:53:16,298 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=BOMEUSDT trend_score=1.00 structure_score=0.50 rsi_score=0.00 adx_score=0.50 volume_score=0.00 macd_score=1.40 total_score=3.40 min_required_score=3.00
+2026-04-22 17:53:16,298 - crypto_bot - INFO - FILTER_REJECTION: symbol=BOMEUSDT hard_failed=[] soft_failed=['RSI', 'VOLUME', 'STRUCTURE']
+2026-04-22 17:53:16,310 - crypto_bot - INFO - ENTRY_RISK_ADJUSTMENT: structure_state=weak position_size_factor=0.50 confirmation_passed=False reason="impulse candle missing (body_ratio=0.66)" symbol=BOMEUSDT
+2026-04-22 17:53:16,311 - crypto_bot - INFO - ENTRY_DEBUG: symbol=BOMEUSDT structure_state=weak entry_type=continuation rr=0.00 entry_valid=False reason="impulse candle missing (body_ratio=0.66)"
+2026-04-22 17:53:16,311 - crypto_bot - INFO - BOMEUSDT | signal_trace strict_result=False fallback_executed=True required_filters=None required_filters_result=None score=0.0 rejection_reason=relaxed signals disabled by config
+2026-04-22 17:53:16,530 - crypto_bot - INFO - FILTER_CHECK: symbol=MONUSDT trend_ok=False structure_state=invalid structure_ok=False rsi_ok=True adx_ok=True volume_ok=True macd_ok=False
+2026-04-22 17:53:16,530 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=MONUSDT trend=SHORT recent_highs=[0.034325, 0.034416, 0.034194, 0.033855, 0.034712] recent_lows=[0.033841, 0.033804, 0.033652, 0.033345, 0.033657] bos_detected=False structure_state=invalid reason=higher high detected in downtrend -> invalid
+2026-04-22 17:53:16,531 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=MONUSDT trend_score=0.00 structure_score=0.00 rsi_score=1.00 adx_score=0.50 volume_score=0.25 macd_score=0.00 total_score=1.75 min_required_score=3.20
+2026-04-22 17:53:16,531 - crypto_bot - INFO - FILTER_REJECTION: symbol=MONUSDT hard_failed=['TREND', 'STRUCTURE'] soft_failed=['MACD']
+2026-04-22 17:53:16,531 - crypto_bot - INFO - MONUSDT | signal_trace strict_result=False fallback_executed=False required_filters=None required_filters_result=None score=1.75 rejection_reason=hard filters failed
+2026-04-22 17:53:16,748 - crypto_bot - INFO - FILTER_CHECK: symbol=COREUSDT trend_ok=True structure_state=strong structure_ok=True rsi_ok=False adx_ok=True volume_ok=True macd_ok=True
+2026-04-22 17:53:16,749 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=COREUSDT trend=LONG recent_highs=[0.04397, 0.04427, 0.04474, 0.04573, 0.04974] recent_lows=[0.04274, 0.04273, 0.04292, 0.04324, 0.045] bos_detected=True structure_state=strong reason=BOS confirmed with higher lows
+2026-04-22 17:53:16,749 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=COREUSDT trend_score=1.00 structure_score=1.00 rsi_score=0.00 adx_score=0.50 volume_score=0.25 macd_score=1.40 total_score=4.15 min_required_score=4.00
+2026-04-22 17:53:16,750 - crypto_bot - INFO - FILTER_REJECTION: symbol=COREUSDT hard_failed=[] soft_failed=['RSI']
+2026-04-22 17:53:16,762 - crypto_bot - INFO - COREUSDT | signal_trace strict_result=False fallback_executed=True required_filters=None required_filters_result=None score=0.0 rejection_reason=relaxed signals disabled by config
+2026-04-22 17:53:16,978 - crypto_bot - INFO - FILTER_CHECK: symbol=APTUSDT trend_ok=True structure_state=strong structure_ok=True rsi_ok=False adx_ok=True volume_ok=True macd_ok=True
+2026-04-22 17:53:16,979 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=APTUSDT trend=LONG recent_highs=[0.9541, 0.9789, 0.9852, 1.0043, 1.0036] recent_lows=[0.9472, 0.9526, 0.9707, 0.9741, 0.9743] bos_detected=True structure_state=strong reason=BOS confirmed with higher lows
+2026-04-22 17:53:16,979 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=APTUSDT trend_score=1.00 structure_score=1.00 rsi_score=0.00 adx_score=0.50 volume_score=0.25 macd_score=1.40 total_score=4.15 min_required_score=4.00
+2026-04-22 17:53:16,979 - crypto_bot - INFO - FILTER_REJECTION: symbol=APTUSDT hard_failed=[] soft_failed=['RSI']
+2026-04-22 17:53:16,987 - crypto_bot - INFO - APTUSDT | signal_trace strict_result=False fallback_executed=True required_filters=None required_filters_result=None score=0.0 rejection_reason=relaxed signals disabled by config
+2026-04-22 17:53:17,204 - crypto_bot - INFO - FILTER_CHECK: symbol=SEIUSDT trend_ok=True structure_state=weak structure_ok=True rsi_ok=False adx_ok=True volume_ok=False macd_ok=True
+2026-04-22 17:53:17,204 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=SEIUSDT trend=LONG recent_highs=[0.0616, 0.06183, 0.06242, 0.06241, 0.06228] recent_lows=[0.06062, 0.0607, 0.06084, 0.06174, 0.06131] bos_detected=False structure_state=weak reason=no BOS but higher lows / developing uptrend
+2026-04-22 17:53:17,204 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=SEIUSDT trend_score=1.00 structure_score=0.50 rsi_score=0.00 adx_score=0.50 volume_score=0.00 macd_score=1.40 total_score=3.40 min_required_score=3.00
+2026-04-22 17:53:17,205 - crypto_bot - INFO - FILTER_REJECTION: symbol=SEIUSDT hard_failed=[] soft_failed=['RSI', 'VOLUME', 'STRUCTURE']
+2026-04-22 17:53:17,216 - crypto_bot - INFO - ENTRY_RISK_ADJUSTMENT: structure_state=weak position_size_factor=0.50 confirmation_passed=False reason="impulse candle missing (body_ratio=0.36)" symbol=SEIUSDT
+2026-04-22 17:53:17,217 - crypto_bot - INFO - ENTRY_DEBUG: symbol=SEIUSDT structure_state=weak entry_type=continuation rr=0.00 entry_valid=False reason="impulse candle missing (body_ratio=0.36)"
+2026-04-22 17:53:17,217 - crypto_bot - INFO - SEIUSDT | signal_trace strict_result=False fallback_executed=True required_filters=None required_filters_result=None score=0.0 rejection_reason=relaxed signals disabled by config
+2026-04-22 17:53:17,434 - crypto_bot - INFO - FILTER_CHECK: symbol=WLDUSDT trend_ok=True structure_state=weak structure_ok=True rsi_ok=True adx_ok=True volume_ok=False macd_ok=False
+2026-04-22 17:53:17,434 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=WLDUSDT trend=SHORT recent_highs=[0.2675, 0.2704, 0.2701, 0.2695, 0.2697] recent_lows=[0.2643, 0.2665, 0.2671, 0.2667, 0.2674] bos_detected=False structure_state=weak reason=no BOS but lower highs / developing downtrend
+2026-04-22 17:53:17,435 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=WLDUSDT trend_score=1.00 structure_score=0.50 rsi_score=1.00 adx_score=0.50 volume_score=0.00 macd_score=0.00 total_score=3.00 min_required_score=3.00
+2026-04-22 17:53:17,435 - crypto_bot - INFO - FILTER_REJECTION: symbol=WLDUSDT hard_failed=[] soft_failed=['MACD', 'VOLUME', 'STRUCTURE']
+2026-04-22 17:53:17,444 - crypto_bot - INFO - ENTRY_RISK_ADJUSTMENT: structure_state=weak position_size_factor=0.50 confirmation_passed=True reason="weak-risk checks passed" symbol=WLDUSDT
+2026-04-22 17:53:17,444 - crypto_bot - INFO - ENTRY_DEBUG: symbol=WLDUSDT structure_state=weak entry_type=momentum rr=1.60 entry_valid=True reason="adaptive weak entry accepted"
+2026-04-22 17:53:17,445 - crypto_bot - INFO - WLDUSDT | signal_trace strict_result=True fallback_executed=False required_filters=None required_filters_result=None score=3.0 rejection_reason=None
+2026-04-22 17:53:17,445 - crypto_bot - INFO - ✅ Signal generated: WLDUSDT | strict | tf=1h | mode=MAIN | score=3.0 | entry_source=strict | passed_filters=['TREND', 'STRUCTURE', 'RSI', 'ADX'] | failed_filters=[]
+2026-04-22 17:53:17,663 - crypto_bot - INFO - FILTER_CHECK: symbol=LDOUSDT trend_ok=True structure_state=weak structure_ok=True rsi_ok=False adx_ok=True volume_ok=False macd_ok=False
+2026-04-22 17:53:17,663 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=LDOUSDT trend=LONG recent_highs=[0.3926, 0.3907, 0.3888, 0.3865, 0.3898] recent_lows=[0.388, 0.3856, 0.3846, 0.3828, 0.3844] bos_detected=False structure_state=weak reason=no BOS but higher lows / developing uptrend
+2026-04-22 17:53:17,664 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=LDOUSDT trend_score=1.00 structure_score=0.50 rsi_score=0.00 adx_score=0.50 volume_score=0.00 macd_score=0.00 total_score=2.00 min_required_score=3.00
+2026-04-22 17:53:17,664 - crypto_bot - INFO - FILTER_REJECTION: symbol=LDOUSDT hard_failed=[] soft_failed=['RSI', 'MACD', 'VOLUME', 'STRUCTURE']
+2026-04-22 17:53:17,664 - crypto_bot - INFO - LDOUSDT | signal_trace strict_result=False fallback_executed=False required_filters=None required_filters_result=None score=2.0 rejection_reason=score below adaptive threshold (2.00 < 3.00)
+2026-04-22 17:53:17,880 - crypto_bot - INFO - FILTER_CHECK: symbol=XPLUSDT trend_ok=True structure_state=weak structure_ok=True rsi_ok=True adx_ok=False volume_ok=False macd_ok=False
+2026-04-22 17:53:17,880 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=XPLUSDT trend=SHORT recent_highs=[0.10359, 0.10302, 0.10322, 0.10238, 0.10322] recent_lows=[0.10208, 0.10218, 0.10231, 0.10127, 0.10222] bos_detected=False structure_state=weak reason=no BOS but lower highs / developing downtrend
+2026-04-22 17:53:17,881 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=XPLUSDT trend_score=1.00 structure_score=0.50 rsi_score=1.00 adx_score=0.00 volume_score=0.00 macd_score=0.00 total_score=2.50 min_required_score=3.00
+2026-04-22 17:53:17,881 - crypto_bot - INFO - FILTER_REJECTION: symbol=XPLUSDT hard_failed=[] soft_failed=['MACD', 'VOLUME', 'ADX', 'STRUCTURE']
+2026-04-22 17:53:17,881 - crypto_bot - INFO - XPLUSDT | signal_trace strict_result=False fallback_executed=False required_filters=None required_filters_result=None score=2.5 rejection_reason=score below adaptive threshold (2.50 < 3.00)
+2026-04-22 17:53:18,286 - crypto_bot - INFO - FILTER_CHECK: symbol=CRVUSDT trend_ok=True structure_state=weak structure_ok=True rsi_ok=False adx_ok=True volume_ok=True macd_ok=True
+2026-04-22 17:53:18,287 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=CRVUSDT trend=LONG recent_highs=[0.2382, 0.2376, 0.2389, 0.2374, 0.2378] recent_lows=[0.2362, 0.2361, 0.2366, 0.2362, 0.2355] bos_detected=False structure_state=weak reason=no BOS but higher lows / developing uptrend
+2026-04-22 17:53:18,287 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=CRVUSDT trend_score=1.00 structure_score=0.50 rsi_score=0.00 adx_score=0.50 volume_score=0.25 macd_score=1.40 total_score=3.65 min_required_score=3.00
+2026-04-22 17:53:18,287 - crypto_bot - INFO - FILTER_REJECTION: symbol=CRVUSDT hard_failed=[] soft_failed=['RSI', 'STRUCTURE']
+2026-04-22 17:53:18,296 - crypto_bot - INFO - ENTRY_RISK_ADJUSTMENT: structure_state=weak position_size_factor=0.50 confirmation_passed=False reason="impulse candle missing (body_ratio=0.37)" symbol=CRVUSDT
+2026-04-22 17:53:18,296 - crypto_bot - INFO - ENTRY_DEBUG: symbol=CRVUSDT structure_state=weak entry_type=continuation rr=0.00 entry_valid=False reason="impulse candle missing (body_ratio=0.37)"
+2026-04-22 17:53:18,297 - crypto_bot - INFO - CRVUSDT | signal_trace strict_result=False fallback_executed=True required_filters=None required_filters_result=None score=0.0 rejection_reason=relaxed signals disabled by config
+2026-04-22 17:53:18,666 - crypto_bot - INFO - FILTER_CHECK: symbol=LTCUSDT trend_ok=True structure_state=weak structure_ok=True rsi_ok=False adx_ok=True volume_ok=True macd_ok=True
+2026-04-22 17:53:18,666 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=LTCUSDT trend=LONG recent_highs=[56.28, 56.3, 56.25, 56.2, 56.27] recent_lows=[56.11, 56.14, 55.89, 55.78, 56.04] bos_detected=False structure_state=weak reason=no BOS but higher lows / developing uptrend
+2026-04-22 17:53:18,667 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=LTCUSDT trend_score=1.00 structure_score=0.50 rsi_score=0.00 adx_score=0.50 volume_score=0.25 macd_score=1.40 total_score=3.65 min_required_score=3.00
+2026-04-22 17:53:18,667 - crypto_bot - INFO - FILTER_REJECTION: symbol=LTCUSDT hard_failed=[] soft_failed=['RSI', 'STRUCTURE']
+2026-04-22 17:53:18,677 - crypto_bot - INFO - ENTRY_RISK_ADJUSTMENT: structure_state=weak position_size_factor=0.50 confirmation_passed=False reason="impulse candle missing (body_ratio=0.44)" symbol=LTCUSDT
+2026-04-22 17:53:18,677 - crypto_bot - INFO - ENTRY_DEBUG: symbol=LTCUSDT structure_state=weak entry_type=continuation rr=0.00 entry_valid=False reason="impulse candle missing (body_ratio=0.44)"
+2026-04-22 17:53:18,677 - crypto_bot - INFO - LTCUSDT | signal_trace strict_result=False fallback_executed=True required_filters=None required_filters_result=None score=0.0 rejection_reason=relaxed signals disabled by config
+2026-04-22 17:53:18,895 - crypto_bot - INFO - FILTER_CHECK: symbol=1000BONKUSDT trend_ok=True structure_state=strong structure_ok=True rsi_ok=False adx_ok=True volume_ok=True macd_ok=True
+2026-04-22 17:53:18,896 - crypto_bot - INFO - STRUCTURE_DEBUG: symbol=1000BONKUSDT trend=LONG recent_highs=[0.006391, 0.006456, 0.006463, 0.006542, 0.006629] recent_lows=[0.006357, 0.006379, 0.00641, 0.006386, 0.006517] bos_detected=True structure_state=strong reason=BOS confirmed with higher lows
+2026-04-22 17:53:18,896 - crypto_bot - INFO - SCORE_BREAKDOWN: symbol=1000BONKUSDT trend_score=1.00 structure_score=1.00 rsi_score=0.00 adx_score=0.50 volume_score=0.25 macd_score=1.40 total_score=4.15 min_required_score=4.00
+2026-04-22 17:53:18,897 - crypto_bot - INFO - FILTER_REJECTION: symbol=1000BONKUSDT hard_failed=[] soft_failed=['RSI']
+2026-04-22 17:53:18,908 - crypto_bot - INFO - 1000BONKUSDT | signal_trace strict_result=False fallback_executed=True required_filters=None required_filters_result=None score=0.0 rejection_reason=relaxed signals disabled by config
+2026-04-22 17:53:18,908 - crypto_bot - INFO - 📊 Total signals after scan: 3
+2026-04-22 17:53:18,909 - crypto_bot - INFO -  STRICT_PIPELINE_METRICS: potential_signals=9 strict_signals=3 raw_candidates=41
+2026-04-22 17:53:18,909 - crypto_bot - INFO - AUTO_DIAGNOSTIC: potential_signals=9 strict_signals=3 scalping_signals=0 avg_score=1.18 rejection_top_reasons=[('relaxed signals disabled by config', 23), ('hard filters failed', 8), ('score below adaptive threshold (3.90 < 4.00)', 3)]
+2026-04-22 17:53:18,909 - crypto_bot - INFO - AUTO_DIAGNOSTIC_EXTENDED: main_signal_count=3 scalping_signal_count=0 avg_score_main=3.18 avg_score_scalping=0.00
+2026-04-22 17:53:18,910 - crypto_bot - INFO - 📊 Signals found: 3
+2026-04-22 17:53:18,910 - crypto_bot - INFO - SIGNAL_DEDUP_DECISION | {'signal_id': 'ETHUSDT_1h_LONG_2026-04-22 12:00:00+00:00', 'execution_id': None, 'position_id': None, 'correlation_id': 'ETHUSDT_1h_LONG_2026-04-22 12:00:00+00:00', 'timestamp': '2026-04-22T14:53:18.910127+00:00', 'symbol': 'ETHUSDT', 'context': {'action': 'UPGRADE', 'reason': 'SCORE_IMPROVEMENT_OVERRIDE', 'previous_signal_id': 'ETHUSDT_1h_LONG_2026-04-22 11:00:00+00:00', 'previous_state': 'LEGACY_SEEN', 'score_delta': 3.4, 'time_diff_sec': 4794.0}}
+2026-04-22 17:53:18,910 - crypto_bot - INFO - SIGNAL_DECISION: signal_id=ETHUSDT_1h_LONG_2026-04-22 12:00:00+00:00 symbol=ETHUSDT timestamp=2026-04-22 12:00:00+00:00 context={'action': 'IGNORE', 'reason': 'update requires active position', 'mode': 'MAIN'}
+2026-04-22 17:53:18,911 - crypto_bot - INFO - SIGNAL_DECISION | {'symbol': 'ETHUSDT', 'mode': 'MAIN', 'status': 'IGNORE', 'score': 3.4, 'threshold': '3.20', 'entry_source': 'strict', 'reason': 'OPEN'}
+2026-04-22 17:53:18,912 - crypto_bot - INFO - SIGNAL_IGNORED_NO_IMPROVEMENT: symbol=ETHUSDT mode=MAIN entry_source=strict action=IGNORE reason=update requires active position
+2026-04-22 17:53:18,913 - crypto_bot - INFO - SIGNAL_DEDUP_DECISION | {'signal_id': 'RAVEUSDT_1h_SHORT_2026-04-22 12:00:00+00:00', 'execution_id': None, 'position_id': None, 'correlation_id': 'RAVEUSDT_1h_SHORT_2026-04-22 12:00:00+00:00', 'timestamp': '2026-04-22T14:53:18.913129+00:00', 'symbol': 'RAVEUSDT', 'context': {'action': 'ALLOW', 'reason': 'NO_ACTIVE_DUPLICATE', 'previous_signal_id': 'RAVEUSDT_1h_SHORT_2026-04-22 12:00:00+00:00', 'previous_state': 'ALLOW', 'score_delta': 0.0, 'time_diff_sec': 1072.943}}
+2026-04-22 17:53:18,913 - crypto_bot - INFO - SIGNAL_DECISION: signal_id=RAVEUSDT_1h_SHORT_2026-04-22 12:00:00+00:00 symbol=RAVEUSDT timestamp=2026-04-22 12:00:00+00:00 context={'action': 'NEW', 'reason': 'no active signal', 'mode': 'MAIN'}
+2026-04-22 17:53:18,916 - crypto_bot - INFO - SIGNAL_DECISION | {'symbol': 'RAVEUSDT', 'mode': 'MAIN', 'status': 'OPEN', 'score': 3.15, 'threshold': '3.20', 'entry_source': 'strict', 'passed_filters': ['TREND', 'STRUCTURE', 'VOLUME', 'MACD'], 'failed_filters': [], 'reason': 'OPEN', 'position_block': False, 'mode_position_count': 0, 'mode_limit': 15, 'global_position_count': 0, 'global_limit': 40}
+2026-04-22 17:53:18,917 - crypto_bot - INFO - [SIGNAL ACCEPTED] symbol=RAVEUSDT mode=MAIN entry_source=strict score=3.15 conf=0.63 stars=⭐⭐⭐⭐
+2026-04-22 17:53:18,917 - crypto_bot - INFO - SIGNAL_STATE_TRANSITION | {'signal_id': 'RAVEUSDT_1h_SHORT_2026-04-22 12:00:00+00:00', 'execution_id': 'exec_0c3bdbe80e5c', 'position_id': None, 'correlation_id': 'RAVEUSDT_1h_SHORT_2026-04-22 12:00:00+00:00', 'timestamp': '2026-04-22T14:53:18.917128+00:00', 'symbol': 'RAVEUSDT', 'context': {'previous_state': 'CREATED', 'new_state': 'PENDING_EXECUTION', 'reason': 'no active signal', 'snapshot': {'direction': 'SHORT', 'entry': 1.24277, 'sl': 1.4624297142857143, 'tp': 0.8913144571428568, 'confidence': 0.63}}}
+2026-04-22 17:53:18,918 - crypto_bot - INFO - EXECUTION_DECISION | {'signal_id': 'RAVEUSDT_1h_SHORT_2026-04-22 12:00:00+00:00', 'execution_id': None, 'position_id': None, 'correlation_id': 'RAVEUSDT_1h_SHORT_2026-04-22 12:00:00+00:00', 'timestamp': '2026-04-22T14:53:18.918130+00:00', 'symbol': 'RAVEUSDT', 'context': {'stage': 'PRECHECK', 'mode': 'MAIN'}}
+2026-04-22 17:53:19,120 - crypto_bot - INFO - MARKET_REGIME_UPDATED: symbol=RAVEUSDT from=INIT to=CHOPPY
+2026-04-22 17:53:19,120 - crypto_bot - INFO - EXECUTION_MODE_CHANGED: symbol=RAVEUSDT from=NORMAL to=DEFENSIVE
+2026-04-22 17:53:19,120 - crypto_bot - INFO - RISK_MULTIPLIER_APPLIED: symbol=RAVEUSDT multiplier=0.415 regime=CHOPPY
+2026-04-22 17:53:19,121 - crypto_bot - INFO - EXECUTION_CONFIDENCE_UPDATED: symbol=RAVEUSDT confidence=0.679
+2026-04-22 17:53:19,121 - crypto_bot - INFO - SCORE_BREAKDOWN | {'signal_id': 'RAVEUSDT_1h_SHORT_2026-04-22 12:00:00+00:00', 'execution_id': None, 'position_id': None, 'correlation_id': 'RAVEUSDT_1h_SHORT_2026-04-22 12:00:00+00:00', 'timestamp': '2026-04-22T14:53:19.121132+00:00', 'symbol': 'RAVEUSDT', 'context': {'raw_score': 3.15, 'adjusted_score': 2.6674979786666664, 'execution_score': 2.6675, 'threshold_used': 3.0, 'rejection_reason': 'ADAPTIVE_SCORE_BELOW_THRESHOLD'}}
+2026-04-22 17:53:19,121 - crypto_bot - INFO - SCORE_ALIGNMENT_DECISION | {'signal_id': 'RAVEUSDT_1h_SHORT_2026-04-22 12:00:00+00:00', 'execution_id': None, 'position_id': None, 'correlation_id': 'RAVEUSDT_1h_SHORT_2026-04-22 12:00:00+00:00', 'timestamp': '2026-04-22T14:53:19.121132+00:00', 'symbol': 'RAVEUSDT', 'context': {'raw_score': 3.15, 'adjusted_score': 2.6674979786666664, 'final_score': 2.6675, 'threshold': 3.0, 'decision_layer': 'unified', 'result': 'REJECT', 'reason': 'ADAPTIVE_SCORE_BELOW_THRESHOLD'}}
+2026-04-22 17:53:19,123 - crypto_bot - INFO - SIGNAL_STATE_TRANSITION | {'signal_id': 'RAVEUSDT_1h_SHORT_2026-04-22 12:00:00+00:00', 'execution_id': 'exec_5dcd1bb08c06', 'position_id': None, 'correlation_id': 'RAVEUSDT_1h_SHORT_2026-04-22 12:00:00+00:00', 'timestamp': '2026-04-22T14:53:19.123131+00:00', 'symbol': 'RAVEUSDT', 'context': {'previous_state': 'PENDING_EXECUTION', 'new_state': 'FAILED', 'reason': 'ADAPTIVE_SCORE_BELOW_THRESHOLD', 'snapshot': {'direction': 'SHORT', 'entry': 1.24277, 'sl': 1.4624297142857143, 'tp': 0.8913144571428568, 'confidence': 0.63}}}
+2026-04-22 17:53:19,123 - crypto_bot - WARNING - ORDER_RESULT: signal_id=RAVEUSDT_1h_SHORT_2026-04-22 12:00:00+00:00 symbol=RAVEUSDT timestamp=2026-04-22T14:53:19.123131+00:00 context={'result': 'FAILED', 'reason': 'ADAPTIVE_SCORE_BELOW_THRESHOLD', 'execution_id': 'exec_5dcd1bb08c06'}
+2026-04-22 17:53:19,125 - crypto_bot - INFO - MAIN 📡 SIGNAL
+
+Symbol:    RAVEUSDT
+Direction: 🔻 SHORT
+Timeframe: 1h
+
+💰 Entry: 1.242770
+🎯 TP:    0.891314
+🛑 SL:    1.462430
+RR:    1.60
+
+Score:      3.15 / 5.00
+⭐ Confidence: 0.63 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, VOLUME, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-22 12:00:00+00:00
+Fingerprint: afa75ad10d28e921
+2026-04-22 17:53:19,127 - crypto_bot - INFO - SIGNAL_DEDUP_DECISION | {'signal_id': 'WLDUSDT_1h_SHORT_2026-04-22 12:00:00+00:00', 'execution_id': None, 'position_id': None, 'correlation_id': 'WLDUSDT_1h_SHORT_2026-04-22 12:00:00+00:00', 'timestamp': '2026-04-22T14:53:19.127131+00:00', 'symbol': 'WLDUSDT', 'context': {'action': 'ALLOW', 'reason': 'NO_ACTIVE_DUPLICATE', 'previous_signal_id': 'WLDUSDT_1h_SHORT_2026-04-22 12:00:00+00:00', 'previous_state': 'ALLOW', 'score_delta': 0.0, 'time_diff_sec': 1072.746}}
+2026-04-22 17:53:19,128 - crypto_bot - INFO - SIGNAL_DECISION: signal_id=WLDUSDT_1h_SHORT_2026-04-22 12:00:00+00:00 symbol=WLDUSDT timestamp=2026-04-22 12:00:00+00:00 context={'action': 'NEW', 'reason': 'no active signal', 'mode': 'MAIN'}
+2026-04-22 17:53:19,131 - crypto_bot - INFO - SIGNAL_DECISION | {'symbol': 'WLDUSDT', 'mode': 'MAIN', 'status': 'OPEN', 'score': 3.0, 'threshold': '3.20', 'entry_source': 'strict', 'passed_filters': ['TREND', 'STRUCTURE', 'RSI', 'ADX'], 'failed_filters': [], 'reason': 'OPEN', 'position_block': False, 'mode_position_count': 0, 'mode_limit': 15, 'global_position_count': 0, 'global_limit': 40}
+2026-04-22 17:53:19,133 - crypto_bot - INFO - [SIGNAL ACCEPTED] symbol=WLDUSDT mode=MAIN entry_source=strict score=3.0 conf=0.6 stars=⭐⭐⭐⭐
+2026-04-22 17:53:19,134 - crypto_bot - INFO - SIGNAL_STATE_TRANSITION | {'signal_id': 'WLDUSDT_1h_SHORT_2026-04-22 12:00:00+00:00', 'execution_id': 'exec_c4c859e1f2fe', 'position_id': None, 'correlation_id': 'WLDUSDT_1h_SHORT_2026-04-22 12:00:00+00:00', 'timestamp': '2026-04-22T14:53:19.134131+00:00', 'symbol': 'WLDUSDT', 'context': {'previous_state': 'CREATED', 'new_state': 'PENDING_EXECUTION', 'reason': 'no active signal', 'snapshot': {'direction': 'SHORT', 'entry': 0.2672, 'sl': 0.27069857142857146, 'tp': 0.2616022857142857, 'confidence': 0.6}}}
+2026-04-22 17:53:19,135 - crypto_bot - INFO - EXECUTION_DECISION | {'signal_id': 'WLDUSDT_1h_SHORT_2026-04-22 12:00:00+00:00', 'execution_id': None, 'position_id': None, 'correlation_id': 'WLDUSDT_1h_SHORT_2026-04-22 12:00:00+00:00', 'timestamp': '2026-04-22T14:53:19.135130+00:00', 'symbol': 'WLDUSDT', 'context': {'stage': 'PRECHECK', 'mode': 'MAIN'}}
+2026-04-22 17:53:19,339 - crypto_bot - INFO - RISK_MULTIPLIER_APPLIED: symbol=WLDUSDT multiplier=0.308 regime=CHOPPY
+2026-04-22 17:53:19,339 - crypto_bot - INFO - EXECUTION_CONFIDENCE_UPDATED: symbol=WLDUSDT confidence=0.519
+2026-04-22 17:53:19,339 - crypto_bot - INFO - SCORE_BREAKDOWN | {'signal_id': 'WLDUSDT_1h_SHORT_2026-04-22 12:00:00+00:00', 'execution_id': None, 'position_id': None, 'correlation_id': 'WLDUSDT_1h_SHORT_2026-04-22 12:00:00+00:00', 'timestamp': '2026-04-22T14:53:19.339133+00:00', 'symbol': 'WLDUSDT', 'context': {'raw_score': 3.0, 'adjusted_score': 2.3463140204666666, 'execution_score': 2.3463, 'threshold_used': 3.0, 'rejection_reason': 'ADAPTIVE_SCORE_BELOW_THRESHOLD'}}
+2026-04-22 17:53:19,340 - crypto_bot - INFO - SCORE_ALIGNMENT_DECISION | {'signal_id': 'WLDUSDT_1h_SHORT_2026-04-22 12:00:00+00:00', 'execution_id': None, 'position_id': None, 'correlation_id': 'WLDUSDT_1h_SHORT_2026-04-22 12:00:00+00:00', 'timestamp': '2026-04-22T14:53:19.340136+00:00', 'symbol': 'WLDUSDT', 'context': {'raw_score': 3.0, 'adjusted_score': 2.3463140204666666, 'final_score': 2.3463, 'threshold': 3.0, 'decision_layer': 'unified', 'result': 'REJECT', 'reason': 'ADAPTIVE_SCORE_BELOW_THRESHOLD'}}
+2026-04-22 17:53:19,341 - crypto_bot - INFO - SIGNAL_STATE_TRANSITION | {'signal_id': 'WLDUSDT_1h_SHORT_2026-04-22 12:00:00+00:00', 'execution_id': 'exec_8253f9ba7e7d', 'position_id': None, 'correlation_id': 'WLDUSDT_1h_SHORT_2026-04-22 12:00:00+00:00', 'timestamp': '2026-04-22T14:53:19.341138+00:00', 'symbol': 'WLDUSDT', 'context': {'previous_state': 'PENDING_EXECUTION', 'new_state': 'FAILED', 'reason': 'ADAPTIVE_SCORE_BELOW_THRESHOLD', 'snapshot': {'direction': 'SHORT', 'entry': 0.2672, 'sl': 0.27069857142857146, 'tp': 0.2616022857142857, 'confidence': 0.6}}}
+2026-04-22 17:53:19,342 - crypto_bot - WARNING - ORDER_RESULT: signal_id=WLDUSDT_1h_SHORT_2026-04-22 12:00:00+00:00 symbol=WLDUSDT timestamp=2026-04-22T14:53:19.342133+00:00 context={'result': 'FAILED', 'reason': 'ADAPTIVE_SCORE_BELOW_THRESHOLD', 'execution_id': 'exec_8253f9ba7e7d'}
+2026-04-22 17:53:19,344 - crypto_bot - INFO - MAIN 📡 SIGNAL
+
+Symbol:    WLDUSDT
+Direction: 🔻 SHORT
+Timeframe: 1h
+
+💰 Entry: 0.267200
+🎯 TP:    0.261602
+🛑 SL:    0.270699
+RR:    1.60
+
+Score:      3.00 / 5.00
+⭐ Confidence: 0.60 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-22 12:00:00+00:00
+Fingerprint: 786242f095b40809
+2026-04-22 17:53:19,346 - crypto_bot - INFO - LIFECYCLE_LINK_CHECK | {'signal_id': 'SYSTEM', 'execution_id': None, 'position_id': None, 'correlation_id': 'SYSTEM', 'timestamp': '2026-04-22T14:53:19.346135+00:00', 'symbol': 'ALL', 'context': {'accepted_without_execution': 0, 'executed_without_position': 0, 'position_without_signal': 0, 'signal_without_position': 0, 'samples': {'accepted_without_execution': [], 'executed_without_position': [], 'position_without_signal': [], 'signal_without_position': []}}}
+2026-04-22 17:53:19,347 - crypto_bot - INFO - AUTO_DIAGNOSTIC_PORTFOLIO: avg_portfolio_risk=0.00 avg_exposure=0.00 signals_blocked_by_risk=9 signals_scaled_by_risk=0
+2026-04-22 17:53:19,348 - crypto_bot - INFO - ⏳ Sleeping for 300 seconds
+2026-04-22 17:53:55,604 - crypto_bot - INFO - SYSTEM_OBSERVABILITY_HEALTH | {'signal_id': None, 'execution_id': None, 'position_id': None, 'correlation_id': None, 'timestamp': '2026-04-22T14:53:55.604331+00:00', 'symbol': 'SYSTEM', 'context': {'active_symbols': 5, 'total_events_per_minute': 2, 'suppressed_logs_count': 11, 'desync_rate': 0.0, 'execution_success_rate': 0.0, 'avg_latency_ms': 0.0, 'log_compression_ratio': 0.8462}}
+2026-04-22 17:54:56,478 - crypto_bot - INFO - SYSTEM_OBSERVABILITY_HEALTH | {'signal_id': None, 'execution_id': None, 'position_id': None, 'correlation_id': None, 'timestamp': '2026-04-22T14:54:56.478692+00:00', 'symbol': 'SYSTEM', 'context': {'active_symbols': 5, 'total_events_per_minute': 3, 'suppressed_logs_count': 30, 'desync_rate': 0.0, 'execution_success_rate': 0.0, 'avg_latency_ms': 0.0, 'log_compression_ratio': 0.9091}}
+2026-04-22 17:55:57,703 - crypto_bot - INFO - SYSTEM_OBSERVABILITY_HEALTH | {'signal_id': None, 'execution_id': None, 'position_id': None, 'correlation_id': None, 'timestamp': '2026-04-22T14:55:57.703653+00:00', 'symbol': 'SYSTEM', 'context': {'active_symbols': 5, 'total_events_per_minute': 3, 'suppressed_logs_count': 46, 'desync_rate': 0.0, 'execution_success_rate': 0.0, 'avg_latency_ms': 0.0, 'log_compression_ratio': 0.9388}}
+2026-04-22 17:56:58,611 - crypto_bot - INFO - SYSTEM_OBSERVABILITY_HEALTH | {'signal_id': None, 'execution_id': None, 'position_id': None, 'correlation_id': None, 'timestamp': '2026-04-22T14:56:58.611848+00:00', 'symbol': 'SYSTEM', 'context': {'active_symbols': 5, 'total_events_per_minute': 0, 'suppressed_logs_count': 62, 'desync_rate': 0.0, 'execution_success_rate': 0.0, 'avg_latency_ms': 0.0, 'log_compression_ratio': 1.0}}
+2026-04-22 17:57:24,935 - crypto_bot - INFO - 🛑 Остановка по KeyboardInterrupt

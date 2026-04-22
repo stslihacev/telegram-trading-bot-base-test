@@ -13,6 +13,17 @@ sys.modules.setdefault("pybit", pybit_module)
 sys.modules.setdefault("pybit.unified_trading", unified_module)
 
 from execution.decision_engine import DecisionAction, ExecutionDecisionEngine
+from execution.adaptive_execution import (
+    AdaptiveExecutionDecision,
+    AdaptiveOutcome,
+    ExecutionContextSnapshot,
+    ExecutionMode,
+    ExecutionStressSnapshot,
+    ExecutionTimingScore,
+    MarketRegime,
+    MarketRegimeSnapshot,
+    MicrostructureSnapshot,
+)
 from execution.order_manager import OrderManager
 
 
@@ -91,3 +102,73 @@ def test_order_manager_executes_approved_trade():
     assert result.accepted is True
     assert result.reason == "ORDER_EXECUTED"
     assert float(result.details.get("qty") or 0.0) > 0
+
+
+def test_order_manager_uses_signal_threshold_for_score_alignment():
+    manager = OrderManager(bybit_client=_BybitStub(balance=1000.0), risk_guard=_RiskGuardStub())
+
+    manager.adaptive_layer.adapt = lambda **_: AdaptiveExecutionDecision(  # type: ignore[method-assign]
+        outcome=AdaptiveOutcome.APPROVE,
+        reason="OK",
+        adjusted_signal={
+            "symbol": "BTCUSDT",
+            "direction": "LONG",
+            "entry": 100.0,
+            "sl": 95.0,
+            "score": 3.15,
+            "score_threshold": 3.0,
+            "live_mode": "MAIN",
+        },
+        adjusted_market_data={"available_balance": 1000.0, "leverage": 3.0, "safety_buffer": 0.88},
+        regime=MarketRegimeSnapshot(MarketRegime.TRENDING_UP, 0.2, 0.8, 0.8),
+        context=ExecutionContextSnapshot(
+            execution_confidence=0.75,
+            mode=ExecutionMode.NORMAL,
+            risk_multiplier=1.05,
+            stress=ExecutionStressSnapshot(0.0, 0.1, 0.0, 0.0, 0.1),
+        ),
+        microstructure=MicrostructureSnapshot(0.75, 0.6, 0.2, 0.7),
+        timing=ExecutionTimingScore(0.8, 0.5, 0.4, True, False, 1.0, False),
+    )
+
+    result = manager.execute_signal(
+        {"symbol": "BTCUSDT", "direction": "LONG", "entry": 100.0, "sl": 95.0, "score": 3.15, "live_mode": "MAIN"},
+        active_trades={},
+    )
+    assert result.accepted is True
+    assert result.reason == "ORDER_EXECUTED"
+
+
+def test_order_manager_rejects_when_adaptive_score_falls_below_threshold():
+    manager = OrderManager(bybit_client=_BybitStub(balance=1000.0), risk_guard=_RiskGuardStub())
+
+    manager.adaptive_layer.adapt = lambda **_: AdaptiveExecutionDecision(  # type: ignore[method-assign]
+        outcome=AdaptiveOutcome.APPROVE,
+        reason="OK",
+        adjusted_signal={
+            "symbol": "ETHUSDT",
+            "direction": "LONG",
+            "entry": 100.0,
+            "sl": 95.0,
+            "score": 3.25,
+            "score_threshold": 3.2,
+            "live_mode": "MAIN",
+        },
+        adjusted_market_data={"available_balance": 1000.0, "leverage": 3.0, "safety_buffer": 0.88},
+        regime=MarketRegimeSnapshot(MarketRegime.CHOPPY, 0.85, 0.2, 0.2),
+        context=ExecutionContextSnapshot(
+            execution_confidence=0.2,
+            mode=ExecutionMode.DEFENSIVE,
+            risk_multiplier=0.55,
+            stress=ExecutionStressSnapshot(0.2, 0.7, 0.2, 0.1, 0.6),
+        ),
+        microstructure=MicrostructureSnapshot(0.2, 0.25, 0.9, 0.15),
+        timing=ExecutionTimingScore(0.2, 0.8, 0.8, False, False, 0.5, True),
+    )
+
+    result = manager.execute_signal(
+        {"symbol": "ETHUSDT", "direction": "LONG", "entry": 100.0, "sl": 95.0, "score": 3.25, "live_mode": "MAIN"},
+        active_trades={},
+    )
+    assert result.accepted is False
+    assert result.reason == "ADAPTIVE_SCORE_BELOW_THRESHOLD"

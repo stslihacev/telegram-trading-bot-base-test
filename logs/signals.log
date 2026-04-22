@@ -20301,3 +20301,47 @@ Reject reason: -
 🧠 Regime: N/A
 🕒 Time:   2026-04-22 12:00:00+00:00
 Fingerprint: 786242f095b40809
+2026-04-22 17:53:19,126 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    RAVEUSDT
+Direction: 🔻 SHORT
+Timeframe: 1h
+
+💰 Entry: 1.242770
+🎯 TP:    0.891314
+🛑 SL:    1.462430
+RR:    1.60
+
+Score:      3.15 / 5.00
+⭐ Confidence: 0.63 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, VOLUME, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-22 12:00:00+00:00
+Fingerprint: afa75ad10d28e921
+2026-04-22 17:53:19,344 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    WLDUSDT
+Direction: 🔻 SHORT
+Timeframe: 1h
+
+💰 Entry: 0.267200
+🎯 TP:    0.261602
+🛑 SL:    0.270699
+RR:    1.60
+
+Score:      3.00 / 5.00
+⭐ Confidence: 0.60 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-22 12:00:00+00:00
+Fingerprint: 786242f095b40809

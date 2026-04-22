@@ -186,7 +186,7 @@
     },
     "WLDUSDT": {
       "signal_id": "WLDUSDT_1h_SHORT_2026-04-22 12:00:00+00:00",
-      "execution_id": "exec_c4c859e1f2fe",
+      "execution_id": "exec_8253f9ba7e7d",
       "position_id": null,
       "direction": "SHORT",
       "entry": 0.2672,
@@ -195,7 +195,7 @@
       "score": 3.0,
       "confidence": 0.6,
       "status": "FAILED",
-      "timestamp": "2026-04-22T14:35:26.380494+00:00",
+      "timestamp": "2026-04-22T14:53:19.341138+00:00",
       "history": [
         {
           "from": "CREATED",
@@ -232,12 +232,24 @@
           "to": "FAILED",
           "reason": "SCORE_BELOW_THRESHOLD",
           "timestamp": "2026-04-22T14:35:26.380494+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-22 12:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-22T14:53:19.341138+00:00"
         }
       ]
     },
     "RAVEUSDT": {
       "signal_id": "RAVEUSDT_1h_SHORT_2026-04-22 12:00:00+00:00",
-      "execution_id": "exec_0c3bdbe80e5c",
+      "execution_id": "exec_5dcd1bb08c06",
       "position_id": null,
       "direction": "SHORT",
       "entry": 1.24277,
@@ -246,7 +258,7 @@
       "score": 3.15,
       "confidence": 0.63,
       "status": "FAILED",
-      "timestamp": "2026-04-22T14:35:25.968461+00:00",
+      "timestamp": "2026-04-22T14:53:19.123131+00:00",
       "history": [
         {
           "from": "CREATED",
@@ -283,6 +295,18 @@
           "to": "FAILED",
           "reason": "SCORE_BELOW_THRESHOLD",
           "timestamp": "2026-04-22T14:35:25.968461+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-22 12:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-22T14:53:19.123131+00:00"
         }
       ]
     }
@@ -344,6 +368,14 @@
         "direction": "SHORT",
         "score": 3.0,
         "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "WLDUSDT_1h_SHORT_2026-04-22 12:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-22T14:53:19.342133+00:00",
+        "direction": "SHORT",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
       }
     ],
     "RAVEUSDT": [
@@ -364,6 +396,14 @@
         "signal_id": "RAVEUSDT_1h_SHORT_2026-04-22 12:00:00+00:00",
         "status": "ALLOW",
         "timestamp": "2026-04-22T14:35:25.970459+00:00",
+        "direction": "SHORT",
+        "score": 3.15,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "RAVEUSDT_1h_SHORT_2026-04-22 12:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-22T14:53:19.124131+00:00",
         "direction": "SHORT",
         "score": 3.15,
         "reason": "NO_ACTIVE_DUPLICATE"

@@ -13,6 +13,7 @@ from execution.adaptive_execution import AdaptiveExecutionLayer, AdaptiveOutcome
 from execution.bybit_client import BybitExecutionClient
 from execution.compiler import ExecutionCompiler
 from execution.decision_engine import DecisionAction, ExecutionDecisionEngine
+from execution.scoring_contract import evaluate_score_alignment
 from execution.safety_state import is_emergency_mode
 
 
@@ -73,6 +74,56 @@ class OrderManager:
             self.adaptive_layer.record_decision_outcome(rejected=True)
             log_structured_event("EXECUTION_DECISION", symbol=str(signal.get("symbol") or "").upper(), signal_id=str(signal.get("signal_id") or None), context={"stage": "REJECTED", "reason": adaptive.reason, "outcome": adaptive.outcome.value})
             return OrderDecision(False, adaptive.reason, {"decision": adaptive.outcome.value, "context": adaptive.context})
+
+        score_alignment = evaluate_score_alignment(
+            signal=adaptive.adjusted_signal,
+            execution_confidence=float(adaptive.context.execution_confidence),
+            risk_multiplier=float(adaptive.context.risk_multiplier),
+            liquidity_score=float(adaptive.microstructure.liquidity_score),
+            noise_level=float(adaptive.microstructure.noise_level),
+            regime=adaptive.regime.regime.value,
+        )
+        log_structured_event(
+            "SCORE_BREAKDOWN",
+            symbol=str(signal.get("symbol") or "").upper(),
+            signal_id=str(signal.get("signal_id") or None),
+            context={
+                "raw_score": score_alignment.raw_score,
+                "adjusted_score": score_alignment.adjusted_score,
+                "execution_score": score_alignment.final_score,
+                "threshold_used": score_alignment.threshold,
+                "rejection_reason": None if score_alignment.result == "ALLOW" else score_alignment.reason,
+            },
+        )
+        log_structured_event(
+            "SCORE_ALIGNMENT_DECISION",
+            symbol=str(signal.get("symbol") or "").upper(),
+            signal_id=str(signal.get("signal_id") or None),
+            context={
+                "raw_score": score_alignment.raw_score,
+                "adjusted_score": score_alignment.adjusted_score,
+                "final_score": score_alignment.final_score,
+                "threshold": score_alignment.threshold,
+                "decision_layer": score_alignment.decision_layer,
+                "result": score_alignment.result,
+                "reason": score_alignment.reason,
+            },
+        )
+        if score_alignment.result == "REJECT":
+            self.adaptive_layer.record_decision_outcome(rejected=True)
+            return OrderDecision(
+                False,
+                score_alignment.reason,
+                {
+                    "decision": DecisionAction.REJECT.value,
+                    "raw_score": score_alignment.raw_score,
+                    "adjusted_score": score_alignment.adjusted_score,
+                    "execution_score": score_alignment.final_score,
+                    "threshold": score_alignment.threshold,
+                },
+            )
+        adaptive.adjusted_signal["score"] = score_alignment.final_score
+        adaptive.adjusted_signal["min_score_threshold"] = score_alignment.threshold
 
         decision = self.decision_engine.evaluate_order(adaptive.adjusted_signal, adaptive.adjusted_market_data, portfolio_state)
 

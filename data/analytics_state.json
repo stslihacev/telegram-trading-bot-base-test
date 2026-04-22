@@ -1,11 +1,11 @@
 {
   "analytics": {
-    "signals_total": 383,
-    "signals_strict": 383,
+    "signals_total": 385,
+    "signals_strict": 385,
     "signals_fallback": 0,
-    "signals_opened": 196,
+    "signals_opened": 198,
     "signals_blocked_by_limits": 0,
-    "opened_from_strict": 196,
+    "opened_from_strict": 198,
     "opened_from_fallback": 0,
     "closed_strict_tp": 5,
     "closed_strict_sl": 8,
@@ -18,12 +18,12 @@
     "signals_scaled_by_risk": 0
   },
   "mode_counter": {
-    "SCALPING": 1557,
-    "MAIN": 2757,
-    "LIGHT": 36
+    "SCALPING": 1595,
+    "MAIN": 2883,
+    "LIGHT": 37
   },
   "entry_source_counter": {
-    "strict": 4350
+    "strict": 4515
   },
   "rejection_counter": {
     "SCALPING": {
@@ -34,41 +34,41 @@
       "DUPLICATE": 30
     }
   },
-  "total_signals": 383,
-  "unique_signals": 353,
+  "total_signals": 385,
+  "unique_signals": 355,
   "duplicates": 30,
-  "confidence_sum": 268.7034620000003,
-  "score_sum": 1343.6500000000015,
-  "scored_count": 383,
+  "confidence_sum": 269.9334620000003,
+  "score_sum": 1349.8000000000015,
+  "scored_count": 385,
   "portfolio_risk_sum": 0.0,
   "portfolio_exposure_sum": 0.0,
   "portfolio_risk_samples": 67,
   "signal_filter_counter": {
     "TREND": {
-      "passed": 355,
-      "weighted": 355
+      "passed": 357,
+      "weighted": 357
     },
     "STRUCTURE": {
-      "passed": 355,
-      "weighted": 355
+      "passed": 357,
+      "weighted": 357
     },
     "RSI": {
-      "passed": 210,
-      "weighted": 210,
+      "passed": 211,
+      "weighted": 211,
       "failed": 1
     },
     "ADX": {
-      "passed": 333,
-      "weighted": 333
+      "passed": 334,
+      "weighted": 334
     },
     "VOLUME": {
-      "passed": 204,
-      "weighted": 204,
+      "passed": 205,
+      "weighted": 205,
       "failed": 1
     },
     "MACD": {
-      "passed": 207,
-      "weighted": 206
+      "passed": 208,
+      "weighted": 207
     },
     "EMA": {
       "passed": 1

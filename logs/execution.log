@@ -6822,3 +6822,279 @@
 2026-04-22 17:35:33,982 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=XRPUSDT price=1.45400000 bars_alive=28
 2026-04-22 17:35:34,182 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
 2026-04-22 17:35:34,183 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XRPUSDT source=smart_exit pnl_r=0.222
+2026-04-22 17:53:05,374 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=BOMEUSDT price=0.00057310 bars_alive=1
+2026-04-22 17:53:05,374 - [EXECUTION] DEBUG - POSITION_PNL_UPDATE: symbol=BOMEUSDT pnl_r=0.331 max_profit_r=0.331
+2026-04-22 17:53:05,895 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:53:05,896 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BOMEUSDT source=smart_exit pnl_r=0.331
+2026-04-22 17:53:06,103 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=ETHUSDT price=2399.21000000 bars_alive=1
+2026-04-22 17:53:06,104 - [EXECUTION] DEBUG - POSITION_PNL_UPDATE: symbol=ETHUSDT pnl_r=-0.298 max_profit_r=0.000
+2026-04-22 17:53:06,307 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:53:06,308 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=ETHUSDT source=smart_exit pnl_r=-0.298
+2026-04-22 17:53:06,515 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=TAOUSDT price=246.12000000 bars_alive=1
+2026-04-22 17:53:06,516 - [EXECUTION] DEBUG - POSITION_PNL_UPDATE: symbol=TAOUSDT pnl_r=-0.582 max_profit_r=0.000
+2026-04-22 17:53:06,718 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:53:06,718 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=TAOUSDT source=smart_exit pnl_r=-0.582
+2026-04-22 17:53:06,923 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=XPLUSDT price=0.10587000 bars_alive=1
+2026-04-22 17:53:06,924 - [EXECUTION] DEBUG - POSITION_PNL_UPDATE: symbol=XPLUSDT pnl_r=-0.014 max_profit_r=0.000
+2026-04-22 17:53:07,444 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:53:07,445 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XPLUSDT source=smart_exit pnl_r=-0.014
+2026-04-22 17:53:07,658 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=XRPUSDT price=1.45460000 bars_alive=1
+2026-04-22 17:53:07,659 - [EXECUTION] DEBUG - POSITION_PNL_UPDATE: symbol=XRPUSDT pnl_r=0.306 max_profit_r=0.306
+2026-04-22 17:53:07,862 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:53:07,863 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XRPUSDT source=smart_exit pnl_r=0.306
+2026-04-22 17:53:18,274 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:53:18,275 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BOMEUSDT source=smart_exit pnl_r=0.260
+2026-04-22 17:53:19,119 - [EXECUTION] DEBUG - REGIME_CLASSIFICATION: atr_pct=0.0000 adx=20.00 vol_expansion=0.000 structure=RANGE momentum=0.630 regime=CHOPPY
+2026-04-22 17:53:19,119 - [EXECUTION] DEBUG - EXECUTION_CONFIDENCE_BREAKDOWN: regime_quality=0.350 vol_stability=0.834 signal=0.630 fail=0.000 latency=0.000 confidence=0.679
+2026-04-22 17:53:19,120 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.500 vol_exp=0.000 wick=0.500 liq=0.696 impulse=0.283 noise=0.526 breakout=0.416
+2026-04-22 17:53:19,338 - [EXECUTION] DEBUG - REGIME_CLASSIFICATION: atr_pct=0.0000 adx=20.00 vol_expansion=0.000 structure=RANGE momentum=0.600 regime=CHOPPY
+2026-04-22 17:53:19,338 - [EXECUTION] DEBUG - EXECUTION_CONFIDENCE_BREAKDOWN: regime_quality=0.350 vol_stability=0.820 signal=0.600 fail=1.000 latency=0.000 confidence=0.519
+2026-04-22 17:53:19,338 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.500 vol_exp=0.000 wick=0.500 liq=0.696 impulse=0.283 noise=0.526 breakout=0.416
+2026-04-22 17:53:19,551 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:53:19,551 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=ETHUSDT source=smart_exit pnl_r=-0.331
+2026-04-22 17:53:19,957 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:53:19,957 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=TAOUSDT source=smart_exit pnl_r=-0.571
+2026-04-22 17:53:20,364 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:53:20,365 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XPLUSDT source=smart_exit pnl_r=-0.011
+2026-04-22 17:53:20,775 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:53:20,775 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XRPUSDT source=smart_exit pnl_r=0.250
+2026-04-22 17:53:31,507 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:53:31,508 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BOMEUSDT source=smart_exit pnl_r=0.236
+2026-04-22 17:53:31,914 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:53:31,915 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=ETHUSDT source=smart_exit pnl_r=-0.340
+2026-04-22 17:53:32,324 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:53:32,325 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=TAOUSDT source=smart_exit pnl_r=-0.566
+2026-04-22 17:53:32,732 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:53:32,733 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XPLUSDT source=smart_exit pnl_r=-0.020
+2026-04-22 17:53:33,141 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:53:33,142 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XRPUSDT source=smart_exit pnl_r=0.264
+2026-04-22 17:53:43,345 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=BOMEUSDT price=0.00057220 bars_alive=4
+2026-04-22 17:53:43,549 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:53:43,550 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BOMEUSDT source=smart_exit pnl_r=0.260
+2026-04-22 17:53:43,755 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=ETHUSDT price=2398.20000000 bars_alive=4
+2026-04-22 17:53:43,960 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:53:43,961 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=ETHUSDT source=smart_exit pnl_r=-0.331
+2026-04-22 17:53:44,166 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=TAOUSDT price=245.98000000 bars_alive=4
+2026-04-22 17:53:44,371 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:53:44,371 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=TAOUSDT source=smart_exit pnl_r=-0.566
+2026-04-22 17:53:44,575 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=XPLUSDT price=0.10582000 bars_alive=4
+2026-04-22 17:53:44,780 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:53:44,780 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XPLUSDT source=smart_exit pnl_r=-0.005
+2026-04-22 17:53:44,985 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=XRPUSDT price=1.45430000 bars_alive=4
+2026-04-22 17:53:45,187 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:53:45,187 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XRPUSDT source=smart_exit pnl_r=0.264
+2026-04-22 17:53:55,603 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:53:55,604 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BOMEUSDT source=smart_exit pnl_r=0.276
+2026-04-22 17:53:56,013 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:53:56,013 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=ETHUSDT source=smart_exit pnl_r=-0.323
+2026-04-22 17:53:56,422 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:53:56,422 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=TAOUSDT source=smart_exit pnl_r=-0.565
+2026-04-22 17:53:56,829 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:53:56,830 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XPLUSDT source=smart_exit pnl_r=-0.029
+2026-04-22 17:53:57,237 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:53:57,238 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XRPUSDT source=smart_exit pnl_r=0.264
+2026-04-22 17:54:07,455 - [EXECUTION] DEBUG - POSITION_PNL_UPDATE: symbol=BOMEUSDT pnl_r=0.228 max_profit_r=0.331
+2026-04-22 17:54:07,657 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:54:07,658 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BOMEUSDT source=smart_exit pnl_r=0.228
+2026-04-22 17:54:08,065 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:54:08,065 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=ETHUSDT source=smart_exit pnl_r=-0.370
+2026-04-22 17:54:08,481 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:54:08,481 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=TAOUSDT source=smart_exit pnl_r=-0.556
+2026-04-22 17:54:08,889 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:54:08,889 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XPLUSDT source=smart_exit pnl_r=-0.014
+2026-04-22 17:54:09,297 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:54:09,297 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XRPUSDT source=smart_exit pnl_r=0.222
+2026-04-22 17:54:19,502 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=BOMEUSDT price=0.00057150 bars_alive=7
+2026-04-22 17:54:19,706 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:54:19,706 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BOMEUSDT source=smart_exit pnl_r=0.205
+2026-04-22 17:54:19,910 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=ETHUSDT price=2398.04000000 bars_alive=7
+2026-04-22 17:54:20,115 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:54:20,115 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=ETHUSDT source=smart_exit pnl_r=-0.336
+2026-04-22 17:54:20,319 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=TAOUSDT price=245.92000000 bars_alive=7
+2026-04-22 17:54:20,524 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:54:20,524 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=TAOUSDT source=smart_exit pnl_r=-0.559
+2026-04-22 17:54:20,730 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=XPLUSDT price=0.10587000 bars_alive=7
+2026-04-22 17:54:20,932 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:54:20,932 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XPLUSDT source=smart_exit pnl_r=-0.014
+2026-04-22 17:54:21,137 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=XRPUSDT price=1.45420000 bars_alive=7
+2026-04-22 17:54:21,341 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:54:21,341 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XRPUSDT source=smart_exit pnl_r=0.250
+2026-04-22 17:54:31,755 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:54:31,756 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BOMEUSDT source=smart_exit pnl_r=0.205
+2026-04-22 17:54:32,163 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:54:32,164 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=ETHUSDT source=smart_exit pnl_r=-0.296
+2026-04-22 17:54:32,571 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:54:32,572 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=TAOUSDT source=smart_exit pnl_r=-0.547
+2026-04-22 17:54:33,297 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:54:33,297 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XPLUSDT source=smart_exit pnl_r=-0.036
+2026-04-22 17:54:33,704 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:54:33,705 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XRPUSDT source=smart_exit pnl_r=0.319
+2026-04-22 17:54:44,116 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:54:44,117 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BOMEUSDT source=smart_exit pnl_r=0.228
+2026-04-22 17:54:44,524 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:54:44,524 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=ETHUSDT source=smart_exit pnl_r=-0.251
+2026-04-22 17:54:44,935 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:54:44,935 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=TAOUSDT source=smart_exit pnl_r=-0.553
+2026-04-22 17:54:45,343 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:54:45,344 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XPLUSDT source=smart_exit pnl_r=-0.025
+2026-04-22 17:54:46,065 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:54:46,066 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XRPUSDT source=smart_exit pnl_r=0.403
+2026-04-22 17:54:56,271 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=BOMEUSDT price=0.00057180 bars_alive=10
+2026-04-22 17:54:56,477 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:54:56,477 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BOMEUSDT source=smart_exit pnl_r=0.228
+2026-04-22 17:54:56,682 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=ETHUSDT price=2399.89000000 bars_alive=10
+2026-04-22 17:54:56,885 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:54:56,885 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=ETHUSDT source=smart_exit pnl_r=-0.276
+2026-04-22 17:54:57,089 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=TAOUSDT price=245.85000000 bars_alive=10
+2026-04-22 17:54:57,294 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:54:57,295 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=TAOUSDT source=smart_exit pnl_r=-0.551
+2026-04-22 17:54:57,499 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=XPLUSDT price=0.10599000 bars_alive=10
+2026-04-22 17:54:57,702 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:54:57,703 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XPLUSDT source=smart_exit pnl_r=-0.036
+2026-04-22 17:54:57,907 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=XRPUSDT price=1.45540000 bars_alive=10
+2026-04-22 17:54:57,909 - [EXECUTION] DEBUG - POSITION_PNL_UPDATE: symbol=XRPUSDT pnl_r=0.417 max_profit_r=0.417
+2026-04-22 17:54:58,112 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:54:58,113 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XRPUSDT source=smart_exit pnl_r=0.417
+2026-04-22 17:55:08,531 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:55:08,532 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BOMEUSDT source=smart_exit pnl_r=0.276
+2026-04-22 17:55:08,943 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:55:08,943 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=ETHUSDT source=smart_exit pnl_r=-0.275
+2026-04-22 17:55:09,352 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:55:09,352 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=TAOUSDT source=smart_exit pnl_r=-0.557
+2026-04-22 17:55:09,760 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:55:09,761 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XPLUSDT source=smart_exit pnl_r=-0.030
+2026-04-22 17:55:10,168 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:55:10,168 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XRPUSDT source=smart_exit pnl_r=0.417
+2026-04-22 17:55:20,584 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:55:20,584 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BOMEUSDT source=smart_exit pnl_r=0.291
+2026-04-22 17:55:20,992 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:55:20,993 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=ETHUSDT source=smart_exit pnl_r=-0.305
+2026-04-22 17:55:21,722 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:55:21,722 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=TAOUSDT source=smart_exit pnl_r=-0.559
+2026-04-22 17:55:22,132 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:55:22,133 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XPLUSDT source=smart_exit pnl_r=-0.054
+2026-04-22 17:55:22,856 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:55:22,856 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XRPUSDT source=smart_exit pnl_r=0.403
+2026-04-22 17:55:33,079 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=BOMEUSDT price=0.00057230 bars_alive=13
+2026-04-22 17:55:33,284 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:55:33,284 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BOMEUSDT source=smart_exit pnl_r=0.268
+2026-04-22 17:55:33,487 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=ETHUSDT price=2399.72000000 bars_alive=13
+2026-04-22 17:55:33,691 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:55:33,691 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=ETHUSDT source=smart_exit pnl_r=-0.281
+2026-04-22 17:55:33,895 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=TAOUSDT price=246.00000000 bars_alive=13
+2026-04-22 17:55:34,099 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:55:34,099 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=TAOUSDT source=smart_exit pnl_r=-0.568
+2026-04-22 17:55:34,303 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=XPLUSDT price=0.10611000 bars_alive=13
+2026-04-22 17:55:34,508 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:55:34,508 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XPLUSDT source=smart_exit pnl_r=-0.057
+2026-04-22 17:55:35,034 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=XRPUSDT price=1.45550000 bars_alive=13
+2026-04-22 17:55:35,238 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:55:35,239 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XRPUSDT source=smart_exit pnl_r=0.431
+2026-04-22 17:55:45,652 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:55:45,653 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BOMEUSDT source=smart_exit pnl_r=0.260
+2026-04-22 17:55:46,066 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:55:46,067 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=ETHUSDT source=smart_exit pnl_r=-0.321
+2026-04-22 17:55:46,474 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:55:46,475 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=TAOUSDT source=smart_exit pnl_r=-0.571
+2026-04-22 17:55:46,880 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:55:46,881 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XPLUSDT source=smart_exit pnl_r=-0.055
+2026-04-22 17:55:47,287 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:55:47,288 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XRPUSDT source=smart_exit pnl_r=0.389
+2026-04-22 17:55:57,703 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:55:57,703 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BOMEUSDT source=smart_exit pnl_r=0.260
+2026-04-22 17:55:58,113 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:55:58,113 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=ETHUSDT source=smart_exit pnl_r=-0.349
+2026-04-22 17:55:58,519 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:55:58,520 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=TAOUSDT source=smart_exit pnl_r=-0.558
+2026-04-22 17:55:58,926 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:55:58,927 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XPLUSDT source=smart_exit pnl_r=-0.029
+2026-04-22 17:55:59,336 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:55:59,336 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XRPUSDT source=smart_exit pnl_r=0.347
+2026-04-22 17:56:09,541 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=BOMEUSDT price=0.00057160 bars_alive=16
+2026-04-22 17:56:09,751 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:56:09,752 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BOMEUSDT source=smart_exit pnl_r=0.213
+2026-04-22 17:56:09,957 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=ETHUSDT price=2396.98000000 bars_alive=16
+2026-04-22 17:56:10,165 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:56:10,165 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=ETHUSDT source=smart_exit pnl_r=-0.370
+2026-04-22 17:56:10,369 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=TAOUSDT price=245.87000000 bars_alive=16
+2026-04-22 17:56:10,573 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:56:10,574 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=TAOUSDT source=smart_exit pnl_r=-0.554
+2026-04-22 17:56:10,779 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=XPLUSDT price=0.10587000 bars_alive=16
+2026-04-22 17:56:10,982 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:56:10,982 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XPLUSDT source=smart_exit pnl_r=-0.014
+2026-04-22 17:56:11,188 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=XRPUSDT price=1.45450000 bars_alive=16
+2026-04-22 17:56:11,188 - [EXECUTION] DEBUG - POSITION_PNL_UPDATE: symbol=XRPUSDT pnl_r=0.292 max_profit_r=0.431
+2026-04-22 17:56:11,393 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:56:11,393 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XRPUSDT source=smart_exit pnl_r=0.292
+2026-04-22 17:56:21,802 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:56:21,802 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BOMEUSDT source=smart_exit pnl_r=0.197
+2026-04-22 17:56:22,529 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:56:22,530 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=ETHUSDT source=smart_exit pnl_r=-0.351
+2026-04-22 17:56:22,940 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:56:22,940 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=TAOUSDT source=smart_exit pnl_r=-0.550
+2026-04-22 17:56:23,348 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:56:23,348 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XPLUSDT source=smart_exit pnl_r=0.011
+2026-04-22 17:56:23,755 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:56:23,755 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XRPUSDT source=smart_exit pnl_r=0.347
+2026-04-22 17:56:34,174 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:56:34,174 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BOMEUSDT source=smart_exit pnl_r=0.220
+2026-04-22 17:56:34,581 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:56:34,581 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=ETHUSDT source=smart_exit pnl_r=-0.310
+2026-04-22 17:56:34,990 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:56:34,990 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=TAOUSDT source=smart_exit pnl_r=-0.573
+2026-04-22 17:56:35,398 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:56:35,399 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XPLUSDT source=smart_exit pnl_r=0.036
+2026-04-22 17:56:36,123 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:56:36,124 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XRPUSDT source=smart_exit pnl_r=0.403
+2026-04-22 17:56:46,345 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=BOMEUSDT price=0.00057230 bars_alive=19
+2026-04-22 17:56:46,549 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:56:46,549 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BOMEUSDT source=smart_exit pnl_r=0.268
+2026-04-22 17:56:46,754 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=ETHUSDT price=2399.43000000 bars_alive=19
+2026-04-22 17:56:46,959 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:56:46,959 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=ETHUSDT source=smart_exit pnl_r=-0.291
+2026-04-22 17:56:47,162 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=TAOUSDT price=246.14000000 bars_alive=19
+2026-04-22 17:56:47,368 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:56:47,368 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=TAOUSDT source=smart_exit pnl_r=-0.584
+2026-04-22 17:56:47,573 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=XPLUSDT price=0.10562000 bars_alive=19
+2026-04-22 17:56:47,778 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:56:47,778 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XPLUSDT source=smart_exit pnl_r=0.030
+2026-04-22 17:56:47,984 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=XRPUSDT price=1.45630000 bars_alive=19
+2026-04-22 17:56:47,984 - [EXECUTION] DEBUG - POSITION_PNL_UPDATE: symbol=XRPUSDT pnl_r=0.542 max_profit_r=0.542
+2026-04-22 17:56:48,189 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:56:48,189 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XRPUSDT source=smart_exit pnl_r=0.542
+2026-04-22 17:56:58,610 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:56:58,611 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BOMEUSDT source=smart_exit pnl_r=0.252
+2026-04-22 17:56:59,019 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:56:59,019 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=ETHUSDT source=smart_exit pnl_r=-0.294
+2026-04-22 17:56:59,428 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:56:59,428 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=TAOUSDT source=smart_exit pnl_r=-0.516
+2026-04-22 17:56:59,837 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:56:59,837 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XPLUSDT source=smart_exit pnl_r=0.025
+2026-04-22 17:57:00,245 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:57:00,246 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XRPUSDT source=smart_exit pnl_r=0.486
+2026-04-22 17:57:10,661 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:57:10,661 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BOMEUSDT source=smart_exit pnl_r=0.244
+2026-04-22 17:57:11,072 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:57:11,073 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=ETHUSDT source=smart_exit pnl_r=-0.280
+2026-04-22 17:57:11,481 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:57:11,482 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=TAOUSDT source=smart_exit pnl_r=-0.503
+2026-04-22 17:57:11,903 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:57:11,903 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XPLUSDT source=smart_exit pnl_r=0.034
+2026-04-22 17:57:12,311 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:57:12,311 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XRPUSDT source=smart_exit pnl_r=0.486
+2026-04-22 17:57:22,531 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=BOMEUSDT price=0.00057330 bars_alive=22
+2026-04-22 17:57:22,531 - [EXECUTION] DEBUG - POSITION_PNL_UPDATE: symbol=BOMEUSDT pnl_r=0.346 max_profit_r=0.346
+2026-04-22 17:57:22,735 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:57:22,736 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=BOMEUSDT source=smart_exit pnl_r=0.346
+2026-04-22 17:57:22,940 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=ETHUSDT price=2399.59000000 bars_alive=22
+2026-04-22 17:57:23,142 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:57:23,143 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=ETHUSDT source=smart_exit pnl_r=-0.286
+2026-04-22 17:57:23,346 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=TAOUSDT price=245.43000000 bars_alive=22
+2026-04-22 17:57:23,549 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:57:23,549 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=TAOUSDT source=smart_exit pnl_r=-0.503
+2026-04-22 17:57:23,754 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=XPLUSDT price=0.10558000 bars_alive=22
+2026-04-22 17:57:23,957 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:57:23,957 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XPLUSDT source=smart_exit pnl_r=0.038
+2026-04-22 17:57:24,161 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=XRPUSDT price=1.45580000 bars_alive=22
+2026-04-22 17:57:24,682 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-22 17:57:24,682 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XRPUSDT source=smart_exit pnl_r=0.472
