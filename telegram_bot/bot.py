@@ -45,13 +45,13 @@ from execution.signal_dispatcher import SignalDispatcher
 from execution.bybit_client import BybitExecutionClient
 from execution.order_manager import OrderManager
 from execution.position_manager import PositionManager
+from execution.signal_deduplication import SignalDeduplicationEngine
 from scanner.market_scanner import MarketScanner
 from services.signal_analytics import SignalAnalytics
 from services.bybit_request_manager import get_bybit_request_manager
-from services.signal_deduplicator import SignalDeduplicator
 from services.signal_formatter import format_signal_compact, format_signal_full, get_stars
 from services.risk_guard import SignalRiskGuard
-from services.signal_state import SignalStateService, parse_datetime_utc
+from services.signal_state import SignalStateService
 from scanner.volume_scanner import get_top_usdt_pairs
 from telegram_bot.handlers.callbacks import callback_handler
 from telegram_bot.handlers.commands import (
@@ -126,7 +126,11 @@ class TelegramTradingBot:
         self.min_rr = float(os.getenv("MIN_SIGNAL_RR", str(MIN_SIGNAL_RR)))
 
         self.dispatcher = SignalDispatcher(dedup_minutes=60)
-        self.signal_deduplicator = SignalDeduplicator(ttl_seconds=3600)
+        self.signal_dedup_engine = SignalDeduplicationEngine(
+            cooldown_minutes=45,
+            staleness_hours=RUNTIME_STATE_TTL_HOURS,
+            improvement_threshold=0.3,
+        )
         self.signal_analytics = SignalAnalytics(trades_path=BASE_DIR / "data" / "active_trades.json")
         self.signal_state = SignalStateService(
             state_path=BASE_DIR / "data" / "runtime_state.json",
@@ -139,12 +143,6 @@ class TelegramTradingBot:
         )
         self.signal_state.load()
         self.risk_guard = SignalRiskGuard()
-        restored_seen: dict[str, datetime] = {}
-        for signal_id, ts in self.signal_state.seen_signals.items():
-            parsed = parse_datetime_utc(ts)
-            if parsed is not None:
-                restored_seen[signal_id] = parsed
-        self.signal_deduplicator.seen_signals = restored_seen
         self.runtime = get_live_runtime_settings()
         runtime_interval = int(self.runtime.get("scan_interval", SCAN_INTERVAL))
         default_scan_interval_min = max(1, (runtime_interval + 59) // 60)
@@ -518,6 +516,19 @@ class TelegramTradingBot:
                         )
                     self.signal_state.maybe_register_exit(enriched_signal)
                     state_action, state_reason = self.signal_state.evaluate_signal(enriched_signal)
+                    symbol_key = str(enriched_signal.get("symbol") or "").strip().upper()
+                    latest_state = self.signal_state.get_latest_signal_record(symbol_key)
+                    active_for_symbol = self.signal_state.active_signals.get(symbol_key) or {}
+                    position_state = {
+                        "exists": bool(active_for_symbol) and str(active_for_symbol.get("status") or "").upper() == "OPEN",
+                        "direction": active_for_symbol.get("direction"),
+                        "position_id": active_for_symbol.get("position_id"),
+                    }
+                    dedup_decision = self.signal_dedup_engine.evaluate(
+                        enriched_signal,
+                        signal_state=latest_state,
+                        position_state=position_state,
+                    )
                     logger.info(
                         "SIGNAL_DECISION: signal_id=%s symbol=%s timestamp=%s context=%s",
                         enriched_signal.get("signal_id"),
@@ -619,26 +630,25 @@ class TelegramTradingBot:
                         )
                         continue
 
-                    is_state_transition = state_action in {"UPDATE", "REVERSAL"}
                     signal_id = str(enriched_signal.get("signal_id") or "")
-                    is_duplicate = False
-                    if not is_state_transition:
-                        is_duplicate, signal_id = self.signal_deduplicator.mark_and_check(enriched_signal)
-                        if is_duplicate:
-                            logger.debug("[DEBUG] DUPLICATE SIGNAL | id=%s | fp=%s", signal_id, enriched_signal["fingerprint"])
-                            self.signal_analytics.mark_duplicate()
-                            self.signal_analytics.register_signal_decision(
-                                enriched_signal,
-                                status="REJECTED",
-                                reason="DUPLICATE",
-                                threshold=score_threshold,
-                                position_block=False,
-                            )
-                        else:
-                            logger.debug("[DEBUG] NEW SIGNAL | id=%s | fp=%s", signal_id, enriched_signal["fingerprint"])
-                        if is_duplicate:
-                            continue
-                    else:
+                    if dedup_decision.action == "BLOCK":
+                        self.signal_analytics.mark_duplicate()
+                        self.signal_analytics.register_signal_decision(
+                            enriched_signal,
+                            status="REJECTED",
+                            reason=dedup_decision.reason,
+                            threshold=score_threshold,
+                            position_block=True,
+                        )
+                        logger.info(
+                            "[SIGNAL REJECTED] symbol=%s mode=%s action=%s reason=%s",
+                            enriched_signal.get("symbol"),
+                            mode_name,
+                            dedup_decision.action,
+                            dedup_decision.reason,
+                        )
+                        continue
+                    if state_action in {"UPDATE", "REVERSAL"}:
                         logger.debug(
                             "[DEBUG] STATE TRANSITION SIGNAL | action=%s | id=%s | reason=%s",
                             state_action,
@@ -791,7 +801,17 @@ class TelegramTradingBot:
                                 datetime.now(timezone.utc).isoformat(),
                                 {"result": "SUCCESS", "state": "OPEN", "reason": "SIMULATION_MODE", "execution_id": simulation_execution_id},
                             )
-                    self.signal_state.mark_seen(signal_id, datetime.now(timezone.utc).isoformat())
+                    self.signal_state.append_signal_history(
+                        str(enriched_signal.get("symbol") or ""),
+                        {
+                            "signal_id": signal_id,
+                            "status": dedup_decision.action,
+                            "timestamp": datetime.now(timezone.utc).isoformat(),
+                            "direction": enriched_signal.get("direction"),
+                            "score": enriched_signal.get("score"),
+                            "reason": dedup_decision.reason,
+                        },
+                    )
                     self.signal_state.cleanup_stale()
                     self.signal_state.save()
                     if str(SIGNAL_LOG_MODE).upper() == "FULL":

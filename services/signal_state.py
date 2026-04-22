@@ -47,7 +47,7 @@ class SignalStateService:
     stale_hours: int = 4
 
     active_signals: dict[str, dict[str, Any]] = field(default_factory=dict)
-    seen_signals: dict[str, str] = field(default_factory=dict)
+    signal_history: dict[str, list[dict[str, Any]]] = field(default_factory=dict)
     failed_signals: dict[str, str] = field(default_factory=dict)
     last_reversal_at: dict[str, str] = field(default_factory=dict)
     _lock: threading.RLock = field(default_factory=threading.RLock, init=False, repr=False)
@@ -82,7 +82,15 @@ class SignalStateService:
             return
 
         self.active_signals = dict(payload.get("active_signals") or {})
-        self.seen_signals = dict(payload.get("seen_signals") or {})
+        self.signal_history = dict(payload.get("signal_history") or {})
+        legacy_seen = dict(payload.get("seen_signals") or {})
+        for signal_id, ts in legacy_seen.items():
+            symbol = str(signal_id).split("_")[0].upper() if signal_id else ""
+            if not symbol:
+                continue
+            bucket = list(self.signal_history.get(symbol) or [])
+            bucket.append({"signal_id": signal_id, "timestamp": ts, "status": "LEGACY_SEEN"})
+            self.signal_history[symbol] = bucket[-20:]
         self.failed_signals = dict(payload.get("failed_signals") or {})
         self.last_reversal_at = dict(payload.get("last_reversal_at") or {})
         self.cleanup_stale()
@@ -95,7 +103,7 @@ class SignalStateService:
         payload = {
             "version": self.schema_version,
             "active_signals": self.active_signals,
-            "seen_signals": self.seen_signals,
+            "signal_history": self.signal_history,
             "failed_signals": self.failed_signals,
             "last_reversal_at": self.last_reversal_at,
         }
@@ -111,7 +119,7 @@ class SignalStateService:
     def _cleanup_stale_unlocked(self) -> None:
         now = _utc_now()
         ttl = timedelta(hours=self.stale_hours)
-        for storage in (self.active_signals, self.seen_signals, self.failed_signals, self.last_reversal_at):
+        for storage in (self.active_signals, self.failed_signals, self.last_reversal_at):
             stale_keys: list[str] = []
             for key, value in storage.items():
                 ts_value = value.get("timestamp") if isinstance(value, dict) else value
@@ -120,11 +128,43 @@ class SignalStateService:
                     stale_keys.append(key)
             for key in stale_keys:
                 storage.pop(key, None)
+        stale_history_symbols: list[str] = []
+        for symbol, records in self.signal_history.items():
+            fresh_records: list[dict[str, Any]] = []
+            for record in list(records or []):
+                ts_value = record.get("timestamp") if isinstance(record, dict) else None
+                dt_value = _to_dt(str(ts_value) if ts_value else None)
+                if dt_value is None or now - dt_value >= ttl:
+                    continue
+                fresh_records.append(record)
+            if fresh_records:
+                self.signal_history[symbol] = fresh_records[-20:]
+            else:
+                stale_history_symbols.append(symbol)
+        for symbol in stale_history_symbols:
+            self.signal_history.pop(symbol, None)
 
-    def mark_seen(self, signal_id: str, timestamp: str) -> None:
+    def append_signal_history(self, symbol: str, payload: dict[str, Any], limit: int = 20) -> None:
+        normalized_symbol = str(symbol or "").strip().upper()
+        if not normalized_symbol:
+            return
+        timestamp = str(payload.get("timestamp") or _utc_now().isoformat())
+        item = dict(payload)
+        item["timestamp"] = timestamp
         normalized = _to_dt(timestamp)
         with self._lock:
-            self.seen_signals[signal_id] = (normalized or _utc_now()).isoformat()
+            bucket = list(self.signal_history.get(normalized_symbol) or [])
+            item["timestamp"] = (normalized or _utc_now()).isoformat()
+            bucket.append(item)
+            self.signal_history[normalized_symbol] = bucket[-max(1, int(limit)) :]
+
+    def get_latest_signal_record(self, symbol: str) -> dict[str, Any] | None:
+        normalized_symbol = str(symbol or "").strip().upper()
+        if not normalized_symbol:
+            return None
+        with self._lock:
+            bucket = list(self.signal_history.get(normalized_symbol) or [])
+        return dict(bucket[-1]) if bucket else None
 
     def register_failed_signal(self, symbol: str, timestamp: str | None = None) -> None:
         ts = timestamp or _utc_now().isoformat()

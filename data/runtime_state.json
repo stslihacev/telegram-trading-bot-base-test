@@ -186,7 +186,7 @@
     },
     "WLDUSDT": {
       "signal_id": "WLDUSDT_1h_SHORT_2026-04-22 12:00:00+00:00",
-      "execution_id": "exec_6bb05b427302",
+      "execution_id": "exec_c4c859e1f2fe",
       "position_id": null,
       "direction": "SHORT",
       "entry": 0.2672,
@@ -195,7 +195,7 @@
       "score": 3.0,
       "confidence": 0.6,
       "status": "FAILED",
-      "timestamp": "2026-04-22T14:00:03.278107+00:00",
+      "timestamp": "2026-04-22T14:35:26.380494+00:00",
       "history": [
         {
           "from": "CREATED",
@@ -208,12 +208,36 @@
           "to": "FAILED",
           "reason": "SCORE_BELOW_THRESHOLD",
           "timestamp": "2026-04-22T14:00:03.278107+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-22 12:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-22T14:30:14.775799+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-22 12:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-22T14:35:26.380494+00:00"
         }
       ]
     },
     "RAVEUSDT": {
       "signal_id": "RAVEUSDT_1h_SHORT_2026-04-22 12:00:00+00:00",
-      "execution_id": "exec_30320e0e08a2",
+      "execution_id": "exec_0c3bdbe80e5c",
       "position_id": null,
       "direction": "SHORT",
       "entry": 1.24277,
@@ -222,7 +246,7 @@
       "score": 3.15,
       "confidence": 0.63,
       "status": "FAILED",
-      "timestamp": "2026-04-22T14:02:23.593062+00:00",
+      "timestamp": "2026-04-22T14:35:25.968461+00:00",
       "history": [
         {
           "from": "CREATED",
@@ -235,18 +259,116 @@
           "to": "FAILED",
           "reason": "SCORE_BELOW_THRESHOLD",
           "timestamp": "2026-04-22T14:02:23.593062+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-22 12:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-22T14:30:14.047781+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-22 12:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-22T14:35:25.968461+00:00"
         }
       ]
     }
   },
-  "seen_signals": {
-    "ETHUSDT_1h_LONG_2026-04-22 11:00:00+00:00": "2026-04-22T13:33:24.910443+00:00",
-    "XRPUSDT_1h_LONG_2026-04-22 11:00:00+00:00": "2026-04-22T13:33:24.916443+00:00",
-    "RIVERUSDT_1h_SHORT_2026-04-22 11:00:00+00:00": "2026-04-22T13:28:06.690768+00:00",
-    "BOMEUSDT_1h_LONG_2026-04-22 11:00:00+00:00": "2026-04-22T13:33:26.972820+00:00",
-    "ENAUSDT_1h_LONG_2026-04-22 11:00:00+00:00": "2026-04-22T14:00:02.828382+00:00",
-    "WLDUSDT_1h_SHORT_2026-04-22 12:00:00+00:00": "2026-04-22T14:00:03.279107+00:00",
-    "RAVEUSDT_1h_SHORT_2026-04-22 12:00:00+00:00": "2026-04-22T14:02:23.594063+00:00"
+  "signal_history": {
+    "ETHUSDT": [
+      {
+        "signal_id": "ETHUSDT_1h_LONG_2026-04-22 11:00:00+00:00",
+        "timestamp": "2026-04-22T13:33:24.910443+00:00",
+        "status": "LEGACY_SEEN"
+      }
+    ],
+    "XRPUSDT": [
+      {
+        "signal_id": "XRPUSDT_1h_LONG_2026-04-22 11:00:00+00:00",
+        "timestamp": "2026-04-22T13:33:24.916443+00:00",
+        "status": "LEGACY_SEEN"
+      }
+    ],
+    "RIVERUSDT": [
+      {
+        "signal_id": "RIVERUSDT_1h_SHORT_2026-04-22 11:00:00+00:00",
+        "timestamp": "2026-04-22T13:28:06.690768+00:00",
+        "status": "LEGACY_SEEN"
+      }
+    ],
+    "BOMEUSDT": [
+      {
+        "signal_id": "BOMEUSDT_1h_LONG_2026-04-22 11:00:00+00:00",
+        "timestamp": "2026-04-22T13:33:26.972820+00:00",
+        "status": "LEGACY_SEEN"
+      }
+    ],
+    "ENAUSDT": [
+      {
+        "signal_id": "ENAUSDT_1h_LONG_2026-04-22 11:00:00+00:00",
+        "timestamp": "2026-04-22T14:00:02.828382+00:00",
+        "status": "LEGACY_SEEN"
+      }
+    ],
+    "WLDUSDT": [
+      {
+        "signal_id": "WLDUSDT_1h_SHORT_2026-04-22 12:00:00+00:00",
+        "timestamp": "2026-04-22T14:00:03.279107+00:00",
+        "status": "LEGACY_SEEN"
+      },
+      {
+        "signal_id": "WLDUSDT_1h_SHORT_2026-04-22 12:00:00+00:00",
+        "status": "UPGRADE",
+        "timestamp": "2026-04-22T14:30:14.776798+00:00",
+        "direction": "SHORT",
+        "score": 3.0,
+        "reason": "SCORE_IMPROVEMENT_OVERRIDE"
+      },
+      {
+        "signal_id": "WLDUSDT_1h_SHORT_2026-04-22 12:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-22T14:35:26.381495+00:00",
+        "direction": "SHORT",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      }
+    ],
+    "RAVEUSDT": [
+      {
+        "signal_id": "RAVEUSDT_1h_SHORT_2026-04-22 12:00:00+00:00",
+        "timestamp": "2026-04-22T14:02:23.594063+00:00",
+        "status": "LEGACY_SEEN"
+      },
+      {
+        "signal_id": "RAVEUSDT_1h_SHORT_2026-04-22 12:00:00+00:00",
+        "status": "UPGRADE",
+        "timestamp": "2026-04-22T14:30:14.048782+00:00",
+        "direction": "SHORT",
+        "score": 3.15,
+        "reason": "SCORE_IMPROVEMENT_OVERRIDE"
+      },
+      {
+        "signal_id": "RAVEUSDT_1h_SHORT_2026-04-22 12:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-22T14:35:25.970459+00:00",
+        "direction": "SHORT",
+        "score": 3.15,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      }
+    ]
   },
   "failed_signals": {},
   "last_reversal_at": {}
