@@ -109,6 +109,20 @@ class OrderManager:
                 "reason": score_alignment.reason,
             },
         )
+        log_structured_event(
+            "SCORE_FINAL_GATE",
+            symbol=str(signal.get("symbol") or "").upper(),
+            signal_id=str(signal.get("signal_id") or None),
+            context={
+                "raw_score": score_alignment.raw_score,
+                "adjusted_score": score_alignment.adjusted_score,
+                "final_score": score_alignment.final_score,
+                "threshold": score_alignment.threshold,
+                "result": "ALLOW" if score_alignment.result == "ALLOW" else "REJECT",
+                "reason": score_alignment.reason,
+                "stage": "FINAL_GATE",
+            },
+        )
         if score_alignment.result == "REJECT":
             self.adaptive_layer.record_decision_outcome(rejected=True)
             return OrderDecision(

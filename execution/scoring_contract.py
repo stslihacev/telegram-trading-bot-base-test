@@ -20,10 +20,10 @@ class ScoreAlignmentDecision:
 
 
 def resolve_signal_threshold(signal: dict[str, Any]) -> float:
-    explicit = _to_float(signal.get("score_threshold"), default=None)
+    explicit = _to_float(signal.get("min_score_threshold"), default=None)
     if explicit is not None and explicit > 0:
         return explicit
-    explicit = _to_float(signal.get("min_score_threshold"), default=None)
+    explicit = _to_float(signal.get("score_threshold"), default=None)
     if explicit is not None and explicit > 0:
         return explicit
     mode = str(signal.get("live_mode") or signal.get("mode") or "MAIN").upper()
@@ -49,8 +49,6 @@ def evaluate_score_alignment(
     adjusted_score = raw_score + confidence_adj + risk_adj + micro_adj + regime_adj
     final_score = max(0.0, round(adjusted_score, 4))
 
-    if raw_score < threshold:
-        return ScoreAlignmentDecision(raw_score, adjusted_score, final_score, threshold, "unified", "REJECT", "SIGNAL_SCORE_BELOW_THRESHOLD")
     if final_score < threshold:
         return ScoreAlignmentDecision(raw_score, adjusted_score, final_score, threshold, "unified", "REJECT", "ADAPTIVE_SCORE_BELOW_THRESHOLD")
     return ScoreAlignmentDecision(raw_score, adjusted_score, final_score, threshold, "unified", "ALLOW", "SCORE_ALIGNED")

@@ -20,8 +20,9 @@ from backtest.backtest_engine import (
 )
 from core.debug import debug_stage, reject
 from services.light_mode_strategy import LightModeStrategy
-from services.signal_scoring import build_breakdown, get_mode_threshold
+from services.signal_scoring import build_breakdown, get_mode_threshold, resolve_scoring_max_score
 from utils.logger import logger
+from utils.observability import log_structured_event, observability
 
 class BacktestStrategyAdapter:
     """Использует backtest.BosStrategy.generate_signal напрямую на последней свече."""
@@ -397,7 +398,7 @@ class BacktestStrategyAdapter:
             warnings.append(f"BOS_ADX_MIN is very strict: {adx_bos}")
 
         min_score = cls._safe_float(runtime.get("min_score_threshold"), 0.0)
-        max_score = sum(float(v) for v in (getattr(config, "FILTER_WEIGHTS", {}) or {}).values())
+        max_score = resolve_scoring_max_score(getattr(config, "FILTER_WEIGHTS", {}) or {})
         if max_score > 0 and min_score > max_score:
             warnings.append(f"score threshold impossible: min_required_score={min_score} > max_score={max_score}")
         elif max_score > 0 and min_score >= max_score * 0.9:
@@ -530,7 +531,7 @@ class BacktestStrategyAdapter:
         trend_score = float(weights.get("ema", 1.0)) if checks.get("TREND") else 0.0
         structure_score = self._safe_float((metrics or {}).get("structure_score"), 1.0 if checks.get("STRUCTURE") else 0.0)
         rsi_score = float(weights.get("rsi", 1.0)) if checks.get("RSI") else 0.0
-        adx_score = float(weights.get("sma", 0.5)) if checks.get("ADX") else 0.0
+        adx_score = float(weights.get("adx", weights.get("sma", 0.5))) if checks.get("ADX") else 0.0
         runtime_mode = str(runtime.get("mode") or "MAIN").upper()
         configured_volume_weight = float(weights.get("volume", 0.25))
         if runtime_mode in {"MAIN", "SCALPING"}:
@@ -561,6 +562,47 @@ class BacktestStrategyAdapter:
             "macd_score": macd_score,
             "total_score": total_score,
         }, min_required
+
+    def _emit_filter_value_snapshot(
+        self,
+        *,
+        symbol: str,
+        filter_metrics: dict[str, object],
+        filter_checks: dict[str, bool],
+        force: bool = False,
+    ) -> None:
+        if not (force or observability.should_sample_debug(symbol, "FILTER_VALUE_SNAPSHOT", cooldown_sec=45)):
+            return
+        volume_now = self._safe_float(filter_metrics.get("volume"), 0.0)
+        volume_ma = self._safe_float(filter_metrics.get("volume_ma"), 0.0)
+        volume_ratio = (volume_now / volume_ma) if volume_ma > 0 else 0.0
+        close = self._safe_float(filter_metrics.get("close"), 0.0)
+        ema200 = self._safe_float(filter_metrics.get("ema200"), 0.0)
+        ema_distance = abs(close - ema200) / max(abs(close), 1e-9) if close and ema200 else 0.0
+        log_structured_event(
+            "FILTER_VALUE_SNAPSHOT",
+            symbol=symbol,
+            context={
+                "filters": {
+                    "rsi": {
+                        "value": self._safe_float(filter_metrics.get("rsi"), 50.0),
+                        "threshold": float(getattr(config, "CONFIDENCE_RSI_HIGH", 70.0)),
+                        "pass": bool(filter_checks.get("RSI", False)),
+                    },
+                    "adx": {
+                        "value": self._safe_float(filter_metrics.get("adx"), 0.0),
+                        "threshold": self._safe_float(
+                            filter_metrics.get("adx_threshold"),
+                            self._safe_float(getattr(config, "LIVE_ADX_MIN", 23.0), 23.0),
+                        ),
+                        "pass": bool(filter_checks.get("ADX", False)),
+                    },
+                    "volume_ratio": round(volume_ratio, 6),
+                    "ema_distance": round(ema_distance, 6),
+                }
+            },
+        )
+
 
     def _evaluate_structure_state(self, df: pd.DataFrame, direction: str) -> tuple[str, float, dict[str, object]]:
         """
@@ -764,7 +806,7 @@ class BacktestStrategyAdapter:
             "passed_filters": passed,
             "failed_filters": failed,
             "filters_weighted": self._compute_weighted_filters({
-                "trend_score": float(optional_checks["di"]),
+                "trend_score": float(required_checks["trend"]),
                 "structure_score": float(required_checks["structure"]),
                 "rsi_score": float(optional_checks["rsi"]),
                 "adx_score": float(optional_checks["adx"]),
@@ -817,7 +859,7 @@ class BacktestStrategyAdapter:
             "passed_filters": passed,
             "failed_filters": failed,
             "filters_weighted": self._compute_weighted_filters({
-                "trend_score": float(optional_checks["di"]),
+                "trend_score": float(required_checks["trend"]),
                 "structure_score": float(required_checks["structure"]),
                 "rsi_score": float(optional_checks["rsi"]),
                 "adx_score": float(optional_checks["adx"]),
@@ -954,6 +996,7 @@ class BacktestStrategyAdapter:
                         soft_failed,
                     )
                 if hard_failed:
+                    self._emit_filter_value_snapshot(symbol=symbol, filter_metrics=filter_metrics, filter_checks=filter_checks, force=True)
                     if runtime.get("is_scalping"):
                         logger.info(
                             "SCALPING_DEBUG: symbol=%s entry_type=%s score=%.2f threshold_used=%.2f rejection_reason=%s",
@@ -977,6 +1020,7 @@ class BacktestStrategyAdapter:
                     self._log_execution_trace(symbol, strict_result=False, fallback_executed=False)
                     return None
                 if config.ENABLE_SIGNAL_SCORING and total_score < adaptive_score_threshold:
+                    self._emit_filter_value_snapshot(symbol=symbol, filter_metrics=filter_metrics, filter_checks=filter_checks, force=True)
                     if runtime.get("is_scalping"):
                         logger.info(
                             "SCALPING_DEBUG: symbol=%s entry_type=%s score=%.2f threshold_used=%.2f rejection_reason=%s",
@@ -1280,6 +1324,7 @@ class BacktestStrategyAdapter:
                             return weak_strict
 
                 if strict_payload:
+                    self._emit_filter_value_snapshot(symbol=symbol, filter_metrics=filter_metrics, filter_checks=filter_checks, force=True)
                     self._ensure_diagnostics_not_empty(symbol)
                     self._log_execution_trace(symbol, strict_result=True, fallback_executed=False)
                     return strict_payload
@@ -1297,6 +1342,7 @@ class BacktestStrategyAdapter:
                             f"fallback=relaxed",
                         )
 
+                    self._emit_filter_value_snapshot(symbol=symbol, filter_metrics=filter_metrics, filter_checks=filter_checks, force=True)
                     self._ensure_diagnostics_not_empty(symbol)
                     self._log_execution_trace(symbol, strict_result=False, fallback_executed=fallback_executed)
                     return relaxed_signal
@@ -1306,6 +1352,7 @@ class BacktestStrategyAdapter:
                     self.last_signal_diagnostics["rejection_reason"] = f"{strict_rejection_reason}{details_suffix}"
                 if config.DEBUG_MODE and strict_rejection_reason:
                     reject(symbol, "STRATEGY", f"no entry conditions met ({strict_rejection_reason})", extra={"details": strict_rejection_details})
+                self._emit_filter_value_snapshot(symbol=symbol, filter_metrics=filter_metrics, filter_checks=filter_checks, force=True)
                 self._ensure_diagnostics_not_empty(symbol)
                 self._log_execution_trace(symbol, strict_result=False, fallback_executed=fallback_executed)
                 return None

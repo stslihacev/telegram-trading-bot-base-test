@@ -43,6 +43,7 @@ MIN_SCORE_THRESHOLD_LIGHT = 3.0
 FILTER_WEIGHTS = {
     "ema": 1.0,
     "sma": 0.5,
+    "adx": 0.5,
     "rsi": 1.0,
     "macd": 1.4,
     "volume": 0.25,

@@ -188,11 +188,13 @@ class LightModeStrategy:
             short_checks["candle_body"] = impulse_ok
             reasons.append("Candle body")
 
+        volume_abs_ok: bool | None = None
+        volume_ratio_ok: bool | None = None
         if config.LIGHT_VOLUME_FILTER_ENABLED:
             current_volume = float(last["volume"]) if pd.notna(last["volume"]) else 0.0
-            volume_ok = current_volume >= float(config.LIGHT_VOLUME_THRESHOLD)
-            long_checks["volume_threshold"] = volume_ok
-            short_checks["volume_threshold"] = volume_ok
+            volume_abs_ok = current_volume >= float(config.LIGHT_VOLUME_THRESHOLD)
+            long_checks["volume_threshold"] = volume_abs_ok
+            short_checks["volume_threshold"] = volume_abs_ok
             reasons.append("Volume threshold")
 
         if config.LIGHT_VOLUME_RATIO_FILTER_ENABLED:
@@ -203,8 +205,19 @@ class LightModeStrategy:
             short_checks["volume_ratio"] = volume_ratio_ok
             reasons.append("Volume ratio")
 
-        long_breakdown = build_breakdown(long_checks)
-        short_breakdown = build_breakdown(short_checks)
+        score_long_checks = dict(long_checks)
+        score_short_checks = dict(short_checks)
+        if volume_abs_ok is not None or volume_ratio_ok is not None:
+            combined_volume_ok = True
+            if volume_abs_ok is not None:
+                combined_volume_ok = combined_volume_ok and bool(volume_abs_ok)
+            if volume_ratio_ok is not None:
+                combined_volume_ok = combined_volume_ok and bool(volume_ratio_ok)
+            score_long_checks["volume"] = combined_volume_ok
+            score_short_checks["volume"] = combined_volume_ok
+
+        long_breakdown = build_breakdown(score_long_checks)
+        short_breakdown = build_breakdown(score_short_checks)
 
         direction = "LONG" if long_breakdown.score >= short_breakdown.score else "SHORT"
         selected = long_breakdown if direction == "LONG" else short_breakdown

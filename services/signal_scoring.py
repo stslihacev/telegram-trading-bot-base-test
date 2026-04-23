@@ -6,6 +6,7 @@ from dataclasses import dataclass
 
 import core.config as config
 
+SCORING_FILTER_KEYS = ("ema", "sma", "adx", "rsi", "volume", "macd")
 
 @dataclass(frozen=True)
 class ScoreBreakdown:
@@ -27,6 +28,15 @@ def normalize_filter_name(name: str) -> str:
     }
     return mapping.get(normalized, normalized)
 
+def resolve_filter_weight(base_name: str, weights: dict[str, float]) -> float:
+    if base_name == "adx":
+        return float(weights.get("adx", weights.get("sma", 0.5)))
+    return float(weights.get(base_name, 1.0))
+
+
+def resolve_scoring_max_score(weights: dict[str, float] | None = None) -> float:
+    current_weights = weights or (getattr(config, "FILTER_WEIGHTS", {}) or {})
+    return float(sum(resolve_filter_weight(name, current_weights) for name in SCORING_FILTER_KEYS))
 
 def get_mode_threshold(mode: str) -> float:
     normalized = str(mode or "MAIN").upper()
@@ -46,11 +56,15 @@ def build_breakdown(filter_results: dict[str, bool]) -> ScoreBreakdown:
     passed_set: set[str] = set()
     failed_set: set[str] = set()
 
+    grouped_checks: dict[str, bool] = {}
     for raw_name, passed_flag in filter_results.items():
         base_name = normalize_filter_name(raw_name)
         if not base_name:
             continue
-        weight = float(weights.get(base_name, 1.0))
+        grouped_checks[base_name] = bool(passed_flag) if base_name not in grouped_checks else bool(grouped_checks[base_name] and passed_flag)
+
+    for base_name, passed_flag in grouped_checks.items():
+        weight = resolve_filter_weight(base_name, weights)
         max_score += weight
 
         normalized_label = base_name.upper()
