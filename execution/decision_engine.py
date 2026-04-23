@@ -9,6 +9,7 @@ from typing import Any
 import core.config as config
 from utils.logger import execution_logger
 
+from execution.position_sizing import PositionSizingEngine
 
 class DecisionAction(str, Enum):
     APPROVE = "APPROVE"
@@ -41,6 +42,7 @@ class ExecutionDecisionEngine:
     def __init__(self, bybit_client: Any):
         self.bybit = bybit_client
         self._portfolio_snapshot = PortfolioSnapshot(0.0, 0.0, 0.0, 0)
+        self.position_sizing_engine = PositionSizingEngine()
 
     def evaluate_order(self, signal: dict[str, Any], market_data: dict[str, Any], portfolio_state: dict[str, Any]) -> ExecutionDecision:
         symbol = str(signal.get("symbol") or "").upper()
@@ -74,16 +76,51 @@ class ExecutionDecisionEngine:
             return self._decision(DecisionAction.EMERGENCY_REJECT, "PORTFOLIO_EXPOSURE_BLOCK", 0.0, side, symbol, {"snapshot": snapshot.__dict__})
 
         risk_distance = abs(entry - sl)
-        raw_qty = (balance * base_risk * score_mult * cap_mult) / max(risk_distance, 1e-9)
-        qty = self.bybit.round_qty_to_step(raw_qty, constraints["step_size"])
+        legacy_raw_qty = (balance * base_risk * score_mult * cap_mult) / max(risk_distance, 1e-9)
 
         sizing_meta = {
             "base_risk": base_risk,
             "score_multiplier": score_mult,
             "portfolio_cap_multiplier": cap_mult,
-            "raw_qty": raw_qty,
+            "raw_qty": legacy_raw_qty,
             "balance": balance,
         }
+
+        dynamic_meta: dict[str, Any] = {}
+        try:
+            sizing = self.position_sizing_engine.calculate_size(
+                symbol=symbol,
+                signal=signal,
+                equity=balance,
+                base_risk_pct=base_risk,
+                stop_distance=risk_distance,
+                entry_price=entry,
+                max_position_units=float(getattr(config, "MAX_POSITION_UNITS", constraints["max_qty"])),
+                min_position_units=max(0.0, constraints["min_qty"]),
+            )
+            if sizing.used_dynamic:
+                raw_qty = max(0.0, float(sizing.position_size)) * max(0.0, cap_mult)
+                dynamic_meta = {
+                    "position_sizing_model": "dynamic",
+                    "dynamic_risk_pct": float(sizing.risk_pct),
+                    "dynamic_risk_amount": float(sizing.risk_amount),
+                    "dynamic_reason": sizing.reason,
+                }
+            else:
+                raw_qty = legacy_raw_qty
+                dynamic_meta = {
+                    "position_sizing_model": "legacy_fallback",
+                    "dynamic_reason": sizing.reason,
+                }
+        except Exception as exc:
+            raw_qty = legacy_raw_qty
+            dynamic_meta = {
+                "position_sizing_model": "legacy_fallback",
+                "dynamic_reason": f"exception:{exc}",
+            }
+
+        qty = self.bybit.round_qty_to_step(raw_qty, constraints["step_size"])
+        sizing_meta.update(dynamic_meta)
 
         validated = self._validate_and_scale(
             qty=qty,

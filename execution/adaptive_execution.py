@@ -378,6 +378,7 @@ class AdaptiveExecutionLayer:
         adjusted_signal = dict(signal)
         adjusted_signal["execution_confidence"] = confidence
         adjusted_signal["execution_mode"] = mode.value
+        adjusted_signal["execution_regime"] = regime.regime.value
         adjusted_signal["micro_liquidity_score"] = micro.liquidity_score
         adjusted_signal["micro_impulse_quality"] = micro.impulse_quality
         adjusted_signal["micro_noise_level"] = micro.noise_level
