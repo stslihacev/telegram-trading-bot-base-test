@@ -1609,5 +1609,311 @@
     "signal_type": "strict",
     "score": 3.0,
     "timestamp": "2026-04-22T17:00:00+00:00"
+  },
+  {
+    "signal_id": "BNBUSDT_1h_LONG_2026-04-23 13:00:00+00:00",
+    "symbol": "BNBUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-23T13:00:00+00:00"
+  },
+  {
+    "signal_id": "XAGUSDT_1h_SHORT_2026-04-23 13:00:00+00:00",
+    "symbol": "XAGUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 4.65,
+    "timestamp": "2026-04-23T13:00:00+00:00"
+  },
+  {
+    "signal_id": "BTCUSDT_1h_LONG_2026-04-23 14:00:00+00:00",
+    "symbol": "BTCUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.25,
+    "timestamp": "2026-04-23T14:00:00+00:00"
+  },
+  {
+    "signal_id": "ETHUSDT_1h_LONG_2026-04-23 14:00:00+00:00",
+    "symbol": "ETHUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-23T14:00:00+00:00"
+  },
+  {
+    "signal_id": "XRPUSDT_1h_LONG_2026-04-23 14:00:00+00:00",
+    "symbol": "XRPUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 4.65,
+    "timestamp": "2026-04-23T14:00:00+00:00"
+  },
+  {
+    "signal_id": "1000PEPEUSDT_1h_LONG_2026-04-23 14:00:00+00:00",
+    "symbol": "1000PEPEUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 4.4,
+    "timestamp": "2026-04-23T14:00:00+00:00"
+  },
+  {
+    "signal_id": "BIOUSDT_1h_LONG_2026-04-23 15:00:00+00:00",
+    "symbol": "BIOUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-23T15:00:00+00:00"
+  },
+  {
+    "signal_id": "RIVERUSDT_1h_SHORT_2026-04-23 15:00:00+00:00",
+    "symbol": "RIVERUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.4,
+    "timestamp": "2026-04-23T15:00:00+00:00"
+  },
+  {
+    "signal_id": "CLUSDT_1h_LONG_2026-04-23 15:00:00+00:00",
+    "symbol": "CLUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-23T15:00:00+00:00"
+  },
+  {
+    "signal_id": "ARBUSDT_1h_LONG_2026-04-23 15:00:00+00:00",
+    "symbol": "ARBUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 4.15,
+    "timestamp": "2026-04-23T15:00:00+00:00"
+  },
+  {
+    "signal_id": "XAUTUSDT_1h_SHORT_2026-04-23 15:00:00+00:00",
+    "symbol": "XAUTUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.25,
+    "timestamp": "2026-04-23T15:00:00+00:00"
+  },
+  {
+    "signal_id": "XAUUSDT_1h_SHORT_2026-04-23 15:00:00+00:00",
+    "symbol": "XAUUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.25,
+    "timestamp": "2026-04-23T15:00:00+00:00"
+  },
+  {
+    "signal_id": "SUIUSDT_1h_SHORT_2026-04-23 16:00:00+00:00",
+    "symbol": "SUIUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-23T16:00:00+00:00"
+  },
+  {
+    "signal_id": "WIFUSDT_1h_SHORT_2026-04-23 16:00:00+00:00",
+    "symbol": "WIFUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-23T16:00:00+00:00"
+  },
+  {
+    "signal_id": "AVAXUSDT_1h_SHORT_2026-04-23 16:00:00+00:00",
+    "symbol": "AVAXUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-23T16:00:00+00:00"
+  },
+  {
+    "signal_id": "WLDUSDT_1h_SHORT_2026-04-23 16:00:00+00:00",
+    "symbol": "WLDUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 4.4,
+    "timestamp": "2026-04-23T16:00:00+00:00"
+  },
+  {
+    "signal_id": "XPLUSDT_1h_SHORT_2026-04-23 16:00:00+00:00",
+    "symbol": "XPLUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.65,
+    "timestamp": "2026-04-23T16:00:00+00:00"
+  },
+  {
+    "signal_id": "XMRUSDT_1h_LONG_2026-04-23 16:00:00+00:00",
+    "symbol": "XMRUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.4,
+    "timestamp": "2026-04-23T16:00:00+00:00"
+  },
+  {
+    "signal_id": "KATUSDT_1h_LONG_2026-04-24 09:00:00+00:00",
+    "symbol": "KATUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.65,
+    "timestamp": "2026-04-24T09:00:00+00:00"
+  },
+  {
+    "signal_id": "TAOUSDT_1h_SHORT_2026-04-24 09:00:00+00:00",
+    "symbol": "TAOUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 4.4,
+    "timestamp": "2026-04-24T09:00:00+00:00"
+  },
+  {
+    "signal_id": "LABUSDT_1h_LONG_2026-04-24 09:00:00+00:00",
+    "symbol": "LABUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.25,
+    "timestamp": "2026-04-24T09:00:00+00:00"
+  },
+  {
+    "signal_id": "XRPUSDT_1h_LONG_2026-04-24 10:00:00+00:00",
+    "symbol": "XRPUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-24T10:00:00+00:00"
+  },
+  {
+    "signal_id": "ADAUSDT_1h_LONG_2026-04-24 10:00:00+00:00",
+    "symbol": "ADAUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.9,
+    "timestamp": "2026-04-24T10:00:00+00:00"
+  },
+  {
+    "signal_id": "STABLEUSDT_1h_LONG_2026-04-24 10:00:00+00:00",
+    "symbol": "STABLEUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-24T10:00:00+00:00"
+  },
+  {
+    "signal_id": "ORDIUSDT_1h_SHORT_2026-04-24 10:00:00+00:00",
+    "symbol": "ORDIUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.25,
+    "timestamp": "2026-04-24T10:00:00+00:00"
+  },
+  {
+    "signal_id": "ARBUSDT_1h_LONG_2026-04-24 10:00:00+00:00",
+    "symbol": "ARBUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.9,
+    "timestamp": "2026-04-24T10:00:00+00:00"
+  },
+  {
+    "signal_id": "MUSDT_1h_LONG_2026-04-24 10:00:00+00:00",
+    "symbol": "MUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.65,
+    "timestamp": "2026-04-24T10:00:00+00:00"
+  },
+  {
+    "signal_id": "XRPUSDT_1h_LONG_2026-04-24 11:00:00+00:00",
+    "symbol": "XRPUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 4.65,
+    "timestamp": "2026-04-24T11:00:00+00:00"
+  },
+  {
+    "signal_id": "1000PEPEUSDT_1h_LONG_2026-04-24 11:00:00+00:00",
+    "symbol": "1000PEPEUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.15,
+    "timestamp": "2026-04-24T11:00:00+00:00"
+  },
+  {
+    "signal_id": "PENGUUSDT_1h_LONG_2026-04-24 11:00:00+00:00",
+    "symbol": "PENGUUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.15,
+    "timestamp": "2026-04-24T11:00:00+00:00"
+  },
+  {
+    "signal_id": "ARBUSDT_1h_LONG_2026-04-24 11:00:00+00:00",
+    "symbol": "ARBUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 4.15,
+    "timestamp": "2026-04-24T11:00:00+00:00"
+  },
+  {
+    "signal_id": "VIRTUALUSDT_1h_LONG_2026-04-24 11:00:00+00:00",
+    "symbol": "VIRTUALUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.65,
+    "timestamp": "2026-04-24T11:00:00+00:00"
+  },
+  {
+    "signal_id": "LINKUSDT_1h_LONG_2026-04-24 11:00:00+00:00",
+    "symbol": "LINKUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 4.15,
+    "timestamp": "2026-04-24T11:00:00+00:00"
+  },
+  {
+    "signal_id": "CLUSDT_1h_LONG_2026-04-24 12:00:00+00:00",
+    "symbol": "CLUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.25,
+    "timestamp": "2026-04-24T12:00:00+00:00"
   }
 ]

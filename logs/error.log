@@ -94,3 +94,4 @@ Traceback (most recent call last):
     raise RuntimeError(f"{name} failed after {self.max_retries} attempts: {last_exc}")
 RuntimeError: place_order failed after 3 attempts: Qty invalid (ErrCode: 10001) (ErrTime: 18:10:40).
 Request → POST https://api-demo.bybit.com/v5/order/create: {"category": "linear", "symbol": "MONUSDT", "side": "Buy", "orderType": "Market", "qty": "287.34999999999997", "reduceOnly": true, "timeInForce": "IOC"}.
+2026-04-24 16:24:55,711 - crypto_bot - ERROR - [BYBIT ERROR] endpoint=fetch_ticker:ADA/USDT:USDT failed without retry: bybit GET https://api.bybit.com/v5/market/tickers?symbol=ADAUSDT&category=linear

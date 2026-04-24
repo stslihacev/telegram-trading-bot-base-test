@@ -1,1607 +1,1754 @@
 {
   "version": 3,
   "active_signals": {
-    "WLDUSDT": {
-      "signal_id": "WLDUSDT_1h_SHORT_2026-04-22 15:00:00+00:00",
-      "execution_id": "exec_e86655b49130",
+    "KATUSDT": {
+      "signal_id": "KATUSDT_1h_LONG_2026-04-24 09:00:00+00:00",
+      "execution_id": "exec_c33b7caaca7d",
       "position_id": null,
-      "direction": "SHORT",
-      "entry": 0.2673,
-      "sl": 0.2704114285714286,
-      "tp": 0.2623217142857142,
+      "direction": "LONG",
+      "entry": 0.01837,
+      "sl": 0.01434557142857143,
+      "tp": 0.024809085714285715,
+      "score": 3.65,
+      "confidence": 0.73,
+      "status": "FAILED",
+      "timestamp": "2026-04-24T11:55:29.421522+00:00",
+      "history": [
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 09:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "MARGIN_OR_VALIDATION_FAILURE",
+          "timestamp": "2026-04-24T11:03:47.514241+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 09:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "MARGIN_OR_VALIDATION_FAILURE",
+          "timestamp": "2026-04-24T11:09:00.717852+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 09:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T11:19:20.486660+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 09:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T11:24:30.302128+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 09:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T11:34:51.793881+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 09:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T11:40:01.010930+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 09:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T11:50:19.941569+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 09:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T11:55:29.421522+00:00"
+        }
+      ]
+    },
+    "LABUSDT": {
+      "signal_id": "LABUSDT_1h_LONG_2026-04-24 09:00:00+00:00",
+      "execution_id": "exec_32d0641a6793",
+      "position_id": null,
+      "direction": "LONG",
+      "entry": 0.80481,
+      "sl": 0.5913022857142857,
+      "tp": 1.146422342857143,
       "score": 3.25,
       "confidence": 0.65,
       "status": "FAILED",
-      "timestamp": "2026-04-22T17:56:13.924989+00:00",
+      "timestamp": "2026-04-24T11:55:29.656522+00:00",
       "history": [
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-22 12:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T14:00:03.278107+00:00"
-        },
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 12:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T14:30:14.775799+00:00"
-        },
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 12:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T14:35:26.380494+00:00"
-        },
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 12:00:00+00:00"
+          "timestamp": "2026-04-24 09:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
           "to": "FAILED",
           "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T14:53:19.341138+00:00"
+          "timestamp": "2026-04-24T11:03:49.881487+00:00"
         },
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-22 15:00:00+00:00"
+          "timestamp": "2026-04-24 09:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
           "to": "FAILED",
           "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T17:03:48.910995+00:00"
+          "timestamp": "2026-04-24T11:09:00.949971+00:00"
         },
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-22 15:00:00+00:00"
+          "timestamp": "2026-04-24 09:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
           "to": "FAILED",
           "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T17:09:01.984391+00:00"
+          "timestamp": "2026-04-24T11:19:20.717661+00:00"
         },
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-22 15:00:00+00:00"
+          "timestamp": "2026-04-24 09:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
           "to": "FAILED",
           "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T17:19:32.184438+00:00"
+          "timestamp": "2026-04-24T11:24:30.532128+00:00"
         },
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-22 15:00:00+00:00"
+          "timestamp": "2026-04-24 09:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
           "to": "FAILED",
           "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T17:24:46.558678+00:00"
+          "timestamp": "2026-04-24T11:34:52.022929+00:00"
         },
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-22 15:00:00+00:00"
+          "timestamp": "2026-04-24 09:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
           "to": "FAILED",
           "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T17:35:13.661783+00:00"
+          "timestamp": "2026-04-24T11:40:01.240943+00:00"
         },
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-22 15:00:00+00:00"
+          "timestamp": "2026-04-24 09:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
           "to": "FAILED",
           "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T17:40:28.079995+00:00"
+          "timestamp": "2026-04-24T11:50:20.177568+00:00"
         },
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-22 15:00:00+00:00"
+          "timestamp": "2026-04-24 09:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
           "to": "FAILED",
           "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T17:50:56.592330+00:00"
-        },
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 15:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T17:56:13.924989+00:00"
+          "timestamp": "2026-04-24T11:55:29.656522+00:00"
         }
       ]
     },
-    "AAVEUSDT": {
-      "signal_id": "AAVEUSDT_1h_SHORT_2026-04-22 14:00:00+00:00",
-      "execution_id": "exec_5995112a55f5",
-      "position_id": null,
-      "direction": "SHORT",
-      "entry": 93.78,
-      "sl": 96.49542857142856,
-      "tp": 89.4353142857143,
-      "score": 3.25,
-      "confidence": 0.65,
-      "status": "FAILED",
-      "timestamp": "2026-04-22T16:58:36.685938+00:00",
-      "history": [
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 14:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T16:53:22.059945+00:00"
-        },
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 14:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T16:58:36.685938+00:00"
-        }
-      ]
-    },
-    "BSBUSDT": {
-      "signal_id": "BSBUSDT_1h_LONG_2026-04-22 14:00:00+00:00",
-      "execution_id": "exec_cccad56afa07",
-      "position_id": null,
+    "XRPUSDT": {
+      "signal_id": "XRPUSDT_1h_LONG_2026-04-24 11:00:00+00:00",
+      "execution_id": "exec_f85356accab0",
+      "position_id": "pos_XRPUSDT_exec_f85356accab0",
       "direction": "LONG",
-      "entry": 0.3153,
-      "sl": 0.2729042857142857,
-      "tp": 0.38313314285714295,
-      "score": 3.0,
-      "confidence": 0.6,
-      "status": "FAILED",
-      "timestamp": "2026-04-22T16:58:36.906939+00:00",
-      "history": [
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 14:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T16:53:22.281945+00:00"
-        },
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 14:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T16:58:36.906939+00:00"
-        }
-      ]
-    },
-    "SEIUSDT": {
-      "signal_id": "SEIUSDT_1h_LONG_2026-04-22 15:00:00+00:00",
-      "execution_id": "exec_e99641ab7fea",
-      "position_id": null,
-      "direction": "LONG",
-      "entry": 0.0625,
-      "sl": 0.06071142857142857,
-      "tp": 0.06536171428571429,
-      "score": 3.4,
-      "confidence": 0.6799999999999999,
-      "status": "FAILED",
-      "timestamp": "2026-04-22T17:56:13.709775+00:00",
-      "history": [
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 14:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T16:53:24.455958+00:00"
-        },
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 14:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T16:58:37.129938+00:00"
-        },
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 15:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T17:09:01.549392+00:00"
-        },
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 15:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T17:14:16.132263+00:00"
-        },
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 15:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T17:24:46.132722+00:00"
-        },
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 15:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T17:29:59.414477+00:00"
-        },
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 15:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T17:40:27.860996+00:00"
-        },
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 15:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T17:45:41.042984+00:00"
-        },
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 15:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T17:56:13.709775+00:00"
-        }
-      ]
-    },
-    "STRKUSDT": {
-      "signal_id": "STRKUSDT_1h_LONG_2026-04-22 15:00:00+00:00",
-      "execution_id": "exec_24b34ec2aa36",
-      "position_id": null,
-      "direction": "LONG",
-      "entry": 0.04142,
-      "sl": 0.040237714285714286,
-      "tp": 0.04331165714285714,
-      "score": 3.4,
-      "confidence": 0.6799999999999999,
-      "status": "FAILED",
-      "timestamp": "2026-04-22T17:56:13.490776+00:00",
-      "history": [
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 15:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T17:03:48.681000+00:00"
-        },
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 15:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T17:09:01.770392+00:00"
-        },
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 15:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T17:19:31.963367+00:00"
-        },
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 15:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T17:24:46.343676+00:00"
-        },
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 15:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T17:35:13.444537+00:00"
-        },
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 15:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T17:40:27.645919+00:00"
-        },
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 15:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T17:50:56.371102+00:00"
-        },
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 15:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T17:56:13.490776+00:00"
-        }
-      ]
-    },
-    "VIRTUALUSDT": {
-      "signal_id": "VIRTUALUSDT_1h_SHORT_2026-04-22 15:00:00+00:00",
-      "execution_id": "exec_ce0425d7c9f2",
-      "position_id": null,
-      "direction": "SHORT",
-      "entry": 0.7101,
-      "sl": 0.7196071428571428,
-      "tp": 0.6948885714285714,
-      "score": 3.0,
-      "confidence": 0.6,
-      "status": "FAILED",
-      "timestamp": "2026-04-22T17:56:14.145152+00:00",
-      "history": [
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 15:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T17:03:49.131998+00:00"
-        },
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 15:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T17:09:02.198391+00:00"
-        },
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 15:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T17:19:32.615436+00:00"
-        },
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 15:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T17:24:46.771677+00:00"
-        },
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 15:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T17:35:14.095323+00:00"
-        },
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 15:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T17:40:28.299994+00:00"
-        },
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 15:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T17:50:57.028329+00:00"
-        },
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 15:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T17:56:14.145152+00:00"
-        }
-      ]
-    },
-    "HUSDT": {
-      "signal_id": "HUSDT_1h_LONG_2026-04-22 15:00:00+00:00",
-      "execution_id": "exec_3ef7660951ad",
-      "position_id": null,
-      "direction": "LONG",
-      "entry": 0.12258,
-      "sl": 0.114353,
-      "tp": 0.13574319999999998,
-      "score": 3.0,
-      "confidence": 0.6,
-      "status": "FAILED",
-      "timestamp": "2026-04-22T17:50:56.813330+00:00",
-      "history": [
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 15:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T17:14:16.353652+00:00"
-        },
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 15:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T17:19:32.398436+00:00"
-        },
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 15:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T17:29:59.633477+00:00"
-        },
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 15:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T17:35:13.879786+00:00"
-        },
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 15:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T17:45:41.260984+00:00"
-        },
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 15:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T17:50:56.813330+00:00"
-        }
-      ]
-    },
-    "ARBUSDT": {
-      "signal_id": "ARBUSDT_1h_LONG_2026-04-22 16:00:00+00:00",
-      "execution_id": "exec_adea6a5e86c7",
-      "position_id": "pos_ARBUSDT_exec_adea6a5e86c7",
-      "direction": "LONG",
-      "entry": 0.12874,
-      "sl": 0.12619357142857143,
-      "tp": 0.1328142857142857,
+      "entry": 1.4378,
+      "sl": 1.4215628571428571,
+      "tp": 1.4637794285714285,
       "score": 4.65,
       "confidence": 0.93,
       "status": "OPEN",
-      "timestamp": "2026-04-22 16:00:00+00:00",
+      "timestamp": "2026-04-24 11:00:00+00:00",
       "history": [
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-22 16:00:00+00:00"
+          "timestamp": "2026-04-24 10:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T12:00:40.008051+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 10:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T12:05:55.058168+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 10:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T12:16:19.156463+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 10:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T12:21:32.192045+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 10:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T12:31:55.967412+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 10:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T12:37:06.995411+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 10:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T12:47:32.038456+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 10:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T12:52:45.223922+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 11:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
           "to": "EXECUTED",
           "reason": "",
-          "timestamp": "2026-04-22 16:00:00+00:00"
+          "timestamp": "2026-04-24 11:00:00+00:00"
         },
         {
           "from": "EXECUTED",
           "to": "OPEN",
           "reason": "",
-          "timestamp": "2026-04-22 16:00:00+00:00"
+          "timestamp": "2026-04-24 11:00:00+00:00"
         }
       ]
     },
-    "METUSDT": {
-      "signal_id": "METUSDT_1h_LONG_2026-04-22 17:00:00+00:00",
-      "execution_id": "exec_387239446a5e",
+    "STABLEUSDT": {
+      "signal_id": "STABLEUSDT_1h_LONG_2026-04-24 10:00:00+00:00",
+      "execution_id": "exec_317137279c13",
       "position_id": null,
       "direction": "LONG",
-      "entry": 0.18972,
-      "sl": 0.181203,
-      "tp": 0.2033472,
+      "entry": 0.034135,
+      "sl": 0.03120492857142857,
+      "tp": 0.038823114285714284,
       "score": 3.0,
       "confidence": 0.6,
       "status": "FAILED",
-      "timestamp": "2026-04-22T19:25:27.429291+00:00",
+      "timestamp": "2026-04-24T12:52:45.460781+00:00",
       "history": [
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-22 17:00:00+00:00"
+          "timestamp": "2026-04-24 10:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
           "to": "FAILED",
           "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T19:04:25.228029+00:00"
+          "timestamp": "2026-04-24T12:00:42.424446+00:00"
         },
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-22 17:00:00+00:00"
+          "timestamp": "2026-04-24 10:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
           "to": "FAILED",
           "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T19:09:38.239260+00:00"
+          "timestamp": "2026-04-24T12:05:55.295874+00:00"
         },
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-22 17:00:00+00:00"
+          "timestamp": "2026-04-24 10:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
           "to": "FAILED",
           "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T19:20:09.224358+00:00"
+          "timestamp": "2026-04-24T12:16:19.399599+00:00"
         },
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-22 17:00:00+00:00"
+          "timestamp": "2026-04-24 10:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
           "to": "FAILED",
           "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T19:25:27.429291+00:00"
+          "timestamp": "2026-04-24T12:21:32.430105+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 10:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T12:31:56.208409+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 10:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T12:37:07.238181+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 10:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T12:47:32.277568+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 10:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T12:52:45.460781+00:00"
         }
       ]
     },
-    "SUIUSDT": {
-      "signal_id": "SUIUSDT_1h_LONG_2026-04-22 17:00:00+00:00",
-      "execution_id": "exec_5063ee449f6d",
+    "ORDIUSDT": {
+      "signal_id": "ORDIUSDT_1h_SHORT_2026-04-24 10:00:00+00:00",
+      "execution_id": "exec_963143409933",
       "position_id": null,
-      "direction": "LONG",
-      "entry": 0.9661,
-      "sl": 0.958342857142857,
-      "tp": 0.9785114285714286,
+      "direction": "SHORT",
+      "entry": 4.605,
+      "sl": 4.882242857142858,
+      "tp": 4.161411428571428,
       "score": 3.25,
       "confidence": 0.65,
       "status": "FAILED",
-      "timestamp": "2026-04-22T19:25:27.646292+00:00",
+      "timestamp": "2026-04-24T12:52:45.688508+00:00",
       "history": [
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-22 17:00:00+00:00"
+          "timestamp": "2026-04-24 10:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
           "to": "FAILED",
           "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T19:04:25.460060+00:00"
+          "timestamp": "2026-04-24T12:00:42.660446+00:00"
         },
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-22 17:00:00+00:00"
+          "timestamp": "2026-04-24 10:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
           "to": "FAILED",
           "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T19:09:38.458261+00:00"
+          "timestamp": "2026-04-24T12:05:55.524878+00:00"
         },
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-22 17:00:00+00:00"
+          "timestamp": "2026-04-24 10:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
           "to": "FAILED",
           "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T19:20:09.441706+00:00"
+          "timestamp": "2026-04-24T12:16:19.639543+00:00"
         },
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-22 17:00:00+00:00"
+          "timestamp": "2026-04-24 10:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
           "to": "FAILED",
           "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T19:25:27.646292+00:00"
+          "timestamp": "2026-04-24T12:21:32.658462+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 10:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T12:31:56.439644+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 10:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T12:37:07.484397+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 10:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T12:47:32.506549+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 10:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T12:52:45.688508+00:00"
+        }
+      ]
+    },
+    "MUSDT": {
+      "signal_id": "MUSDT_1h_LONG_2026-04-24 10:00:00+00:00",
+      "execution_id": "exec_2607beeb3f48",
+      "position_id": null,
+      "direction": "LONG",
+      "entry": 4.7561,
+      "sl": 4.537351428571429,
+      "tp": 5.106097714285713,
+      "score": 3.65,
+      "confidence": 0.73,
+      "status": "FAILED",
+      "timestamp": "2026-04-24T12:57:58.455655+00:00",
+      "history": [
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 10:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T12:16:19.871430+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 10:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T12:21:32.904393+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 10:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T12:37:07.714416+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 10:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T12:52:45.929861+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 10:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T12:57:58.455655+00:00"
+        }
+      ]
+    },
+    "1000PEPEUSDT": {
+      "signal_id": "1000PEPEUSDT_1h_LONG_2026-04-24 11:00:00+00:00",
+      "execution_id": "exec_fd49f3707947",
+      "position_id": null,
+      "direction": "LONG",
+      "entry": 0.003861,
+      "sl": 0.0037798000000000003,
+      "tp": 0.003990919999999999,
+      "score": 3.15,
+      "confidence": 0.63,
+      "status": "FAILED",
+      "timestamp": "2026-04-24T13:55:18.209952+00:00",
+      "history": [
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 11:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T13:03:15.250330+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 11:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T13:08:28.747137+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 11:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T13:18:54.527966+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 11:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T13:24:05.246783+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 11:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T13:34:27.477133+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 11:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T13:39:43.336708+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 11:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T13:50:07.098927+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 11:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T13:55:18.209952+00:00"
         }
       ]
     },
     "PENGUUSDT": {
-      "signal_id": "PENGUUSDT_1h_LONG_2026-04-22 17:00:00+00:00",
-      "execution_id": "exec_ccc1e741a09a",
+      "signal_id": "PENGUUSDT_1h_LONG_2026-04-24 11:00:00+00:00",
+      "execution_id": "exec_169e9a3792a5",
       "position_id": null,
       "direction": "LONG",
-      "entry": 0.008524,
-      "sl": 0.008297,
-      "tp": 0.0088872,
-      "score": 3.4,
-      "confidence": 0.6799999999999999,
+      "entry": 0.008674,
+      "sl": 0.0083327,
+      "tp": 0.009220079999999999,
+      "score": 3.15,
+      "confidence": 0.63,
       "status": "FAILED",
-      "timestamp": "2026-04-22T19:25:27.864353+00:00",
+      "timestamp": "2026-04-24T13:55:18.435777+00:00",
       "history": [
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-22 17:00:00+00:00"
+          "timestamp": "2026-04-24 11:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
           "to": "FAILED",
           "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T19:04:25.688061+00:00"
+          "timestamp": "2026-04-24T13:03:15.495938+00:00"
         },
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-22 17:00:00+00:00"
+          "timestamp": "2026-04-24 11:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
           "to": "FAILED",
           "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T19:09:38.677259+00:00"
+          "timestamp": "2026-04-24T13:08:28.992394+00:00"
         },
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-22 17:00:00+00:00"
+          "timestamp": "2026-04-24 11:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
           "to": "FAILED",
           "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T19:20:09.661706+00:00"
+          "timestamp": "2026-04-24T13:18:54.756444+00:00"
         },
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-22 17:00:00+00:00"
+          "timestamp": "2026-04-24 11:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
           "to": "FAILED",
           "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T19:25:27.864353+00:00"
+          "timestamp": "2026-04-24T13:24:05.469891+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 11:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T13:34:27.719237+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 11:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T13:39:43.560737+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 11:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T13:50:07.326874+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 11:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T13:55:18.435777+00:00"
         }
       ]
     },
-    "AVAXUSDT": {
-      "signal_id": "AVAXUSDT_1h_LONG_2026-04-22 17:00:00+00:00",
-      "execution_id": "exec_2778a000f9cf",
+    "VIRTUALUSDT": {
+      "signal_id": "VIRTUALUSDT_1h_LONG_2026-04-24 11:00:00+00:00",
+      "execution_id": "exec_121dfc6dd3fb",
       "position_id": null,
       "direction": "LONG",
-      "entry": 9.523,
-      "sl": 9.45292857142857,
-      "tp": 9.635114285714288,
-      "score": 3.0,
-      "confidence": 0.6,
+      "entry": 0.7137,
+      "sl": 0.6959642857142857,
+      "tp": 0.7420771428571429,
+      "score": 3.65,
+      "confidence": 0.73,
       "status": "FAILED",
-      "timestamp": "2026-04-22T19:25:28.398397+00:00",
+      "timestamp": "2026-04-24T13:55:18.668096+00:00",
       "history": [
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-22 17:00:00+00:00"
+          "timestamp": "2026-04-24 11:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
           "to": "FAILED",
           "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T19:04:25.914060+00:00"
+          "timestamp": "2026-04-24T13:03:15.753839+00:00"
         },
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-22 17:00:00+00:00"
+          "timestamp": "2026-04-24 11:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
           "to": "FAILED",
           "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T19:09:38.892261+00:00"
+          "timestamp": "2026-04-24T13:08:31.448254+00:00"
         },
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-22 17:00:00+00:00"
+          "timestamp": "2026-04-24 11:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
           "to": "FAILED",
           "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T19:20:09.880468+00:00"
+          "timestamp": "2026-04-24T13:18:54.998887+00:00"
         },
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-22 17:00:00+00:00"
+          "timestamp": "2026-04-24 11:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
           "to": "FAILED",
           "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T19:25:28.398397+00:00"
-        }
-      ]
-    },
-    "1000BONKUSDT": {
-      "signal_id": "1000BONKUSDT_1h_LONG_2026-04-22 17:00:00+00:00",
-      "execution_id": "exec_b8702f594022",
-      "position_id": null,
-      "direction": "LONG",
-      "entry": 0.006497,
-      "sl": 0.006393285714285714,
-      "tp": 0.006662942857142857,
-      "score": 3.4,
-      "confidence": 0.6799999999999999,
-      "status": "FAILED",
-      "timestamp": "2026-04-22T19:25:28.613629+00:00",
-      "history": [
-        {
-          "from": "CREATED",
-          "to": "PENDING_EXECUTION",
-          "reason": "no active signal",
-          "timestamp": "2026-04-22 17:00:00+00:00"
-        },
-        {
-          "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T19:04:26.140060+00:00"
+          "timestamp": "2026-04-24T13:24:05.712832+00:00"
         },
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-22 17:00:00+00:00"
+          "timestamp": "2026-04-24 11:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
           "to": "FAILED",
           "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T19:09:39.111480+00:00"
+          "timestamp": "2026-04-24T13:34:27.950936+00:00"
         },
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-22 17:00:00+00:00"
+          "timestamp": "2026-04-24 11:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
           "to": "FAILED",
           "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T19:20:10.097468+00:00"
+          "timestamp": "2026-04-24T13:39:43.790418+00:00"
         },
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-22 17:00:00+00:00"
+          "timestamp": "2026-04-24 11:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
           "to": "FAILED",
           "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T19:25:28.613629+00:00"
+          "timestamp": "2026-04-24T13:50:07.573897+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 11:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T13:55:18.668096+00:00"
         }
       ]
     },
     "LINKUSDT": {
-      "signal_id": "LINKUSDT_1h_LONG_2026-04-22 17:00:00+00:00",
-      "execution_id": "exec_2e92683d6ff9",
-      "position_id": null,
+      "signal_id": "LINKUSDT_1h_LONG_2026-04-24 11:00:00+00:00",
+      "execution_id": "exec_d427345d809b",
+      "position_id": "pos_LINKUSDT_exec_d427345d809b",
       "direction": "LONG",
-      "entry": 9.459,
-      "sl": 9.40792857142857,
-      "tp": 9.540714285714287,
-      "score": 3.0,
-      "confidence": 0.6,
-      "status": "FAILED",
-      "timestamp": "2026-04-22T19:14:54.854203+00:00",
+      "entry": 9.349,
+      "sl": 9.233799999999999,
+      "tp": 9.533320000000003,
+      "score": 4.15,
+      "confidence": 0.8300000000000001,
+      "status": "OPEN",
+      "timestamp": "2026-04-24 11:00:00+00:00",
       "history": [
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-22 17:00:00+00:00"
+          "timestamp": "2026-04-24 11:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "EXECUTED",
+          "reason": "",
+          "timestamp": "2026-04-24 11:00:00+00:00"
+        },
+        {
+          "from": "EXECUTED",
+          "to": "OPEN",
+          "reason": "",
+          "timestamp": "2026-04-24 11:00:00+00:00"
+        }
+      ]
+    },
+    "CLUSDT": {
+      "signal_id": "CLUSDT_1h_LONG_2026-04-24 12:00:00+00:00",
+      "execution_id": "exec_565b00cdc241",
+      "position_id": null,
+      "direction": "LONG",
+      "entry": 95.904,
+      "sl": 93.36727142857143,
+      "tp": 99.96276571428571,
+      "score": 3.25,
+      "confidence": 0.65,
+      "status": "FAILED",
+      "timestamp": "2026-04-24T14:31:20.136651+00:00",
+      "history": [
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 12:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
           "to": "FAILED",
           "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-22T19:14:54.854203+00:00"
+          "timestamp": "2026-04-24T14:00:27.490343+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 12:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T14:05:36.721284+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 12:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T14:15:54.482504+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 12:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T14:21:04.601530+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-24 12:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-24T14:31:20.136651+00:00"
         }
       ]
     }
   },
   "signal_history": {
-    "BOMEUSDT": [
+    "KATUSDT": [
       {
-        "signal_id": "BOMEUSDT_1h_LONG_2026-04-22 14:00:00+00:00",
-        "status": "UPGRADE",
-        "timestamp": "2026-04-22T16:53:24.232959+00:00",
+        "signal_id": "KATUSDT_1h_LONG_2026-04-24 09:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T11:03:47.515241+00:00",
         "direction": "LONG",
+        "score": 3.65,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "KATUSDT_1h_LONG_2026-04-24 09:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T11:09:00.718851+00:00",
+        "direction": "LONG",
+        "score": 3.65,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "KATUSDT_1h_LONG_2026-04-24 09:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T11:19:20.487660+00:00",
+        "direction": "LONG",
+        "score": 3.65,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "KATUSDT_1h_LONG_2026-04-24 09:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T11:24:30.303127+00:00",
+        "direction": "LONG",
+        "score": 3.65,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "KATUSDT_1h_LONG_2026-04-24 09:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T11:34:51.793881+00:00",
+        "direction": "LONG",
+        "score": 3.65,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "KATUSDT_1h_LONG_2026-04-24 09:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T11:40:01.011929+00:00",
+        "direction": "LONG",
+        "score": 3.65,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "KATUSDT_1h_LONG_2026-04-24 09:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T11:50:19.942566+00:00",
+        "direction": "LONG",
+        "score": 3.65,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "KATUSDT_1h_LONG_2026-04-24 09:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T11:55:29.422521+00:00",
+        "direction": "LONG",
+        "score": 3.65,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      }
+    ],
+    "TAOUSDT": [
+      {
+        "signal_id": "TAOUSDT_1h_SHORT_2026-04-24 09:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T11:03:49.649485+00:00",
+        "direction": "SHORT",
         "score": 4.4,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      }
+    ],
+    "LABUSDT": [
+      {
+        "signal_id": "LABUSDT_1h_LONG_2026-04-24 09:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T11:03:49.882487+00:00",
+        "direction": "LONG",
+        "score": 3.25,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "LABUSDT_1h_LONG_2026-04-24 09:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T11:09:00.949971+00:00",
+        "direction": "LONG",
+        "score": 3.25,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "LABUSDT_1h_LONG_2026-04-24 09:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T11:19:20.718661+00:00",
+        "direction": "LONG",
+        "score": 3.25,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "LABUSDT_1h_LONG_2026-04-24 09:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T11:24:30.533128+00:00",
+        "direction": "LONG",
+        "score": 3.25,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "LABUSDT_1h_LONG_2026-04-24 09:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T11:34:52.023929+00:00",
+        "direction": "LONG",
+        "score": 3.25,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "LABUSDT_1h_LONG_2026-04-24 09:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T11:40:01.241943+00:00",
+        "direction": "LONG",
+        "score": 3.25,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "LABUSDT_1h_LONG_2026-04-24 09:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T11:50:20.178568+00:00",
+        "direction": "LONG",
+        "score": 3.25,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "LABUSDT_1h_LONG_2026-04-24 09:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T11:55:29.657523+00:00",
+        "direction": "LONG",
+        "score": 3.25,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      }
+    ],
+    "XRPUSDT": [
+      {
+        "signal_id": "XRPUSDT_1h_LONG_2026-04-24 10:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T12:00:40.009051+00:00",
+        "direction": "LONG",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "XRPUSDT_1h_LONG_2026-04-24 10:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T12:05:55.059166+00:00",
+        "direction": "LONG",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "XRPUSDT_1h_LONG_2026-04-24 10:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T12:16:19.157470+00:00",
+        "direction": "LONG",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "XRPUSDT_1h_LONG_2026-04-24 10:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T12:21:32.192045+00:00",
+        "direction": "LONG",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "XRPUSDT_1h_LONG_2026-04-24 10:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T12:31:55.968412+00:00",
+        "direction": "LONG",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "XRPUSDT_1h_LONG_2026-04-24 10:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T12:37:06.995411+00:00",
+        "direction": "LONG",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "XRPUSDT_1h_LONG_2026-04-24 10:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T12:47:32.039457+00:00",
+        "direction": "LONG",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "XRPUSDT_1h_LONG_2026-04-24 10:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T12:52:45.224922+00:00",
+        "direction": "LONG",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "XRPUSDT_1h_LONG_2026-04-24 11:00:00+00:00",
+        "status": "UPGRADE",
+        "timestamp": "2026-04-24T13:03:15.011274+00:00",
+        "direction": "LONG",
+        "score": 4.65,
         "reason": "SCORE_IMPROVEMENT_OVERRIDE"
       }
     ],
-    "WLDUSDT": [
+    "ADAUSDT": [
       {
-        "signal_id": "WLDUSDT_1h_SHORT_2026-04-22 15:00:00+00:00",
+        "signal_id": "ADAUSDT_1h_LONG_2026-04-24 10:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-22T17:03:48.911995+00:00",
-        "direction": "SHORT",
-        "score": 3.25,
-        "reason": "NO_ACTIVE_DUPLICATE"
-      },
-      {
-        "signal_id": "WLDUSDT_1h_SHORT_2026-04-22 15:00:00+00:00",
-        "status": "ALLOW",
-        "timestamp": "2026-04-22T17:09:01.984391+00:00",
-        "direction": "SHORT",
-        "score": 3.25,
-        "reason": "NO_ACTIVE_DUPLICATE"
-      },
-      {
-        "signal_id": "WLDUSDT_1h_SHORT_2026-04-22 15:00:00+00:00",
-        "status": "ALLOW",
-        "timestamp": "2026-04-22T17:19:32.185436+00:00",
-        "direction": "SHORT",
-        "score": 3.25,
-        "reason": "NO_ACTIVE_DUPLICATE"
-      },
-      {
-        "signal_id": "WLDUSDT_1h_SHORT_2026-04-22 15:00:00+00:00",
-        "status": "ALLOW",
-        "timestamp": "2026-04-22T17:24:46.559678+00:00",
-        "direction": "SHORT",
-        "score": 3.25,
-        "reason": "NO_ACTIVE_DUPLICATE"
-      },
-      {
-        "signal_id": "WLDUSDT_1h_SHORT_2026-04-22 15:00:00+00:00",
-        "status": "ALLOW",
-        "timestamp": "2026-04-22T17:35:13.662782+00:00",
-        "direction": "SHORT",
-        "score": 3.25,
-        "reason": "NO_ACTIVE_DUPLICATE"
-      },
-      {
-        "signal_id": "WLDUSDT_1h_SHORT_2026-04-22 15:00:00+00:00",
-        "status": "ALLOW",
-        "timestamp": "2026-04-22T17:40:28.079995+00:00",
-        "direction": "SHORT",
-        "score": 3.25,
-        "reason": "NO_ACTIVE_DUPLICATE"
-      },
-      {
-        "signal_id": "WLDUSDT_1h_SHORT_2026-04-22 15:00:00+00:00",
-        "status": "ALLOW",
-        "timestamp": "2026-04-22T17:50:56.594332+00:00",
-        "direction": "SHORT",
-        "score": 3.25,
-        "reason": "NO_ACTIVE_DUPLICATE"
-      },
-      {
-        "signal_id": "WLDUSDT_1h_SHORT_2026-04-22 15:00:00+00:00",
-        "status": "ALLOW",
-        "timestamp": "2026-04-22T17:56:13.925990+00:00",
-        "direction": "SHORT",
-        "score": 3.25,
+        "timestamp": "2026-04-24T12:00:42.189111+00:00",
+        "direction": "LONG",
+        "score": 3.9,
         "reason": "NO_ACTIVE_DUPLICATE"
       }
     ],
-    "AAVEUSDT": [
+    "STABLEUSDT": [
       {
-        "signal_id": "AAVEUSDT_1h_SHORT_2026-04-22 14:00:00+00:00",
+        "signal_id": "STABLEUSDT_1h_LONG_2026-04-24 10:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-22T16:53:22.060946+00:00",
-        "direction": "SHORT",
-        "score": 3.25,
-        "reason": "NO_ACTIVE_DUPLICATE"
-      },
-      {
-        "signal_id": "AAVEUSDT_1h_SHORT_2026-04-22 14:00:00+00:00",
-        "status": "ALLOW",
-        "timestamp": "2026-04-22T16:58:36.686938+00:00",
-        "direction": "SHORT",
-        "score": 3.25,
-        "reason": "NO_ACTIVE_DUPLICATE"
-      }
-    ],
-    "BSBUSDT": [
-      {
-        "signal_id": "BSBUSDT_1h_LONG_2026-04-22 14:00:00+00:00",
-        "status": "ALLOW",
-        "timestamp": "2026-04-22T16:53:22.282947+00:00",
+        "timestamp": "2026-04-24T12:00:42.425447+00:00",
         "direction": "LONG",
         "score": 3.0,
         "reason": "NO_ACTIVE_DUPLICATE"
       },
       {
-        "signal_id": "BSBUSDT_1h_LONG_2026-04-22 14:00:00+00:00",
+        "signal_id": "STABLEUSDT_1h_LONG_2026-04-24 10:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-22T16:58:36.907939+00:00",
+        "timestamp": "2026-04-24T12:05:55.295874+00:00",
+        "direction": "LONG",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "STABLEUSDT_1h_LONG_2026-04-24 10:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T12:16:19.400606+00:00",
+        "direction": "LONG",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "STABLEUSDT_1h_LONG_2026-04-24 10:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T12:21:32.431112+00:00",
+        "direction": "LONG",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "STABLEUSDT_1h_LONG_2026-04-24 10:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T12:31:56.209917+00:00",
+        "direction": "LONG",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "STABLEUSDT_1h_LONG_2026-04-24 10:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T12:37:07.239179+00:00",
+        "direction": "LONG",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "STABLEUSDT_1h_LONG_2026-04-24 10:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T12:47:32.278574+00:00",
+        "direction": "LONG",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "STABLEUSDT_1h_LONG_2026-04-24 10:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T12:52:45.461786+00:00",
         "direction": "LONG",
         "score": 3.0,
         "reason": "NO_ACTIVE_DUPLICATE"
       }
     ],
-    "SEIUSDT": [
+    "ORDIUSDT": [
       {
-        "signal_id": "SEIUSDT_1h_LONG_2026-04-22 14:00:00+00:00",
+        "signal_id": "ORDIUSDT_1h_SHORT_2026-04-24 10:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-22T16:53:24.455958+00:00",
-        "direction": "LONG",
-        "score": 3.4,
-        "reason": "NO_ACTIVE_DUPLICATE"
-      },
-      {
-        "signal_id": "SEIUSDT_1h_LONG_2026-04-22 14:00:00+00:00",
-        "status": "ALLOW",
-        "timestamp": "2026-04-22T16:58:37.129938+00:00",
-        "direction": "LONG",
-        "score": 3.4,
-        "reason": "NO_ACTIVE_DUPLICATE"
-      },
-      {
-        "signal_id": "SEIUSDT_1h_LONG_2026-04-22 15:00:00+00:00",
-        "status": "ALLOW",
-        "timestamp": "2026-04-22T17:09:01.550391+00:00",
-        "direction": "LONG",
-        "score": 3.4,
-        "reason": "NO_ACTIVE_DUPLICATE"
-      },
-      {
-        "signal_id": "SEIUSDT_1h_LONG_2026-04-22 15:00:00+00:00",
-        "status": "ALLOW",
-        "timestamp": "2026-04-22T17:14:16.133262+00:00",
-        "direction": "LONG",
-        "score": 3.4,
-        "reason": "NO_ACTIVE_DUPLICATE"
-      },
-      {
-        "signal_id": "SEIUSDT_1h_LONG_2026-04-22 15:00:00+00:00",
-        "status": "ALLOW",
-        "timestamp": "2026-04-22T17:24:46.133681+00:00",
-        "direction": "LONG",
-        "score": 3.4,
-        "reason": "NO_ACTIVE_DUPLICATE"
-      },
-      {
-        "signal_id": "SEIUSDT_1h_LONG_2026-04-22 15:00:00+00:00",
-        "status": "ALLOW",
-        "timestamp": "2026-04-22T17:29:59.415477+00:00",
-        "direction": "LONG",
-        "score": 3.4,
-        "reason": "NO_ACTIVE_DUPLICATE"
-      },
-      {
-        "signal_id": "SEIUSDT_1h_LONG_2026-04-22 15:00:00+00:00",
-        "status": "ALLOW",
-        "timestamp": "2026-04-22T17:40:27.861996+00:00",
-        "direction": "LONG",
-        "score": 3.4,
-        "reason": "NO_ACTIVE_DUPLICATE"
-      },
-      {
-        "signal_id": "SEIUSDT_1h_LONG_2026-04-22 15:00:00+00:00",
-        "status": "ALLOW",
-        "timestamp": "2026-04-22T17:45:41.043983+00:00",
-        "direction": "LONG",
-        "score": 3.4,
-        "reason": "NO_ACTIVE_DUPLICATE"
-      },
-      {
-        "signal_id": "SEIUSDT_1h_LONG_2026-04-22 15:00:00+00:00",
-        "status": "ALLOW",
-        "timestamp": "2026-04-22T17:56:13.711775+00:00",
-        "direction": "LONG",
-        "score": 3.4,
-        "reason": "NO_ACTIVE_DUPLICATE"
-      }
-    ],
-    "STRKUSDT": [
-      {
-        "signal_id": "STRKUSDT_1h_LONG_2026-04-22 15:00:00+00:00",
-        "status": "ALLOW",
-        "timestamp": "2026-04-22T17:03:48.681000+00:00",
-        "direction": "LONG",
-        "score": 3.4,
-        "reason": "NO_ACTIVE_DUPLICATE"
-      },
-      {
-        "signal_id": "STRKUSDT_1h_LONG_2026-04-22 15:00:00+00:00",
-        "status": "ALLOW",
-        "timestamp": "2026-04-22T17:09:01.771393+00:00",
-        "direction": "LONG",
-        "score": 3.4,
-        "reason": "NO_ACTIVE_DUPLICATE"
-      },
-      {
-        "signal_id": "STRKUSDT_1h_LONG_2026-04-22 15:00:00+00:00",
-        "status": "ALLOW",
-        "timestamp": "2026-04-22T17:19:31.964363+00:00",
-        "direction": "LONG",
-        "score": 3.4,
-        "reason": "NO_ACTIVE_DUPLICATE"
-      },
-      {
-        "signal_id": "STRKUSDT_1h_LONG_2026-04-22 15:00:00+00:00",
-        "status": "ALLOW",
-        "timestamp": "2026-04-22T17:24:46.344677+00:00",
-        "direction": "LONG",
-        "score": 3.4,
-        "reason": "NO_ACTIVE_DUPLICATE"
-      },
-      {
-        "signal_id": "STRKUSDT_1h_LONG_2026-04-22 15:00:00+00:00",
-        "status": "ALLOW",
-        "timestamp": "2026-04-22T17:35:13.445538+00:00",
-        "direction": "LONG",
-        "score": 3.4,
-        "reason": "NO_ACTIVE_DUPLICATE"
-      },
-      {
-        "signal_id": "STRKUSDT_1h_LONG_2026-04-22 15:00:00+00:00",
-        "status": "ALLOW",
-        "timestamp": "2026-04-22T17:40:27.646919+00:00",
-        "direction": "LONG",
-        "score": 3.4,
-        "reason": "NO_ACTIVE_DUPLICATE"
-      },
-      {
-        "signal_id": "STRKUSDT_1h_LONG_2026-04-22 15:00:00+00:00",
-        "status": "ALLOW",
-        "timestamp": "2026-04-22T17:50:56.372103+00:00",
-        "direction": "LONG",
-        "score": 3.4,
-        "reason": "NO_ACTIVE_DUPLICATE"
-      },
-      {
-        "signal_id": "STRKUSDT_1h_LONG_2026-04-22 15:00:00+00:00",
-        "status": "ALLOW",
-        "timestamp": "2026-04-22T17:56:13.491776+00:00",
-        "direction": "LONG",
-        "score": 3.4,
-        "reason": "NO_ACTIVE_DUPLICATE"
-      }
-    ],
-    "VIRTUALUSDT": [
-      {
-        "signal_id": "VIRTUALUSDT_1h_SHORT_2026-04-22 15:00:00+00:00",
-        "status": "ALLOW",
-        "timestamp": "2026-04-22T17:03:49.132996+00:00",
+        "timestamp": "2026-04-24T12:00:42.661446+00:00",
         "direction": "SHORT",
-        "score": 3.0,
+        "score": 3.25,
         "reason": "NO_ACTIVE_DUPLICATE"
       },
       {
-        "signal_id": "VIRTUALUSDT_1h_SHORT_2026-04-22 15:00:00+00:00",
+        "signal_id": "ORDIUSDT_1h_SHORT_2026-04-24 10:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-22T17:09:02.199391+00:00",
+        "timestamp": "2026-04-24T12:05:55.525879+00:00",
         "direction": "SHORT",
-        "score": 3.0,
+        "score": 3.25,
         "reason": "NO_ACTIVE_DUPLICATE"
       },
       {
-        "signal_id": "VIRTUALUSDT_1h_SHORT_2026-04-22 15:00:00+00:00",
+        "signal_id": "ORDIUSDT_1h_SHORT_2026-04-24 10:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-22T17:19:32.615436+00:00",
+        "timestamp": "2026-04-24T12:16:19.639543+00:00",
         "direction": "SHORT",
-        "score": 3.0,
+        "score": 3.25,
         "reason": "NO_ACTIVE_DUPLICATE"
       },
       {
-        "signal_id": "VIRTUALUSDT_1h_SHORT_2026-04-22 15:00:00+00:00",
+        "signal_id": "ORDIUSDT_1h_SHORT_2026-04-24 10:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-22T17:24:46.772677+00:00",
+        "timestamp": "2026-04-24T12:21:32.659968+00:00",
         "direction": "SHORT",
-        "score": 3.0,
+        "score": 3.25,
         "reason": "NO_ACTIVE_DUPLICATE"
       },
       {
-        "signal_id": "VIRTUALUSDT_1h_SHORT_2026-04-22 15:00:00+00:00",
+        "signal_id": "ORDIUSDT_1h_SHORT_2026-04-24 10:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-22T17:35:14.096325+00:00",
+        "timestamp": "2026-04-24T12:31:56.441150+00:00",
         "direction": "SHORT",
-        "score": 3.0,
+        "score": 3.25,
         "reason": "NO_ACTIVE_DUPLICATE"
       },
       {
-        "signal_id": "VIRTUALUSDT_1h_SHORT_2026-04-22 15:00:00+00:00",
+        "signal_id": "ORDIUSDT_1h_SHORT_2026-04-24 10:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-22T17:40:28.300994+00:00",
+        "timestamp": "2026-04-24T12:37:07.484397+00:00",
         "direction": "SHORT",
-        "score": 3.0,
+        "score": 3.25,
         "reason": "NO_ACTIVE_DUPLICATE"
       },
       {
-        "signal_id": "VIRTUALUSDT_1h_SHORT_2026-04-22 15:00:00+00:00",
+        "signal_id": "ORDIUSDT_1h_SHORT_2026-04-24 10:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-22T17:50:57.029331+00:00",
+        "timestamp": "2026-04-24T12:47:32.507557+00:00",
         "direction": "SHORT",
-        "score": 3.0,
+        "score": 3.25,
         "reason": "NO_ACTIVE_DUPLICATE"
       },
       {
-        "signal_id": "VIRTUALUSDT_1h_SHORT_2026-04-22 15:00:00+00:00",
+        "signal_id": "ORDIUSDT_1h_SHORT_2026-04-24 10:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-22T17:56:14.146153+00:00",
+        "timestamp": "2026-04-24T12:52:45.689514+00:00",
         "direction": "SHORT",
-        "score": 3.0,
-        "reason": "NO_ACTIVE_DUPLICATE"
-      }
-    ],
-    "HUSDT": [
-      {
-        "signal_id": "HUSDT_1h_LONG_2026-04-22 15:00:00+00:00",
-        "status": "ALLOW",
-        "timestamp": "2026-04-22T17:14:16.355653+00:00",
-        "direction": "LONG",
-        "score": 3.0,
-        "reason": "NO_ACTIVE_DUPLICATE"
-      },
-      {
-        "signal_id": "HUSDT_1h_LONG_2026-04-22 15:00:00+00:00",
-        "status": "ALLOW",
-        "timestamp": "2026-04-22T17:19:32.399436+00:00",
-        "direction": "LONG",
-        "score": 3.0,
-        "reason": "NO_ACTIVE_DUPLICATE"
-      },
-      {
-        "signal_id": "HUSDT_1h_LONG_2026-04-22 15:00:00+00:00",
-        "status": "ALLOW",
-        "timestamp": "2026-04-22T17:29:59.636477+00:00",
-        "direction": "LONG",
-        "score": 3.0,
-        "reason": "NO_ACTIVE_DUPLICATE"
-      },
-      {
-        "signal_id": "HUSDT_1h_LONG_2026-04-22 15:00:00+00:00",
-        "status": "ALLOW",
-        "timestamp": "2026-04-22T17:35:13.879786+00:00",
-        "direction": "LONG",
-        "score": 3.0,
-        "reason": "NO_ACTIVE_DUPLICATE"
-      },
-      {
-        "signal_id": "HUSDT_1h_LONG_2026-04-22 15:00:00+00:00",
-        "status": "ALLOW",
-        "timestamp": "2026-04-22T17:45:41.260984+00:00",
-        "direction": "LONG",
-        "score": 3.0,
-        "reason": "NO_ACTIVE_DUPLICATE"
-      },
-      {
-        "signal_id": "HUSDT_1h_LONG_2026-04-22 15:00:00+00:00",
-        "status": "ALLOW",
-        "timestamp": "2026-04-22T17:50:56.814329+00:00",
-        "direction": "LONG",
-        "score": 3.0,
+        "score": 3.25,
         "reason": "NO_ACTIVE_DUPLICATE"
       }
     ],
     "ARBUSDT": [
       {
-        "signal_id": "ARBUSDT_1h_LONG_2026-04-22 16:00:00+00:00",
+        "signal_id": "ARBUSDT_1h_LONG_2026-04-24 10:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-22T18:01:29.906263+00:00",
+        "timestamp": "2026-04-24T12:00:44.833027+00:00",
         "direction": "LONG",
-        "score": 4.65,
+        "score": 3.9,
         "reason": "NO_ACTIVE_DUPLICATE"
       }
     ],
-    "METUSDT": [
+    "MUSDT": [
       {
-        "signal_id": "METUSDT_1h_LONG_2026-04-22 17:00:00+00:00",
+        "signal_id": "MUSDT_1h_LONG_2026-04-24 10:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-22T19:04:25.232029+00:00",
+        "timestamp": "2026-04-24T12:16:19.872431+00:00",
         "direction": "LONG",
-        "score": 3.0,
+        "score": 3.65,
         "reason": "NO_ACTIVE_DUPLICATE"
       },
       {
-        "signal_id": "METUSDT_1h_LONG_2026-04-22 17:00:00+00:00",
+        "signal_id": "MUSDT_1h_LONG_2026-04-24 10:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-22T19:09:38.240261+00:00",
+        "timestamp": "2026-04-24T12:21:32.905708+00:00",
         "direction": "LONG",
-        "score": 3.0,
+        "score": 3.65,
         "reason": "NO_ACTIVE_DUPLICATE"
       },
       {
-        "signal_id": "METUSDT_1h_LONG_2026-04-22 17:00:00+00:00",
+        "signal_id": "MUSDT_1h_LONG_2026-04-24 10:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-22T19:20:09.225356+00:00",
+        "timestamp": "2026-04-24T12:37:07.714416+00:00",
         "direction": "LONG",
-        "score": 3.0,
+        "score": 3.65,
         "reason": "NO_ACTIVE_DUPLICATE"
       },
       {
-        "signal_id": "METUSDT_1h_LONG_2026-04-22 17:00:00+00:00",
+        "signal_id": "MUSDT_1h_LONG_2026-04-24 10:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-22T19:25:27.430292+00:00",
+        "timestamp": "2026-04-24T12:52:45.930859+00:00",
         "direction": "LONG",
-        "score": 3.0,
+        "score": 3.65,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "MUSDT_1h_LONG_2026-04-24 10:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T12:57:58.455655+00:00",
+        "direction": "LONG",
+        "score": 3.65,
         "reason": "NO_ACTIVE_DUPLICATE"
       }
     ],
-    "SUIUSDT": [
+    "1000PEPEUSDT": [
       {
-        "signal_id": "SUIUSDT_1h_LONG_2026-04-22 17:00:00+00:00",
+        "signal_id": "1000PEPEUSDT_1h_LONG_2026-04-24 11:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-22T19:04:25.461061+00:00",
+        "timestamp": "2026-04-24T13:03:15.251332+00:00",
         "direction": "LONG",
-        "score": 3.25,
+        "score": 3.15,
         "reason": "NO_ACTIVE_DUPLICATE"
       },
       {
-        "signal_id": "SUIUSDT_1h_LONG_2026-04-22 17:00:00+00:00",
+        "signal_id": "1000PEPEUSDT_1h_LONG_2026-04-24 11:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-22T19:09:38.460261+00:00",
+        "timestamp": "2026-04-24T13:08:28.747643+00:00",
         "direction": "LONG",
-        "score": 3.25,
+        "score": 3.15,
         "reason": "NO_ACTIVE_DUPLICATE"
       },
       {
-        "signal_id": "SUIUSDT_1h_LONG_2026-04-22 17:00:00+00:00",
+        "signal_id": "1000PEPEUSDT_1h_LONG_2026-04-24 11:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-22T19:20:09.443707+00:00",
+        "timestamp": "2026-04-24T13:18:54.528972+00:00",
         "direction": "LONG",
-        "score": 3.25,
+        "score": 3.15,
         "reason": "NO_ACTIVE_DUPLICATE"
       },
       {
-        "signal_id": "SUIUSDT_1h_LONG_2026-04-22 17:00:00+00:00",
+        "signal_id": "1000PEPEUSDT_1h_LONG_2026-04-24 11:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-22T19:25:27.647292+00:00",
+        "timestamp": "2026-04-24T13:24:05.247785+00:00",
         "direction": "LONG",
-        "score": 3.25,
+        "score": 3.15,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "1000PEPEUSDT_1h_LONG_2026-04-24 11:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T13:34:27.477637+00:00",
+        "direction": "LONG",
+        "score": 3.15,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "1000PEPEUSDT_1h_LONG_2026-04-24 11:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T13:39:43.336708+00:00",
+        "direction": "LONG",
+        "score": 3.15,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "1000PEPEUSDT_1h_LONG_2026-04-24 11:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T13:50:07.099934+00:00",
+        "direction": "LONG",
+        "score": 3.15,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "1000PEPEUSDT_1h_LONG_2026-04-24 11:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T13:55:18.210954+00:00",
+        "direction": "LONG",
+        "score": 3.15,
         "reason": "NO_ACTIVE_DUPLICATE"
       }
     ],
     "PENGUUSDT": [
       {
-        "signal_id": "PENGUUSDT_1h_LONG_2026-04-22 17:00:00+00:00",
+        "signal_id": "PENGUUSDT_1h_LONG_2026-04-24 11:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-22T19:04:25.689060+00:00",
+        "timestamp": "2026-04-24T13:03:15.496937+00:00",
         "direction": "LONG",
-        "score": 3.4,
+        "score": 3.15,
         "reason": "NO_ACTIVE_DUPLICATE"
       },
       {
-        "signal_id": "PENGUUSDT_1h_LONG_2026-04-22 17:00:00+00:00",
+        "signal_id": "PENGUUSDT_1h_LONG_2026-04-24 11:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-22T19:09:38.678261+00:00",
+        "timestamp": "2026-04-24T13:08:28.993395+00:00",
         "direction": "LONG",
-        "score": 3.4,
+        "score": 3.15,
         "reason": "NO_ACTIVE_DUPLICATE"
       },
       {
-        "signal_id": "PENGUUSDT_1h_LONG_2026-04-22 17:00:00+00:00",
+        "signal_id": "PENGUUSDT_1h_LONG_2026-04-24 11:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-22T19:20:09.662705+00:00",
+        "timestamp": "2026-04-24T13:18:54.757952+00:00",
         "direction": "LONG",
-        "score": 3.4,
+        "score": 3.15,
         "reason": "NO_ACTIVE_DUPLICATE"
       },
       {
-        "signal_id": "PENGUUSDT_1h_LONG_2026-04-22 17:00:00+00:00",
+        "signal_id": "PENGUUSDT_1h_LONG_2026-04-24 11:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-22T19:25:27.865353+00:00",
+        "timestamp": "2026-04-24T13:24:05.470892+00:00",
         "direction": "LONG",
-        "score": 3.4,
+        "score": 3.15,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "PENGUUSDT_1h_LONG_2026-04-24 11:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T13:34:27.719237+00:00",
+        "direction": "LONG",
+        "score": 3.15,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "PENGUUSDT_1h_LONG_2026-04-24 11:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T13:39:43.561738+00:00",
+        "direction": "LONG",
+        "score": 3.15,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "PENGUUSDT_1h_LONG_2026-04-24 11:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T13:50:07.328380+00:00",
+        "direction": "LONG",
+        "score": 3.15,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "PENGUUSDT_1h_LONG_2026-04-24 11:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T13:55:18.436775+00:00",
+        "direction": "LONG",
+        "score": 3.15,
         "reason": "NO_ACTIVE_DUPLICATE"
       }
     ],
-    "AVAXUSDT": [
+    "VIRTUALUSDT": [
       {
-        "signal_id": "AVAXUSDT_1h_LONG_2026-04-22 17:00:00+00:00",
+        "signal_id": "VIRTUALUSDT_1h_LONG_2026-04-24 11:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-22T19:04:25.915060+00:00",
+        "timestamp": "2026-04-24T13:03:15.754839+00:00",
         "direction": "LONG",
-        "score": 3.0,
+        "score": 3.65,
         "reason": "NO_ACTIVE_DUPLICATE"
       },
       {
-        "signal_id": "AVAXUSDT_1h_LONG_2026-04-22 17:00:00+00:00",
+        "signal_id": "VIRTUALUSDT_1h_LONG_2026-04-24 11:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-22T19:09:38.893263+00:00",
+        "timestamp": "2026-04-24T13:08:31.449254+00:00",
         "direction": "LONG",
-        "score": 3.0,
+        "score": 3.65,
         "reason": "NO_ACTIVE_DUPLICATE"
       },
       {
-        "signal_id": "AVAXUSDT_1h_LONG_2026-04-22 17:00:00+00:00",
+        "signal_id": "VIRTUALUSDT_1h_LONG_2026-04-24 11:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-22T19:20:09.881469+00:00",
+        "timestamp": "2026-04-24T13:18:54.999886+00:00",
         "direction": "LONG",
-        "score": 3.0,
+        "score": 3.65,
         "reason": "NO_ACTIVE_DUPLICATE"
       },
       {
-        "signal_id": "AVAXUSDT_1h_LONG_2026-04-22 17:00:00+00:00",
+        "signal_id": "VIRTUALUSDT_1h_LONG_2026-04-24 11:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-22T19:25:28.398397+00:00",
+        "timestamp": "2026-04-24T13:24:05.713831+00:00",
         "direction": "LONG",
-        "score": 3.0,
-        "reason": "NO_ACTIVE_DUPLICATE"
-      }
-    ],
-    "1000BONKUSDT": [
-      {
-        "signal_id": "1000BONKUSDT_1h_LONG_2026-04-22 17:00:00+00:00",
-        "status": "ALLOW",
-        "timestamp": "2026-04-22T19:04:26.141060+00:00",
-        "direction": "LONG",
-        "score": 3.4,
+        "score": 3.65,
         "reason": "NO_ACTIVE_DUPLICATE"
       },
       {
-        "signal_id": "1000BONKUSDT_1h_LONG_2026-04-22 17:00:00+00:00",
+        "signal_id": "VIRTUALUSDT_1h_LONG_2026-04-24 11:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-22T19:09:39.114476+00:00",
+        "timestamp": "2026-04-24T13:34:27.950936+00:00",
         "direction": "LONG",
-        "score": 3.4,
+        "score": 3.65,
         "reason": "NO_ACTIVE_DUPLICATE"
       },
       {
-        "signal_id": "1000BONKUSDT_1h_LONG_2026-04-22 17:00:00+00:00",
+        "signal_id": "VIRTUALUSDT_1h_LONG_2026-04-24 11:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-22T19:20:10.097468+00:00",
+        "timestamp": "2026-04-24T13:39:43.791416+00:00",
         "direction": "LONG",
-        "score": 3.4,
+        "score": 3.65,
         "reason": "NO_ACTIVE_DUPLICATE"
       },
       {
-        "signal_id": "1000BONKUSDT_1h_LONG_2026-04-22 17:00:00+00:00",
+        "signal_id": "VIRTUALUSDT_1h_LONG_2026-04-24 11:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-22T19:25:28.615628+00:00",
+        "timestamp": "2026-04-24T13:50:07.574896+00:00",
         "direction": "LONG",
-        "score": 3.4,
+        "score": 3.65,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "VIRTUALUSDT_1h_LONG_2026-04-24 11:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T13:55:18.669103+00:00",
+        "direction": "LONG",
+        "score": 3.65,
         "reason": "NO_ACTIVE_DUPLICATE"
       }
     ],
     "LINKUSDT": [
       {
-        "signal_id": "LINKUSDT_1h_LONG_2026-04-22 17:00:00+00:00",
+        "signal_id": "LINKUSDT_1h_LONG_2026-04-24 11:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-22T19:14:54.855202+00:00",
+        "timestamp": "2026-04-24T13:08:31.199687+00:00",
         "direction": "LONG",
-        "score": 3.0,
+        "score": 4.15,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      }
+    ],
+    "CLUSDT": [
+      {
+        "signal_id": "CLUSDT_1h_LONG_2026-04-24 12:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T14:00:27.490343+00:00",
+        "direction": "LONG",
+        "score": 3.25,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "CLUSDT_1h_LONG_2026-04-24 12:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T14:05:36.721284+00:00",
+        "direction": "LONG",
+        "score": 3.25,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "CLUSDT_1h_LONG_2026-04-24 12:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T14:15:54.482504+00:00",
+        "direction": "LONG",
+        "score": 3.25,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "CLUSDT_1h_LONG_2026-04-24 12:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T14:21:04.602528+00:00",
+        "direction": "LONG",
+        "score": 3.25,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "CLUSDT_1h_LONG_2026-04-24 12:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-24T14:31:20.137650+00:00",
+        "direction": "LONG",
+        "score": 3.25,
         "reason": "NO_ACTIVE_DUPLICATE"
       }
     ]
