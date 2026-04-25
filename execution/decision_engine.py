@@ -63,11 +63,6 @@ class ExecutionDecisionEngine:
         if snapshot.open_positions_count >= max_open:
             return self._decision(DecisionAction.EMERGENCY_REJECT, "PORTFOLIO_OVERLOAD", 0.0, side, symbol, {"snapshot": snapshot.__dict__})
 
-        # Priority 2: reject (score/risk policy)
-        min_score = self._resolve_min_score(signal)
-        if score < min_score:
-            return self._decision(DecisionAction.REJECT, "SCORE_BELOW_THRESHOLD", 0.0, side, symbol, {"score": score, "min_score": min_score})
-
         base_risk = self._resolve_base_risk(signal)
         score_mult = self._score_multiplier(score)
         balance = max(0.0, self._safe_float(market_data.get("available_balance"), self.bybit.get_balance("USDT")))
@@ -246,17 +241,6 @@ class ExecutionDecisionEngine:
         snap = PortfolioSnapshot(total_exposure, symbol_exposure, margin_used, len(positions))
         self._portfolio_snapshot = snap
         return snap
-
-    @staticmethod
-    def _resolve_min_score(signal: dict[str, Any]) -> float:
-        explicit = ExecutionDecisionEngine._safe_float(signal.get("min_score_threshold"), -1.0)
-        if explicit > 0:
-            return explicit
-        explicit = ExecutionDecisionEngine._safe_float(signal.get("score_threshold"), -1.0)
-        if explicit > 0:
-            return explicit
-        mode = str(signal.get("live_mode") or signal.get("mode") or "MAIN").upper()
-        return float(getattr(config, f"MIN_SCORE_THRESHOLD_{mode}", getattr(config, "MIN_SCORE_THRESHOLD_MAIN", 3.0)))
 
     @staticmethod
     def _resolve_base_risk(signal: dict[str, Any]) -> float:

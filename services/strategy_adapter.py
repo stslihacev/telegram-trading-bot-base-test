@@ -29,6 +29,7 @@ class BacktestStrategyAdapter:
     _config_validated = False
     _hard_filters = ("TREND", "STRUCTURE")
     _soft_filters = ("RSI", "MACD", "VOLUME", "ADX")
+    _telemetry_only_filters = ("DI", "PROBABILITY_GATE", "VOLUME_DUPLICATE")
     _weak_position_size_factor = 0.5
     _rr_target = 2.0
     _rr_floor = 1.5
@@ -373,6 +374,19 @@ class BacktestStrategyAdapter:
             "entry_source": "strict",
             "entry_type": entry_type,
             "position_size_factor": self._weak_position_size_factor,
+            "hard_pass": True,
+            "failed_a_filters": [],
+            "soft_b_contributions": {},
+            "signal_quality": {
+                "validity": "B" if float(score) >= float(self._get_adaptive_score_threshold(runtime, "weak")) else "C",
+                "hard_pass": True,
+                "score": float(score),
+                "adjusted_score": float(score),
+                "execution_score": float(score),
+                "failed_a_filters": [],
+                "soft_b_contributions": {},
+                "metadata": {"source": "weak_strict_fallback"},
+            },
         }
 
     @staticmethod
@@ -384,6 +398,44 @@ class BacktestStrategyAdapter:
         if np.isnan(casted) or np.isinf(casted):
             return fallback
         return casted
+
+    @classmethod
+    def _build_signal_quality(
+        cls,
+        *,
+        score: float,
+        adaptive_score_threshold: float,
+        hard_failed: list[str],
+        filter_checks: dict[str, bool],
+        score_breakdown: dict[str, float],
+    ) -> dict[str, object]:
+        hard_pass = len(hard_failed) == 0
+        if not hard_pass:
+            validity = "A"
+        elif score >= adaptive_score_threshold:
+            validity = "B"
+        else:
+            validity = "C"
+        return {
+            "validity": validity,
+            "hard_pass": hard_pass,
+            "score": float(score),
+            "adjusted_score": float(score),
+            "execution_score": float(score),
+            "failed_a_filters": list(hard_failed),
+            "soft_b_contributions": {
+                "RSI": float(score_breakdown.get("rsi_score", 0.0)),
+                "MACD": float(score_breakdown.get("macd_score", 0.0)),
+                "ADX": float(score_breakdown.get("adx_score", 0.0)),
+                "VOLUME": float(score_breakdown.get("volume_score", 0.0)),
+            },
+            "metadata": {
+                "a_tier_filters": list(cls._hard_filters),
+                "b_tier_filters": list(cls._soft_filters),
+                "c_tier_filters": list(cls._telemetry_only_filters),
+                "all_filter_checks": {k: bool(v) for k, v in filter_checks.items()},
+            },
+        }
 
     @classmethod
     def _validate_config_once(cls, runtime: dict) -> None:
@@ -885,6 +937,29 @@ class BacktestStrategyAdapter:
             "signal_only": True,
             "entry_source": "relaxed",
             "entry_type": "micro_pullback" if runtime.get("is_scalping") else "continuation",
+            "hard_pass": bool(required_ok),
+            "failed_a_filters": [] if required_ok else ["TREND"],
+            "soft_b_contributions": {
+                "RSI": float(optional_checks["rsi"]),
+                "MACD": float(optional_checks["macd"]),
+                "ADX": float(optional_checks["adx"]),
+                "VOLUME": float(optional_checks["volume_threshold"]),
+            },
+            "signal_quality": {
+                "validity": "B" if total_score >= score_threshold and required_ok else ("A" if not required_ok else "C"),
+                "hard_pass": bool(required_ok),
+                "score": float(total_score),
+                "adjusted_score": float(total_score),
+                "execution_score": float(total_score),
+                "failed_a_filters": [] if required_ok else ["TREND"],
+                "soft_b_contributions": {
+                    "RSI": float(optional_checks["rsi"]),
+                    "MACD": float(optional_checks["macd"]),
+                    "ADX": float(optional_checks["adx"]),
+                    "VOLUME": float(optional_checks["volume_threshold"]),
+                },
+                "metadata": {"source": "relaxed"},
+            },
         }
 
     def _ensure_diagnostics_not_empty(self, symbol: str) -> None:
@@ -949,14 +1024,6 @@ class BacktestStrategyAdapter:
             with self._apply_runtime_overrides(runtime):
                 df = self._prepare_frame(candles, runtime)
                 filter_checks, filter_metrics = self._build_filter_diagnostics(symbol, df)
-                score_breakdown, _min_required_score = self._log_score_breakdown(
-                    symbol,
-                    filter_checks,
-                    runtime,
-                    metrics=filter_metrics,
-                )
-                total_score = float(score_breakdown.get("total_score", 0.0))
-                weighted_filters = self._compute_weighted_filters(score_breakdown)
                 structure_state = str(filter_metrics.get("structure_state", "invalid"))
                 adaptive_score_threshold = self._get_adaptive_score_threshold(runtime, structure_state)
                 if runtime.get("is_scalping"):
@@ -995,30 +1062,12 @@ class BacktestStrategyAdapter:
                         soft_failed.remove("RSI")
                 if structure_state == "weak" and "STRUCTURE" not in soft_failed:
                     soft_failed.append("STRUCTURE")
-                if hard_failed or soft_failed:
-                    logger.info(
-                        "FILTER_REJECTION: symbol=%s hard_failed=%s soft_failed=%s",
-                        symbol,
-                        hard_failed,
-                        soft_failed,
-                    )
                 if hard_failed:
                     self._emit_filter_value_snapshot(symbol=symbol, filter_metrics=filter_metrics, filter_checks=filter_checks, force=True)
-                    if runtime.get("is_scalping"):
-                        logger.info(
-                            "SCALPING_DEBUG: symbol=%s entry_type=%s score=%.2f threshold_used=%.2f rejection_reason=%s",
-                            symbol,
-                            "continuation",
-                            total_score,
-                            adaptive_score_threshold,
-                            f"required filters failed: {hard_failed}",
-                        )
                     self.last_signal_diagnostics = {
                         "mode": runtime["mode"],
-                        "score": float(score_breakdown.get("total_score", 0.0)),
-                        "passed_filters": [
-                            name for name, ok in filter_checks.items() if ok and name not in hard_failed and name not in soft_failed
-                        ],
+                        "score": 0.0,
+                        "passed_filters": [name for name, ok in filter_checks.items() if ok and name not in hard_failed],
                         "failed_filters": hard_failed,
                         "rejection_reason": "hard filters failed",
                         "potential_signal": False,
@@ -1026,28 +1075,21 @@ class BacktestStrategyAdapter:
                     }
                     self._log_execution_trace(symbol, strict_result=False, fallback_executed=False)
                     return None
-                if config.ENABLE_SIGNAL_SCORING and total_score < adaptive_score_threshold:
-                    self._emit_filter_value_snapshot(symbol=symbol, filter_metrics=filter_metrics, filter_checks=filter_checks, force=True)
-                    if runtime.get("is_scalping"):
-                        logger.info(
-                            "SCALPING_DEBUG: symbol=%s entry_type=%s score=%.2f threshold_used=%.2f rejection_reason=%s",
-                            symbol,
-                            "continuation",
-                            total_score,
-                            adaptive_score_threshold,
-                            f"score below threshold ({total_score:.2f})",
-                        )
-                    self.last_signal_diagnostics = {
-                        "mode": runtime["mode"],
-                        "score": total_score,
-                        "passed_filters": [name for name, ok in filter_checks.items() if ok and name not in soft_failed],
-                        "failed_filters": ["SCORING"],
-                        "rejection_reason": f"score below adaptive threshold ({total_score:.2f} < {adaptive_score_threshold:.2f})",
-                        "potential_signal": True,
-                        "strict_signal": False,
-                    }
-                    self._log_execution_trace(symbol, strict_result=False, fallback_executed=False)
-                    return None
+                score_breakdown, _min_required_score = self._log_score_breakdown(
+                    symbol,
+                    filter_checks,
+                    runtime,
+                    metrics=filter_metrics,
+                )
+                total_score = float(score_breakdown.get("total_score", 0.0))
+                weighted_filters = self._compute_weighted_filters(score_breakdown)
+                if hard_failed or soft_failed:
+                    logger.info(
+                        "FILTER_REJECTION: symbol=%s hard_failed=%s soft_failed=%s",
+                        symbol,
+                        hard_failed,
+                        soft_failed,
+                    )
                 self.last_signal_diagnostics = {
                     "mode": runtime["mode"],
                     "score": total_score,
@@ -1201,17 +1243,6 @@ class BacktestStrategyAdapter:
                             "strict_signal": False,
                         }
                         strict_rejection_reason = "rr above scalping maximum"
-                    elif config.ENABLE_SIGNAL_SCORING and score < adaptive_score_threshold:
-                        self.last_signal_diagnostics = {
-                            "mode": runtime["mode"],
-                            "score": score,
-                            "passed_filters": [],
-                            "failed_filters": ["SCORING"],
-                            "rejection_reason": "score below threshold",
-                            "potential_signal": True,
-                            "strict_signal": False,
-                        }
-                        strict_rejection_reason = "score below threshold"
                     elif bool(getattr(config, "HIGH_CONF_ONLY", False)) and confidence < float(getattr(config, "HIGH_CONFIDENCE_THRESHOLD", 0.7)):
                         self.last_signal_diagnostics = {
                             "mode": runtime["mode"],
@@ -1285,6 +1316,13 @@ class BacktestStrategyAdapter:
 
                             if runtime.get("is_scalping") and str(signal_tf).lower() == "1h":
                                 signal_tf = runtime["scan_timeframe"]
+                            signal_quality = self._build_signal_quality(
+                                score=float(score),
+                                adaptive_score_threshold=float(adaptive_score_threshold),
+                                hard_failed=list(hard_failed),
+                                filter_checks=filter_checks,
+                                score_breakdown=score_breakdown,
+                            )
                             strict_payload = {
                                 "symbol": signal["symbol"],
                                 "signal_type": "strict",
@@ -1313,6 +1351,10 @@ class BacktestStrategyAdapter:
                                 "execution_timeframes": tuple(runtime["execution_timeframes"]),
                                 "entry_source": "strict",
                                 "entry_type": scalping_entry_type if runtime.get("is_scalping") else adaptive_entry_type,
+                                "hard_pass": bool(signal_quality["hard_pass"]),
+                                "failed_a_filters": list(signal_quality["failed_a_filters"]),
+                                "soft_b_contributions": dict(signal_quality["soft_b_contributions"]),
+                                "signal_quality": signal_quality,
                             }
                             self.last_signal_diagnostics = {
                                 "mode": runtime["mode"],

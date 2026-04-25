@@ -13,7 +13,7 @@ from execution.adaptive_execution import AdaptiveExecutionLayer, AdaptiveOutcome
 from execution.bybit_client import BybitExecutionClient
 from execution.compiler import ExecutionCompiler
 from execution.decision_engine import DecisionAction, ExecutionDecisionEngine
-from execution.scoring_contract import evaluate_score_alignment
+from execution.scoring_contract import build_signal_quality, resolve_signal_threshold
 from execution.safety_state import is_emergency_mode
 
 
@@ -75,24 +75,31 @@ class OrderManager:
             log_structured_event("EXECUTION_DECISION", symbol=str(signal.get("symbol") or "").upper(), signal_id=str(signal.get("signal_id") or None), context={"stage": "REJECTED", "reason": adaptive.reason, "outcome": adaptive.outcome.value})
             return OrderDecision(False, adaptive.reason, {"decision": adaptive.outcome.value, "context": adaptive.context})
 
-        score_alignment = evaluate_score_alignment(
+        signal_quality = build_signal_quality(
             signal=adaptive.adjusted_signal,
             execution_confidence=float(adaptive.context.execution_confidence),
             risk_multiplier=float(adaptive.context.risk_multiplier),
             liquidity_score=float(adaptive.microstructure.liquidity_score),
             noise_level=float(adaptive.microstructure.noise_level),
-            regime=adaptive.regime.regime.value,
+            hard_pass=bool(adaptive.adjusted_signal.get("hard_pass", True)),
+            failed_a_filters=list(adaptive.adjusted_signal.get("failed_a_filters") or []),
+            soft_b_contributions=dict(adaptive.adjusted_signal.get("soft_b_contributions") or {}),
         )
+        threshold = resolve_signal_threshold(adaptive.adjusted_signal)
+        final_score = float(signal_quality.execution_score)
+        hard_pass = bool(signal_quality.hard_pass)
+        score_result = "ALLOW" if hard_pass and final_score >= threshold else "REJECT"
+        score_reason = "A_TIER_FILTER_FAILED" if not hard_pass else ("SCORE_BELOW_THRESHOLD" if score_result == "REJECT" else "SCORE_ALIGNED")
         log_structured_event(
             "SCORE_BREAKDOWN",
             symbol=str(signal.get("symbol") or "").upper(),
             signal_id=str(signal.get("signal_id") or None),
             context={
-                "raw_score": score_alignment.raw_score,
-                "adjusted_score": score_alignment.adjusted_score,
-                "execution_score": score_alignment.final_score,
-                "threshold_used": score_alignment.threshold,
-                "rejection_reason": None if score_alignment.result == "ALLOW" else score_alignment.reason,
+                "raw_score": signal_quality.score,
+                "adjusted_score": signal_quality.adjusted_score,
+                "execution_score": signal_quality.execution_score,
+                "threshold_used": threshold,
+                "rejection_reason": None if score_result == "ALLOW" else score_reason,
             },
         )
         log_structured_event(
@@ -100,13 +107,15 @@ class OrderManager:
             symbol=str(signal.get("symbol") or "").upper(),
             signal_id=str(signal.get("signal_id") or None),
             context={
-                "raw_score": score_alignment.raw_score,
-                "adjusted_score": score_alignment.adjusted_score,
-                "final_score": score_alignment.final_score,
-                "threshold": score_alignment.threshold,
-                "decision_layer": score_alignment.decision_layer,
-                "result": score_alignment.result,
-                "reason": score_alignment.reason,
+                "raw_score": signal_quality.score,
+                "adjusted_score": signal_quality.adjusted_score,
+                "final_score": final_score,
+                "threshold": threshold,
+                "decision_layer": "order_manager_final_gate",
+                "result": score_result,
+                "reason": score_reason,
+                "validity": signal_quality.validity,
+                "hard_pass": signal_quality.hard_pass,
             },
         )
         log_structured_event(
@@ -114,30 +123,39 @@ class OrderManager:
             symbol=str(signal.get("symbol") or "").upper(),
             signal_id=str(signal.get("signal_id") or None),
             context={
-                "raw_score": score_alignment.raw_score,
-                "adjusted_score": score_alignment.adjusted_score,
-                "final_score": score_alignment.final_score,
-                "threshold": score_alignment.threshold,
-                "result": "ALLOW" if score_alignment.result == "ALLOW" else "REJECT",
-                "reason": score_alignment.reason,
+                "raw_score": signal_quality.score,
+                "adjusted_score": signal_quality.adjusted_score,
+                "final_score": final_score,
+                "threshold": threshold,
+                "result": score_result,
+                "reason": score_reason,
                 "stage": "FINAL_GATE",
             },
         )
-        if score_alignment.result == "REJECT":
+        if score_result == "REJECT":
             self.adaptive_layer.record_decision_outcome(rejected=True)
             return OrderDecision(
                 False,
-                score_alignment.reason,
+                score_reason,
                 {
                     "decision": DecisionAction.REJECT.value,
-                    "raw_score": score_alignment.raw_score,
-                    "adjusted_score": score_alignment.adjusted_score,
-                    "execution_score": score_alignment.final_score,
-                    "threshold": score_alignment.threshold,
+                    "raw_score": signal_quality.score,
+                    "adjusted_score": signal_quality.adjusted_score,
+                    "execution_score": final_score,
+                    "threshold": threshold,
                 },
             )
-        adaptive.adjusted_signal["score"] = score_alignment.final_score
-        adaptive.adjusted_signal["min_score_threshold"] = score_alignment.threshold
+        adaptive.adjusted_signal["score"] = final_score
+        adaptive.adjusted_signal["signal_quality"] = {
+            "validity": signal_quality.validity,
+            "hard_pass": signal_quality.hard_pass,
+            "score": signal_quality.score,
+            "adjusted_score": signal_quality.adjusted_score,
+            "execution_score": signal_quality.execution_score,
+            "failed_a_filters": signal_quality.failed_a_filters,
+            "soft_b_contributions": signal_quality.soft_b_contributions,
+            "metadata": signal_quality.metadata,
+        }
 
         decision = self.decision_engine.evaluate_order(adaptive.adjusted_signal, adaptive.adjusted_market_data, portfolio_state)
 
