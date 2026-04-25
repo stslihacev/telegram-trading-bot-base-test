@@ -1,6 +1,6 @@
 """Adaptive execution intelligence layer.
 
-Adds market/context aware execution modifiers before ExecutionDecisionEngine sizing.
+Adds market/context aware advisory outputs after decision lock creation.
 This module intentionally does not replace core decision logic.
 """
 

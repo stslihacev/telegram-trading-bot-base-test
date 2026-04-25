@@ -70,6 +70,16 @@ class ExitOrchestrator:
     def __init__(self, manager: "SmartExitManager") -> None:
         self.manager = manager
 
+    @staticmethod
+    def _resolve_trailing_level_r(current_profit_r: float) -> float:
+        if current_profit_r >= 2.0:
+            return 1.2
+        if current_profit_r >= 1.5:
+            return 0.8
+        if current_profit_r >= 1.0:
+            return 0.3
+        return 0.0
+
     def decide(
         self,
         *,
@@ -118,19 +128,32 @@ class ExitOrchestrator:
 
         regime_multiplier = self.manager.resolve_duration_regime_multiplier(indicators=indicators, market_data=market_data)
         effective_max_duration = int(round(self.manager.max_trade_duration_bars * regime_multiplier))
-        duration_grace_block = current_profit_r >= 0.5 and distance_to_tp_r < 1.2
-        if bars_alive >= effective_max_duration and not duration_grace_block:
-            return (
-                ExitOrchestratorDecision(
-                    action="FULL_CLOSE",
-                    size=1.0,
-                    reason="max_trade_duration",
-                    priority=self.PRIORITY_FULL_EXIT,
-                    close_reason="MAX_TRADE_DURATION",
-                    partial_tp_done=partial_tp_done,
-                ),
-                metrics,
+        trailing_level_r = self._resolve_trailing_level_r(current_profit_r)
+        trailing_active = trailing_level_r > 0 and risk > 0
+        max_duration_blocked = False
+        if bars_alive >= effective_max_duration:
+            duration_eval = self.manager.evaluate_max_duration_exit_context(
+                position=position,
+                market_data=market_data,
+                indicators=indicators,
+                metrics=metrics,
+                regime_multiplier=regime_multiplier,
+                effective_max_duration=effective_max_duration,
+                trailing_active=trailing_active,
             )
+            max_duration_blocked = bool(duration_eval.get("decision") != "CLOSE")
+            if str(duration_eval.get("decision")) == "CLOSE":
+                return (
+                    ExitOrchestratorDecision(
+                        action="FULL_CLOSE",
+                        size=1.0,
+                        reason="max_trade_duration",
+                        priority=self.PRIORITY_FULL_EXIT,
+                        close_reason="MAX_TRADE_DURATION",
+                        partial_tp_done=partial_tp_done,
+                    ),
+                    metrics,
+                )
 
         if bars_alive < self.manager.min_bars_before_profit_actions:
             return (
@@ -142,7 +165,7 @@ class ExitOrchestrator:
                     momentum_score=0.0,
                     exit_block_reason="no_discretionary_exit_window",
                     partial_tp_done=partial_tp_done,
-                    max_duration_blocked=bars_alive >= effective_max_duration and duration_grace_block,
+                    max_duration_blocked=max_duration_blocked,
                 ),
                 metrics,
             )
@@ -172,7 +195,7 @@ class ExitOrchestrator:
                     exit_block_reason="TP_PRIORITY_LOCK",
                     tp_lock_active=True,
                     partial_tp_done=partial_tp_done,
-                    max_duration_blocked=bars_alive >= effective_max_duration and duration_grace_block,
+                    max_duration_blocked=max_duration_blocked,
                 ),
                 metrics,
             )
@@ -227,7 +250,7 @@ class ExitOrchestrator:
                     momentum_score=momentum_score,
                     exit_block_reason="pullback_without_confirmed_reversal",
                     partial_tp_done=partial_tp_done,
-                    max_duration_blocked=bars_alive >= effective_max_duration and duration_grace_block,
+                    max_duration_blocked=max_duration_blocked,
                 ),
                 metrics,
             )
@@ -259,14 +282,6 @@ class ExitOrchestrator:
             )
 
         # Stage 2: >=1.0R activate profit lock trailing (never closes, only SL updates)
-        trailing_level_r = 0.0
-        if current_profit_r >= 2.0:
-            trailing_level_r = 1.2
-        elif current_profit_r >= 1.5:
-            trailing_level_r = 0.8
-        elif current_profit_r >= 1.0:
-            trailing_level_r = 0.3
-        trailing_active = trailing_level_r > 0 and risk > 0
         if trailing_active:
             recommended_sl = entry + (trailing_level_r * risk) if side == "LONG" else entry - (trailing_level_r * risk)
             return (
@@ -352,7 +367,7 @@ class ExitOrchestrator:
                 priority=self.PRIORITY_HOLD,
                 momentum_score=momentum_score,
                 partial_tp_done=partial_tp_done,
-                max_duration_blocked=bars_alive >= effective_max_duration and duration_grace_block,
+                max_duration_blocked=max_duration_blocked,
             ),
             metrics,
         )
@@ -733,6 +748,97 @@ class SmartExitManager:
         if trend_strength == "weak":
             return 1.0
         return 1.5
+
+    def evaluate_max_duration_exit_context(
+        self,
+        *,
+        position: Any,
+        market_data: dict[str, Any],
+        indicators: dict[str, Any],
+        metrics: dict[str, float],
+        regime_multiplier: float,
+        effective_max_duration: int,
+        trailing_active: bool,
+    ) -> dict[str, Any]:
+        bars_alive = int(metrics.get("bars_alive", 0.0))
+        pnl_r = float(metrics.get("current_profit_r", 0.0))
+        distance_to_tp_r = float(metrics.get("distance_to_tp_r", float("inf")))
+        drawdown_r = float(metrics.get("drawdown_r", 0.0))
+        max_profit_r = float(metrics.get("max_profit_r", pnl_r))
+        momentum_score = self.compute_momentum_exit_score(position=position, market_data=market_data, indicators=indicators)
+        reversal_confirmed = self.confirm_reversal_signal(
+            position=position,
+            market_data=market_data,
+            indicators=indicators,
+            momentum_score=momentum_score,
+            require_strong=False,
+        )
+        current_price = self._to_float(market_data.get("current_price"), self._to_float(market_data.get("price"), 0.0))
+        highs, lows, closes = self._extract_candles(market_data, current_price)
+        structure_decision = self._evaluate_structure_break(
+            self._position_side(position),
+            highs,
+            lows,
+            closes,
+            strong_confidence=False,
+        )
+        structure_break = bool(structure_decision.confirmed)
+        progress_to_peak = (pnl_r / max_profit_r) if max_profit_r > 0 else 0.0
+        improving_trend = pnl_r > 0.5 and drawdown_r <= 0.35 and progress_to_peak >= 0.7 and not reversal_confirmed
+        tp_near = distance_to_tp_r < 1.5
+
+        atr_series = indicators.get("atr_series") if isinstance(indicators.get("atr_series"), list) else []
+        atr_now = self._to_float(indicators.get("atr"), 0.0)
+        volatility_deterioration = False
+        if len(atr_series) >= 4:
+            recent = sum(self._to_float(v, 0.0) for v in atr_series[-2:]) / 2
+            prev = sum(self._to_float(v, 0.0) for v in atr_series[-4:-2]) / 2
+            volatility_deterioration = recent < prev * 0.9
+        elif atr_now > 0:
+            prev_atr = self._to_float(indicators.get("prev_atr"), atr_now)
+            volatility_deterioration = atr_now < prev_atr * 0.9
+
+        no_improvement_bars = int(indicators.get("bars_without_extreme", 0) or 0)
+        no_improvement = no_improvement_bars >= max(3, self.momentum_stall_bars)
+        pnl_stagnating = no_improvement and pnl_r <= max(0.5, max_profit_r * 0.6)
+        drawdown_increasing = drawdown_r >= max(0.45, max_profit_r * 0.35)
+
+        decision = "DEFER"
+        reason = "SMART_EXTENSION"
+        if trailing_active:
+            decision = "DEFER"
+            reason = "TRAILING_OVERRIDE"
+        elif improving_trend or tp_near:
+            decision = "EXTEND"
+            reason = "SMART_EXTENSION"
+        else:
+            safety_exit = (
+                pnl_r <= 0.0
+                and (no_improvement or reversal_confirmed or structure_break)
+                and (drawdown_increasing or pnl_stagnating or volatility_deterioration)
+            )
+            if safety_exit:
+                decision = "CLOSE"
+                reason = "SAFETY_EXIT"
+            else:
+                decision = "DEFER"
+                reason = "SMART_EXTENSION"
+
+        log_structured_event(
+            "MAX_DURATION_EVALUATION",
+            symbol=str(getattr(position, "symbol", "")).upper(),
+            context={
+                "time_in_trade": bars_alive,
+                "effective_max_duration": int(effective_max_duration),
+                "regime_multiplier": float(regime_multiplier),
+                "pnl_r": pnl_r,
+                "distance_to_tp": distance_to_tp_r,
+                "trailing_active": bool(trailing_active),
+                "decision": decision,
+                "reason": reason,
+            },
+        )
+        return {"decision": decision, "reason": reason}
 
     @staticmethod
     def assess_pullback_protection(

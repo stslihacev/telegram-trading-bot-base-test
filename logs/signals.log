@@ -25361,3 +25361,201 @@ Reject reason: -
 🧠 Regime: N/A
 🕒 Time:   2026-04-25 15:00:00+00:00
 Fingerprint: 6e544868703fc7df
+2026-04-25 22:01:05,321 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    API3USDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.380400
+🎯 TP:    0.436448
+🛑 SL:    0.345370
+RR:    1.60
+
+Score:      3.00 / 5.00
+⭐ Confidence: 0.60 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-25 17:00:00+00:00
+Fingerprint: f35e92ff2a528900
+2026-04-25 22:01:07,206 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    SOONUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.202450
+🎯 TP:    0.218577
+🛑 SL:    0.192370
+RR:    1.60
+
+Score:      3.00 / 5.00
+⭐ Confidence: 0.60 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-25 17:00:00+00:00
+Fingerprint: 19c3a7c57d4bde3e
+2026-04-26 00:53:18,602 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    ZECUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 354.270000
+🎯 TP:    362.327600
+🛑 SL:    349.234000
+RR:    1.60
+
+Score:      2.50 / 5.00
+⭐ Confidence: 0.50 ⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-25 19:00:00+00:00
+Fingerprint: 5b8215b5e2743806
+2026-04-26 00:58:28,207 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    ZECUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 354.270000
+🎯 TP:    362.327600
+🛑 SL:    349.234000
+RR:    1.60
+
+Score:      2.50 / 5.00
+⭐ Confidence: 0.50 ⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-25 19:00:00+00:00
+Fingerprint: 5b8215b5e2743806
+2026-04-26 01:03:40,688 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    GALAUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.003487
+🎯 TP:    0.003597
+🛑 SL:    0.003418
+RR:    1.60
+
+Score:      3.00 / 5.00
+⭐ Confidence: 0.60 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-25 20:00:00+00:00
+Fingerprint: 21b9d128b296a9dc
+2026-04-26 01:03:42,590 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    LABUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.867710
+🎯 TP:    1.275827
+🛑 SL:    0.612637
+RR:    1.60
+
+Score:      3.15 / 5.00
+⭐ Confidence: 0.63 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, VOLUME, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-25 20:00:00+00:00
+Fingerprint: ae15a005b9da8b8f
+2026-04-26 01:03:44,501 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    MUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 4.348200
+🎯 TP:    4.505114
+🛑 SL:    4.250129
+RR:    1.60
+
+Score:      3.90 / 5.00
+⭐ Confidence: 0.78 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-25 20:00:00+00:00
+Fingerprint: 7acbde2877a2a0dd
+2026-04-26 01:03:46,404 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    SAHARAUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.023375
+🎯 TP:    0.024656
+🛑 SL:    0.022574
+RR:    1.60
+
+Score:      3.00 / 5.00
+⭐ Confidence: 0.60 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-25 20:00:00+00:00
+Fingerprint: 6e2e008e91054e0c
+2026-04-26 01:08:56,044 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    ZECUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 357.680000
+🎯 TP:    371.204343
+🛑 SL:    349.227286
+RR:    1.60
+
+Score:      2.50 / 5.00
+⭐ Confidence: 0.50 ⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-25 20:00:00+00:00
+Fingerprint: 6b57a86037e93f0d

@@ -30459,3 +30459,536 @@
 2026-04-25 20:02:27,691 - [EXECUTION] DEBUG - REGIME_CLASSIFICATION: atr_pct=0.0000 adx=20.00 vol_expansion=0.000 structure=RANGE momentum=0.630 regime=CHOPPY
 2026-04-25 20:02:27,691 - [EXECUTION] DEBUG - EXECUTION_CONFIDENCE_BREAKDOWN: regime_quality=0.350 vol_stability=0.834 signal=0.630 fail=0.000 latency=0.000 confidence=0.679
 2026-04-25 20:02:27,692 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.500 vol_exp=0.000 wick=0.500 liq=0.696 impulse=0.283 noise=0.526 breakout=0.416
+2026-04-25 22:01:03,851 - [EXECUTION] DEBUG - margin calculation: required_margin=13.339360 margin_limit=88.273707 leverage=3.000
+2026-04-25 22:01:03,852 - [EXECUTION] DEBUG - portfolio constraints: total_exposure=0.000000 symbol_exposure=0.000000 margin_used=0.000000
+2026-04-25 22:01:03,852 - [EXECUTION] DEBUG - REGIME_CLASSIFICATION: atr_pct=0.0000 adx=20.00 vol_expansion=0.000 structure=RANGE momentum=0.600 regime=CHOPPY
+2026-04-25 22:01:03,852 - [EXECUTION] DEBUG - EXECUTION_CONFIDENCE_BREAKDOWN: regime_quality=0.350 vol_stability=0.820 signal=0.600 fail=0.000 latency=0.000 confidence=0.669
+2026-04-25 22:01:03,852 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.500 vol_exp=0.000 wick=0.500 liq=0.696 impulse=0.283 noise=0.526 breakout=0.416
+2026-04-25 22:01:04,271 - [EXECUTION] DEBUG - QTY_NORMALIZED: symbol=API3USDT qty=105.2
+2026-04-25 22:01:04,693 - [EXECUTION] DEBUG - RR_CHECK: symbol=API3USDT rr=1.600
+2026-04-25 22:01:05,109 - [EXECUTION] DEBUG - SLTP_ACCEPTED: symbol=API3USDT attempt=1/1 position_idx=None sl=0.34537 tp=0.43644800000000006
+2026-04-25 22:01:05,752 - [EXECUTION] DEBUG - margin calculation: required_margin=24.631417 margin_limit=88.254797 leverage=3.000
+2026-04-25 22:01:05,752 - [EXECUTION] DEBUG - portfolio constraints: total_exposure=0.000000 symbol_exposure=0.000000 margin_used=0.000000
+2026-04-25 22:01:05,752 - [EXECUTION] DEBUG - REGIME_CLASSIFICATION: atr_pct=0.0000 adx=20.00 vol_expansion=0.000 structure=RANGE momentum=0.600 regime=CHOPPY
+2026-04-25 22:01:05,752 - [EXECUTION] DEBUG - EXECUTION_CONFIDENCE_BREAKDOWN: regime_quality=0.350 vol_stability=0.820 signal=0.600 fail=0.000 latency=0.722 confidence=0.597
+2026-04-25 22:01:05,753 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.500 vol_exp=0.000 wick=0.500 liq=0.696 impulse=0.283 noise=0.526 breakout=0.416
+2026-04-25 22:01:06,166 - [EXECUTION] DEBUG - QTY_NORMALIZED: symbol=SOONUSDT qty=365.0
+2026-04-25 22:01:06,582 - [EXECUTION] DEBUG - RR_CHECK: symbol=SOONUSDT rr=1.600
+2026-04-25 22:01:06,996 - [EXECUTION] DEBUG - SLTP_ACCEPTED: symbol=SOONUSDT attempt=1/1 position_idx=None sl=0.19237042857142855 tp=0.21857731428571428
+2026-04-25 22:01:07,414 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=API3USDT price=0.37090000 bars_alive=1
+2026-04-25 22:01:07,414 - [EXECUTION] DEBUG - POSITION_PNL_UPDATE: symbol=API3USDT pnl_r=-0.271 max_profit_r=0.000
+2026-04-25 22:01:07,635 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:01:07,635 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=API3USDT source=smart_exit pnl_r=-0.271
+2026-04-25 22:01:07,839 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=SOONUSDT price=0.20420000 bars_alive=1
+2026-04-25 22:01:07,839 - [EXECUTION] DEBUG - POSITION_PNL_UPDATE: symbol=SOONUSDT pnl_r=0.174 max_profit_r=0.174
+2026-04-25 22:01:08,048 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:01:08,048 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SOONUSDT source=smart_exit pnl_r=0.174
+2026-04-25 22:01:18,466 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:01:18,467 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=API3USDT source=smart_exit pnl_r=-0.274
+2026-04-25 22:01:18,882 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:01:18,882 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SOONUSDT source=smart_exit pnl_r=0.179
+2026-04-25 22:01:29,657 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:01:29,657 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=API3USDT source=smart_exit pnl_r=-0.283
+2026-04-25 22:01:30,070 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:01:30,070 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SOONUSDT source=smart_exit pnl_r=0.171
+2026-04-25 22:01:40,287 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=API3USDT price=0.37060000 bars_alive=4
+2026-04-25 22:01:40,498 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:01:40,498 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=API3USDT source=smart_exit pnl_r=-0.280
+2026-04-25 22:01:40,715 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=SOONUSDT price=0.20410000 bars_alive=4
+2026-04-25 22:01:40,924 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:01:40,924 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SOONUSDT source=smart_exit pnl_r=0.164
+2026-04-25 22:01:51,339 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:01:51,339 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=API3USDT source=smart_exit pnl_r=-0.271
+2026-04-25 22:01:51,752 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:01:51,752 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SOONUSDT source=smart_exit pnl_r=0.181
+2026-04-25 22:02:02,174 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:02:02,175 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=API3USDT source=smart_exit pnl_r=-0.271
+2026-04-25 22:02:02,588 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:02:02,588 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SOONUSDT source=smart_exit pnl_r=0.165
+2026-04-25 22:02:12,796 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=API3USDT price=0.37050000 bars_alive=7
+2026-04-25 22:02:13,005 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:02:13,005 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=API3USDT source=smart_exit pnl_r=-0.283
+2026-04-25 22:02:13,222 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=SOONUSDT price=0.20410000 bars_alive=7
+2026-04-25 22:02:13,431 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:02:13,432 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SOONUSDT source=smart_exit pnl_r=0.164
+2026-04-25 22:02:23,849 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:02:23,849 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=API3USDT source=smart_exit pnl_r=-0.283
+2026-04-25 22:02:24,260 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:02:24,260 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SOONUSDT source=smart_exit pnl_r=0.162
+2026-04-25 22:02:34,675 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:02:34,676 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=API3USDT source=smart_exit pnl_r=-0.283
+2026-04-25 22:02:35,086 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:02:35,087 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SOONUSDT source=smart_exit pnl_r=0.185
+2026-04-25 22:02:45,309 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=API3USDT price=0.37050000 bars_alive=10
+2026-04-25 22:02:45,518 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:02:45,518 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=API3USDT source=smart_exit pnl_r=-0.283
+2026-04-25 22:02:46,085 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=SOONUSDT price=0.20404000 bars_alive=10
+2026-04-25 22:02:46,293 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:02:46,293 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SOONUSDT source=smart_exit pnl_r=0.158
+2026-04-25 22:02:56,711 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:02:56,711 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=API3USDT source=smart_exit pnl_r=-0.271
+2026-04-25 22:02:57,123 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:02:57,123 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SOONUSDT source=smart_exit pnl_r=0.157
+2026-04-25 22:03:07,552 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:03:07,552 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=API3USDT source=smart_exit pnl_r=-0.268
+2026-04-25 22:03:07,968 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:03:07,968 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SOONUSDT source=smart_exit pnl_r=0.180
+2026-04-25 22:03:18,181 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=API3USDT price=0.37190000 bars_alive=13
+2026-04-25 22:03:18,389 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:03:18,390 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=API3USDT source=smart_exit pnl_r=-0.243
+2026-04-25 22:03:18,593 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=SOONUSDT price=0.20435000 bars_alive=13
+2026-04-25 22:03:18,802 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:03:18,802 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SOONUSDT source=smart_exit pnl_r=0.189
+2026-04-25 22:03:29,223 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:03:29,223 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=API3USDT source=smart_exit pnl_r=-0.243
+2026-04-25 22:03:29,647 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:03:29,647 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SOONUSDT source=smart_exit pnl_r=0.189
+2026-04-25 22:03:40,061 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:03:40,061 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=API3USDT source=smart_exit pnl_r=-0.243
+2026-04-25 22:03:40,479 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:03:40,479 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SOONUSDT source=smart_exit pnl_r=0.197
+2026-04-25 22:03:50,685 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=API3USDT price=0.37180000 bars_alive=16
+2026-04-25 22:03:50,893 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:03:50,893 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=API3USDT source=smart_exit pnl_r=-0.246
+2026-04-25 22:03:51,097 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=SOONUSDT price=0.20444000 bars_alive=16
+2026-04-25 22:03:51,304 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:03:51,304 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SOONUSDT source=smart_exit pnl_r=0.197
+2026-04-25 22:04:01,734 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:04:01,735 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=API3USDT source=smart_exit pnl_r=-0.254
+2026-04-25 22:04:02,152 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:04:02,152 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SOONUSDT source=smart_exit pnl_r=0.179
+2026-04-25 22:04:12,576 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:04:12,577 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=API3USDT source=smart_exit pnl_r=-0.257
+2026-04-25 22:04:12,989 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:04:12,990 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SOONUSDT source=smart_exit pnl_r=0.160
+2026-04-25 22:04:23,208 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=API3USDT price=0.37130000 bars_alive=19
+2026-04-25 22:04:23,415 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:04:23,415 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=API3USDT source=smart_exit pnl_r=-0.260
+2026-04-25 22:04:23,620 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=SOONUSDT price=0.20398000 bars_alive=19
+2026-04-25 22:04:23,828 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:04:23,828 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SOONUSDT source=smart_exit pnl_r=0.152
+2026-04-25 22:04:34,251 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:04:34,251 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=API3USDT source=smart_exit pnl_r=-0.257
+2026-04-25 22:04:34,674 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:04:34,674 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SOONUSDT source=smart_exit pnl_r=0.152
+2026-04-25 22:04:45,102 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:04:45,102 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=API3USDT source=smart_exit pnl_r=-0.254
+2026-04-25 22:04:45,535 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:04:45,535 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SOONUSDT source=smart_exit pnl_r=0.164
+2026-04-25 22:04:55,752 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=API3USDT price=0.37190000 bars_alive=22
+2026-04-25 22:04:55,961 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:04:55,961 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=API3USDT source=smart_exit pnl_r=-0.243
+2026-04-25 22:04:56,532 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=SOONUSDT price=0.20432000 bars_alive=22
+2026-04-25 22:04:56,741 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:04:56,741 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SOONUSDT source=smart_exit pnl_r=0.186
+2026-04-25 22:05:07,167 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:05:07,168 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=API3USDT source=smart_exit pnl_r=-0.228
+2026-04-25 22:05:07,581 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 22:05:07,581 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SOONUSDT source=smart_exit pnl_r=0.174
+2026-04-25 22:05:18,638 - [EXECUTION] DEBUG - QTY_NORMALIZED: symbol=API3USDT qty=105.2
+2026-04-25 22:05:19,878 - [EXECUTION] DEBUG - QTY_NORMALIZED: symbol=SOONUSDT qty=365.0
+2026-04-26 00:53:18,594 - [EXECUTION] DEBUG - REGIME_CLASSIFICATION: atr_pct=0.0000 adx=20.00 vol_expansion=0.000 structure=RANGE momentum=0.500 regime=LOW_VOLATILITY
+2026-04-26 00:53:18,594 - [EXECUTION] DEBUG - EXECUTION_CONFIDENCE_BREAKDOWN: regime_quality=0.550 vol_stability=0.775 signal=0.500 fail=0.000 latency=0.000 confidence=0.695
+2026-04-26 00:53:18,594 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.500 vol_exp=0.000 wick=0.500 liq=0.696 impulse=0.283 noise=0.526 breakout=0.416
+2026-04-26 00:58:28,195 - [EXECUTION] DEBUG - REGIME_CLASSIFICATION: atr_pct=0.0000 adx=20.00 vol_expansion=0.000 structure=RANGE momentum=0.500 regime=LOW_VOLATILITY
+2026-04-26 00:58:28,195 - [EXECUTION] DEBUG - EXECUTION_CONFIDENCE_BREAKDOWN: regime_quality=0.550 vol_stability=0.775 signal=0.500 fail=1.000 latency=0.000 confidence=0.545
+2026-04-26 00:58:28,195 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.500 vol_exp=0.000 wick=0.500 liq=0.696 impulse=0.283 noise=0.526 breakout=0.416
+2026-04-26 01:03:39,214 - [EXECUTION] DEBUG - margin calculation: required_margin=62.237138 margin_limit=88.195587 leverage=3.000
+2026-04-26 01:03:39,214 - [EXECUTION] DEBUG - portfolio constraints: total_exposure=0.000000 symbol_exposure=0.000000 margin_used=0.000000
+2026-04-26 01:03:39,214 - [EXECUTION] DEBUG - REGIME_CLASSIFICATION: atr_pct=0.0000 adx=20.00 vol_expansion=0.000 structure=RANGE momentum=0.600 regime=CHOPPY
+2026-04-26 01:03:39,215 - [EXECUTION] DEBUG - EXECUTION_CONFIDENCE_BREAKDOWN: regime_quality=0.350 vol_stability=0.820 signal=0.600 fail=1.000 latency=0.000 confidence=0.519
+2026-04-26 01:03:39,215 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.500 vol_exp=0.000 wick=0.500 liq=0.696 impulse=0.283 noise=0.526 breakout=0.416
+2026-04-26 01:03:39,632 - [EXECUTION] DEBUG - QTY_NORMALIZED: symbol=GALAUSDT qty=53545.0
+2026-04-26 01:03:40,056 - [EXECUTION] DEBUG - RR_CHECK: symbol=GALAUSDT rr=1.600
+2026-04-26 01:03:40,474 - [EXECUTION] DEBUG - SLTP_ACCEPTED: symbol=GALAUSDT attempt=1/1 position_idx=None sl=0.0034182142857142857 tp=0.003597057142857143
+2026-04-26 01:03:41,125 - [EXECUTION] DEBUG - margin calculation: required_margin=4.049313 margin_limit=88.105167 leverage=3.000
+2026-04-26 01:03:41,125 - [EXECUTION] DEBUG - portfolio constraints: total_exposure=0.000000 symbol_exposure=0.000000 margin_used=0.000000
+2026-04-26 01:03:41,126 - [EXECUTION] DEBUG - REGIME_CLASSIFICATION: atr_pct=0.0000 adx=20.00 vol_expansion=0.000 structure=RANGE momentum=0.630 regime=CHOPPY
+2026-04-26 01:03:41,126 - [EXECUTION] DEBUG - EXECUTION_CONFIDENCE_BREAKDOWN: regime_quality=0.350 vol_stability=0.834 signal=0.630 fail=0.667 latency=0.723 confidence=0.507
+2026-04-26 01:03:41,126 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.500 vol_exp=0.000 wick=0.500 liq=0.696 impulse=0.283 noise=0.526 breakout=0.416
+2026-04-26 01:03:41,541 - [EXECUTION] DEBUG - QTY_NORMALIZED: symbol=LABUSDT qty=14.0
+2026-04-26 01:03:41,958 - [EXECUTION] DEBUG - RR_CHECK: symbol=LABUSDT rr=1.600
+2026-04-26 01:03:42,377 - [EXECUTION] DEBUG - SLTP_ACCEPTED: symbol=LABUSDT attempt=1/1 position_idx=None sl=0.612637 tp=1.2758268
+2026-04-26 01:03:43,025 - [EXECUTION] DEBUG - margin calculation: required_margin=147.838800 margin_limit=88.095428 leverage=3.000
+2026-04-26 01:03:43,026 - [EXECUTION] DEBUG - portfolio constraints: total_exposure=0.000000 symbol_exposure=0.000000 margin_used=0.000000
+2026-04-26 01:03:43,026 - [EXECUTION] DEBUG - margin calculation: required_margin=131.895400 margin_limit=88.095428 leverage=3.000
+2026-04-26 01:03:43,026 - [EXECUTION] DEBUG - portfolio constraints: total_exposure=0.000000 symbol_exposure=0.000000 margin_used=0.000000
+2026-04-26 01:03:43,026 - [EXECUTION] DEBUG - margin calculation: required_margin=118.850800 margin_limit=88.095428 leverage=3.000
+2026-04-26 01:03:43,026 - [EXECUTION] DEBUG - portfolio constraints: total_exposure=0.000000 symbol_exposure=0.000000 margin_used=0.000000
+2026-04-26 01:03:43,027 - [EXECUTION] DEBUG - margin calculation: required_margin=107.255600 margin_limit=88.095428 leverage=3.000
+2026-04-26 01:03:43,027 - [EXECUTION] DEBUG - portfolio constraints: total_exposure=0.000000 symbol_exposure=0.000000 margin_used=0.000000
+2026-04-26 01:03:43,027 - [EXECUTION] DEBUG - margin calculation: required_margin=95.660400 margin_limit=88.095428 leverage=3.000
+2026-04-26 01:03:43,027 - [EXECUTION] DEBUG - portfolio constraints: total_exposure=0.000000 symbol_exposure=0.000000 margin_used=0.000000
+2026-04-26 01:03:43,027 - [EXECUTION] DEBUG - margin calculation: required_margin=86.964000 margin_limit=88.095428 leverage=3.000
+2026-04-26 01:03:43,027 - [EXECUTION] DEBUG - portfolio constraints: total_exposure=0.000000 symbol_exposure=0.000000 margin_used=0.000000
+2026-04-26 01:03:43,028 - [EXECUTION] DEBUG - REGIME_CLASSIFICATION: atr_pct=0.0000 adx=20.00 vol_expansion=0.000 structure=RANGE momentum=0.780 regime=CHOPPY
+2026-04-26 01:03:43,028 - [EXECUTION] DEBUG - EXECUTION_CONFIDENCE_BREAKDOWN: regime_quality=0.350 vol_stability=0.901 signal=0.780 fail=0.500 latency=0.718 confidence=0.583
+2026-04-26 01:03:43,028 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.500 vol_exp=0.000 wick=0.500 liq=0.696 impulse=0.283 noise=0.526 breakout=0.416
+2026-04-26 01:03:43,446 - [EXECUTION] DEBUG - QTY_NORMALIZED: symbol=MUSDT qty=60.0
+2026-04-26 01:03:43,865 - [EXECUTION] DEBUG - RR_CHECK: symbol=MUSDT rr=1.600
+2026-04-26 01:03:44,287 - [EXECUTION] DEBUG - SLTP_ACCEPTED: symbol=MUSDT attempt=1/1 position_idx=None sl=4.250128571428572 tp=4.505114285714285
+2026-04-26 01:03:44,938 - [EXECUTION] DEBUG - margin calculation: required_margin=35.693625 margin_limit=87.842919 leverage=3.000
+2026-04-26 01:03:44,939 - [EXECUTION] DEBUG - portfolio constraints: total_exposure=0.000000 symbol_exposure=0.000000 margin_used=0.000000
+2026-04-26 01:03:44,939 - [EXECUTION] DEBUG - REGIME_CLASSIFICATION: atr_pct=0.0000 adx=20.00 vol_expansion=0.000 structure=RANGE momentum=0.600 regime=CHOPPY
+2026-04-26 01:03:44,939 - [EXECUTION] DEBUG - EXECUTION_CONFIDENCE_BREAKDOWN: regime_quality=0.350 vol_stability=0.820 signal=0.600 fail=0.400 latency=0.717 confidence=0.537
+2026-04-26 01:03:44,939 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.500 vol_exp=0.000 wick=0.500 liq=0.696 impulse=0.283 noise=0.526 breakout=0.416
+2026-04-26 01:03:45,355 - [EXECUTION] DEBUG - QTY_NORMALIZED: symbol=SAHARAUSDT qty=4581.0
+2026-04-26 01:03:45,775 - [EXECUTION] DEBUG - RR_CHECK: symbol=SAHARAUSDT rr=1.600
+2026-04-26 01:03:46,191 - [EXECUTION] DEBUG - SLTP_ACCEPTED: symbol=SAHARAUSDT attempt=1/1 position_idx=None sl=0.022574357142857143 tp=0.02465602857142857
+2026-04-26 01:03:46,615 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=GALAUSDT price=0.00348900 bars_alive=1
+2026-04-26 01:03:46,615 - [EXECUTION] DEBUG - POSITION_PNL_UPDATE: symbol=GALAUSDT pnl_r=0.029 max_profit_r=0.029
+2026-04-26 01:03:46,825 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:03:46,825 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=GALAUSDT source=smart_exit pnl_r=0.029
+2026-04-26 01:03:47,029 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=LABUSDT price=0.72054000 bars_alive=1
+2026-04-26 01:03:47,030 - [EXECUTION] DEBUG - POSITION_PNL_UPDATE: symbol=LABUSDT pnl_r=-0.577 max_profit_r=0.000
+2026-04-26 01:03:47,241 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:03:47,241 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=LABUSDT source=smart_exit pnl_r=-0.577
+2026-04-26 01:03:47,445 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=MUSDT price=4.34760000 bars_alive=1
+2026-04-26 01:03:47,446 - [EXECUTION] DEBUG - POSITION_PNL_UPDATE: symbol=MUSDT pnl_r=-0.006 max_profit_r=0.000
+2026-04-26 01:03:47,656 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:03:47,656 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MUSDT source=smart_exit pnl_r=-0.006
+2026-04-26 01:03:47,860 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=SAHARAUSDT price=0.02348000 bars_alive=1
+2026-04-26 01:03:47,860 - [EXECUTION] DEBUG - POSITION_PNL_UPDATE: symbol=SAHARAUSDT pnl_r=0.131 max_profit_r=0.131
+2026-04-26 01:03:48,072 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:03:48,072 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SAHARAUSDT source=smart_exit pnl_r=0.131
+2026-04-26 01:03:58,502 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:03:58,503 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=GALAUSDT source=smart_exit pnl_r=0.029
+2026-04-26 01:03:58,917 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:03:58,917 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=LABUSDT source=smart_exit pnl_r=-0.558
+2026-04-26 01:03:59,335 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:03:59,335 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MUSDT source=smart_exit pnl_r=-0.060
+2026-04-26 01:03:59,749 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:03:59,749 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SAHARAUSDT source=smart_exit pnl_r=0.106
+2026-04-26 01:04:10,169 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:04:10,169 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=GALAUSDT source=smart_exit pnl_r=0.029
+2026-04-26 01:04:10,584 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:04:10,584 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=LABUSDT source=smart_exit pnl_r=-0.554
+2026-04-26 01:04:11,299 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:04:11,299 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MUSDT source=smart_exit pnl_r=-0.071
+2026-04-26 01:04:11,727 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:04:11,727 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SAHARAUSDT source=smart_exit pnl_r=0.062
+2026-04-26 01:04:21,937 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=GALAUSDT price=0.00349100 bars_alive=4
+2026-04-26 01:04:22,147 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:04:22,147 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=GALAUSDT source=smart_exit pnl_r=0.058
+2026-04-26 01:04:22,353 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=LABUSDT price=0.72091000 bars_alive=4
+2026-04-26 01:04:22,563 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:04:22,564 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=LABUSDT source=smart_exit pnl_r=-0.576
+2026-04-26 01:04:22,770 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=MUSDT price=4.34410000 bars_alive=4
+2026-04-26 01:04:22,980 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:04:22,980 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MUSDT source=smart_exit pnl_r=-0.042
+2026-04-26 01:04:23,185 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=SAHARAUSDT price=0.02341700 bars_alive=4
+2026-04-26 01:04:23,395 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:04:23,395 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SAHARAUSDT source=smart_exit pnl_r=0.052
+2026-04-26 01:04:33,821 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:04:33,821 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=GALAUSDT source=smart_exit pnl_r=0.058
+2026-04-26 01:04:34,236 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:04:34,237 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=LABUSDT source=smart_exit pnl_r=-0.568
+2026-04-26 01:04:34,654 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:04:34,654 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MUSDT source=smart_exit pnl_r=-0.042
+2026-04-26 01:04:35,069 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:04:35,069 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SAHARAUSDT source=smart_exit pnl_r=0.072
+2026-04-26 01:04:45,491 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:04:45,491 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=GALAUSDT source=smart_exit pnl_r=0.044
+2026-04-26 01:04:45,905 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:04:45,905 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=LABUSDT source=smart_exit pnl_r=-0.559
+2026-04-26 01:04:46,321 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:04:46,321 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MUSDT source=smart_exit pnl_r=-0.076
+2026-04-26 01:04:47,095 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:04:47,096 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SAHARAUSDT source=smart_exit pnl_r=0.089
+2026-04-26 01:04:57,305 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=GALAUSDT price=0.00349000 bars_alive=7
+2026-04-26 01:04:57,516 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:04:57,516 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=GALAUSDT source=smart_exit pnl_r=0.044
+2026-04-26 01:04:58,083 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=LABUSDT price=0.72545000 bars_alive=7
+2026-04-26 01:04:58,293 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:04:58,294 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=LABUSDT source=smart_exit pnl_r=-0.558
+2026-04-26 01:04:58,497 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=MUSDT price=4.34300000 bars_alive=7
+2026-04-26 01:04:58,708 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:04:58,708 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MUSDT source=smart_exit pnl_r=-0.053
+2026-04-26 01:04:58,912 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=SAHARAUSDT price=0.02345000 bars_alive=7
+2026-04-26 01:04:59,122 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:04:59,122 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SAHARAUSDT source=smart_exit pnl_r=0.094
+2026-04-26 01:05:09,539 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:05:09,539 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=GALAUSDT source=smart_exit pnl_r=0.087
+2026-04-26 01:05:09,952 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:05:09,952 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=LABUSDT source=smart_exit pnl_r=-0.563
+2026-04-26 01:05:10,366 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:05:10,366 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MUSDT source=smart_exit pnl_r=-0.067
+2026-04-26 01:05:10,788 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:05:10,789 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SAHARAUSDT source=smart_exit pnl_r=0.087
+2026-04-26 01:05:21,218 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:05:21,218 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=GALAUSDT source=smart_exit pnl_r=0.087
+2026-04-26 01:05:21,643 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:05:21,644 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=LABUSDT source=smart_exit pnl_r=-0.564
+2026-04-26 01:05:22,057 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:05:22,058 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MUSDT source=smart_exit pnl_r=-0.084
+2026-04-26 01:05:22,472 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:05:22,472 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SAHARAUSDT source=smart_exit pnl_r=0.087
+2026-04-26 01:05:32,683 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=GALAUSDT price=0.00349200 bars_alive=10
+2026-04-26 01:05:32,892 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:05:32,893 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=GALAUSDT source=smart_exit pnl_r=0.073
+2026-04-26 01:05:33,096 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=LABUSDT price=0.72419000 bars_alive=10
+2026-04-26 01:05:33,307 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:05:33,307 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=LABUSDT source=smart_exit pnl_r=-0.563
+2026-04-26 01:05:33,512 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=MUSDT price=4.34000000 bars_alive=10
+2026-04-26 01:05:33,721 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:05:33,721 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MUSDT source=smart_exit pnl_r=-0.084
+2026-04-26 01:05:33,925 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=SAHARAUSDT price=0.02344500 bars_alive=10
+2026-04-26 01:05:34,134 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:05:34,134 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SAHARAUSDT source=smart_exit pnl_r=0.087
+2026-04-26 01:05:44,562 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:05:44,562 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=GALAUSDT source=smart_exit pnl_r=0.029
+2026-04-26 01:05:44,975 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:05:44,976 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=LABUSDT source=smart_exit pnl_r=-0.573
+2026-04-26 01:05:45,180 - [EXECUTION] DEBUG - POSITION_PNL_UPDATE: symbol=MUSDT pnl_r=-0.108 max_profit_r=0.000
+2026-04-26 01:05:45,391 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:05:45,391 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MUSDT source=smart_exit pnl_r=-0.108
+2026-04-26 01:05:45,807 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:05:45,807 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SAHARAUSDT source=smart_exit pnl_r=0.085
+2026-04-26 01:05:56,228 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:05:56,228 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=GALAUSDT source=smart_exit pnl_r=0.029
+2026-04-26 01:05:56,641 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:05:56,642 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=LABUSDT source=smart_exit pnl_r=-0.567
+2026-04-26 01:05:57,054 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:05:57,055 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MUSDT source=smart_exit pnl_r=-0.040
+2026-04-26 01:05:57,469 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:05:57,470 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SAHARAUSDT source=smart_exit pnl_r=0.077
+2026-04-26 01:06:08,040 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=GALAUSDT price=0.00349300 bars_alive=13
+2026-04-26 01:06:08,250 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:06:08,251 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=GALAUSDT source=smart_exit pnl_r=0.087
+2026-04-26 01:06:08,820 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=LABUSDT price=0.72241000 bars_alive=13
+2026-04-26 01:06:09,031 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:06:09,031 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=LABUSDT source=smart_exit pnl_r=-0.570
+2026-04-26 01:06:09,236 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=MUSDT price=4.34360000 bars_alive=13
+2026-04-26 01:06:09,448 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:06:09,449 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MUSDT source=smart_exit pnl_r=-0.047
+2026-04-26 01:06:09,654 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=SAHARAUSDT price=0.02344100 bars_alive=13
+2026-04-26 01:06:09,864 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:06:09,865 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SAHARAUSDT source=smart_exit pnl_r=0.082
+2026-04-26 01:06:20,283 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:06:20,283 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=GALAUSDT source=smart_exit pnl_r=0.073
+2026-04-26 01:06:20,697 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:06:20,697 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=LABUSDT source=smart_exit pnl_r=-0.575
+2026-04-26 01:06:21,112 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:06:21,112 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MUSDT source=smart_exit pnl_r=-0.048
+2026-04-26 01:06:21,524 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:06:21,524 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SAHARAUSDT source=smart_exit pnl_r=0.091
+2026-04-26 01:06:31,948 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:06:31,948 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=GALAUSDT source=smart_exit pnl_r=0.087
+2026-04-26 01:06:32,362 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:06:32,362 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=LABUSDT source=smart_exit pnl_r=-0.591
+2026-04-26 01:06:32,779 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:06:32,780 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MUSDT source=smart_exit pnl_r=-0.029
+2026-04-26 01:06:33,192 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:06:33,192 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SAHARAUSDT source=smart_exit pnl_r=0.094
+2026-04-26 01:06:43,415 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=GALAUSDT price=0.00349000 bars_alive=16
+2026-04-26 01:06:43,625 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:06:43,625 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=GALAUSDT source=smart_exit pnl_r=0.044
+2026-04-26 01:06:43,829 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=LABUSDT price=0.71098000 bars_alive=16
+2026-04-26 01:06:44,039 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:06:44,039 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=LABUSDT source=smart_exit pnl_r=-0.614
+2026-04-26 01:06:44,242 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=MUSDT price=4.34540000 bars_alive=16
+2026-04-26 01:06:44,450 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:06:44,451 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MUSDT source=smart_exit pnl_r=-0.029
+2026-04-26 01:06:44,655 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=SAHARAUSDT price=0.02345000 bars_alive=16
+2026-04-26 01:06:44,864 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:06:44,864 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SAHARAUSDT source=smart_exit pnl_r=0.094
+2026-04-26 01:06:55,306 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:06:55,306 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=GALAUSDT source=smart_exit pnl_r=0.015
+2026-04-26 01:06:55,720 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:06:55,720 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=LABUSDT source=smart_exit pnl_r=-0.617
+2026-04-26 01:06:56,134 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:06:56,135 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MUSDT source=smart_exit pnl_r=-0.029
+2026-04-26 01:06:56,549 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:06:56,549 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SAHARAUSDT source=smart_exit pnl_r=0.152
+2026-04-26 01:07:06,967 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:07:06,967 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=GALAUSDT source=smart_exit pnl_r=0.073
+2026-04-26 01:07:07,745 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:07:07,745 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=LABUSDT source=smart_exit pnl_r=-0.623
+2026-04-26 01:07:08,524 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:07:08,525 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MUSDT source=smart_exit pnl_r=-0.055
+2026-04-26 01:07:08,937 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:07:08,938 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SAHARAUSDT source=smart_exit pnl_r=0.125
+2026-04-26 01:07:19,155 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=GALAUSDT price=0.00349200 bars_alive=19
+2026-04-26 01:07:19,366 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:07:19,366 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=GALAUSDT source=smart_exit pnl_r=0.073
+2026-04-26 01:07:19,569 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=LABUSDT price=0.70858000 bars_alive=19
+2026-04-26 01:07:19,778 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:07:19,779 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=LABUSDT source=smart_exit pnl_r=-0.624
+2026-04-26 01:07:19,983 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=MUSDT price=4.34470000 bars_alive=19
+2026-04-26 01:07:20,194 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:07:20,194 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MUSDT source=smart_exit pnl_r=-0.036
+2026-04-26 01:07:20,397 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=SAHARAUSDT price=0.02349700 bars_alive=19
+2026-04-26 01:07:20,608 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:07:20,609 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SAHARAUSDT source=smart_exit pnl_r=0.152
+2026-04-26 01:07:31,033 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:07:31,033 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=GALAUSDT source=smart_exit pnl_r=0.073
+2026-04-26 01:07:31,445 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:07:31,445 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=LABUSDT source=smart_exit pnl_r=-0.633
+2026-04-26 01:07:31,863 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:07:31,863 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MUSDT source=smart_exit pnl_r=-0.067
+2026-04-26 01:07:32,277 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:07:32,278 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SAHARAUSDT source=smart_exit pnl_r=0.154
+2026-04-26 01:07:42,707 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:07:42,707 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=GALAUSDT source=smart_exit pnl_r=0.073
+2026-04-26 01:07:43,120 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:07:43,120 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=LABUSDT source=smart_exit pnl_r=-0.635
+2026-04-26 01:07:43,533 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:07:43,534 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MUSDT source=smart_exit pnl_r=-0.067
+2026-04-26 01:07:43,949 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:07:43,949 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SAHARAUSDT source=smart_exit pnl_r=0.171
+2026-04-26 01:07:54,153 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=GALAUSDT price=0.00349000 bars_alive=22
+2026-04-26 01:07:54,364 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:07:54,364 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=GALAUSDT source=smart_exit pnl_r=0.044
+2026-04-26 01:07:54,568 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=LABUSDT price=0.70656000 bars_alive=22
+2026-04-26 01:07:54,777 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:07:54,777 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=LABUSDT source=smart_exit pnl_r=-0.632
+2026-04-26 01:07:54,981 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=MUSDT price=4.34160000 bars_alive=22
+2026-04-26 01:07:55,190 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:07:55,191 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MUSDT source=smart_exit pnl_r=-0.067
+2026-04-26 01:07:55,394 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=SAHARAUSDT price=0.02350500 bars_alive=22
+2026-04-26 01:07:55,603 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:07:55,604 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SAHARAUSDT source=smart_exit pnl_r=0.162
+2026-04-26 01:08:06,019 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:08:06,019 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=GALAUSDT source=smart_exit pnl_r=0.058
+2026-04-26 01:08:06,431 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:08:06,432 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=LABUSDT source=smart_exit pnl_r=-0.640
+2026-04-26 01:08:06,846 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:08:06,846 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MUSDT source=smart_exit pnl_r=-0.067
+2026-04-26 01:08:07,259 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:08:07,259 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SAHARAUSDT source=smart_exit pnl_r=0.170
+2026-04-26 01:08:17,675 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:08:17,675 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=GALAUSDT source=smart_exit pnl_r=0.058
+2026-04-26 01:08:18,089 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:08:18,089 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=LABUSDT source=smart_exit pnl_r=-0.657
+2026-04-26 01:08:18,866 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:08:18,866 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MUSDT source=smart_exit pnl_r=-0.067
+2026-04-26 01:08:19,279 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:08:19,279 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SAHARAUSDT source=smart_exit pnl_r=0.155
+2026-04-26 01:08:29,489 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=GALAUSDT price=0.00349100 bars_alive=25
+2026-04-26 01:08:29,700 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:08:29,700 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=GALAUSDT source=smart_exit pnl_r=0.058
+2026-04-26 01:08:29,904 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=LABUSDT price=0.69733000 bars_alive=25
+2026-04-26 01:08:30,113 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:08:30,114 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=LABUSDT source=smart_exit pnl_r=-0.668
+2026-04-26 01:08:30,318 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=MUSDT price=4.34160000 bars_alive=25
+2026-04-26 01:08:30,528 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:08:30,528 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MUSDT source=smart_exit pnl_r=-0.067
+2026-04-26 01:08:30,731 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=SAHARAUSDT price=0.02349900 bars_alive=25
+2026-04-26 01:08:30,942 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:08:30,943 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SAHARAUSDT source=smart_exit pnl_r=0.155
+2026-04-26 01:08:41,356 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:08:41,356 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=GALAUSDT source=smart_exit pnl_r=0.000
+2026-04-26 01:08:41,769 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:08:41,769 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=LABUSDT source=smart_exit pnl_r=-0.675
+2026-04-26 01:08:42,185 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:08:42,185 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MUSDT source=smart_exit pnl_r=-0.067
+2026-04-26 01:08:42,598 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:08:42,599 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SAHARAUSDT source=smart_exit pnl_r=0.156
+2026-04-26 01:08:53,382 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:08:53,382 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=GALAUSDT source=smart_exit pnl_r=0.000
+2026-04-26 01:08:53,587 - [EXECUTION] DEBUG - POSITION_PNL_UPDATE: symbol=LABUSDT pnl_r=-0.682 max_profit_r=0.000
+2026-04-26 01:08:53,797 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:08:53,797 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=LABUSDT source=smart_exit pnl_r=-0.682
+2026-04-26 01:08:54,220 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:08:54,220 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MUSDT source=smart_exit pnl_r=-0.067
+2026-04-26 01:08:54,642 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:08:54,642 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SAHARAUSDT source=smart_exit pnl_r=0.131
+2026-04-26 01:08:56,037 - [EXECUTION] DEBUG - REGIME_CLASSIFICATION: atr_pct=0.0000 adx=20.00 vol_expansion=0.000 structure=RANGE momentum=0.500 regime=LOW_VOLATILITY
+2026-04-26 01:08:56,037 - [EXECUTION] DEBUG - EXECUTION_CONFIDENCE_BREAKDOWN: regime_quality=0.550 vol_stability=0.775 signal=0.500 fail=0.333 latency=0.717 confidence=0.573
+2026-04-26 01:08:56,037 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.500 vol_exp=0.000 wick=0.500 liq=0.696 impulse=0.283 noise=0.526 breakout=0.416
+2026-04-26 01:09:04,872 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=GALAUSDT price=0.00348800 bars_alive=28
+2026-04-26 01:09:05,082 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:09:05,082 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=GALAUSDT source=smart_exit pnl_r=0.015
+2026-04-26 01:09:05,289 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=LABUSDT price=0.68838000 bars_alive=28
+2026-04-26 01:09:05,500 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:09:05,500 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=LABUSDT source=smart_exit pnl_r=-0.703
+2026-04-26 01:09:05,706 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=MUSDT price=4.34370000 bars_alive=28
+2026-04-26 01:09:05,917 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:09:05,917 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MUSDT source=smart_exit pnl_r=-0.046
+2026-04-26 01:09:06,122 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=SAHARAUSDT price=0.02346700 bars_alive=28
+2026-04-26 01:09:06,334 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:09:06,334 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SAHARAUSDT source=smart_exit pnl_r=0.115
+2026-04-26 01:09:16,753 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:09:16,753 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=GALAUSDT source=smart_exit pnl_r=0.015
+2026-04-26 01:09:17,181 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:09:17,181 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=LABUSDT source=smart_exit pnl_r=-0.698
+2026-04-26 01:09:17,599 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:09:17,599 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MUSDT source=smart_exit pnl_r=-0.046
+2026-04-26 01:09:18,024 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:09:18,024 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SAHARAUSDT source=smart_exit pnl_r=0.116
+2026-04-26 01:09:28,464 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:09:28,464 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=GALAUSDT source=smart_exit pnl_r=0.000
+2026-04-26 01:09:28,884 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:09:28,885 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=LABUSDT source=smart_exit pnl_r=-0.704
+2026-04-26 01:09:29,301 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:09:29,301 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MUSDT source=smart_exit pnl_r=-0.046
+2026-04-26 01:09:29,716 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:09:29,716 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SAHARAUSDT source=smart_exit pnl_r=0.050
+2026-04-26 01:09:39,928 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=GALAUSDT price=0.00348700 bars_alive=31
+2026-04-26 01:09:40,139 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:09:40,139 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=GALAUSDT source=smart_exit pnl_r=0.000
+2026-04-26 01:09:40,345 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=LABUSDT price=0.69001000 bars_alive=31
+2026-04-26 01:09:40,555 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:09:40,555 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=LABUSDT source=smart_exit pnl_r=-0.697
+2026-04-26 01:09:40,763 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=MUSDT price=4.33780000 bars_alive=31
+2026-04-26 01:09:40,973 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:09:40,973 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MUSDT source=smart_exit pnl_r=-0.106
+2026-04-26 01:09:41,179 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=SAHARAUSDT price=0.02342400 bars_alive=31
+2026-04-26 01:09:41,390 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:09:41,390 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SAHARAUSDT source=smart_exit pnl_r=0.061
+2026-04-26 01:09:51,823 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:09:51,823 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=GALAUSDT source=smart_exit pnl_r=0.000
+2026-04-26 01:09:52,240 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:09:52,240 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=LABUSDT source=smart_exit pnl_r=-0.720
+2026-04-26 01:09:52,657 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:09:52,658 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MUSDT source=smart_exit pnl_r=-0.106
+2026-04-26 01:09:53,074 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:09:53,074 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SAHARAUSDT source=smart_exit pnl_r=0.064
+2026-04-26 01:10:03,498 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:10:03,498 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=GALAUSDT source=smart_exit pnl_r=0.029
+2026-04-26 01:10:03,916 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:10:03,916 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=LABUSDT source=smart_exit pnl_r=-0.739
+2026-04-26 01:10:04,332 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:10:04,333 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MUSDT source=smart_exit pnl_r=-0.090
+2026-04-26 01:10:04,748 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:10:04,748 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SAHARAUSDT source=smart_exit pnl_r=0.035
+2026-04-26 01:10:14,965 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=GALAUSDT price=0.00348700 bars_alive=34
+2026-04-26 01:10:15,176 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:10:15,176 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=GALAUSDT source=smart_exit pnl_r=0.000
+2026-04-26 01:10:15,383 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=LABUSDT price=0.68478000 bars_alive=34
+2026-04-26 01:10:15,592 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:10:15,592 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=LABUSDT source=smart_exit pnl_r=-0.717
+2026-04-26 01:10:15,799 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=MUSDT price=4.33760000 bars_alive=34
+2026-04-26 01:10:16,010 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:10:16,010 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MUSDT source=smart_exit pnl_r=-0.108
+2026-04-26 01:10:16,217 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=SAHARAUSDT price=0.02340900 bars_alive=34
+2026-04-26 01:10:16,429 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:10:16,429 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SAHARAUSDT source=smart_exit pnl_r=0.042
+2026-04-26 01:10:26,863 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:10:26,863 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=GALAUSDT source=smart_exit pnl_r=0.000
+2026-04-26 01:10:27,279 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:10:27,279 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=LABUSDT source=smart_exit pnl_r=-0.714
+2026-04-26 01:10:28,059 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:10:28,060 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MUSDT source=smart_exit pnl_r=-0.108
+2026-04-26 01:10:28,476 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:10:28,476 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SAHARAUSDT source=smart_exit pnl_r=0.045
+2026-04-26 01:10:38,905 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:10:38,905 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=GALAUSDT source=smart_exit pnl_r=0.000
+2026-04-26 01:10:39,322 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:10:39,322 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=LABUSDT source=smart_exit pnl_r=-0.665
+2026-04-26 01:10:39,738 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:10:39,738 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MUSDT source=smart_exit pnl_r=-0.080
+2026-04-26 01:10:40,154 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:10:40,154 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SAHARAUSDT source=smart_exit pnl_r=0.055
+2026-04-26 01:10:50,371 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=GALAUSDT price=0.00348700 bars_alive=37
+2026-04-26 01:10:50,583 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:10:50,583 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=GALAUSDT source=smart_exit pnl_r=0.000
+2026-04-26 01:10:50,790 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=LABUSDT price=0.69420000 bars_alive=37
+2026-04-26 01:10:51,001 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:10:51,001 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=LABUSDT source=smart_exit pnl_r=-0.680
+2026-04-26 01:10:51,207 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=MUSDT price=4.34040000 bars_alive=37
+2026-04-26 01:10:51,417 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:10:51,417 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=MUSDT source=smart_exit pnl_r=-0.080
+2026-04-26 01:10:51,625 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=SAHARAUSDT price=0.02342600 bars_alive=37
+2026-04-26 01:10:51,835 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-26 01:10:51,835 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=SAHARAUSDT source=smart_exit pnl_r=0.064

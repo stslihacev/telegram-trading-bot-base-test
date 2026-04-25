@@ -1,142 +1,274 @@
 {
   "version": 3,
   "active_signals": {
-    "ZBTUSDT": {
-      "signal_id": "ZBTUSDT_1h_LONG_2026-04-25 14:00:00+00:00",
-      "execution_id": "exec_e9d10685652b",
+    "ZECUSDT": {
+      "signal_id": "ZECUSDT_1h_LONG_2026-04-25 20:00:00+00:00",
+      "execution_id": "exec_a07b5f88136b",
       "position_id": null,
       "direction": "LONG",
-      "entry": 0.1408,
-      "sl": 0.1264442857142857,
-      "tp": 0.1637691428571429,
-      "score": 3.0,
-      "confidence": 0.6,
+      "entry": 357.68,
+      "sl": 349.2272857142857,
+      "tp": 371.2043428571429,
+      "score": 2.5,
+      "confidence": 0.5,
       "status": "FAILED",
-      "timestamp": "2026-04-25T16:18:30.256623+00:00",
+      "timestamp": "2026-04-25T22:08:56.040189+00:00",
       "history": [
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-25 14:00:00+00:00"
+          "timestamp": "2026-04-25 19:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
           "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-25T16:13:22.577607+00:00"
+          "reason": "SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-25T21:53:18.597796+00:00"
         },
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-25 14:00:00+00:00"
+          "timestamp": "2026-04-25 19:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
           "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-25T16:18:30.256623+00:00"
+          "reason": "SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-25T21:58:28.199614+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-25 20:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "SCORE_BELOW_THRESHOLD",
+          "timestamp": "2026-04-25T22:08:56.040189+00:00"
         }
       ]
     },
-    "RIVERUSDT": {
-      "signal_id": "RIVERUSDT_1h_SHORT_2026-04-25 14:00:00+00:00",
-      "execution_id": "exec_e8d35fff5f8e",
-      "position_id": "pos_RIVERUSDT_exec_e8d35fff5f8e",
-      "direction": "SHORT",
-      "entry": 6.404,
-      "sl": 6.597328571428571,
-      "tp": 6.0946742857142855,
-      "score": 3.9,
-      "confidence": 0.78,
+    "GALAUSDT": {
+      "signal_id": "GALAUSDT_1h_LONG_2026-04-25 20:00:00+00:00",
+      "execution_id": "exec_a91069ec1b85",
+      "position_id": "pos_GALAUSDT_exec_a91069ec1b85",
+      "direction": "LONG",
+      "entry": 0.003487,
+      "sl": 0.0034182142857142857,
+      "tp": 0.003597057142857143,
+      "score": 3.0,
+      "confidence": 0.6,
       "status": "OPEN",
-      "timestamp": "2026-04-25 14:00:00+00:00",
+      "timestamp": "2026-04-25 20:00:00+00:00",
       "history": [
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-25 14:00:00+00:00"
+          "timestamp": "2026-04-25 20:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
           "to": "EXECUTED",
           "reason": "",
-          "timestamp": "2026-04-25 14:00:00+00:00"
+          "timestamp": "2026-04-25 20:00:00+00:00"
         },
         {
           "from": "EXECUTED",
           "to": "OPEN",
           "reason": "",
-          "timestamp": "2026-04-25 14:00:00+00:00"
+          "timestamp": "2026-04-25 20:00:00+00:00"
         }
       ]
     },
-    "RAVEUSDT": {
-      "signal_id": "RAVEUSDT_1h_SHORT_2026-04-25 15:00:00+00:00",
-      "execution_id": "exec_1f608896c56a",
-      "position_id": null,
-      "direction": "SHORT",
-      "entry": 0.77843,
-      "sl": 0.9316491428571428,
-      "tp": 0.5332793714285713,
+    "LABUSDT": {
+      "signal_id": "LABUSDT_1h_LONG_2026-04-25 20:00:00+00:00",
+      "execution_id": "exec_2066b63916c6",
+      "position_id": "pos_LABUSDT_exec_2066b63916c6",
+      "direction": "LONG",
+      "entry": 0.86771,
+      "sl": 0.612637,
+      "tp": 1.2758268,
       "score": 3.15,
       "confidence": 0.63,
-      "status": "FAILED",
-      "timestamp": "2026-04-25T17:02:27.697358+00:00",
+      "status": "OPEN",
+      "timestamp": "2026-04-25 20:00:00+00:00",
       "history": [
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-25 15:00:00+00:00"
+          "timestamp": "2026-04-25 20:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
-          "to": "FAILED",
-          "reason": "ADAPTIVE_SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-25T17:02:27.697358+00:00"
+          "to": "EXECUTED",
+          "reason": "",
+          "timestamp": "2026-04-25 20:00:00+00:00"
+        },
+        {
+          "from": "EXECUTED",
+          "to": "OPEN",
+          "reason": "",
+          "timestamp": "2026-04-25 20:00:00+00:00"
+        }
+      ]
+    },
+    "MUSDT": {
+      "signal_id": "MUSDT_1h_LONG_2026-04-25 20:00:00+00:00",
+      "execution_id": "exec_a4e8a54e667b",
+      "position_id": "pos_MUSDT_exec_a4e8a54e667b",
+      "direction": "LONG",
+      "entry": 4.3482,
+      "sl": 4.250128571428572,
+      "tp": 4.505114285714285,
+      "score": 3.9,
+      "confidence": 0.78,
+      "status": "OPEN",
+      "timestamp": "2026-04-25 20:00:00+00:00",
+      "history": [
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-25 20:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "EXECUTED",
+          "reason": "",
+          "timestamp": "2026-04-25 20:00:00+00:00"
+        },
+        {
+          "from": "EXECUTED",
+          "to": "OPEN",
+          "reason": "",
+          "timestamp": "2026-04-25 20:00:00+00:00"
+        }
+      ]
+    },
+    "SAHARAUSDT": {
+      "signal_id": "SAHARAUSDT_1h_LONG_2026-04-25 20:00:00+00:00",
+      "execution_id": "exec_21c96df71878",
+      "position_id": "pos_SAHARAUSDT_exec_21c96df71878",
+      "direction": "LONG",
+      "entry": 0.023375,
+      "sl": 0.022574357142857143,
+      "tp": 0.02465602857142857,
+      "score": 3.0,
+      "confidence": 0.6,
+      "status": "OPEN",
+      "timestamp": "2026-04-25 20:00:00+00:00",
+      "history": [
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-25 20:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "EXECUTED",
+          "reason": "",
+          "timestamp": "2026-04-25 20:00:00+00:00"
+        },
+        {
+          "from": "EXECUTED",
+          "to": "OPEN",
+          "reason": "",
+          "timestamp": "2026-04-25 20:00:00+00:00"
         }
       ]
     }
   },
   "signal_history": {
-    "ZBTUSDT": [
+    "API3USDT": [
       {
-        "signal_id": "ZBTUSDT_1h_LONG_2026-04-25 14:00:00+00:00",
+        "signal_id": "API3USDT_1h_LONG_2026-04-25 17:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-25T16:13:22.578606+00:00",
-        "direction": "LONG",
-        "score": 3.0,
-        "reason": "NO_ACTIVE_DUPLICATE"
-      },
-      {
-        "signal_id": "ZBTUSDT_1h_LONG_2026-04-25 14:00:00+00:00",
-        "status": "ALLOW",
-        "timestamp": "2026-04-25T16:18:30.257623+00:00",
+        "timestamp": "2026-04-25T19:01:05.319893+00:00",
         "direction": "LONG",
         "score": 3.0,
         "reason": "NO_ACTIVE_DUPLICATE"
       }
     ],
-    "RIVERUSDT": [
+    "SOONUSDT": [
       {
-        "signal_id": "RIVERUSDT_1h_SHORT_2026-04-25 14:00:00+00:00",
+        "signal_id": "SOONUSDT_1h_LONG_2026-04-25 17:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-25T16:13:24.736355+00:00",
-        "direction": "SHORT",
+        "timestamp": "2026-04-25T19:01:07.204701+00:00",
+        "direction": "LONG",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      }
+    ],
+    "ZECUSDT": [
+      {
+        "signal_id": "ZECUSDT_1h_LONG_2026-04-25 19:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-25T21:53:18.598797+00:00",
+        "direction": "LONG",
+        "score": 2.5,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "ZECUSDT_1h_LONG_2026-04-25 19:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-25T21:58:28.201614+00:00",
+        "direction": "LONG",
+        "score": 2.5,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "ZECUSDT_1h_LONG_2026-04-25 20:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-25T22:08:56.042187+00:00",
+        "direction": "LONG",
+        "score": 2.5,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      }
+    ],
+    "GALAUSDT": [
+      {
+        "signal_id": "GALAUSDT_1h_LONG_2026-04-25 20:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-25T22:03:40.686399+00:00",
+        "direction": "LONG",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      }
+    ],
+    "LABUSDT": [
+      {
+        "signal_id": "LABUSDT_1h_LONG_2026-04-25 20:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-25T22:03:42.589703+00:00",
+        "direction": "LONG",
+        "score": 3.15,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      }
+    ],
+    "MUSDT": [
+      {
+        "signal_id": "MUSDT_1h_LONG_2026-04-25 20:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-25T22:03:44.499584+00:00",
+        "direction": "LONG",
         "score": 3.9,
         "reason": "NO_ACTIVE_DUPLICATE"
       }
     ],
-    "RAVEUSDT": [
+    "SAHARAUSDT": [
       {
-        "signal_id": "RAVEUSDT_1h_SHORT_2026-04-25 15:00:00+00:00",
+        "signal_id": "SAHARAUSDT_1h_LONG_2026-04-25 20:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-25T17:02:27.698359+00:00",
-        "direction": "SHORT",
-        "score": 3.15,
+        "timestamp": "2026-04-25T22:03:46.402301+00:00",
+        "direction": "LONG",
+        "score": 3.0,
         "reason": "NO_ACTIVE_DUPLICATE"
       }
     ]

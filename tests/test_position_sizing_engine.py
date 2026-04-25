@@ -110,7 +110,26 @@ def test_decision_engine_falls_back_to_legacy_when_dynamic_disabled(monkeypatch)
 
     monkeypatch.setattr(engine.position_sizing_engine, "calculate_size", _force_fallback)
     decision = engine.evaluate_order(
-        {"symbol": "BTCUSDT", "direction": "LONG", "entry": 100.0, "sl": 95.0, "score": 4.0, "live_mode": "MAIN"},
+        {
+            "symbol": "BTCUSDT",
+            "direction": "LONG",
+            "entry": 100.0,
+            "sl": 95.0,
+            "score": 4.0,
+            "decision_lock": {
+                "locked": True,
+                "hard_pass": True,
+                "execution_score": 4.0,
+                "threshold": 3.0,
+                "base_risk": 0.01,
+                "hard_blockers": [],
+                "blockers_hash": "none",
+                "snapshot_version": 1,
+                "risk_context": {"available_balance": 1000.0, "leverage": 3.0, "safety_buffer": 0.88},
+                "portfolio_snapshot": {"total_exposure": 0.0, "symbol_exposure": 0.0, "margin_used": 0.0, "open_positions_count": 0},
+                "constraints": {"step_size": 0.001, "min_qty": 0.001, "max_qty": 1000.0, "tick_size": 0.1, "min_notional": 5.0},
+            },
+        },
         market_data={"available_balance": 1000.0, "leverage": 3.0, "safety_buffer": 0.88},
         portfolio_state={"open_positions": {}},
     )

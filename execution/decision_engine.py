@@ -10,7 +10,6 @@ import core.config as config
 from utils.logger import execution_logger
 
 from execution.position_sizing import PositionSizingEngine
-from execution.scoring_contract import resolve_signal_threshold
 
 class DecisionAction(str, Enum):
     APPROVE = "APPROVE"
@@ -47,6 +46,13 @@ class LockedDecisionSnapshot:
     hard_pass: bool
     base_risk: float
     hard_blockers: tuple[str, ...]
+    blockers_hash: str
+    snapshot_version: int
+    available_balance: float
+    leverage: float
+    safety_buffer: float
+    constraints: dict[str, float]
+    portfolio_snapshot: PortfolioSnapshot
 
 class ExecutionDecisionEngine:
     """Single execution brain for sizing, risk and exchange validation."""
@@ -57,6 +63,7 @@ class ExecutionDecisionEngine:
         self.position_sizing_engine = PositionSizingEngine()
 
     def evaluate_order(self, signal: dict[str, Any], market_data: dict[str, Any], portfolio_state: dict[str, Any]) -> ExecutionDecision:
+        _ = market_data, portfolio_state
         locked = self._build_locked_snapshot(signal)
         symbol = locked.symbol
         side = locked.side
@@ -64,7 +71,7 @@ class ExecutionDecisionEngine:
         entry = locked.entry
         sl = locked.sl
 
-        constraints = self._load_constraints(symbol)
+        constraints = locked.constraints
         if entry <= 0 or sl <= 0 or constraints["max_qty"] <= 0:
             return self._decision(DecisionAction.EMERGENCY_REJECT, "INVALID_SPEC", 0.0, side, symbol, {"constraints": constraints})
 
@@ -100,7 +107,7 @@ class ExecutionDecisionEngine:
                 {"hard_pass": hard_pass, "threshold": threshold, "execution_score": score},
             )
 
-        snapshot = self._snapshot_from_portfolio(portfolio_state, symbol)
+        snapshot = locked.portfolio_snapshot
 
         # Priority 1: emergency blockers.
         max_open = int(getattr(config, "MAX_OPEN_TRADES_GLOBAL", 40))
@@ -109,14 +116,7 @@ class ExecutionDecisionEngine:
 
         base_risk = locked.base_risk
         score_mult = self._score_multiplier(score)
-        risk_context = market_data.get("risk_context") if isinstance(market_data.get("risk_context"), dict) else {}
-        balance = max(
-            0.0,
-            self._safe_float(
-                risk_context.get("available_balance", market_data.get("available_balance")),
-                0.0,
-            ),
-        )
+        balance = max(0.0, locked.available_balance)
         cap_mult, cap_reason = self._portfolio_cap_multiplier(snapshot, balance=balance)
         if cap_mult <= 0:
             return self._decision(DecisionAction.EMERGENCY_REJECT, "PORTFOLIO_EXPOSURE_BLOCK", 0.0, side, symbol, {"snapshot": snapshot.__dict__})
@@ -174,7 +174,7 @@ class ExecutionDecisionEngine:
             constraints=constraints,
             snapshot=snapshot,
             balance=balance,
-            market_data=market_data,
+            market_data={"leverage": locked.leverage, "safety_buffer": locked.safety_buffer},
             meta=sizing_meta,
         )
         if validated["final_qty"] <= 0:
@@ -199,31 +199,74 @@ class ExecutionDecisionEngine:
                     "hard_pass": hard_pass,
                     "execution_score": score,
                     "threshold": threshold,
+                    "snapshot_version": locked.snapshot_version,
+                    "blockers_hash": locked.blockers_hash,
                 },
             },
         )
 
     def _build_locked_snapshot(self, signal: dict[str, Any]) -> LockedDecisionSnapshot:
+        decision_lock = signal.get("decision_lock")
+        if not isinstance(decision_lock, dict) or not bool(decision_lock.get("locked")):
+            symbol = str(signal.get("symbol") or "").upper()
+            direction = str(signal.get("direction") or "LONG").upper()
+            side = "Buy" if direction == "LONG" else "Sell"
+            return LockedDecisionSnapshot(
+                symbol=symbol,
+                side=side,
+                entry=0.0,
+                sl=0.0,
+                execution_score=0.0,
+                threshold=0.0,
+                hard_pass=False,
+                base_risk=0.0,
+                hard_blockers=("DECISION_LOCK_REQUIRED",),
+                blockers_hash="missing",
+                snapshot_version=0,
+                available_balance=0.0,
+                leverage=1.0,
+                safety_buffer=0.88,
+                constraints={"step_size": 0.0, "min_qty": 0.0, "max_qty": 0.0, "tick_size": 0.0, "min_notional": 5.0},
+                portfolio_snapshot=PortfolioSnapshot(0.0, 0.0, 0.0, 0),
+            )
         symbol = str(signal.get("symbol") or "").upper()
         direction = str(signal.get("direction") or "LONG").upper()
         side = "Buy" if direction == "LONG" else "Sell"
-        score = self._resolve_effective_score(signal)
-        signal_quality = signal.get("signal_quality") if isinstance(signal.get("signal_quality"), dict) else {}
-        threshold = self._safe_float(signal_quality.get("threshold"), float("nan"))
-        if threshold != threshold:
-            threshold = resolve_signal_threshold(signal)
-        hard_pass = bool(signal_quality.get("hard_pass", signal.get("hard_pass", True)))
-        hard_blockers = tuple(str(reason).strip() for reason in (signal.get("execution_hard_blockers") or []) if str(reason).strip())
+        score = max(0.0, self._safe_float(decision_lock.get("execution_score"), 0.0))
+        threshold = max(0.0, self._safe_float(decision_lock.get("threshold"), 0.0))
+        hard_pass = bool(decision_lock.get("hard_pass", False))
+        hard_blockers = tuple(str(reason).strip() for reason in (decision_lock.get("hard_blockers") or []) if str(reason).strip())
+        risk_context = decision_lock.get("risk_context") if isinstance(decision_lock.get("risk_context"), dict) else {}
+        constraints_lock = decision_lock.get("constraints") if isinstance(decision_lock.get("constraints"), dict) else {}
+        portfolio_lock = decision_lock.get("portfolio_snapshot") if isinstance(decision_lock.get("portfolio_snapshot"), dict) else {}
         return LockedDecisionSnapshot(
             symbol=symbol,
             side=side,
             entry=self._safe_float(signal.get("entry"), 0.0),
             sl=self._safe_float(signal.get("sl"), 0.0),
             execution_score=score,
-            threshold=max(0.0, threshold),
+            threshold=threshold,
             hard_pass=hard_pass,
-            base_risk=self._resolve_base_risk(signal),
+            base_risk=max(0.0, self._safe_float(decision_lock.get("base_risk"), 0.0)),
             hard_blockers=hard_blockers,
+            blockers_hash=str(decision_lock.get("blockers_hash") or "na"),
+            snapshot_version=max(0, int(self._safe_float(decision_lock.get("snapshot_version"), 1))),
+            available_balance=max(0.0, self._safe_float(risk_context.get("available_balance"), 0.0)),
+            leverage=max(1.0, self._safe_float(risk_context.get("leverage"), getattr(config, "MAX_NOTIONAL_LEVERAGE", 3.0))),
+            safety_buffer=min(0.9, max(0.85, self._safe_float(risk_context.get("safety_buffer"), 0.88))),
+            constraints={
+                "step_size": self._safe_float(constraints_lock.get("step_size"), 0.0),
+                "min_qty": self._safe_float(constraints_lock.get("min_qty"), 0.0),
+                "max_qty": self._safe_float(constraints_lock.get("max_qty"), 0.0),
+                "tick_size": self._safe_float(constraints_lock.get("tick_size"), 0.0),
+                "min_notional": self._safe_float(constraints_lock.get("min_notional"), 5.0),
+            },
+            portfolio_snapshot=PortfolioSnapshot(
+                total_exposure=max(0.0, self._safe_float(portfolio_lock.get("total_exposure"), 0.0)),
+                symbol_exposure=max(0.0, self._safe_float(portfolio_lock.get("symbol_exposure"), 0.0)),
+                margin_used=max(0.0, self._safe_float(portfolio_lock.get("margin_used"), 0.0)),
+                open_positions_count=max(0, int(self._safe_float(portfolio_lock.get("open_positions_count"), 0))),
+            ),
         )
 
     def _validate_and_scale(
@@ -291,37 +334,6 @@ class ExecutionDecisionEngine:
             "input_qty": qty,
             "meta": meta,
         }
-
-    def _load_constraints(self, symbol: str) -> dict[str, float]:
-        base = self.bybit.get_symbol_lot_filters(symbol)
-        return {
-            "step_size": self._safe_float(base.get("qty_step"), 0.0),
-            "min_qty": self._safe_float(base.get("min_qty"), 0.0),
-            "max_qty": self._safe_float(base.get("max_qty"), 0.0),
-            "tick_size": self._safe_float(base.get("tick_size"), 0.0),
-            "min_notional": self._safe_float(base.get("min_notional"), 5.0),
-        }
-
-    def _snapshot_from_portfolio(self, portfolio_state: dict[str, Any], symbol: str) -> PortfolioSnapshot:
-        positions = portfolio_state.get("open_positions") if isinstance(portfolio_state, dict) else None
-        if not isinstance(positions, dict):
-            positions = {}
-        total_exposure = 0.0
-        symbol_exposure = 0.0
-        margin_used = 0.0
-        for sym, row in positions.items():
-            if not isinstance(row, dict):
-                continue
-            entry = self._safe_float(row.get("entry"), 0.0)
-            qty = self._safe_float(row.get("qty"), 0.0)
-            exposure = abs(entry * qty)
-            total_exposure += exposure
-            if str(sym).upper() == symbol:
-                symbol_exposure += exposure
-            margin_used += self._safe_float(row.get("margin"), 0.0)
-        snap = PortfolioSnapshot(total_exposure, symbol_exposure, margin_used, len(positions))
-        self._portfolio_snapshot = snap
-        return snap
 
     @staticmethod
     def _resolve_base_risk(signal: dict[str, Any]) -> float:

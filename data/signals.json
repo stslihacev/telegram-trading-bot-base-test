@@ -1942,5 +1942,77 @@
     "signal_type": "strict",
     "score": 3.15,
     "timestamp": "2026-04-25T15:00:00+00:00"
+  },
+  {
+    "signal_id": "API3USDT_1h_LONG_2026-04-25 17:00:00+00:00",
+    "symbol": "API3USDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-25T17:00:00+00:00"
+  },
+  {
+    "signal_id": "SOONUSDT_1h_LONG_2026-04-25 17:00:00+00:00",
+    "symbol": "SOONUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-25T17:00:00+00:00"
+  },
+  {
+    "signal_id": "ZECUSDT_1h_LONG_2026-04-25 19:00:00+00:00",
+    "symbol": "ZECUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 2.5,
+    "timestamp": "2026-04-25T19:00:00+00:00"
+  },
+  {
+    "signal_id": "GALAUSDT_1h_LONG_2026-04-25 20:00:00+00:00",
+    "symbol": "GALAUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-25T20:00:00+00:00"
+  },
+  {
+    "signal_id": "LABUSDT_1h_LONG_2026-04-25 20:00:00+00:00",
+    "symbol": "LABUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.15,
+    "timestamp": "2026-04-25T20:00:00+00:00"
+  },
+  {
+    "signal_id": "MUSDT_1h_LONG_2026-04-25 20:00:00+00:00",
+    "symbol": "MUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.9,
+    "timestamp": "2026-04-25T20:00:00+00:00"
+  },
+  {
+    "signal_id": "SAHARAUSDT_1h_LONG_2026-04-25 20:00:00+00:00",
+    "symbol": "SAHARAUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-25T20:00:00+00:00"
+  },
+  {
+    "signal_id": "ZECUSDT_1h_LONG_2026-04-25 20:00:00+00:00",
+    "symbol": "ZECUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 2.5,
+    "timestamp": "2026-04-25T20:00:00+00:00"
   }
 ]

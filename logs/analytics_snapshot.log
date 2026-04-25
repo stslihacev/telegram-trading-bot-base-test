@@ -3,14 +3,14 @@
 ANALYTICS REPORT:
 
 Signals:
-* total: 725
-* strict: 725
+* total: 740
+* strict: 740
 * fallback: 0
-* opened: 422
-* blocked_by_limits: 116
+* opened: 435
+* blocked_by_limits: 118
 
 Opened:
-* strict: 422
+* strict: 435
 * fallback: 0
 
 Results:
@@ -19,19 +19,19 @@ Results:
 
 📊 СТАТИСТИКА СИГНАЛОВ
 
-Всего сигналов: 725
-Уникальных: 579
-Дубликатов: 146
+Всего сигналов: 740
+Уникальных: 592
+Дубликатов: 148
 
-LIGHT: 40
-MAIN: 3645
-SCALPING: 1709
+LIGHT: 44
+MAIN: 4366
+SCALPING: 1861
 
-strict source: 5394
+strict source: 6271
 relaxed source: 0
 
 Средний confidence: 0.71
-Средний score: 3.57
+Средний score: 3.56
 
 🛡️ PORTFOLIO RISK DIAGNOSTICS
 avg_portfolio_risk: 0.00%
@@ -40,18 +40,18 @@ signals_blocked_by_risk: 9
 signals_scaled_by_risk: 0
 
 Качество:
-⭐⭐⭐⭐⭐: 37
-⭐⭐⭐⭐: 98
-⭐⭐⭐: 0
+⭐⭐⭐⭐⭐: 0
+⭐⭐⭐⭐: 5
+⭐⭐⭐: 3
 ⭐⭐: 0
 ⭐: 0
 
 Топ фильтров:
-TREND: 18.6%
-STRUCTURE: 18.6%
-MACD: 13.5%
-RSI: 13.5%
-VOLUME: 11.6%
+TREND: 1.1%
+STRUCTURE: 1.1%
+RSI: 0.9%
+MACD: 0.4%
+ADX: 0.3%
 
 📈 TRADE OUTCOME ANALYTICS
 
@@ -86,9 +86,9 @@ relaxed: trades=1, wins=1, losses=0, winrate=100.0%, avgR=2.64, PF=∞
 
 REJECTION_STATS:
 MAIN:
-  DUPLICATE: 146
+  DUPLICATE: 148
   LOW_SCORE: 104
-  POSITION_LIMIT: 79
+  POSITION_LIMIT: 80
 SCALPING:
   LOW_SCORE: 95
 
@@ -106,26 +106,26 @@ Avg duration: 28h 2m
 High-conf losses: 0
 
 📌 MODE TRADE STATS
-LIGHT: signals=40, closed=0, winrate=0.0%, avgRR=0.00
-MAIN: signals=3645, closed=0, winrate=0.0%, avgRR=0.00
-SCALPING: signals=1709, closed=0, winrate=0.0%, avgRR=0.00
+LIGHT: signals=44, closed=0, winrate=0.0%, avgRR=0.00
+MAIN: signals=4366, closed=0, winrate=0.0%, avgRR=0.00
+SCALPING: signals=1861, closed=0, winrate=0.0%, avgRR=0.00
 
 🧪 FILTER OUTCOME BREAKDOWN
 -
 
 🧬 FILTER SIGNAL PARTICIPATION
-ADX: passed=608, weighted=608, failed=0
+ADX: passed=614, weighted=614, failed=0
 BODY: passed=1, weighted=0, failed=0
 EMA: passed=1, weighted=0, failed=0
-MACD: passed=416, weighted=415, failed=0
-RSI: passed=471, weighted=471, failed=1
+MACD: passed=422, weighted=421, failed=0
+RSI: passed=484, weighted=484, failed=1
 SMA: passed=0, weighted=0, failed=1
-STRUCTURE: passed=697, weighted=697, failed=0
-TREND: passed=697, weighted=697, failed=0
+STRUCTURE: passed=712, weighted=712, failed=0
+TREND: passed=712, weighted=712, failed=0
 
 🛡️ ANALYTICS INTEGRITY CHECK
-signals_generated=422 trades_opened=23 trades_closed=23
-signals_vs_trades_delta=399 trades_vs_closed_delta=0
+signals_generated=435 trades_opened=23 trades_closed=23
+signals_vs_trades_delta=412 trades_vs_closed_delta=0
 
 --------------------------------
 
@@ -134,20 +134,20 @@ signals_vs_trades_delta=399 trades_vs_closed_delta=0
 - EMA проходит только в 0% случаев — фильтр слишком строгий.
 - RSI почти не проходит — возможно пороги слишком жёсткие.
 - MACD почти не подтверждает сигналы: проверьте быстрые/медленные периоды.
-2026-04-24 17:31:20,142 - [ANALYTICS SNAPSHOT]
+2026-04-26 01:08:56,070 - [ANALYTICS SNAPSHOT]
 📊 SIGNAL ANALYTICS
 
 ANALYTICS REPORT:
 
 Signals:
-* total: 725
-* strict: 725
+* total: 740
+* strict: 740
 * fallback: 0
-* opened: 422
-* blocked_by_limits: 116
+* opened: 435
+* blocked_by_limits: 118
 
 Opened:
-* strict: 422
+* strict: 435
 * fallback: 0
 
 Results:
@@ -156,19 +156,19 @@ Results:
 
 📊 СТАТИСТИКА СИГНАЛОВ
 
-Всего сигналов: 725
-Уникальных: 579
-Дубликатов: 146
+Всего сигналов: 740
+Уникальных: 592
+Дубликатов: 148
 
-LIGHT: 40
-MAIN: 3645
-SCALPING: 1709
+LIGHT: 44
+MAIN: 4366
+SCALPING: 1861
 
-strict source: 5394
+strict source: 6271
 relaxed source: 0
 
 Средний confidence: 0.71
-Средний score: 3.57
+Средний score: 3.56
 
 🛡️ PORTFOLIO RISK DIAGNOSTICS
 avg_portfolio_risk: 0.00%
@@ -177,18 +177,18 @@ signals_blocked_by_risk: 9
 signals_scaled_by_risk: 0
 
 Качество:
-⭐⭐⭐⭐⭐: 37
-⭐⭐⭐⭐: 98
-⭐⭐⭐: 0
+⭐⭐⭐⭐⭐: 0
+⭐⭐⭐⭐: 5
+⭐⭐⭐: 3
 ⭐⭐: 0
 ⭐: 0
 
 Топ фильтров:
-TREND: 18.6%
-STRUCTURE: 18.6%
-MACD: 13.5%
-RSI: 13.5%
-VOLUME: 11.6%
+TREND: 1.1%
+STRUCTURE: 1.1%
+RSI: 0.9%
+MACD: 0.4%
+ADX: 0.3%
 
 📈 TRADE OUTCOME ANALYTICS
 
@@ -223,9 +223,9 @@ relaxed: trades=1, wins=1, losses=0, winrate=100.0%, avgR=2.64, PF=∞
 
 REJECTION_STATS:
 MAIN:
-  DUPLICATE: 146
+  DUPLICATE: 148
   LOW_SCORE: 104
-  POSITION_LIMIT: 79
+  POSITION_LIMIT: 80
 SCALPING:
   LOW_SCORE: 95
 
@@ -243,26 +243,26 @@ Avg duration: 28h 2m
 High-conf losses: 0
 
 📌 MODE TRADE STATS
-LIGHT: signals=40, closed=0, winrate=0.0%, avgRR=0.00
-MAIN: signals=3645, closed=0, winrate=0.0%, avgRR=0.00
-SCALPING: signals=1709, closed=0, winrate=0.0%, avgRR=0.00
+LIGHT: signals=44, closed=0, winrate=0.0%, avgRR=0.00
+MAIN: signals=4366, closed=0, winrate=0.0%, avgRR=0.00
+SCALPING: signals=1861, closed=0, winrate=0.0%, avgRR=0.00
 
 🧪 FILTER OUTCOME BREAKDOWN
 -
 
 🧬 FILTER SIGNAL PARTICIPATION
-ADX: passed=608, weighted=608, failed=0
+ADX: passed=614, weighted=614, failed=0
 BODY: passed=1, weighted=0, failed=0
 EMA: passed=1, weighted=0, failed=0
-MACD: passed=416, weighted=415, failed=0
-RSI: passed=471, weighted=471, failed=1
+MACD: passed=422, weighted=421, failed=0
+RSI: passed=484, weighted=484, failed=1
 SMA: passed=0, weighted=0, failed=1
-STRUCTURE: passed=697, weighted=697, failed=0
-TREND: passed=697, weighted=697, failed=0
+STRUCTURE: passed=712, weighted=712, failed=0
+TREND: passed=712, weighted=712, failed=0
 
 🛡️ ANALYTICS INTEGRITY CHECK
-signals_generated=422 trades_opened=23 trades_closed=23
-signals_vs_trades_delta=399 trades_vs_closed_delta=0
+signals_generated=435 trades_opened=23 trades_closed=23
+signals_vs_trades_delta=412 trades_vs_closed_delta=0
 
 --------------------------------
 

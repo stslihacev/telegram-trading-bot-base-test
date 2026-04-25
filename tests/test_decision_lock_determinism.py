@@ -47,6 +47,24 @@ def test_decision_engine_is_deterministic_for_locked_signal_and_snapshot() -> No
             "hard_pass": True,
             "execution_score": 4.4,
             "threshold": 3.0,
+            "base_risk": 0.01,
+            "hard_blockers": [],
+            "blockers_hash": "none",
+            "snapshot_version": 1,
+            "risk_context": {"available_balance": 1000.0, "leverage": 3.0, "safety_buffer": 0.88},
+            "portfolio_snapshot": {
+                "total_exposure": 10.0,
+                "symbol_exposure": 0.0,
+                "margin_used": 5.0,
+                "open_positions_count": 1,
+            },
+            "constraints": {
+                "step_size": 0.001,
+                "min_qty": 0.001,
+                "max_qty": 1000.0,
+                "tick_size": 0.1,
+                "min_notional": 5.0,
+            },
         },
     }
     market_data = {
