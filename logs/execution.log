@@ -30456,3 +30456,6 @@
 2026-04-25 19:18:30,253 - [EXECUTION] DEBUG - REGIME_CLASSIFICATION: atr_pct=0.0000 adx=20.00 vol_expansion=0.000 structure=RANGE momentum=0.600 regime=CHOPPY
 2026-04-25 19:18:30,254 - [EXECUTION] DEBUG - EXECUTION_CONFIDENCE_BREAKDOWN: regime_quality=0.350 vol_stability=0.820 signal=0.600 fail=0.500 latency=0.736 confidence=0.520
 2026-04-25 19:18:30,254 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.500 vol_exp=0.000 wick=0.500 liq=0.696 impulse=0.283 noise=0.526 breakout=0.416
+2026-04-25 20:02:27,691 - [EXECUTION] DEBUG - REGIME_CLASSIFICATION: atr_pct=0.0000 adx=20.00 vol_expansion=0.000 structure=RANGE momentum=0.630 regime=CHOPPY
+2026-04-25 20:02:27,691 - [EXECUTION] DEBUG - EXECUTION_CONFIDENCE_BREAKDOWN: regime_quality=0.350 vol_stability=0.834 signal=0.630 fail=0.000 latency=0.000 confidence=0.679
+2026-04-25 20:02:27,692 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.500 vol_exp=0.000 wick=0.500 liq=0.696 impulse=0.283 noise=0.526 breakout=0.416

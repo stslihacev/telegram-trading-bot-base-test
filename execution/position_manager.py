@@ -39,6 +39,7 @@ class ManagedPosition:
     breakeven_moved: bool = False
     partial_15r_done: bool = False
     partial_pullback_done: bool = False
+    partial_tp_executed: bool = False
     position_idx: int | None = None
     last_price: float = 0.0
     current_profit_r: float = 0.0
@@ -604,6 +605,11 @@ class PositionManager:
                 "allowed": orchestrator_decision.action != "HOLD",
                 "action": orchestrator_decision.action,
                 "exit_block_reason": orchestrator_decision.exit_block_reason or "",
+                "tp_lock_active": bool(orchestrator_decision.tp_lock_active),
+                "trailing_active": bool(orchestrator_decision.trailing_active),
+                "trailing_level_r": float(orchestrator_decision.trailing_level_r or 0.0),
+                "partial_tp_done": bool(orchestrator_decision.partial_tp_done),
+                "max_duration_blocked": bool(orchestrator_decision.max_duration_blocked),
             },
         )
         if orchestrator_decision.action != "HOLD":
@@ -649,6 +655,7 @@ class PositionManager:
                     closed_qty = self._safe_reduce_close(position, close_qty, "tp1_scaling")
                     position.size -= closed_qty
                 position.tp1_hit = True
+                position.partial_tp_executed = True
                 self._apply_sl_tp(position, new_sl=position.entry_price, new_tp=position.tp2)
                 log_structured_event(
                     "POSITION_STATE_CHANGE",
@@ -667,6 +674,8 @@ class PositionManager:
                 position.size -= closed_qty
                 if orchestrator_decision.reason == "early_pullback_protection":
                     position.partial_pullback_done = True
+                elif orchestrator_decision.reason == "partial_tp_1r":
+                    position.partial_tp_executed = True
                 else:
                     position.partial_15r_done = True
                 log_structured_event(

@@ -25339,3 +25339,25 @@ Reject reason: -
 🧠 Regime: N/A
 🕒 Time:   2026-04-25 14:00:00+00:00
 Fingerprint: e2b01c76b4e0d6cb
+2026-04-25 20:02:27,700 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    RAVEUSDT
+Direction: 🔻 SHORT
+Timeframe: 1h
+
+💰 Entry: 0.778430
+🎯 TP:    0.533279
+🛑 SL:    0.931649
+RR:    1.60
+
+Score:      3.15 / 5.00
+⭐ Confidence: 0.63 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, VOLUME, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-25 15:00:00+00:00
+Fingerprint: 6e544868703fc7df
