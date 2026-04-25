@@ -596,10 +596,14 @@ class PositionManager:
             position_id=position.position_id,
             context={
                 "pnl_r": round(float(metrics.get("current_profit_r", 0.0)), 4),
+                "peak_pnl_r": round(float(metrics.get("max_profit_r", 0.0)), 4),
+                "current_drawdown_r": round(float(metrics.get("drawdown_r", 0.0)), 4),
+                "distance_to_tp": round(float(metrics.get("distance_to_tp_r", 0.0)), 4),
                 "time_in_trade": int(position.bars_alive),
                 "reason": orchestrator_decision.reason,
                 "allowed": orchestrator_decision.action != "HOLD",
                 "action": orchestrator_decision.action,
+                "exit_block_reason": orchestrator_decision.exit_block_reason or "",
             },
         )
         if orchestrator_decision.action != "HOLD":

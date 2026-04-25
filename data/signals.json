@@ -1915,5 +1915,23 @@
     "signal_type": "strict",
     "score": 3.25,
     "timestamp": "2026-04-24T12:00:00+00:00"
+  },
+  {
+    "signal_id": "ZBTUSDT_1h_LONG_2026-04-25 14:00:00+00:00",
+    "symbol": "ZBTUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-25T14:00:00+00:00"
+  },
+  {
+    "signal_id": "RIVERUSDT_1h_SHORT_2026-04-25 14:00:00+00:00",
+    "symbol": "RIVERUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.9,
+    "timestamp": "2026-04-25T14:00:00+00:00"
   }
 ]

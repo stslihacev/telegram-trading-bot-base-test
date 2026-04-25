@@ -45,6 +45,7 @@ class ExitOrchestratorDecision:
     recommended_sl: float | None = None
     close_reason: str = ""
     momentum_score: float = 0.0
+    exit_block_reason: str = ""
 
 @dataclass
 class ExitStateTracker:
@@ -117,18 +118,15 @@ class ExitOrchestrator:
                 metrics,
             )
 
-        minimum_hold_met = (
-            bars_alive >= self.manager.min_bars_before_profit_actions
-            or progress_to_tp >= self.manager.min_progress_to_tp_for_early_exit
-        )
-        if not minimum_hold_met:
+        if bars_alive < self.manager.min_bars_before_profit_actions:
             return (
                 ExitOrchestratorDecision(
                     action="HOLD",
                     size=0.0,
-                    reason="minimum_hold_guard",
+                    reason="hold_stability_window",
                     priority=self.PRIORITY_HOLD,
                     momentum_score=0.0,
+                    exit_block_reason="no_discretionary_exit_window",
                 ),
                 metrics,
             )
@@ -138,6 +136,33 @@ class ExitOrchestrator:
             market_data=market_data,
             indicators=indicators,
         )
+        reversal_confirmed = self.manager.confirm_reversal_signal(
+            position=position,
+            market_data=market_data,
+            indicators=indicators,
+            momentum_score=momentum_score,
+            require_strong=False,
+        )
+        strong_reversal_confirmed = self.manager.confirm_reversal_signal(
+            position=position,
+            market_data=market_data,
+            indicators=indicators,
+            momentum_score=momentum_score,
+            require_strong=True,
+        )
+        moving_toward_tp = progress_to_tp >= 0.55 and drawdown_r <= 0.7 and current_profit_r >= 0.8
+        if moving_toward_tp and drawdown_r <= 0.7 and not reversal_confirmed:
+            return (
+                ExitOrchestratorDecision(
+                    action="HOLD",
+                    size=0.0,
+                    reason="tp_priority_guard",
+                    priority=self.PRIORITY_HOLD,
+                    momentum_score=momentum_score,
+                    exit_block_reason="moving_toward_tp_without_confirmed_reversal",
+                ),
+                metrics,
+            )
 
         # Stage 1: 0.8R-1.2R early pullback protection
         pullback_triggered, _, allowed_dd = self.manager.assess_pullback_protection(
@@ -147,7 +172,7 @@ class ExitOrchestrator:
             atr_in_r=atr_in_r,
             volatility_k=0.75,
         )
-        if pullback_triggered and current_profit_r < 1.2:
+        if pullback_triggered and current_profit_r < 1.2 and strong_reversal_confirmed:
             close_ratio = min(0.4, max(0.25, 0.3 + max(0.0, current_profit_r - 0.8) * 0.15))
             recommended_sl = entry + (0.2 * risk) if side == "LONG" else entry - (0.2 * risk)
             logger.info(
@@ -167,6 +192,18 @@ class ExitOrchestrator:
                     priority=self.PRIORITY_PARTIAL,
                     recommended_sl=recommended_sl,
                     momentum_score=momentum_score,
+                ),
+                metrics,
+            )
+        if pullback_triggered and current_profit_r < 1.2 and not strong_reversal_confirmed:
+            return (
+                ExitOrchestratorDecision(
+                    action="HOLD",
+                    size=0.0,
+                    reason="early_pullback_protection_deferred",
+                    priority=self.PRIORITY_HOLD,
+                    momentum_score=momentum_score,
+                    exit_block_reason="pullback_without_confirmed_reversal",
                 ),
                 metrics,
             )
@@ -196,8 +233,8 @@ class ExitOrchestrator:
                 metrics,
             )
 
-        # Stage 3: >=1.5R trailing stop management
-        if current_profit_r >= 1.5 and risk > 0:
+        # Stage 3: trailing stop management (activate >=1.0R, require >=0.5R drawdown from peak)
+        if max_profit_r >= 1.0 and drawdown_r >= 0.5 and risk > 0:
             trend_strength = self.manager._resolve_trend_strength(indicators, market_data)
             trailing_distance_r = 1.0 if trend_strength == "strong" else (0.6 if trend_strength == "weak" else 0.8)
             if distance_to_tp_r < 0.5:
@@ -221,7 +258,7 @@ class ExitOrchestrator:
             )
 
         # Momentum-based exits
-        if momentum_score >= 0.9 and current_profit_r >= 0.8 and drawdown_r >= 0.7:
+        if momentum_score >= 0.9 and current_profit_r >= 0.8 and drawdown_r >= 0.7 and reversal_confirmed:
             logger.info(
                 "MOMENTUM_EXIT_TRIGGERED: symbol=%s score=%.2f strength=strong pnl_r=%.3f",
                 str(getattr(position, "symbol", "")).upper(),
@@ -239,7 +276,7 @@ class ExitOrchestrator:
                 ),
                 metrics,
             )
-        if momentum_score >= 0.75 and current_profit_r >= 0.8 and drawdown_r >= 0.5:
+        if momentum_score >= 0.75 and current_profit_r >= 0.8 and drawdown_r >= 0.5 and reversal_confirmed:
             logger.info(
                 "MOMENTUM_EXIT_TRIGGERED: symbol=%s score=%.2f strength=medium pnl_r=%.3f",
                 str(getattr(position, "symbol", "")).upper(),
@@ -256,7 +293,7 @@ class ExitOrchestrator:
                 ),
                 metrics,
             )
-        if momentum_score >= 0.55 and current_profit_r >= 0.5 and risk > 0:
+        if momentum_score >= 0.55 and current_profit_r >= 0.5 and risk > 0 and reversal_confirmed:
             logger.info(
                 "MOMENTUM_EXIT_TRIGGERED: symbol=%s score=%.2f strength=weak pnl_r=%.3f",
                 str(getattr(position, "symbol", "")).upper(),
@@ -272,6 +309,7 @@ class ExitOrchestrator:
                     priority=self.PRIORITY_SL_UPDATE,
                     recommended_sl=tighten_sl,
                     momentum_score=momentum_score,
+                    exit_block_reason="no_confirmed_exit_signal",
                 ),
                 metrics,
             )
@@ -734,6 +772,43 @@ class SmartExitManager:
             + volume_drop_score * 0.10
         )
         return max(0.0, min(1.0, score))
+
+    def confirm_reversal_signal(
+        self,
+        *,
+        position: Any,
+        market_data: dict[str, Any],
+        indicators: dict[str, Any],
+        momentum_score: float,
+        require_strong: bool = False,
+    ) -> bool:
+        side = self._position_side(position)
+        structure_state = str(indicators.get("structure_state") or market_data.get("structure_state") or "").lower()
+        structure_broken = structure_state in {"break_failed", "broken", "reversal", "invalidated", "trend_break"}
+
+        rsi = self._to_float(indicators.get("rsi"), 50.0)
+        prev_rsi = self._to_float(indicators.get("prev_rsi"), rsi)
+        rsi_reversal = (rsi < 48 and rsi < prev_rsi) if side == "LONG" else (rsi > 52 and rsi > prev_rsi)
+
+        macd_line = self._to_float(indicators.get("macd"), self._to_float(indicators.get("macd_line"), 0.0))
+        macd_signal = self._to_float(indicators.get("macd_signal"), 0.0)
+        macd_hist = self._to_float(indicators.get("macd_hist"), macd_line - macd_signal)
+        prev_macd_hist = self._to_float(indicators.get("prev_macd_hist"), macd_hist)
+        macd_cross_reversal = (
+            macd_line < macd_signal and macd_hist <= 0 and macd_hist <= prev_macd_hist
+            if side == "LONG"
+            else macd_line > macd_signal and macd_hist >= 0 and macd_hist >= prev_macd_hist
+        )
+
+        momentum_threshold = 0.85 if require_strong else 0.7
+        momentum_reversal = momentum_score >= momentum_threshold
+
+        if structure_broken:
+            return True
+        if require_strong:
+            return momentum_reversal and rsi_reversal and macd_cross_reversal
+        confirmed_factors = sum(1 for flag in (momentum_reversal, rsi_reversal, macd_cross_reversal) if flag)
+        return confirmed_factors >= 2
 
     def evaluate_profit_protection(
         self,

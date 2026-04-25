@@ -30385,3 +30385,74 @@
 2026-04-24 17:31:55,822 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=LINKUSDT source=smart_exit pnl_r=-0.304
 2026-04-24 17:31:56,251 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
 2026-04-24 17:31:56,251 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=XRPUSDT source=smart_exit pnl_r=-0.370
+2026-04-25 19:13:22,571 - [EXECUTION] DEBUG - REGIME_CLASSIFICATION: atr_pct=0.0000 adx=20.00 vol_expansion=0.000 structure=RANGE momentum=0.600 regime=CHOPPY
+2026-04-25 19:13:22,572 - [EXECUTION] DEBUG - EXECUTION_CONFIDENCE_BREAKDOWN: regime_quality=0.350 vol_stability=0.820 signal=0.600 fail=0.000 latency=0.000 confidence=0.669
+2026-04-25 19:13:22,572 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.500 vol_exp=0.000 wick=0.500 liq=0.696 impulse=0.283 noise=0.526 breakout=0.416
+2026-04-25 19:13:22,815 - [EXECUTION] DEBUG - REGIME_CLASSIFICATION: atr_pct=0.0000 adx=20.00 vol_expansion=0.000 structure=RANGE momentum=0.780 regime=CHOPPY
+2026-04-25 19:13:22,815 - [EXECUTION] DEBUG - EXECUTION_CONFIDENCE_BREAKDOWN: regime_quality=0.350 vol_stability=0.901 signal=0.780 fail=1.000 latency=0.000 confidence=0.580
+2026-04-25 19:13:22,816 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.500 vol_exp=0.000 wick=0.500 liq=0.696 impulse=0.283 noise=0.526 breakout=0.416
+2026-04-25 19:13:23,233 - [EXECUTION] DEBUG - margin calculation: required_margin=21.346667 margin_limit=28.351225 leverage=3.000
+2026-04-25 19:13:23,234 - [EXECUTION] DEBUG - portfolio constraints: total_exposure=0.000000 symbol_exposure=0.000000 margin_used=0.000000
+2026-04-25 19:13:23,657 - [EXECUTION] DEBUG - QTY_NORMALIZED: symbol=RIVERUSDT qty=10.0
+2026-04-25 19:13:24,079 - [EXECUTION] DEBUG - RR_CHECK: symbol=RIVERUSDT rr=1.600
+2026-04-25 19:13:24,509 - [EXECUTION] DEBUG - SLTP_ACCEPTED: symbol=RIVERUSDT attempt=1/1 position_idx=None sl=6.597328571428571 tp=6.0946742857142855
+2026-04-25 19:13:24,949 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=RIVERUSDT price=6.26000000 bars_alive=1
+2026-04-25 19:13:24,949 - [EXECUTION] DEBUG - POSITION_PNL_UPDATE: symbol=RIVERUSDT pnl_r=0.745 max_profit_r=0.745
+2026-04-25 19:13:25,170 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 19:13:25,170 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=RIVERUSDT source=smart_exit pnl_r=0.745
+2026-04-25 19:13:35,598 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 19:13:35,598 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=RIVERUSDT source=smart_exit pnl_r=0.766
+2026-04-25 19:13:46,025 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 19:13:46,025 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=RIVERUSDT source=smart_exit pnl_r=0.802
+2026-04-25 19:13:56,237 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=RIVERUSDT price=6.25300000 bars_alive=4
+2026-04-25 19:13:56,449 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 19:13:56,449 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=RIVERUSDT source=smart_exit pnl_r=0.781
+2026-04-25 19:14:06,876 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 19:14:06,876 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=RIVERUSDT source=smart_exit pnl_r=0.755
+2026-04-25 19:14:17,311 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 19:14:17,311 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=RIVERUSDT source=smart_exit pnl_r=0.735
+2026-04-25 19:14:27,529 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=RIVERUSDT price=6.26700000 bars_alive=7
+2026-04-25 19:14:27,741 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 19:14:27,741 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=RIVERUSDT source=smart_exit pnl_r=0.709
+2026-04-25 19:14:38,207 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 19:14:38,208 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=RIVERUSDT source=smart_exit pnl_r=0.729
+2026-04-25 19:14:48,630 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 19:14:48,631 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=RIVERUSDT source=smart_exit pnl_r=0.703
+2026-04-25 19:14:58,837 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=RIVERUSDT price=6.26400000 bars_alive=10
+2026-04-25 19:14:59,059 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 19:14:59,059 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=RIVERUSDT source=smart_exit pnl_r=0.724
+2026-04-25 19:15:09,489 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 19:15:09,489 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=RIVERUSDT source=smart_exit pnl_r=0.693
+2026-04-25 19:15:19,918 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 19:15:19,919 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=RIVERUSDT source=smart_exit pnl_r=0.657
+2026-04-25 19:15:30,133 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=RIVERUSDT price=6.26000000 bars_alive=13
+2026-04-25 19:15:30,343 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 19:15:30,343 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=RIVERUSDT source=smart_exit pnl_r=0.745
+2026-04-25 19:15:40,766 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 19:15:40,767 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=RIVERUSDT source=smart_exit pnl_r=0.714
+2026-04-25 19:15:51,191 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 19:15:51,191 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=RIVERUSDT source=smart_exit pnl_r=0.724
+2026-04-25 19:16:01,410 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=RIVERUSDT price=6.26400000 bars_alive=16
+2026-04-25 19:16:01,639 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 19:16:01,640 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=RIVERUSDT source=smart_exit pnl_r=0.724
+2026-04-25 19:16:12,069 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 19:16:12,069 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=RIVERUSDT source=smart_exit pnl_r=0.703
+2026-04-25 19:16:22,517 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 19:16:22,517 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=RIVERUSDT source=smart_exit pnl_r=0.672
+2026-04-25 19:16:32,743 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=RIVERUSDT price=6.27400000 bars_alive=19
+2026-04-25 19:16:32,958 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 19:16:32,958 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=RIVERUSDT source=smart_exit pnl_r=0.672
+2026-04-25 19:16:43,381 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 19:16:43,381 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=RIVERUSDT source=smart_exit pnl_r=0.667
+2026-04-25 19:16:53,799 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 19:16:53,799 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=RIVERUSDT source=smart_exit pnl_r=0.652
+2026-04-25 19:17:04,009 - [EXECUTION] DEBUG - REAL_PRICE_UPDATE: symbol=RIVERUSDT price=6.28400000 bars_alive=22
+2026-04-25 19:17:04,009 - [EXECUTION] DEBUG - POSITION_PNL_UPDATE: symbol=RIVERUSDT pnl_r=0.621 max_profit_r=0.802
+2026-04-25 19:17:04,221 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 19:17:04,221 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=RIVERUSDT source=smart_exit pnl_r=0.621
+2026-04-25 19:17:14,654 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.600 vol_exp=0.000 wick=0.500 liq=0.725 impulse=0.320 noise=0.513 breakout=0.445
+2026-04-25 19:17:14,655 - [EXECUTION] DEBUG - EXIT_CHECK_TRIGGERED: symbol=RIVERUSDT source=smart_exit pnl_r=0.610
+2026-04-25 19:17:25,713 - [EXECUTION] DEBUG - QTY_NORMALIZED: symbol=RIVERUSDT qty=10.0
+2026-04-25 19:18:30,253 - [EXECUTION] DEBUG - REGIME_CLASSIFICATION: atr_pct=0.0000 adx=20.00 vol_expansion=0.000 structure=RANGE momentum=0.600 regime=CHOPPY
+2026-04-25 19:18:30,254 - [EXECUTION] DEBUG - EXECUTION_CONFIDENCE_BREAKDOWN: regime_quality=0.350 vol_stability=0.820 signal=0.600 fail=0.500 latency=0.736 confidence=0.520
+2026-04-25 19:18:30,254 - [EXECUTION] DEBUG - MICROSTRUCTURE_DEBUG: spread=0.0000 body_volume_ratio=0.500 vol_exp=0.000 wick=0.500 liq=0.696 impulse=0.283 noise=0.526 breakout=0.416

@@ -25273,3 +25273,69 @@ Reject reason: -
 🧠 Regime: N/A
 🕒 Time:   2026-04-24 12:00:00+00:00
 Fingerprint: 9dc28f53d6a7d5d9
+2026-04-25 19:13:22,580 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    ZBTUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.140800
+🎯 TP:    0.163769
+🛑 SL:    0.126444
+RR:    1.60
+
+Score:      3.00 / 5.00
+⭐ Confidence: 0.60 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-25 14:00:00+00:00
+Fingerprint: e2b01c76b4e0d6cb
+2026-04-25 19:13:24,737 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    RIVERUSDT
+Direction: 🔻 SHORT
+Timeframe: 1h
+
+💰 Entry: 6.404000
+🎯 TP:    6.094674
+🛑 SL:    6.597329
+RR:    1.60
+
+Score:      3.90 / 5.00
+⭐ Confidence: 0.78 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, MACD
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-25 14:00:00+00:00
+Fingerprint: 0e5c6c8888ce6c95
+2026-04-25 19:18:30,258 - [SIGNAL] INFO - MAIN 📡 SIGNAL
+
+Symbol:    ZBTUSDT
+Direction: 🟢 LONG
+Timeframe: 1h
+
+💰 Entry: 0.140800
+🎯 TP:    0.163769
+🛑 SL:    0.126444
+RR:    1.60
+
+Score:      3.00 / 5.00
+⭐ Confidence: 0.60 ⭐⭐⭐⭐
+
+Entry source: strict
+Passed: TREND, STRUCTURE, RSI, ADX
+Failed: -
+Reject reason: -
+
+🧠 Regime: N/A
+🕒 Time:   2026-04-25 14:00:00+00:00
+Fingerprint: e2b01c76b4e0d6cb
