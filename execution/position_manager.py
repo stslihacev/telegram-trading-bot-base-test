@@ -374,7 +374,22 @@ class PositionManager:
         sl_distance = abs(entry - sl)
         tp_distance = abs(tp - entry)
         rr = (tp_distance / sl_distance) if sl_distance > 0 else 0.0
+        rr_result = "REJECT" if rr < 1.2 else "OK"
         execution_logger.debug("RR_CHECK: symbol=%s rr=%.3f", symbol, rr)
+        log_structured_event(
+            "RR_CHECK",
+            symbol=symbol,
+            signal_id=signal_id,
+            execution_id=execution_id,
+            position_id=position_id,
+            context={
+                "rr": round(rr, 4),
+                "sl_distance": round(sl_distance, 8),
+                "tp_distance": round(tp_distance, 8),
+                "result": rr_result,
+            },
+            level=30 if rr_result == "REJECT" else 20,
+        )
         if rr < 1.3:
             logger.warning("RR_LOW_WARNING: symbol=%s rr=%.3f", symbol, rr)
         self.positions[symbol] = pos
@@ -572,6 +587,20 @@ class PositionManager:
             indicators=runtime_indicators,
             hard_tp_hit=tp_hit,
             hard_sl_hit=sl_hit,
+        )
+        log_structured_event(
+            "EXIT_DECISION_ENHANCED",
+            symbol=position.symbol,
+            signal_id=position.signal_id,
+            execution_id=position.execution_id,
+            position_id=position.position_id,
+            context={
+                "pnl_r": round(float(metrics.get("current_profit_r", 0.0)), 4),
+                "time_in_trade": int(position.bars_alive),
+                "reason": orchestrator_decision.reason,
+                "allowed": orchestrator_decision.action != "HOLD",
+                "action": orchestrator_decision.action,
+            },
         )
         if orchestrator_decision.action != "HOLD":
             log_structured_event(

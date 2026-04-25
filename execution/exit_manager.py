@@ -89,6 +89,20 @@ class ExitOrchestrator:
         risk = self.manager._to_float(metrics.get("risk", 0.0))
         bars_alive = int(metrics.get("bars_alive", 0))
         distance_to_tp_r = float(metrics.get("distance_to_tp_r", float("inf")))
+        reward_distance = abs(self.manager._to_float(getattr(position, "tp", 0.0)) - entry)
+        progress_to_tp = min(2.0, abs(current_price - entry) / reward_distance) if reward_distance > 0 else 0.0
+
+        if bars_alive >= self.manager.max_trade_duration_bars:
+            return (
+                ExitOrchestratorDecision(
+                    action="FULL_CLOSE",
+                    size=1.0,
+                    reason="max_trade_duration",
+                    priority=self.PRIORITY_FULL_EXIT,
+                    close_reason="MAX_TRADE_DURATION",
+                ),
+                metrics,
+            )
 
         if hard_tp_hit or hard_sl_hit:
             reason = "hard_tp_hit" if hard_tp_hit else "hard_sl_hit"
@@ -99,6 +113,22 @@ class ExitOrchestrator:
                     reason=reason,
                     priority=self.PRIORITY_HARD_EXIT,
                     close_reason=reason.upper(),
+                ),
+                metrics,
+            )
+
+        minimum_hold_met = (
+            bars_alive >= self.manager.min_bars_before_profit_actions
+            or progress_to_tp >= self.manager.min_progress_to_tp_for_early_exit
+        )
+        if not minimum_hold_met:
+            return (
+                ExitOrchestratorDecision(
+                    action="HOLD",
+                    size=0.0,
+                    reason="minimum_hold_guard",
+                    priority=self.PRIORITY_HOLD,
+                    momentum_score=0.0,
                 ),
                 metrics,
             )
@@ -191,7 +221,7 @@ class ExitOrchestrator:
             )
 
         # Momentum-based exits
-        if momentum_score >= 0.85 and current_profit_r >= 0.8:
+        if momentum_score >= 0.9 and current_profit_r >= 0.8 and drawdown_r >= 0.7:
             logger.info(
                 "MOMENTUM_EXIT_TRIGGERED: symbol=%s score=%.2f strength=strong pnl_r=%.3f",
                 str(getattr(position, "symbol", "")).upper(),
@@ -209,7 +239,7 @@ class ExitOrchestrator:
                 ),
                 metrics,
             )
-        if momentum_score >= 0.65 and current_profit_r >= 0.8:
+        if momentum_score >= 0.75 and current_profit_r >= 0.8 and drawdown_r >= 0.5:
             logger.info(
                 "MOMENTUM_EXIT_TRIGGERED: symbol=%s score=%.2f strength=medium pnl_r=%.3f",
                 str(getattr(position, "symbol", "")).upper(),
@@ -226,7 +256,7 @@ class ExitOrchestrator:
                 ),
                 metrics,
             )
-        if momentum_score >= 0.45 and current_profit_r >= 0.8 and risk > 0:
+        if momentum_score >= 0.55 and current_profit_r >= 0.5 and risk > 0:
             logger.info(
                 "MOMENTUM_EXIT_TRIGGERED: symbol=%s score=%.2f strength=weak pnl_r=%.3f",
                 str(getattr(position, "symbol", "")).upper(),
@@ -267,10 +297,16 @@ class SmartExitManager:
         min_bars_before_exit: int = 4,
         structure_lookback: int = 6,
         momentum_stall_bars: int = 5,
+        min_bars_before_profit_actions: int = 4,
+        min_progress_to_tp_for_early_exit: float = 0.35,
+        max_trade_duration_bars: int = 24,
     ) -> None:
         self.min_bars_before_exit = max(3, int(min_bars_before_exit))
         self.structure_lookback = max(4, int(structure_lookback))
         self.momentum_stall_bars = max(3, int(momentum_stall_bars))
+        self.min_bars_before_profit_actions = max(2, int(min_bars_before_profit_actions))
+        self.min_progress_to_tp_for_early_exit = max(0.05, min(0.95, float(min_progress_to_tp_for_early_exit)))
+        self.max_trade_duration_bars = max(6, int(max_trade_duration_bars))
         self.orchestrator = ExitOrchestrator(self)
         self.microstructure_engine = MicrostructureEngine()
         self._exit_state_tracker: dict[str, ExitStateTracker] = {}

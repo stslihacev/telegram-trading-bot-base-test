@@ -30,6 +30,9 @@ class BacktestStrategyAdapter:
     _hard_filters = ("TREND", "STRUCTURE")
     _soft_filters = ("RSI", "MACD", "VOLUME", "ADX")
     _weak_position_size_factor = 0.5
+    _rr_target = 2.0
+    _rr_floor = 1.5
+    _rr_hard_reject = 1.2
 
     def __init__(self, min_rr: float | None = None):
         self.strategy = BosStrategy()
@@ -148,8 +151,8 @@ class BacktestStrategyAdapter:
         if confidence >= 0.8:
             return 2.0
         if confidence >= 0.6:
-            return 1.7
-        return 1.4
+            return 1.8
+        return 1.6
 
     def _refine_risk_levels(self, signal: dict, entry: float, sl: float, direction: str, confidence: float) -> tuple[float, float]:
         """Аккуратно донастраивает SL/TP без ломки текущей ATR-логики."""
@@ -187,11 +190,15 @@ class BacktestStrategyAdapter:
         if risk <= 1e-9:
             return refined_sl, float(signal.get("tp") or entry)
 
-        rr_target = self._normalize_rr_by_strength(confidence)
+        rr_target = max(self._rr_target, self._normalize_rr_by_strength(confidence))
         if direction == "LONG":
             refined_tp = entry + risk * rr_target
         else:
             refined_tp = entry - risk * rr_target
+        tp_distance = abs(float(refined_tp) - float(entry))
+        min_tp_distance = risk * self._rr_floor
+        if tp_distance < min_tp_distance:
+            refined_tp = (entry + min_tp_distance) if direction == "LONG" else (entry - min_tp_distance)
         return float(refined_sl), float(refined_tp)
 
     @staticmethod
@@ -1119,6 +1126,7 @@ class BacktestStrategyAdapter:
                     if runtime.get("is_scalping"):
                         rr_min = max(1.2, rr_min)
                         rr_max = min(1.6, rr_max)
+                    rr_min = max(rr_min, self._rr_floor)
                     if structure_state == "strong":
                         if not runtime.get("is_scalping"):
                             rr_min = max(rr_min, 2.0)
@@ -1132,6 +1140,16 @@ class BacktestStrategyAdapter:
                         rr_min = max(1.5, min(rr_min, 1.8))
                     if config.DEBUG_MODE:
                         debug_stage("RR", symbol, f"rr={rr:.4f}, min_rr={rr_min:.4f}, max_rr={rr_max:.4f}")
+                    log_structured_event(
+                        "RR_CHECK",
+                        symbol=symbol,
+                        context={
+                            "rr": round(float(rr), 4),
+                            "sl_distance": round(abs(entry - sl), 8),
+                            "tp_distance": round(abs(tp - entry), 8),
+                            "result": "REJECT" if rr < self._rr_hard_reject else "OK",
+                        },
+                    )
                     if strict_rejection_reason:
                         self.last_signal_diagnostics = {
                             "mode": runtime["mode"],
@@ -1150,6 +1168,17 @@ class BacktestStrategyAdapter:
                             rr,
                             strict_rejection_reason,
                         )
+                    elif rr < self._rr_hard_reject:
+                        self.last_signal_diagnostics = {
+                            "mode": runtime["mode"],
+                            "score": score,
+                            "passed_filters": [],
+                            "failed_filters": ["RR"],
+                            "rejection_reason": "rr below hard floor",
+                            "potential_signal": True,
+                            "strict_signal": False,
+                        }
+                        strict_rejection_reason = "rr below hard floor"
                     elif rr < rr_min:
                         self.last_signal_diagnostics = {
                             "mode": runtime["mode"],
