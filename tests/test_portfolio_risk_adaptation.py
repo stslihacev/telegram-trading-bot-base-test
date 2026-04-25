@@ -188,7 +188,7 @@ def test_order_manager_rejects_when_adaptive_score_falls_below_threshold():
         active_trades={},
     )
     assert result.accepted is False
-    assert result.reason == "ADAPTIVE_SCORE_BELOW_THRESHOLD"
+    assert result.reason == "SCORE_BELOW_THRESHOLD"
 
 
 def test_order_manager_keeps_raw_score_and_passes_execution_score_to_execution_layer():

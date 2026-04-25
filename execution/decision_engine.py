@@ -36,6 +36,17 @@ class ExecutionDecision:
     symbol: str
     details: dict[str, Any]
 
+@dataclass(frozen=True)
+class LockedDecisionSnapshot:
+    symbol: str
+    side: str
+    entry: float
+    sl: float
+    execution_score: float
+    threshold: float
+    hard_pass: bool
+    base_risk: float
+    hard_blockers: tuple[str, ...]
 
 class ExecutionDecisionEngine:
     """Single execution brain for sizing, risk and exchange validation."""
@@ -46,18 +57,18 @@ class ExecutionDecisionEngine:
         self.position_sizing_engine = PositionSizingEngine()
 
     def evaluate_order(self, signal: dict[str, Any], market_data: dict[str, Any], portfolio_state: dict[str, Any]) -> ExecutionDecision:
-        symbol = str(signal.get("symbol") or "").upper()
-        direction = str(signal.get("direction") or "LONG").upper()
-        side = "Buy" if direction == "LONG" else "Sell"
-        score = self._resolve_effective_score(signal)
-        entry = self._safe_float(signal.get("entry"), 0.0)
-        sl = self._safe_float(signal.get("sl"), 0.0)
+        locked = self._build_locked_snapshot(signal)
+        symbol = locked.symbol
+        side = locked.side
+        score = locked.execution_score
+        entry = locked.entry
+        sl = locked.sl
 
         constraints = self._load_constraints(symbol)
         if entry <= 0 or sl <= 0 or constraints["max_qty"] <= 0:
             return self._decision(DecisionAction.EMERGENCY_REJECT, "INVALID_SPEC", 0.0, side, symbol, {"constraints": constraints})
 
-        hard_blockers = [str(reason).strip() for reason in (signal.get("execution_hard_blockers") or []) if str(reason).strip()]
+        hard_blockers = list(locked.hard_blockers)
         if hard_blockers:
             return self._decision(
                 DecisionAction.EMERGENCY_REJECT,
@@ -68,8 +79,8 @@ class ExecutionDecisionEngine:
                 {"hard_blockers": hard_blockers},
             )
 
-        threshold = resolve_signal_threshold(signal)
-        hard_pass = bool(signal.get("hard_pass", True))
+        threshold = locked.threshold
+        hard_pass = locked.hard_pass
         if not hard_pass:
             return self._decision(
                 DecisionAction.REJECT,
@@ -96,7 +107,7 @@ class ExecutionDecisionEngine:
         if snapshot.open_positions_count >= max_open:
             return self._decision(DecisionAction.EMERGENCY_REJECT, "PORTFOLIO_OVERLOAD", 0.0, side, symbol, {"snapshot": snapshot.__dict__})
 
-        base_risk = self._resolve_base_risk(signal)
+        base_risk = locked.base_risk
         score_mult = self._score_multiplier(score)
         balance = max(0.0, self._safe_float(market_data.get("available_balance"), self.bybit.get_balance("USDT")))
         cap_mult, cap_reason = self._portfolio_cap_multiplier(snapshot, balance=balance)
@@ -177,7 +188,35 @@ class ExecutionDecisionEngine:
                 "constraints": constraints,
                 "threshold": threshold,
                 "execution_score": score,
+                "decision_lock": {
+                    "hard_pass": hard_pass,
+                    "execution_score": score,
+                    "threshold": threshold,
+                },
             },
+        )
+
+    def _build_locked_snapshot(self, signal: dict[str, Any]) -> LockedDecisionSnapshot:
+        symbol = str(signal.get("symbol") or "").upper()
+        direction = str(signal.get("direction") or "LONG").upper()
+        side = "Buy" if direction == "LONG" else "Sell"
+        score = self._resolve_effective_score(signal)
+        signal_quality = signal.get("signal_quality") if isinstance(signal.get("signal_quality"), dict) else {}
+        threshold = self._safe_float(signal_quality.get("threshold"), float("nan"))
+        if threshold != threshold:
+            threshold = resolve_signal_threshold(signal)
+        hard_pass = bool(signal_quality.get("hard_pass", signal.get("hard_pass", True)))
+        hard_blockers = tuple(str(reason).strip() for reason in (signal.get("execution_hard_blockers") or []) if str(reason).strip())
+        return LockedDecisionSnapshot(
+            symbol=symbol,
+            side=side,
+            entry=self._safe_float(signal.get("entry"), 0.0),
+            sl=self._safe_float(signal.get("sl"), 0.0),
+            execution_score=score,
+            threshold=max(0.0, threshold),
+            hard_pass=hard_pass,
+            base_risk=self._resolve_base_risk(signal),
+            hard_blockers=hard_blockers,
         )
 
     def _validate_and_scale(

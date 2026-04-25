@@ -63,8 +63,6 @@ class OrderManager:
         portfolio_state = {"open_positions": active_trades or {}}
 
         adaptive = self.adaptive_layer.adapt(signal=signal, market_data=market_data)
-        if adaptive.outcome == AdaptiveOutcome.EMERGENCY_REJECT:
-            hard_blockers.append(adaptive.reason)
 
         signal_quality = build_signal_quality(
             signal=adaptive.adjusted_signal,
@@ -132,18 +130,44 @@ class OrderManager:
             "score": signal_quality.score,
             "adjusted_score": signal_quality.adjusted_score,
             "execution_score": signal_quality.execution_score,
+            "threshold": threshold,
             "failed_a_filters": signal_quality.failed_a_filters,
             "soft_b_contributions": signal_quality.soft_b_contributions,
             "metadata": signal_quality.metadata,
         }
         adaptive.adjusted_signal["execution_advisory"] = {
-            "adaptive_outcome": adaptive.outcome.value,
+            "regime": adaptive.regime.regime.value,
+            "stress_level": adaptive.context.stress.stress_score,
+            "risk_multiplier": adaptive.context.risk_multiplier,
+            "recommended_action": adaptive.outcome.value,
             "adaptive_reason": adaptive.reason,
             "score_result": score_result,
             "score_reason": score_reason,
         }
+        adaptive.adjusted_signal["decision_lock"] = {
+            "locked": True,
+            "hard_pass": hard_pass,
+            "execution_score": final_score,
+            "threshold": threshold,
+            "final_decision_authority": "ExecutionDecisionEngine",
+        }
 
-        decision = self.decision_engine.evaluate_order(adaptive.adjusted_signal, adaptive.adjusted_market_data, portfolio_state)
+        locked_signal = dict(adaptive.adjusted_signal)
+        locked_market_data = dict(adaptive.adjusted_market_data)
+        locked_market_data["adaptive_context"] = {
+            "regime": adaptive.regime.regime.value,
+            "stress_level": adaptive.context.stress.stress_score,
+            "risk_multiplier": adaptive.context.risk_multiplier,
+            "execution_confidence": adaptive.context.execution_confidence,
+            "mode": adaptive.context.mode.value,
+        }
+        locked_market_data["risk_context"] = {
+            "available_balance": locked_market_data.get("available_balance"),
+            "leverage": locked_market_data.get("leverage"),
+            "safety_buffer": locked_market_data.get("safety_buffer"),
+        }
+
+        decision = self.decision_engine.evaluate_order(locked_signal, locked_market_data, portfolio_state)
 
         if decision.action in {DecisionAction.REJECT, DecisionAction.EMERGENCY_REJECT}:
             self.adaptive_layer.record_decision_outcome(rejected=True)
