@@ -44,15 +44,16 @@ class OrderManager:
             context={"stage": "PRECHECK", "mode": self._normalize_mode(signal)},
         )
         observability.increment(str(signal.get("symbol") or "").upper(), "execution_attempts")
+        hard_blockers: list[str] = []
         if is_emergency_mode():
-            return OrderDecision(False, "EMERGENCY_MODE_ACTIVE", {"decision": DecisionAction.EMERGENCY_REJECT.value})
+            hard_blockers.append("EMERGENCY_MODE_ACTIVE")
         mode = self._normalize_mode(signal)
         if mode == "LIGHT":
-            return OrderDecision(False, "LIGHT_SIGNAL_ONLY", {"mode": mode})
+            hard_blockers.append("LIGHT_SIGNAL_ONLY")
         if not bool(getattr(config, "TRADING_ENABLED", False)):
-            return OrderDecision(False, "TRADING_DISABLED", {"mode": mode})
+            hard_blockers.append("TRADING_DISABLED")
         if mode in {"MAIN", "SCALPING"} and not bool(getattr(config, "REAL_TRADING_ENABLED", False)):
-            return OrderDecision(False, "REAL_TRADING_DISABLED", {"mode": mode})
+            hard_blockers.append("REAL_TRADING_DISABLED")
 
         market_data = {
             "available_balance": self.bybit.get_balance("USDT"),
@@ -63,17 +64,7 @@ class OrderManager:
 
         adaptive = self.adaptive_layer.adapt(signal=signal, market_data=market_data)
         if adaptive.outcome == AdaptiveOutcome.EMERGENCY_REJECT:
-            self.adaptive_layer.record_decision_outcome(rejected=True)
-            log_structured_event("EXECUTION_DECISION", symbol=str(signal.get("symbol") or "").upper(), signal_id=str(signal.get("signal_id") or None), context={"stage": "REJECTED", "reason": adaptive.reason, "outcome": adaptive.outcome.value})
-            return OrderDecision(False, adaptive.reason, {"decision": adaptive.outcome.value})
-        if adaptive.outcome == AdaptiveOutcome.DEFER_EXECUTION:
-            self.adaptive_layer.record_decision_outcome(rejected=True)
-            log_structured_event("EXECUTION_DECISION", symbol=str(signal.get("symbol") or "").upper(), signal_id=str(signal.get("signal_id") or None), context={"stage": "REJECTED", "reason": adaptive.reason, "outcome": adaptive.outcome.value})
-            return OrderDecision(False, adaptive.reason, {"decision": adaptive.outcome.value, "context": adaptive.context})
-        if adaptive.outcome == AdaptiveOutcome.REDUCE_RISK_ONLY:
-            self.adaptive_layer.record_decision_outcome(rejected=True)
-            log_structured_event("EXECUTION_DECISION", symbol=str(signal.get("symbol") or "").upper(), signal_id=str(signal.get("signal_id") or None), context={"stage": "REJECTED", "reason": adaptive.reason, "outcome": adaptive.outcome.value})
-            return OrderDecision(False, adaptive.reason, {"decision": adaptive.outcome.value, "context": adaptive.context})
+            hard_blockers.append(adaptive.reason)
 
         signal_quality = build_signal_quality(
             signal=adaptive.adjusted_signal,
@@ -111,7 +102,7 @@ class OrderManager:
                 "adjusted_score": signal_quality.adjusted_score,
                 "final_score": final_score,
                 "threshold": threshold,
-                "decision_layer": "order_manager_final_gate",
+                "decision_layer": "pre_gate_telemetry_only",
                 "result": score_result,
                 "reason": score_reason,
                 "validity": signal_quality.validity,
@@ -132,20 +123,9 @@ class OrderManager:
                 "stage": "FINAL_GATE",
             },
         )
-        if score_result == "REJECT":
-            self.adaptive_layer.record_decision_outcome(rejected=True)
-            return OrderDecision(
-                False,
-                score_reason,
-                {
-                    "decision": DecisionAction.REJECT.value,
-                    "raw_score": signal_quality.score,
-                    "adjusted_score": signal_quality.adjusted_score,
-                    "execution_score": final_score,
-                    "threshold": threshold,
-                },
-            )
         adaptive.adjusted_signal["execution_score"] = final_score
+        adaptive.adjusted_signal["hard_pass"] = hard_pass
+        adaptive.adjusted_signal["execution_hard_blockers"] = hard_blockers
         adaptive.adjusted_signal["signal_quality"] = {
             "validity": signal_quality.validity,
             "hard_pass": signal_quality.hard_pass,
@@ -155,6 +135,12 @@ class OrderManager:
             "failed_a_filters": signal_quality.failed_a_filters,
             "soft_b_contributions": signal_quality.soft_b_contributions,
             "metadata": signal_quality.metadata,
+        }
+        adaptive.adjusted_signal["execution_advisory"] = {
+            "adaptive_outcome": adaptive.outcome.value,
+            "adaptive_reason": adaptive.reason,
+            "score_result": score_result,
+            "score_reason": score_reason,
         }
 
         decision = self.decision_engine.evaluate_order(adaptive.adjusted_signal, adaptive.adjusted_market_data, portfolio_state)

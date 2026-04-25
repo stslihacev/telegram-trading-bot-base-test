@@ -10,6 +10,7 @@ import core.config as config
 from utils.logger import execution_logger
 
 from execution.position_sizing import PositionSizingEngine
+from execution.scoring_contract import resolve_signal_threshold
 
 class DecisionAction(str, Enum):
     APPROVE = "APPROVE"
@@ -55,6 +56,38 @@ class ExecutionDecisionEngine:
         constraints = self._load_constraints(symbol)
         if entry <= 0 or sl <= 0 or constraints["max_qty"] <= 0:
             return self._decision(DecisionAction.EMERGENCY_REJECT, "INVALID_SPEC", 0.0, side, symbol, {"constraints": constraints})
+
+        hard_blockers = [str(reason).strip() for reason in (signal.get("execution_hard_blockers") or []) if str(reason).strip()]
+        if hard_blockers:
+            return self._decision(
+                DecisionAction.EMERGENCY_REJECT,
+                "PRE_EXECUTION_HARD_BLOCK",
+                0.0,
+                side,
+                symbol,
+                {"hard_blockers": hard_blockers},
+            )
+
+        threshold = resolve_signal_threshold(signal)
+        hard_pass = bool(signal.get("hard_pass", True))
+        if not hard_pass:
+            return self._decision(
+                DecisionAction.REJECT,
+                "A_TIER_FILTER_FAILED",
+                0.0,
+                side,
+                symbol,
+                {"hard_pass": hard_pass, "threshold": threshold, "execution_score": score},
+            )
+        if score < threshold:
+            return self._decision(
+                DecisionAction.REJECT,
+                "SCORE_BELOW_THRESHOLD",
+                0.0,
+                side,
+                symbol,
+                {"hard_pass": hard_pass, "threshold": threshold, "execution_score": score},
+            )
 
         snapshot = self._snapshot_from_portfolio(portfolio_state, symbol)
 
@@ -142,6 +175,8 @@ class ExecutionDecisionEngine:
                 **sizing_meta,
                 "portfolio_snapshot": snapshot.__dict__,
                 "constraints": constraints,
+                "threshold": threshold,
+                "execution_score": score,
             },
         )
 
