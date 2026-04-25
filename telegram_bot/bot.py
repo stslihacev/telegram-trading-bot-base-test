@@ -164,11 +164,13 @@ class TelegramTradingBot:
         self.gui_thread: threading.Thread | None = None
         self.gui_started = False
         self.gui_summary_queue: queue.Queue[dict[str, str]] = queue.Queue()
+        self.gui_control_queue: queue.Queue[str] = queue.Queue()
+        self._shutdown_requested = threading.Event()
 
     async def _position_price_loop(self, interval_sec: int = 10) -> None:
         update_interval = max(5, int(interval_sec))
         logger.info("⚙️ Position price loop started interval=%ss", update_interval)
-        while True:
+        while not self._shutdown_requested.is_set():
             try:
                 open_symbols = sorted(self.position_manager.positions.keys())
                 for symbol in open_symbols:
@@ -298,10 +300,17 @@ class TelegramTradingBot:
                             summary = self.gui_summary_queue.get_nowait()
                             mode_stats_var.set(summary.get("profitability", "Winrate: - | Profit Factor: -"))
                             last_trade_var.set(summary.get("last_trade", "Last close: -"))
+                        while not self.gui_control_queue.empty():
+                            command = self.gui_control_queue.get_nowait()
+                            if command == "STOP":
+                                self._shutdown_requested.set()
+                                root.after(0, root.destroy)
+                                return
                     except queue.Empty:
                         pass
                     finally:
-                        root.after(500, poll_queue)
+                        if not self._shutdown_requested.is_set():
+                            root.after(500, poll_queue)
 
                 poll_queue()
                 root.mainloop()
@@ -311,7 +320,7 @@ class TelegramTradingBot:
         self.gui_thread = threading.Thread(
             target=run_gui,
             name="signals-gui",
-            daemon=True,
+            daemon=False,
         )
         self.gui_thread.start()
         logger.info("🖥️ Signal GUI thread started")
@@ -455,7 +464,7 @@ class TelegramTradingBot:
         await self._reconcile_active_trades_on_startup()
 
         scan_iteration = 0
-        while True:
+        while not self._shutdown_requested.is_set():
             try:
                 scan_iteration += 1
                 logger.info(f"🔍 Starting market scan for top-{TOP_N} symbols...")
@@ -561,7 +570,7 @@ class TelegramTradingBot:
                         except (TypeError, ValueError):
                             confidence_value = 0.0
                         logger.info(
-                            "[SIGNAL ACCEPTED] symbol=%s mode=%s entry_source=%s score=%s conf=%s stars=%s",
+                            "SIGNAL_ACCEPTED: symbol=%s mode=%s entry_source=%s score=%s conf=%s stars=%s",
                             enriched_signal.get("symbol"),
                             mode_name,
                             enriched_signal.get("entry_source", "strict"),
@@ -874,18 +883,46 @@ class TelegramTradingBot:
                 async def _run_without_telegram() -> None:
                     self.position_update_task = asyncio.create_task(self._position_price_loop())
                     self.scan_task = asyncio.create_task(self.scan_loop())
-                    await asyncio.gather(self.scan_task, self.position_update_task)
+                    try:
+                        await asyncio.gather(self.scan_task, self.position_update_task)
+                    finally:
+                        await self.shutdown()
 
                 asyncio.run(_run_without_telegram())
                 return
             raise RuntimeError("Application not initialized")
         self.application.run_polling(drop_pending_updates=True)
 
+    async def _cancel_background_tasks(self) -> None:
+        tasks = [self.scan_task, self.position_update_task]
+        for task in tasks:
+            if task and not task.done():
+                task.cancel()
+        pending = [task for task in tasks if task]
+        if pending:
+            await asyncio.gather(*pending, return_exceptions=True)
+
     async def stop(self) -> None:
         logger.info("\n%s", self.generate_analytics_report())
+        await self._cancel_background_tasks()
         if self.application:
-            await self.application.stop()
-            await self.application.shutdown()
+            try:
+                await self.application.stop()
+            except Exception:
+                logger.debug("application.stop skipped/failed", exc_info=True)
+            try:
+                await self.application.shutdown()
+            except Exception:
+                logger.debug("application.shutdown skipped/failed", exc_info=True)
+
+    async def shutdown(self) -> None:
+        self._shutdown_requested.set()
+        await self.stop()
+        if self.gui_started:
+            self.gui_control_queue.put("STOP")
+            if self.gui_thread and self.gui_thread.is_alive():
+                self.gui_thread.join(timeout=5)
+        logger.info("SYSTEM_SHUTDOWN_CLEAN")
 
     async def _post_init(self, _app: Application) -> None:
         logger.info("⚙️ Post init: starting scan_loop task")
@@ -893,12 +930,8 @@ class TelegramTradingBot:
         self.position_update_task = asyncio.create_task(self._position_price_loop())
 
     async def _post_shutdown(self, _app: Application) -> None:
-        if self.scan_task and not self.scan_task.done():
-            self.scan_task.cancel()
-            await asyncio.gather(self.scan_task, return_exceptions=True)
-        if self.position_update_task and not self.position_update_task.done():
-            self.position_update_task.cancel()
-            await asyncio.gather(self.position_update_task, return_exceptions=True)
+        self._shutdown_requested.set()
+        await self._cancel_background_tasks()
 
     def initialize(self) -> None:
         """Создаёт Telegram Application в текущем asyncio loop и поднимает GUI для сигналов."""

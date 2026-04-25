@@ -3,6 +3,7 @@ import sys
 from pathlib import Path
 from datetime import datetime, timedelta, timezone
 
+import core.config as config
 from utils.logging_control import create_rotating_handler, get_logging_level
 
 # Определяем путь для логов
@@ -19,6 +20,38 @@ logging.basicConfig(level=get_logging_level())
 logger = logging.getLogger("crypto_bot")
 logger.setLevel(get_logging_level())
 logger.propagate = False
+
+def get_log_level_name() -> str:
+    try:
+        return str(getattr(config, "LOG_LEVEL", "DEBUG") or "DEBUG").upper()
+    except Exception:
+        return "DEBUG"
+
+
+def is_debug_log_level() -> bool:
+    return get_log_level_name() == "DEBUG"
+
+
+class RuntimeLogFilter(logging.Filter):
+    _prod_allowed_tokens = (
+        "SIGNAL_ACCEPTED",
+        "[SIGNAL ACCEPTED]",
+        "EXECUTION_APPROVED",
+        "EXECUTION_REJECT",
+        "EXECUTION_REJECTED",
+        "EXIT_DECISION_FINAL",
+    )
+
+    def filter(self, record: logging.LogRecord) -> bool:
+        if record.levelno >= logging.WARNING:
+            return True
+        if is_debug_log_level():
+            return True
+        message = record.getMessage()
+        return any(token in message for token in self._prod_allowed_tokens)
+
+
+logger.addFilter(RuntimeLogFilter())
 
 # Формат сообщений
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -65,6 +98,7 @@ def ensure_named_file_logger(
     named_logger = logging.getLogger(name)
     named_logger.setLevel(level)
     named_logger.propagate = False
+    named_logger.addFilter(RuntimeLogFilter())
 
     has_target_file_handler = any(
         isinstance(handler, logging.FileHandler)

@@ -5,9 +5,15 @@ from datetime import datetime, timezone
 import logging
 from typing import Any
 
-from utils.logger import logger
+from utils.logger import is_debug_log_level, logger
 from utils.logging_control import log_event, resolve_feature
 
+DEBUG_ONLY_EVENTS = {
+    "EXIT_DECISION_ENHANCED",
+    "SCORE_BREAKDOWN",
+    "DECISION_LOCK_FINGERPRINT",
+    "MAX_DURATION_EVALUATION",
+}
 
 def _utc_now() -> datetime:
     return datetime.now(timezone.utc)
@@ -48,6 +54,8 @@ def log_structured_event(
         "symbol": symbol,
         "context": context or {},
     }
+    if event_type in DEBUG_ONLY_EVENTS and not is_debug_log_level():
+        return
     feature = resolve_feature(event_type)
     level_name = logging.getLevelName(level)
     if isinstance(level_name, int):
