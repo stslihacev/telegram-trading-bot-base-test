@@ -145,7 +145,7 @@ class OrderManager:
                     "threshold": threshold,
                 },
             )
-        adaptive.adjusted_signal["score"] = final_score
+        adaptive.adjusted_signal["execution_score"] = final_score
         adaptive.adjusted_signal["signal_quality"] = {
             "validity": signal_quality.validity,
             "hard_pass": signal_quality.hard_pass,

@@ -48,7 +48,7 @@ class ExecutionDecisionEngine:
         symbol = str(signal.get("symbol") or "").upper()
         direction = str(signal.get("direction") or "LONG").upper()
         side = "Buy" if direction == "LONG" else "Sell"
-        score = self._safe_float(signal.get("score"), 0.0)
+        score = self._resolve_effective_score(signal)
         entry = self._safe_float(signal.get("entry"), 0.0)
         sl = self._safe_float(signal.get("sl"), 0.0)
 
@@ -248,6 +248,18 @@ class ExecutionDecisionEngine:
         if mode == "SCALPING":
             return max(0.0, float(getattr(config, "RISK_PER_TRADE_SCALPING", getattr(config, "RISK_PER_TRADE", 0.01))))
         return max(0.0, float(getattr(config, "RISK_PER_TRADE_MAIN", getattr(config, "RISK_PER_TRADE", 0.01))))
+
+    @classmethod
+    def _resolve_effective_score(cls, signal: dict[str, Any]) -> float:
+        signal_quality = signal.get("signal_quality")
+        if isinstance(signal_quality, dict):
+            execution_score = cls._safe_float(signal_quality.get("execution_score"), float("nan"))
+            if execution_score == execution_score:
+                return max(0.0, execution_score)
+        direct_execution_score = cls._safe_float(signal.get("execution_score"), float("nan"))
+        if direct_execution_score == direct_execution_score:
+            return max(0.0, direct_execution_score)
+        return max(0.0, cls._safe_float(signal.get("score"), 0.0))
 
     @staticmethod
     def _score_multiplier(score: float) -> float:

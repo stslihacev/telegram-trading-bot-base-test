@@ -12,7 +12,7 @@ pybit_module.unified_trading = unified_module
 sys.modules.setdefault("pybit", pybit_module)
 sys.modules.setdefault("pybit.unified_trading", unified_module)
 
-from execution.decision_engine import DecisionAction, ExecutionDecisionEngine
+from execution.decision_engine import DecisionAction, ExecutionDecision, ExecutionDecisionEngine
 from execution.adaptive_execution import (
     AdaptiveExecutionDecision,
     AdaptiveOutcome,
@@ -71,6 +71,23 @@ def test_rejects_low_score_signal():
     )
     assert decision.action == DecisionAction.REJECT
     assert decision.reason == "SCORE_BELOW_THRESHOLD"
+
+def test_execution_engine_prefers_execution_score_from_signal_quality():
+    engine = ExecutionDecisionEngine(_BybitStub())
+    decision = engine.evaluate_order(
+        {
+            "symbol": "BTCUSDT",
+            "direction": "LONG",
+            "entry": 100.0,
+            "sl": 95.0,
+            "score": 2.5,
+            "signal_quality": {"execution_score": 4.2},
+            "live_mode": "MAIN",
+        },
+        market_data={"available_balance": 1000.0},
+        portfolio_state={"open_positions": {}},
+    )
+    assert decision.action in {DecisionAction.APPROVE, DecisionAction.SCALE_DOWN}
 
 def test_emergency_reject_on_margin_failure():
     tight_constraints = {"qty_step": 0.1, "min_qty": 10.0, "max_qty": 1000.0, "tick_size": 0.1, "min_notional": 1000.0}
@@ -172,3 +189,55 @@ def test_order_manager_rejects_when_adaptive_score_falls_below_threshold():
     )
     assert result.accepted is False
     assert result.reason == "ADAPTIVE_SCORE_BELOW_THRESHOLD"
+
+
+def test_order_manager_keeps_raw_score_and_passes_execution_score_to_execution_layer():
+    manager = OrderManager(bybit_client=_BybitStub(balance=1000.0), risk_guard=_RiskGuardStub())
+    captured: dict[str, float] = {}
+
+    manager.adaptive_layer.adapt = lambda **_: AdaptiveExecutionDecision(  # type: ignore[method-assign]
+        outcome=AdaptiveOutcome.APPROVE,
+        reason="OK",
+        adjusted_signal={
+            "symbol": "BTCUSDT",
+            "direction": "LONG",
+            "entry": 100.0,
+            "sl": 95.0,
+            "score": 3.2,
+            "score_threshold": 3.0,
+            "live_mode": "MAIN",
+        },
+        adjusted_market_data={"available_balance": 1000.0, "leverage": 3.0, "safety_buffer": 0.88},
+        regime=MarketRegimeSnapshot(MarketRegime.TRENDING_UP, 0.2, 0.8, 0.8),
+        context=ExecutionContextSnapshot(
+            execution_confidence=0.95,
+            mode=ExecutionMode.NORMAL,
+            risk_multiplier=1.1,
+            stress=ExecutionStressSnapshot(0.0, 0.1, 0.0, 0.0, 0.1),
+        ),
+        microstructure=MicrostructureSnapshot(0.95, 0.8, 0.05, 0.9),
+        timing=ExecutionTimingScore(0.85, 0.5, 0.4, True, False, 1.1, False),
+    )
+
+    def _capture(signal, _market_data, _portfolio_state):
+        captured["raw_score"] = float(signal.get("score") or 0.0)
+        captured["execution_score"] = float(signal.get("execution_score") or 0.0)
+        return ExecutionDecision(
+            action=DecisionAction.APPROVE,
+            reason="ORDER_VALID",
+            final_qty=0.01,
+            side="Buy",
+            symbol="BTCUSDT",
+            details={"final_qty": 0.01},
+        )
+
+    manager.decision_engine.evaluate_order = _capture  # type: ignore[method-assign]
+    manager.execution_compiler.open_order = lambda **_: {"status": "ok"}  # type: ignore[method-assign]
+
+    result = manager.execute_signal(
+        {"symbol": "BTCUSDT", "direction": "LONG", "entry": 100.0, "sl": 95.0, "score": 3.2, "live_mode": "MAIN"},
+        active_trades={},
+    )
+    assert result.accepted is True
+    assert captured["raw_score"] == pytest.approx(3.2)
+    assert captured["execution_score"] > captured["raw_score"]
