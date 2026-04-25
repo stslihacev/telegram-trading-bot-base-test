@@ -72,11 +72,12 @@ def test_decision_engine_is_deterministic_for_locked_signal_and_snapshot() -> No
         }
     }
 
-    results = [engine.evaluate_order(signal, market_data, portfolio_state) for _ in range(10)]
+    results = [engine.evaluate_order(signal, market_data, portfolio_state) for _ in range(20)]
 
     first = results[0]
     for result in results[1:]:
         assert result.action == first.action
         assert result.reason == first.reason
         assert result.final_qty == first.final_qty
+        assert result.action.value in {"APPROVE", "REJECT", "SCALE_DOWN", "EMERGENCY_REJECT"}
         assert result.details == first.details

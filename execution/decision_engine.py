@@ -109,7 +109,14 @@ class ExecutionDecisionEngine:
 
         base_risk = locked.base_risk
         score_mult = self._score_multiplier(score)
-        balance = max(0.0, self._safe_float(market_data.get("available_balance"), self.bybit.get_balance("USDT")))
+        risk_context = market_data.get("risk_context") if isinstance(market_data.get("risk_context"), dict) else {}
+        balance = max(
+            0.0,
+            self._safe_float(
+                risk_context.get("available_balance", market_data.get("available_balance")),
+                0.0,
+            ),
+        )
         cap_mult, cap_reason = self._portfolio_cap_multiplier(snapshot, balance=balance)
         if cap_mult <= 0:
             return self._decision(DecisionAction.EMERGENCY_REJECT, "PORTFOLIO_EXPOSURE_BLOCK", 0.0, side, symbol, {"snapshot": snapshot.__dict__})

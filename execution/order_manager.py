@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from copy import deepcopy
 from dataclasses import dataclass
 from typing import Any
 
@@ -62,19 +63,17 @@ class OrderManager:
         }
         portfolio_state = {"open_positions": active_trades or {}}
 
-        adaptive = self.adaptive_layer.adapt(signal=signal, market_data=market_data)
-
         signal_quality = build_signal_quality(
-            signal=adaptive.adjusted_signal,
-            execution_confidence=float(adaptive.context.execution_confidence),
-            risk_multiplier=float(adaptive.context.risk_multiplier),
-            liquidity_score=float(adaptive.microstructure.liquidity_score),
-            noise_level=float(adaptive.microstructure.noise_level),
-            hard_pass=bool(adaptive.adjusted_signal.get("hard_pass", True)),
-            failed_a_filters=list(adaptive.adjusted_signal.get("failed_a_filters") or []),
-            soft_b_contributions=dict(adaptive.adjusted_signal.get("soft_b_contributions") or {}),
+            signal=signal,
+            execution_confidence=float(signal.get("execution_confidence", 0.5) or 0.5),
+            risk_multiplier=1.0,
+            liquidity_score=float(signal.get("micro_liquidity_score", 0.5) or 0.5),
+            noise_level=float(signal.get("micro_noise_level", 0.5) or 0.5),
+            hard_pass=bool(signal.get("hard_pass", True)),
+            failed_a_filters=list(signal.get("failed_a_filters") or []),
+            soft_b_contributions=dict(signal.get("soft_b_contributions") or {}),
         )
-        threshold = resolve_signal_threshold(adaptive.adjusted_signal)
+        threshold = resolve_signal_threshold(signal)
         final_score = float(signal_quality.execution_score)
         hard_pass = bool(signal_quality.hard_pass)
         score_result = "ALLOW" if hard_pass and final_score >= threshold else "REJECT"
@@ -121,10 +120,11 @@ class OrderManager:
                 "stage": "FINAL_GATE",
             },
         )
-        adaptive.adjusted_signal["execution_score"] = final_score
-        adaptive.adjusted_signal["hard_pass"] = hard_pass
-        adaptive.adjusted_signal["execution_hard_blockers"] = hard_blockers
-        adaptive.adjusted_signal["signal_quality"] = {
+        locked_signal = deepcopy(signal)
+        locked_signal["execution_score"] = final_score
+        locked_signal["hard_pass"] = hard_pass
+        locked_signal["execution_hard_blockers"] = list(hard_blockers)
+        locked_signal["signal_quality"] = {
             "validity": signal_quality.validity,
             "hard_pass": signal_quality.hard_pass,
             "score": signal_quality.score,
@@ -135,7 +135,26 @@ class OrderManager:
             "soft_b_contributions": signal_quality.soft_b_contributions,
             "metadata": signal_quality.metadata,
         }
-        adaptive.adjusted_signal["execution_advisory"] = {
+        locked_signal["decision_lock"] = {
+            "locked": True,
+            "hard_pass": hard_pass,
+            "execution_score": final_score,
+            "threshold": threshold,
+            "final_decision_authority": "ExecutionDecisionEngine",
+        }
+        locked_market_data = deepcopy(market_data)
+        locked_market_data["risk_context"] = {
+            "available_balance": locked_market_data.get("available_balance"),
+            "leverage": locked_market_data.get("leverage"),
+            "safety_buffer": locked_market_data.get("safety_buffer"),
+        }
+
+        adaptive = self.adaptive_layer.adapt(
+            signal=deepcopy(locked_signal),
+            market_data=deepcopy(locked_market_data),
+        )
+
+        execution_advisory = {
             "regime": adaptive.regime.regime.value,
             "stress_level": adaptive.context.stress.stress_score,
             "risk_multiplier": adaptive.context.risk_multiplier,
@@ -144,27 +163,12 @@ class OrderManager:
             "score_result": score_result,
             "score_reason": score_reason,
         }
-        adaptive.adjusted_signal["decision_lock"] = {
-            "locked": True,
-            "hard_pass": hard_pass,
-            "execution_score": final_score,
-            "threshold": threshold,
-            "final_decision_authority": "ExecutionDecisionEngine",
-        }
-
-        locked_signal = dict(adaptive.adjusted_signal)
-        locked_market_data = dict(adaptive.adjusted_market_data)
         locked_market_data["adaptive_context"] = {
             "regime": adaptive.regime.regime.value,
             "stress_level": adaptive.context.stress.stress_score,
             "risk_multiplier": adaptive.context.risk_multiplier,
             "execution_confidence": adaptive.context.execution_confidence,
             "mode": adaptive.context.mode.value,
-        }
-        locked_market_data["risk_context"] = {
-            "available_balance": locked_market_data.get("available_balance"),
-            "leverage": locked_market_data.get("leverage"),
-            "safety_buffer": locked_market_data.get("safety_buffer"),
         }
 
         decision = self.decision_engine.evaluate_order(locked_signal, locked_market_data, portfolio_state)
@@ -190,6 +194,7 @@ class OrderManager:
                 "adaptive_outcome": adaptive.outcome.value,
                 "mode": adaptive.context.mode.value,
                 "risk_multiplier": adaptive.context.risk_multiplier,
+                "execution_advisory": execution_advisory,
             },
         )
         return OrderDecision(
@@ -201,6 +206,7 @@ class OrderManager:
                 "adaptive_mode": adaptive.context.mode.value,
                 "risk_multiplier": adaptive.context.risk_multiplier,
                 "execution_confidence": adaptive.context.execution_confidence,
+                "execution_advisory": execution_advisory,
                 **decision.details,
                 "qty": decision.final_qty,
             },
