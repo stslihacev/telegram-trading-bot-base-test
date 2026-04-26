@@ -1,208 +1,2100 @@
 {
   "version": 3,
   "active_signals": {
-    "ZECUSDT": {
-      "signal_id": "ZECUSDT_1h_LONG_2026-04-25 20:00:00+00:00",
-      "execution_id": "exec_a07b5f88136b",
+    "ENAUSDT": {
+      "signal_id": "ENAUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
+      "execution_id": "exec_f0736a810827",
       "position_id": null,
-      "direction": "LONG",
-      "entry": 357.68,
-      "sl": 349.2272857142857,
-      "tp": 371.2043428571429,
-      "score": 2.5,
-      "confidence": 0.5,
+      "direction": "SHORT",
+      "entry": 0.10914,
+      "sl": 0.11042357142857143,
+      "tp": 0.10708628571428572,
+      "score": 3.25,
+      "confidence": 0.65,
       "status": "FAILED",
-      "timestamp": "2026-04-25T22:08:56.040189+00:00",
+      "timestamp": "2026-04-26T18:53:37.370268+00:00",
       "history": [
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-25 19:00:00+00:00"
+          "timestamp": "2026-04-26 12:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
           "to": "FAILED",
-          "reason": "SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-25T21:53:18.597796+00:00"
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T14:51:13.121242+00:00"
         },
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-25 19:00:00+00:00"
+          "timestamp": "2026-04-26 12:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
           "to": "FAILED",
-          "reason": "SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-25T21:58:28.199614+00:00"
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T14:56:21.031089+00:00"
         },
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-25 20:00:00+00:00"
+          "timestamp": "2026-04-26 13:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
           "to": "FAILED",
-          "reason": "SCORE_BELOW_THRESHOLD",
-          "timestamp": "2026-04-25T22:08:56.040189+00:00"
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T15:16:58.858294+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 13:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T15:22:06.144428+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 13:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T15:32:22.864776+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 13:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T15:37:32.009168+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 13:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T15:47:52.760659+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 13:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T15:53:02.158150+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:01:43.807374+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:06:55.315294+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:17:17.084489+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:22:29.044636+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:32:50.546226+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:38:01.897215+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:48:25.107136+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:53:37.370268+00:00"
+        }
+      ]
+    },
+    "ZBTUSDT": {
+      "signal_id": "ZBTUSDT_1h_LONG_2026-04-26 16:00:00+00:00",
+      "execution_id": "exec_eb524d903199",
+      "position_id": null,
+      "direction": "LONG",
+      "entry": 0.25093,
+      "sl": 0.16362400000000002,
+      "tp": 0.39061959999999996,
+      "score": 3.65,
+      "confidence": 0.73,
+      "status": "FAILED",
+      "timestamp": "2026-04-26T18:53:36.509502+00:00",
+      "history": [
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 13:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T15:01:31.120461+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 13:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T15:06:40.830767+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 13:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T15:16:58.417933+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 13:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T15:22:05.704844+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 13:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T15:32:22.428052+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 13:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T15:37:31.555415+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 13:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T15:47:52.323432+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 13:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T15:53:01.722643+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:01:42.922480+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:06:54.456084+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:17:16.225296+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:22:28.178005+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:32:49.687163+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:38:00.683132+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:48:24.249905+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:53:36.509502+00:00"
+        }
+      ]
+    },
+    "BSBUSDT": {
+      "signal_id": "BSBUSDT_1h_LONG_2026-04-26 16:00:00+00:00",
+      "execution_id": "exec_87c9f98584ea",
+      "position_id": null,
+      "direction": "LONG",
+      "entry": 0.7693,
+      "sl": 0.6025142857142858,
+      "tp": 1.0361571428571428,
+      "score": 3.9,
+      "confidence": 0.78,
+      "status": "FAILED",
+      "timestamp": "2026-04-26T18:53:36.081435+00:00",
+      "history": [
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 14:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T16:03:20.076592+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 14:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T16:08:30.530972+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 14:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T16:18:44.990900+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 14:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T16:28:59.244974+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 14:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T16:34:07.480195+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 14:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T16:44:24.511493+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 14:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T16:49:32.404294+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 14:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T16:59:51.389253+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:01:42.481524+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:06:54.015032+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:17:15.796136+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:22:27.747730+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:32:49.257877+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:38:00.257810+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:48:23.821508+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:53:36.081435+00:00"
         }
       ]
     },
     "AXSUSDT": {
-      "signal_id": "AXSUSDT_1h_LONG_2026-04-25 22:00:00+00:00",
-      "execution_id": "exec_15015512b9bb",
-      "position_id": "pos_AXSUSDT_exec_15015512b9bb",
+      "signal_id": "AXSUSDT_1h_LONG_2026-04-26 18:00:00+00:00",
+      "execution_id": "exec_d3292d3b33cb",
+      "position_id": null,
       "direction": "LONG",
-      "entry": 1.6057,
-      "sl": 1.4688071428571428,
-      "tp": 1.8247285714285715,
+      "entry": 1.4053,
+      "sl": 1.3481028571428573,
+      "tp": 1.4968154285714284,
       "score": 3.0,
       "confidence": 0.6,
-      "status": "OPEN",
-      "timestamp": "2026-04-25 22:00:00+00:00",
+      "status": "FAILED",
+      "timestamp": "2026-04-26T20:31:56.502921+00:00",
       "history": [
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-25 22:00:00+00:00"
+          "timestamp": "2026-04-26 14:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
-          "to": "EXECUTED",
-          "reason": "",
-          "timestamp": "2026-04-25 22:00:00+00:00"
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T16:03:20.526864+00:00"
         },
         {
-          "from": "EXECUTED",
-          "to": "OPEN",
-          "reason": "",
-          "timestamp": "2026-04-25 22:00:00+00:00"
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 14:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T16:08:30.968668+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 14:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T16:18:45.428173+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 14:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T16:23:52.281634+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 14:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T16:34:07.916458+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 14:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T16:39:16.785706+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 14:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T16:49:32.839207+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 14:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T16:54:42.807261+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 18:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T20:00:45.720373+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 18:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T20:05:59.015839+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 18:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T20:16:22.405523+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 18:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T20:21:33.809054+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 18:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T20:31:56.502921+00:00"
         }
       ]
     },
-    "TRUMPUSDT": {
-      "signal_id": "TRUMPUSDT_1h_SHORT_2026-04-25 22:00:00+00:00",
-      "execution_id": "exec_b049e1159122",
-      "position_id": "pos_TRUMPUSDT_exec_b049e1159122",
+    "ETHUSDT": {
+      "signal_id": "ETHUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
+      "execution_id": "exec_c7a85987a1c3",
+      "position_id": null,
       "direction": "SHORT",
-      "entry": 2.541,
-      "sl": 2.625142857142857,
-      "tp": 2.4063714285714286,
-      "score": 3.4,
-      "confidence": 0.6799999999999999,
-      "status": "OPEN",
-      "timestamp": "2026-04-25 22:00:00+00:00",
+      "entry": 2341.59,
+      "sl": 2354.888857142857,
+      "tp": 2320.311828571429,
+      "score": 3.0,
+      "confidence": 0.6,
+      "status": "FAILED",
+      "timestamp": "2026-04-26T18:53:35.652409+00:00",
       "history": [
         {
           "from": "CREATED",
           "to": "PENDING_EXECUTION",
           "reason": "no active signal",
-          "timestamp": "2026-04-25 22:00:00+00:00"
+          "timestamp": "2026-04-26 16:00:00+00:00"
         },
         {
           "from": "PENDING_EXECUTION",
-          "to": "EXECUTED",
-          "reason": "",
-          "timestamp": "2026-04-25 22:00:00+00:00"
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:01:42.035753+00:00"
         },
         {
-          "from": "EXECUTED",
-          "to": "OPEN",
-          "reason": "",
-          "timestamp": "2026-04-25 22:00:00+00:00"
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:06:53.587982+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:17:15.368688+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:22:27.302691+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:32:48.831796+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:37:59.833722+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:48:23.393463+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:53:35.652409+00:00"
+        }
+      ]
+    },
+    "RAVEUSDT": {
+      "signal_id": "RAVEUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
+      "execution_id": "exec_ae7356d4ebdb",
+      "position_id": null,
+      "direction": "SHORT",
+      "entry": 0.91103,
+      "sl": 0.9700435714285713,
+      "tp": 0.8166082857142859,
+      "score": 3.4,
+      "confidence": 0.6799999999999999,
+      "status": "FAILED",
+      "timestamp": "2026-04-26T18:53:36.941019+00:00",
+      "history": [
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:01:43.364392+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:06:54.889185+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:17:16.661448+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:22:28.613211+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:32:50.116192+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:38:01.469188+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:48:24.678975+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:53:36.941019+00:00"
+        }
+      ]
+    },
+    "FARTCOINUSDT": {
+      "signal_id": "FARTCOINUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
+      "execution_id": "exec_c30d6955d05f",
+      "position_id": null,
+      "direction": "SHORT",
+      "entry": 0.20003,
+      "sl": 0.20344257142857144,
+      "tp": 0.1945698857142857,
+      "score": 3.25,
+      "confidence": 0.65,
+      "status": "FAILED",
+      "timestamp": "2026-04-26T18:53:37.795301+00:00",
+      "history": [
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:01:44.253783+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:06:55.745345+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:17:17.511526+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:22:29.469964+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:32:51.332824+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:38:02.332246+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:48:25.533166+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 16:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T18:53:37.795301+00:00"
+        }
+      ]
+    },
+    "HYPERUSDT": {
+      "signal_id": "HYPERUSDT_1h_LONG_2026-04-26 18:00:00+00:00",
+      "execution_id": "exec_cc6c3d154c0e",
+      "position_id": null,
+      "direction": "LONG",
+      "entry": 0.12471,
+      "sl": 0.12146714285714286,
+      "tp": 0.12989857142857142,
+      "score": 3.0,
+      "confidence": 0.6,
+      "status": "FAILED",
+      "timestamp": "2026-04-26T20:31:56.929414+00:00",
+      "history": [
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 18:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T20:00:46.165772+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 18:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T20:05:59.446913+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 18:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T20:16:22.832835+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 18:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T20:21:34.239066+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 18:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T20:31:56.929414+00:00"
+        }
+      ]
+    },
+    "INJUSDT": {
+      "signal_id": "INJUSDT_1h_LONG_2026-04-26 18:00:00+00:00",
+      "execution_id": "exec_b4ab5aa8e688",
+      "position_id": null,
+      "direction": "LONG",
+      "entry": 3.697,
+      "sl": 3.6123285714285713,
+      "tp": 3.832474285714286,
+      "score": 2.0,
+      "confidence": 0.4,
+      "status": "FAILED",
+      "timestamp": "2026-04-26T20:31:57.351983+00:00",
+      "history": [
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 18:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T20:00:46.608782+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 18:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T20:05:59.876990+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 18:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T20:16:23.263844+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 18:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T20:21:34.672559+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 18:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T20:31:57.351983+00:00"
+        }
+      ]
+    },
+    "PENGUUSDT": {
+      "signal_id": "PENGUUSDT_1h_LONG_2026-04-26 18:00:00+00:00",
+      "execution_id": "exec_2b61b588ed73",
+      "position_id": null,
+      "direction": "LONG",
+      "entry": 0.008822,
+      "sl": 0.008560685714285714,
+      "tp": 0.009240102857142857,
+      "score": 3.25,
+      "confidence": 0.65,
+      "status": "FAILED",
+      "timestamp": "2026-04-26T20:31:57.774988+00:00",
+      "history": [
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 18:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T20:00:47.052794+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 18:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T20:06:00.306280+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 18:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T20:16:23.696490+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 18:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T20:21:35.115957+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 18:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T20:31:57.774988+00:00"
+        }
+      ]
+    },
+    "RAYDIUMUSDT": {
+      "signal_id": "RAYDIUMUSDT_1h_LONG_2026-04-26 18:00:00+00:00",
+      "execution_id": "exec_8769e48d335d",
+      "position_id": null,
+      "direction": "LONG",
+      "entry": 0.7551,
+      "sl": 0.7238714285714285,
+      "tp": 0.8050657142857144,
+      "score": 3.0,
+      "confidence": 0.6,
+      "status": "FAILED",
+      "timestamp": "2026-04-26T20:31:58.200065+00:00",
+      "history": [
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 18:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T20:00:47.497074+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 18:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T20:06:00.740289+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 18:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T20:16:24.126667+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 18:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T20:21:35.552462+00:00"
+        },
+        {
+          "from": "CREATED",
+          "to": "PENDING_EXECUTION",
+          "reason": "no active signal",
+          "timestamp": "2026-04-26 18:00:00+00:00"
+        },
+        {
+          "from": "PENDING_EXECUTION",
+          "to": "FAILED",
+          "reason": "PRE_EXECUTION_HARD_BLOCK",
+          "timestamp": "2026-04-26T20:31:58.200065+00:00"
         }
       ]
     }
   },
   "signal_history": {
-    "ZECUSDT": [
+    "FARTCOINUSDT": [
       {
-        "signal_id": "ZECUSDT_1h_LONG_2026-04-25 19:00:00+00:00",
+        "signal_id": "FARTCOINUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-25T21:53:18.598797+00:00",
-        "direction": "LONG",
-        "score": 2.5,
+        "timestamp": "2026-04-26T18:01:44.254782+00:00",
+        "direction": "SHORT",
+        "score": 3.25,
         "reason": "NO_ACTIVE_DUPLICATE"
       },
       {
-        "signal_id": "ZECUSDT_1h_LONG_2026-04-25 19:00:00+00:00",
+        "signal_id": "FARTCOINUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-25T21:58:28.201614+00:00",
-        "direction": "LONG",
-        "score": 2.5,
+        "timestamp": "2026-04-26T18:06:55.746345+00:00",
+        "direction": "SHORT",
+        "score": 3.25,
         "reason": "NO_ACTIVE_DUPLICATE"
       },
       {
-        "signal_id": "ZECUSDT_1h_LONG_2026-04-25 20:00:00+00:00",
+        "signal_id": "FARTCOINUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-25T22:08:56.042187+00:00",
-        "direction": "LONG",
-        "score": 2.5,
+        "timestamp": "2026-04-26T18:17:17.511526+00:00",
+        "direction": "SHORT",
+        "score": 3.25,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "FARTCOINUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T18:22:29.470962+00:00",
+        "direction": "SHORT",
+        "score": 3.25,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "FARTCOINUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T18:32:51.332824+00:00",
+        "direction": "SHORT",
+        "score": 3.25,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "FARTCOINUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T18:38:02.332246+00:00",
+        "direction": "SHORT",
+        "score": 3.25,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "FARTCOINUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T18:48:25.533166+00:00",
+        "direction": "SHORT",
+        "score": 3.25,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "FARTCOINUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T18:53:37.796300+00:00",
+        "direction": "SHORT",
+        "score": 3.25,
         "reason": "NO_ACTIVE_DUPLICATE"
       }
     ],
-    "GALAUSDT": [
+    "ETHUSDT": [
       {
-        "signal_id": "GALAUSDT_1h_LONG_2026-04-25 20:00:00+00:00",
+        "signal_id": "ETHUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-25T22:03:40.686399+00:00",
-        "direction": "LONG",
+        "timestamp": "2026-04-26T18:01:42.035753+00:00",
+        "direction": "SHORT",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "ETHUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T18:06:53.588980+00:00",
+        "direction": "SHORT",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "ETHUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T18:17:15.368688+00:00",
+        "direction": "SHORT",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "ETHUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T18:22:27.302691+00:00",
+        "direction": "SHORT",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "ETHUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T18:32:48.832794+00:00",
+        "direction": "SHORT",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "ETHUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T18:37:59.833722+00:00",
+        "direction": "SHORT",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "ETHUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T18:48:23.393463+00:00",
+        "direction": "SHORT",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "ETHUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T18:53:35.652409+00:00",
+        "direction": "SHORT",
         "score": 3.0,
         "reason": "NO_ACTIVE_DUPLICATE"
       }
     ],
-    "LABUSDT": [
+    "ENAUSDT": [
       {
-        "signal_id": "LABUSDT_1h_LONG_2026-04-25 20:00:00+00:00",
+        "signal_id": "ENAUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-25T22:03:42.589703+00:00",
-        "direction": "LONG",
-        "score": 3.15,
+        "timestamp": "2026-04-26T18:01:43.807374+00:00",
+        "direction": "SHORT",
+        "score": 3.25,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "ENAUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T18:06:55.316292+00:00",
+        "direction": "SHORT",
+        "score": 3.25,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "ENAUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T18:17:17.084489+00:00",
+        "direction": "SHORT",
+        "score": 3.25,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "ENAUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T18:22:29.045637+00:00",
+        "direction": "SHORT",
+        "score": 3.25,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "ENAUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T18:32:50.547222+00:00",
+        "direction": "SHORT",
+        "score": 3.25,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "ENAUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T18:38:01.897215+00:00",
+        "direction": "SHORT",
+        "score": 3.25,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "ENAUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T18:48:25.108136+00:00",
+        "direction": "SHORT",
+        "score": 3.25,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "ENAUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T18:53:37.370268+00:00",
+        "direction": "SHORT",
+        "score": 3.25,
         "reason": "NO_ACTIVE_DUPLICATE"
       }
     ],
-    "MUSDT": [
+    "ZBTUSDT": [
       {
-        "signal_id": "MUSDT_1h_LONG_2026-04-25 20:00:00+00:00",
+        "signal_id": "ZBTUSDT_1h_LONG_2026-04-26 16:00:00+00:00",
+        "status": "UPGRADE",
+        "timestamp": "2026-04-26T18:01:42.922480+00:00",
+        "direction": "LONG",
+        "score": 3.65,
+        "reason": "SCORE_IMPROVEMENT_OVERRIDE"
+      },
+      {
+        "signal_id": "ZBTUSDT_1h_LONG_2026-04-26 16:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-25T22:03:44.499584+00:00",
+        "timestamp": "2026-04-26T18:06:54.457086+00:00",
+        "direction": "LONG",
+        "score": 3.65,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "ZBTUSDT_1h_LONG_2026-04-26 16:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T18:17:16.226297+00:00",
+        "direction": "LONG",
+        "score": 3.65,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "ZBTUSDT_1h_LONG_2026-04-26 16:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T18:22:28.179005+00:00",
+        "direction": "LONG",
+        "score": 3.65,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "ZBTUSDT_1h_LONG_2026-04-26 16:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T18:32:49.687163+00:00",
+        "direction": "LONG",
+        "score": 3.65,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "ZBTUSDT_1h_LONG_2026-04-26 16:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T18:38:00.683132+00:00",
+        "direction": "LONG",
+        "score": 3.65,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "ZBTUSDT_1h_LONG_2026-04-26 16:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T18:48:24.249905+00:00",
+        "direction": "LONG",
+        "score": 3.65,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "ZBTUSDT_1h_LONG_2026-04-26 16:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T18:53:36.509502+00:00",
+        "direction": "LONG",
+        "score": 3.65,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      }
+    ],
+    "BSBUSDT": [
+      {
+        "signal_id": "BSBUSDT_1h_LONG_2026-04-26 14:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T16:34:07.480195+00:00",
+        "direction": "LONG",
+        "score": 2.5,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "BSBUSDT_1h_LONG_2026-04-26 14:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T16:44:24.512488+00:00",
+        "direction": "LONG",
+        "score": 2.5,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "BSBUSDT_1h_LONG_2026-04-26 14:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T16:49:32.404294+00:00",
+        "direction": "LONG",
+        "score": 2.5,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "BSBUSDT_1h_LONG_2026-04-26 14:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T16:59:51.389253+00:00",
+        "direction": "LONG",
+        "score": 2.5,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "BSBUSDT_1h_LONG_2026-04-26 16:00:00+00:00",
+        "status": "UPGRADE",
+        "timestamp": "2026-04-26T18:01:42.481524+00:00",
+        "direction": "LONG",
+        "score": 3.9,
+        "reason": "SCORE_IMPROVEMENT_OVERRIDE"
+      },
+      {
+        "signal_id": "BSBUSDT_1h_LONG_2026-04-26 16:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T18:06:54.015032+00:00",
+        "direction": "LONG",
+        "score": 3.9,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "BSBUSDT_1h_LONG_2026-04-26 16:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T18:17:15.797133+00:00",
+        "direction": "LONG",
+        "score": 3.9,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "BSBUSDT_1h_LONG_2026-04-26 16:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T18:22:27.747730+00:00",
+        "direction": "LONG",
+        "score": 3.9,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "BSBUSDT_1h_LONG_2026-04-26 16:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T18:32:49.258876+00:00",
+        "direction": "LONG",
+        "score": 3.9,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "BSBUSDT_1h_LONG_2026-04-26 16:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T18:38:00.258811+00:00",
+        "direction": "LONG",
+        "score": 3.9,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "BSBUSDT_1h_LONG_2026-04-26 16:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T18:48:23.821508+00:00",
+        "direction": "LONG",
+        "score": 3.9,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "BSBUSDT_1h_LONG_2026-04-26 16:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T18:53:36.082433+00:00",
         "direction": "LONG",
         "score": 3.9,
         "reason": "NO_ACTIVE_DUPLICATE"
       }
     ],
-    "SAHARAUSDT": [
-      {
-        "signal_id": "SAHARAUSDT_1h_LONG_2026-04-25 20:00:00+00:00",
-        "status": "ALLOW",
-        "timestamp": "2026-04-25T22:03:46.402301+00:00",
-        "direction": "LONG",
-        "score": 3.0,
-        "reason": "NO_ACTIVE_DUPLICATE"
-      }
-    ],
     "AXSUSDT": [
       {
-        "signal_id": "AXSUSDT_1h_LONG_2026-04-25 22:00:00+00:00",
+        "signal_id": "AXSUSDT_1h_LONG_2026-04-26 14:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-26T00:00:53.765453+00:00",
+        "timestamp": "2026-04-26T16:34:07.916458+00:00",
+        "direction": "LONG",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "AXSUSDT_1h_LONG_2026-04-26 14:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T16:39:16.786706+00:00",
+        "direction": "LONG",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "AXSUSDT_1h_LONG_2026-04-26 14:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T16:49:32.840207+00:00",
+        "direction": "LONG",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "AXSUSDT_1h_LONG_2026-04-26 14:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T16:54:42.808263+00:00",
+        "direction": "LONG",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "AXSUSDT_1h_LONG_2026-04-26 18:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T20:00:45.721373+00:00",
+        "direction": "LONG",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "AXSUSDT_1h_LONG_2026-04-26 18:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T20:05:59.016841+00:00",
+        "direction": "LONG",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "AXSUSDT_1h_LONG_2026-04-26 18:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T20:16:22.405523+00:00",
+        "direction": "LONG",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "AXSUSDT_1h_LONG_2026-04-26 18:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T20:21:33.809054+00:00",
+        "direction": "LONG",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "AXSUSDT_1h_LONG_2026-04-26 18:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T20:31:56.503922+00:00",
         "direction": "LONG",
         "score": 3.0,
         "reason": "NO_ACTIVE_DUPLICATE"
       }
     ],
-    "TRUMPUSDT": [
+    "RAVEUSDT": [
       {
-        "signal_id": "TRUMPUSDT_1h_SHORT_2026-04-25 22:00:00+00:00",
+        "signal_id": "RAVEUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
         "status": "ALLOW",
-        "timestamp": "2026-04-26T00:00:56.060582+00:00",
+        "timestamp": "2026-04-26T18:01:43.365393+00:00",
         "direction": "SHORT",
         "score": 3.4,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "RAVEUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T18:06:54.890187+00:00",
+        "direction": "SHORT",
+        "score": 3.4,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "RAVEUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T18:17:16.661448+00:00",
+        "direction": "SHORT",
+        "score": 3.4,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "RAVEUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T18:22:28.613211+00:00",
+        "direction": "SHORT",
+        "score": 3.4,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "RAVEUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T18:32:50.116192+00:00",
+        "direction": "SHORT",
+        "score": 3.4,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "RAVEUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T18:38:01.470187+00:00",
+        "direction": "SHORT",
+        "score": 3.4,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "RAVEUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T18:48:24.679934+00:00",
+        "direction": "SHORT",
+        "score": 3.4,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "RAVEUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T18:53:36.941019+00:00",
+        "direction": "SHORT",
+        "score": 3.4,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      }
+    ],
+    "HYPERUSDT": [
+      {
+        "signal_id": "HYPERUSDT_1h_LONG_2026-04-26 18:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T20:00:46.165772+00:00",
+        "direction": "LONG",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "HYPERUSDT_1h_LONG_2026-04-26 18:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T20:05:59.446913+00:00",
+        "direction": "LONG",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "HYPERUSDT_1h_LONG_2026-04-26 18:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T20:16:22.832835+00:00",
+        "direction": "LONG",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "HYPERUSDT_1h_LONG_2026-04-26 18:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T20:21:34.240063+00:00",
+        "direction": "LONG",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "HYPERUSDT_1h_LONG_2026-04-26 18:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T20:31:56.929414+00:00",
+        "direction": "LONG",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      }
+    ],
+    "INJUSDT": [
+      {
+        "signal_id": "INJUSDT_1h_LONG_2026-04-26 18:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T20:00:46.608782+00:00",
+        "direction": "LONG",
+        "score": 2.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "INJUSDT_1h_LONG_2026-04-26 18:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T20:05:59.877986+00:00",
+        "direction": "LONG",
+        "score": 2.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "INJUSDT_1h_LONG_2026-04-26 18:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T20:16:23.263844+00:00",
+        "direction": "LONG",
+        "score": 2.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "INJUSDT_1h_LONG_2026-04-26 18:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T20:21:34.673559+00:00",
+        "direction": "LONG",
+        "score": 2.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "INJUSDT_1h_LONG_2026-04-26 18:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T20:31:57.352979+00:00",
+        "direction": "LONG",
+        "score": 2.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      }
+    ],
+    "PENGUUSDT": [
+      {
+        "signal_id": "PENGUUSDT_1h_LONG_2026-04-26 18:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T20:00:47.053791+00:00",
+        "direction": "LONG",
+        "score": 3.25,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "PENGUUSDT_1h_LONG_2026-04-26 18:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T20:06:00.307278+00:00",
+        "direction": "LONG",
+        "score": 3.25,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "PENGUUSDT_1h_LONG_2026-04-26 18:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T20:16:23.696490+00:00",
+        "direction": "LONG",
+        "score": 3.25,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "PENGUUSDT_1h_LONG_2026-04-26 18:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T20:21:35.116955+00:00",
+        "direction": "LONG",
+        "score": 3.25,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "PENGUUSDT_1h_LONG_2026-04-26 18:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T20:31:57.775988+00:00",
+        "direction": "LONG",
+        "score": 3.25,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      }
+    ],
+    "RAYDIUMUSDT": [
+      {
+        "signal_id": "RAYDIUMUSDT_1h_LONG_2026-04-26 18:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T20:00:47.498077+00:00",
+        "direction": "LONG",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "RAYDIUMUSDT_1h_LONG_2026-04-26 18:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T20:06:00.740289+00:00",
+        "direction": "LONG",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "RAYDIUMUSDT_1h_LONG_2026-04-26 18:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T20:16:24.127668+00:00",
+        "direction": "LONG",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "RAYDIUMUSDT_1h_LONG_2026-04-26 18:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T20:21:35.553462+00:00",
+        "direction": "LONG",
+        "score": 3.0,
+        "reason": "NO_ACTIVE_DUPLICATE"
+      },
+      {
+        "signal_id": "RAYDIUMUSDT_1h_LONG_2026-04-26 18:00:00+00:00",
+        "status": "ALLOW",
+        "timestamp": "2026-04-26T20:31:58.200065+00:00",
+        "direction": "LONG",
+        "score": 3.0,
         "reason": "NO_ACTIVE_DUPLICATE"
       }
     ]

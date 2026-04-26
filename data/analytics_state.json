@@ -1,29 +1,29 @@
 {
   "analytics": {
-    "signals_total": 756,
-    "signals_strict": 756,
+    "signals_total": 901,
+    "signals_strict": 901,
     "signals_fallback": 0,
-    "signals_opened": 437,
-    "signals_blocked_by_limits": 132,
-    "opened_from_strict": 437,
+    "signals_opened": 548,
+    "signals_blocked_by_limits": 166,
+    "opened_from_strict": 548,
     "opened_from_fallback": 0,
     "closed_strict_tp": 5,
     "closed_strict_sl": 8,
     "closed_fallback_tp": 1,
     "closed_fallback_sl": 0,
-    "trades_opened_real": 75,
+    "trades_opened_real": 79,
     "trades_closed_real": 26,
     "pnl_tracking_real": 0,
     "signals_blocked_by_risk": 9,
     "signals_scaled_by_risk": 0
   },
   "mode_counter": {
-    "SCALPING": 1937,
-    "MAIN": 4752,
-    "LIGHT": 46
+    "SCALPING": 1975,
+    "MAIN": 5084,
+    "LIGHT": 47
   },
   "entry_source_counter": {
-    "strict": 6735
+    "strict": 7106
   },
   "rejection_counter": {
     "SCALPING": {
@@ -31,45 +31,45 @@
     },
     "MAIN": {
       "LOW_SCORE": 104,
-      "DUPLICATE": 162,
-      "POSITION_LIMIT": 80
+      "DUPLICATE": 196,
+      "POSITION_LIMIT": 129
     }
   },
-  "total_signals": 756,
-  "unique_signals": 594,
-  "duplicates": 162,
-  "confidence_sum": 538.5534620000008,
-  "score_sum": 2692.9000000000224,
-  "scored_count": 756,
+  "total_signals": 901,
+  "unique_signals": 705,
+  "duplicates": 196,
+  "confidence_sum": 632.0134619999997,
+  "score_sum": 3160.2000000000253,
+  "scored_count": 901,
   "portfolio_risk_sum": 0.0,
   "portfolio_exposure_sum": 0.0,
   "portfolio_risk_samples": 67,
   "signal_filter_counter": {
     "TREND": {
-      "passed": 728,
-      "weighted": 728
+      "passed": 873,
+      "weighted": 873
     },
     "STRUCTURE": {
-      "passed": 728,
-      "weighted": 728
+      "passed": 873,
+      "weighted": 873
     },
     "RSI": {
-      "passed": 494,
-      "weighted": 494,
+      "passed": 618,
+      "weighted": 618,
       "failed": 1
     },
     "ADX": {
-      "passed": 621,
-      "weighted": 621
+      "passed": 741,
+      "weighted": 741
     },
     "VOLUME": {
-      "passed": 363,
-      "weighted": 363,
+      "passed": 447,
+      "weighted": 447,
       "failed": 1
     },
     "MACD": {
-      "passed": 437,
-      "weighted": 436
+      "passed": 469,
+      "weighted": 468
     },
     "EMA": {
       "passed": 1

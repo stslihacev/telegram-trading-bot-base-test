@@ -2032,5 +2032,203 @@
     "signal_type": "strict",
     "score": 3.4,
     "timestamp": "2026-04-25T22:00:00+00:00"
+  },
+  {
+    "signal_id": "CHIPUSDT_1h_LONG_2026-04-26 12:00:00+00:00",
+    "symbol": "CHIPUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 4.15,
+    "timestamp": "2026-04-26T12:00:00+00:00"
+  },
+  {
+    "signal_id": "FARTCOINUSDT_1h_SHORT_2026-04-26 12:00:00+00:00",
+    "symbol": "FARTCOINUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.25,
+    "timestamp": "2026-04-26T12:00:00+00:00"
+  },
+  {
+    "signal_id": "TAOUSDT_1h_SHORT_2026-04-26 12:00:00+00:00",
+    "symbol": "TAOUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.25,
+    "timestamp": "2026-04-26T12:00:00+00:00"
+  },
+  {
+    "signal_id": "ETHUSDT_1h_SHORT_2026-04-26 12:00:00+00:00",
+    "symbol": "ETHUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.25,
+    "timestamp": "2026-04-26T12:00:00+00:00"
+  },
+  {
+    "signal_id": "ASTERUSDT_1h_SHORT_2026-04-26 12:00:00+00:00",
+    "symbol": "ASTERUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-26T12:00:00+00:00"
+  },
+  {
+    "signal_id": "ENAUSDT_1h_SHORT_2026-04-26 12:00:00+00:00",
+    "symbol": "ENAUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.25,
+    "timestamp": "2026-04-26T12:00:00+00:00"
+  },
+  {
+    "signal_id": "ZBTUSDT_1h_LONG_2026-04-26 13:00:00+00:00",
+    "symbol": "ZBTUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.25,
+    "timestamp": "2026-04-26T13:00:00+00:00"
+  },
+  {
+    "signal_id": "ENAUSDT_1h_SHORT_2026-04-26 13:00:00+00:00",
+    "symbol": "ENAUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.25,
+    "timestamp": "2026-04-26T13:00:00+00:00"
+  },
+  {
+    "signal_id": "ZECUSDT_1h_LONG_2026-04-26 13:00:00+00:00",
+    "symbol": "ZECUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 2.75,
+    "timestamp": "2026-04-26T13:00:00+00:00"
+  },
+  {
+    "signal_id": "BSBUSDT_1h_LONG_2026-04-26 14:00:00+00:00",
+    "symbol": "BSBUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 2.5,
+    "timestamp": "2026-04-26T14:00:00+00:00"
+  },
+  {
+    "signal_id": "AXSUSDT_1h_LONG_2026-04-26 14:00:00+00:00",
+    "symbol": "AXSUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-26T14:00:00+00:00"
+  },
+  {
+    "signal_id": "ETHUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
+    "symbol": "ETHUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-26T16:00:00+00:00"
+  },
+  {
+    "signal_id": "BSBUSDT_1h_LONG_2026-04-26 16:00:00+00:00",
+    "symbol": "BSBUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.9,
+    "timestamp": "2026-04-26T16:00:00+00:00"
+  },
+  {
+    "signal_id": "ZBTUSDT_1h_LONG_2026-04-26 16:00:00+00:00",
+    "symbol": "ZBTUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.65,
+    "timestamp": "2026-04-26T16:00:00+00:00"
+  },
+  {
+    "signal_id": "RAVEUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
+    "symbol": "RAVEUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.4,
+    "timestamp": "2026-04-26T16:00:00+00:00"
+  },
+  {
+    "signal_id": "ENAUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
+    "symbol": "ENAUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.25,
+    "timestamp": "2026-04-26T16:00:00+00:00"
+  },
+  {
+    "signal_id": "FARTCOINUSDT_1h_SHORT_2026-04-26 16:00:00+00:00",
+    "symbol": "FARTCOINUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.25,
+    "timestamp": "2026-04-26T16:00:00+00:00"
+  },
+  {
+    "signal_id": "AXSUSDT_1h_LONG_2026-04-26 18:00:00+00:00",
+    "symbol": "AXSUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-26T18:00:00+00:00"
+  },
+  {
+    "signal_id": "HYPERUSDT_1h_LONG_2026-04-26 18:00:00+00:00",
+    "symbol": "HYPERUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-26T18:00:00+00:00"
+  },
+  {
+    "signal_id": "INJUSDT_1h_LONG_2026-04-26 18:00:00+00:00",
+    "symbol": "INJUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 2.0,
+    "timestamp": "2026-04-26T18:00:00+00:00"
+  },
+  {
+    "signal_id": "PENGUUSDT_1h_LONG_2026-04-26 18:00:00+00:00",
+    "symbol": "PENGUUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.25,
+    "timestamp": "2026-04-26T18:00:00+00:00"
+  },
+  {
+    "signal_id": "RAYDIUMUSDT_1h_LONG_2026-04-26 18:00:00+00:00",
+    "symbol": "RAYDIUMUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-26T18:00:00+00:00"
   }
 ]

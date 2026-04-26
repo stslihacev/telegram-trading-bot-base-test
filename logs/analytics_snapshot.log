@@ -3,14 +3,14 @@
 ANALYTICS REPORT:
 
 Signals:
-* total: 756
-* strict: 756
+* total: 901
+* strict: 901
 * fallback: 0
-* opened: 437
-* blocked_by_limits: 132
+* opened: 548
+* blocked_by_limits: 166
 
 Opened:
-* strict: 437
+* strict: 548
 * fallback: 0
 
 Results:
@@ -19,19 +19,19 @@ Results:
 
 📊 СТАТИСТИКА СИГНАЛОВ
 
-Всего сигналов: 756
-Уникальных: 594
-Дубликатов: 162
+Всего сигналов: 901
+Уникальных: 705
+Дубликатов: 196
 
 LIGHT: 47
-MAIN: 4939
+MAIN: 5084
 SCALPING: 1975
 
-strict source: 6961
+strict source: 7106
 relaxed source: 0
 
-Средний confidence: 0.71
-Средний score: 3.56
+Средний confidence: 0.70
+Средний score: 3.51
 
 🛡️ PORTFOLIO RISK DIAGNOSTICS
 avg_portfolio_risk: 0.00%
@@ -40,14 +40,18 @@ signals_blocked_by_risk: 9
 signals_scaled_by_risk: 0
 
 Качество:
-⭐⭐⭐⭐⭐: 0
-⭐⭐⭐⭐: 0
-⭐⭐⭐: 0
+⭐⭐⭐⭐⭐: 8
+⭐⭐⭐⭐: 123
+⭐⭐⭐: 14
 ⭐⭐: 0
 ⭐: 0
 
 Топ фильтров:
--
+TREND: 16.1%
+STRUCTURE: 16.1%
+RSI: 13.8%
+ADX: 13.3%
+VOLUME: 9.3%
 
 📈 TRADE OUTCOME ANALYTICS
 
@@ -82,9 +86,9 @@ relaxed: trades=1, wins=1, losses=0, winrate=100.0%, avgR=2.64, PF=∞
 
 REJECTION_STATS:
 MAIN:
-  DUPLICATE: 162
+  DUPLICATE: 196
+  POSITION_LIMIT: 129
   LOW_SCORE: 104
-  POSITION_LIMIT: 80
 SCALPING:
   LOW_SCORE: 95
 
@@ -103,25 +107,25 @@ High-conf losses: 0
 
 📌 MODE TRADE STATS
 LIGHT: signals=47, closed=0, winrate=0.0%, avgRR=0.00
-MAIN: signals=4939, closed=0, winrate=0.0%, avgRR=0.00
+MAIN: signals=5084, closed=0, winrate=0.0%, avgRR=0.00
 SCALPING: signals=1975, closed=0, winrate=0.0%, avgRR=0.00
 
 🧪 FILTER OUTCOME BREAKDOWN
 -
 
 🧬 FILTER SIGNAL PARTICIPATION
-ADX: passed=621, weighted=621, failed=0
+ADX: passed=741, weighted=741, failed=0
 BODY: passed=1, weighted=0, failed=0
 EMA: passed=1, weighted=0, failed=0
-MACD: passed=437, weighted=436, failed=0
-RSI: passed=494, weighted=494, failed=1
+MACD: passed=469, weighted=468, failed=0
+RSI: passed=618, weighted=618, failed=1
 SMA: passed=0, weighted=0, failed=1
-STRUCTURE: passed=728, weighted=728, failed=0
-TREND: passed=728, weighted=728, failed=0
+STRUCTURE: passed=873, weighted=873, failed=0
+TREND: passed=873, weighted=873, failed=0
 
 🛡️ ANALYTICS INTEGRITY CHECK
-signals_generated=437 trades_opened=23 trades_closed=23
-signals_vs_trades_delta=414 trades_vs_closed_delta=0
+signals_generated=548 trades_opened=23 trades_closed=23
+signals_vs_trades_delta=525 trades_vs_closed_delta=0
 
 --------------------------------
 

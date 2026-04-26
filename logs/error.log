@@ -95,3 +95,7 @@ Traceback (most recent call last):
 RuntimeError: place_order failed after 3 attempts: Qty invalid (ErrCode: 10001) (ErrTime: 18:10:40).
 Request → POST https://api-demo.bybit.com/v5/order/create: {"category": "linear", "symbol": "MONUSDT", "side": "Buy", "orderType": "Market", "qty": "287.34999999999997", "reduceOnly": true, "timeInForce": "IOC"}.
 2026-04-24 16:24:55,711 - crypto_bot - ERROR - [BYBIT ERROR] endpoint=fetch_ticker:ADA/USDT:USDT failed without retry: bybit GET https://api.bybit.com/v5/market/tickers?symbol=ADAUSDT&category=linear
+2026-04-26 17:20:25,091 - crypto_bot - CRITICAL - CRITICAL_POSITION_RISK: symbol=ETHUSDT reason=POST_TRADE_VALIDATION:StopLoss:23385200 set for Sell position should greater base_price:23483600??LastPrice (ErrCode: 10001) (ErrTime: 14:20:24).
+Request → POST https://api-demo.bybit.com/v5/position/trading-stop: {"category": "linear", "symbol": "ETHUSDT", "tpslMode": "Full", "stopLoss": "2338.5295714285717", "takeProfit": "2310.528685714286"}. action=FORCE_CLOSE
+2026-04-26 17:20:25,092 - crypto_bot - CRITICAL - EMERGENCY_MODE_ACTIVE: reason=ETHUSDT:POST_TRADE_VALIDATION:StopLoss:23385200 set for Sell position should greater base_price:23483600??LastPrice (ErrCode: 10001) (ErrTime: 14:20:24).
+Request → POST https://api-demo.bybit.com/v5/position/trading-stop: {"category": "linear", "symbol": "ETHUSDT", "tpslMode": "Full", "stopLoss": "2338.5295714285717", "takeProfit": "2310.528685714286"}.
