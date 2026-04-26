@@ -166,6 +166,10 @@ class TelegramTradingBot:
         self.gui_summary_queue: queue.Queue[dict[str, str]] = queue.Queue()
         self.gui_control_queue: queue.Queue[str] = queue.Queue()
         self._shutdown_requested = threading.Event()
+        self._shutdown_lock = asyncio.Lock()
+        self._shutdown_started = False
+        self._shutdown_completed = False
+        self._main_loop: asyncio.AbstractEventLoop | None = None
 
     async def _position_price_loop(self, interval_sec: int = 10) -> None:
         update_interval = max(5, int(interval_sec))
@@ -205,7 +209,7 @@ class TelegramTradingBot:
                         if event in {"TP", "SL", "SMART_EXIT"}:
                             self.signal_analytics.register_real_trade_event("CLOSE")
             except asyncio.CancelledError:
-                logger.info("position_price_loop cancelled")
+                logger.debug("position_price_loop cancelled")
                 raise
             except Exception:
                 logger.error("position_price_loop error", exc_info=True)
@@ -876,22 +880,37 @@ class TelegramTradingBot:
             logger.info(f"⏳ Sleeping for {interval_sec} seconds")
             await asyncio.sleep(interval_sec)
 
-    def run_polling(self) -> None:
+    async def run_polling(self) -> None:
+        self._main_loop = asyncio.get_running_loop()
         if self.application is None:
             if not self.telegram_enabled:
                 logger.info("📡 Telegram polling disabled, running standalone scan loop")
-                async def _run_without_telegram() -> None:
-                    self.position_update_task = asyncio.create_task(self._position_price_loop())
-                    self.scan_task = asyncio.create_task(self.scan_loop())
-                    try:
-                        await asyncio.gather(self.scan_task, self.position_update_task)
-                    finally:
-                        await self.shutdown()
-
-                asyncio.run(_run_without_telegram())
+                self.position_update_task = asyncio.create_task(self._position_price_loop())
+                self.scan_task = asyncio.create_task(self.scan_loop())
+                try:
+                    await asyncio.gather(self.scan_task, self.position_update_task)
+                except asyncio.CancelledError:
+                    logger.debug("standalone polling cancelled")
+                    raise
+                finally:
+                    await self.shutdown()
                 return
             raise RuntimeError("Application not initialized")
-        self.application.run_polling(drop_pending_updates=True)
+        if self.application.updater is None:
+            raise RuntimeError("Application updater is not available")
+
+        await self.application.initialize()
+        await self.application.start()
+        await self._post_init(self.application)
+        await self.application.updater.start_polling(drop_pending_updates=True)
+        try:
+            while not self._shutdown_requested.is_set():
+                await asyncio.sleep(0.5)
+        except asyncio.CancelledError:
+            logger.debug("telegram polling cancelled")
+            raise
+        finally:
+            await self.shutdown()
 
     async def _cancel_background_tasks(self) -> None:
         tasks = [self.scan_task, self.position_update_task]
@@ -900,29 +919,65 @@ class TelegramTradingBot:
                 task.cancel()
         pending = [task for task in tasks if task]
         if pending:
-            await asyncio.gather(*pending, return_exceptions=True)
+            results = await asyncio.gather(*pending, return_exceptions=True)
+            for result in results:
+                if isinstance(result, asyncio.CancelledError):
+                    logger.debug("Background task cancelled during shutdown")
+                elif isinstance(result, Exception):
+                    logger.debug("Background task ended with exception during shutdown", exc_info=result)
 
     async def stop(self) -> None:
         logger.info("\n%s", self.generate_analytics_report())
         await self._cancel_background_tasks()
         if self.application:
+            if self.application.updater and self.application.updater.running:
+                try:
+                    await self.application.updater.stop()
+                except asyncio.CancelledError:
+                    logger.debug("application.updater.stop cancelled")
+                except Exception:
+                    logger.debug("application.updater.stop skipped/failed", exc_info=True)
             try:
                 await self.application.stop()
+            except asyncio.CancelledError:
+                logger.debug("application.stop cancelled")
             except Exception:
                 logger.debug("application.stop skipped/failed", exc_info=True)
             try:
                 await self.application.shutdown()
+            except asyncio.CancelledError:
+                logger.debug("application.shutdown cancelled")
             except Exception:
                 logger.debug("application.shutdown skipped/failed", exc_info=True)
 
     async def shutdown(self) -> None:
-        self._shutdown_requested.set()
-        await self.stop()
-        if self.gui_started:
-            self.gui_control_queue.put("STOP")
-            if self.gui_thread and self.gui_thread.is_alive():
-                self.gui_thread.join(timeout=5)
-        logger.info("SYSTEM_SHUTDOWN_CLEAN")
+        async with self._shutdown_lock:
+            if self._shutdown_completed:
+                return
+            if self._shutdown_started:
+                return
+            self._shutdown_started = True
+
+            self._shutdown_requested.set()
+
+            loop = self._main_loop
+            if loop is None:
+                try:
+                    loop = asyncio.get_running_loop()
+                except RuntimeError:
+                    loop = None
+            if loop is not None and loop.is_closed():
+                logger.warning("Shutdown skipped async steps: event loop already closed")
+            else:
+                await self.stop()
+
+            if self.gui_started:
+                self.gui_control_queue.put("STOP")
+                if self.gui_thread and self.gui_thread.is_alive():
+                    self.gui_thread.join(timeout=5)
+
+            self._shutdown_completed = True
+            logger.info("SYSTEM_SHUTDOWN_CLEAN")
 
     async def _post_init(self, _app: Application) -> None:
         logger.info("⚙️ Post init: starting scan_loop task")

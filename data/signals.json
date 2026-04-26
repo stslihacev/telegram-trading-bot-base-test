@@ -2014,5 +2014,23 @@
     "signal_type": "strict",
     "score": 2.5,
     "timestamp": "2026-04-25T20:00:00+00:00"
+  },
+  {
+    "signal_id": "AXSUSDT_1h_LONG_2026-04-25 22:00:00+00:00",
+    "symbol": "AXSUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.0,
+    "timestamp": "2026-04-25T22:00:00+00:00"
+  },
+  {
+    "signal_id": "TRUMPUSDT_1h_SHORT_2026-04-25 22:00:00+00:00",
+    "symbol": "TRUMPUSDT",
+    "mode": "MAIN",
+    "entry_source": "strict",
+    "signal_type": "strict",
+    "score": 3.4,
+    "timestamp": "2026-04-25T22:00:00+00:00"
   }
 ]
