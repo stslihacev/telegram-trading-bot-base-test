@@ -236,7 +236,7 @@ class OrderManager:
             log_label = "ORDER_REJECTED"
             logger.info("%s: symbol=%s reason=%s", log_label, signal.get("symbol"), decision.reason)
             log_structured_event("EXECUTION_DECISION", symbol=str(signal.get("symbol") or "").upper(), signal_id=str(signal.get("signal_id") or None), context={"stage": "REJECTED", "reason": decision.reason, "outcome": decision.action.value})
-            return OrderDecision(False, decision.reason, {"decision": decision.action.value, **decision.details})
+            return OrderDecision(False, decision.reason, {"decision": decision.action.value, "execution_score": final_score, **decision.details})
 
         self.adaptive_layer.record_decision_outcome(rejected=False)
         if decision.action == DecisionAction.SCALE_DOWN or adaptive.outcome == AdaptiveOutcome.SCALE_DOWN:
@@ -265,6 +265,7 @@ class OrderManager:
                 "risk_multiplier": adaptive.context.risk_multiplier,
                 "execution_confidence": adaptive.context.execution_confidence,
                 "execution_advisory": execution_advisory,
+                "execution_score": final_score,
                 **decision.details,
                 "qty": decision.final_qty,
             },

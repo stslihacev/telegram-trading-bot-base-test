@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+
+from analysis_tools.filter_audit_runtime import collector as filter_audit_collector
 from datetime import datetime, timezone
 import time
 from typing import Any
@@ -394,6 +396,11 @@ class PositionManager:
         if rr < 1.3:
             logger.warning("RR_LOW_WARNING: symbol=%s rr=%.3f", symbol, rr)
         self.positions[symbol] = pos
+        try:
+            filter_audit_collector.capture_signal(signal)
+            filter_audit_collector.attach_execution(signal, execution_score=float(signal.get("execution_score") or signal.get("score") or 0.0))
+        except Exception:
+            pass
         logger.info(
             "POSITION_REGISTRATION: signal_id=%s symbol=%s timestamp=%s context=%s",
             signal_id,
@@ -643,6 +650,21 @@ class PositionManager:
                 context={"new_state": "CLOSED", "reason": reason},
             )
             self.positions.pop(position.symbol, None)
+            try:
+                realized_pnl = (live_price - float(position.entry_price)) if position.side == "LONG" else (float(position.entry_price) - live_price)
+                filter_audit_collector.close_trade(
+                    {
+                        "symbol": position.symbol,
+                        "signal_id": position.signal_id,
+                        "entry": position.entry_price,
+                        "exit": live_price,
+                    },
+                    pnl=realized_pnl,
+                    pnl_r=float(position.current_profit_r or 0.0),
+                    outcome="WIN" if realized_pnl > 0 else "LOSS" if realized_pnl < 0 else "BREAKEVEN",
+                )
+            except Exception:
+                pass
             observability.flush_symbol(position.symbol, reason="lifecycle_transition")
             events.append(reason)
             return events
@@ -725,6 +747,21 @@ class PositionManager:
                     context={"new_state": "CLOSED", "reason": "SMART_EXIT", "exit_type": exit_decision.exit_type, "confidence": exit_decision.confidence, "details": exit_decision.reason},
                 )
                 self.positions.pop(position.symbol, None)
+                try:
+                    realized_pnl = (live_price - float(position.entry_price)) if position.side == "LONG" else (float(position.entry_price) - live_price)
+                    filter_audit_collector.close_trade(
+                        {
+                            "symbol": position.symbol,
+                            "signal_id": position.signal_id,
+                            "entry": position.entry_price,
+                            "exit": live_price,
+                        },
+                        pnl=realized_pnl,
+                        pnl_r=float(position.current_profit_r or 0.0),
+                        outcome="WIN" if realized_pnl > 0 else "LOSS" if realized_pnl < 0 else "BREAKEVEN",
+                    )
+                except Exception:
+                    pass
                 observability.flush_symbol(position.symbol, reason="lifecycle_transition")
                 events.append("SMART_EXIT")
             

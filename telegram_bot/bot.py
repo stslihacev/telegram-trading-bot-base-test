@@ -687,6 +687,8 @@ class TelegramTradingBot:
                                 active_trades=self.signal_analytics.active_trades,
                                 fallback_qty=float(getattr(config, "LIVE_ORDER_QTY", 1.0)),
                             )
+                            execution_score = order_decision.details.get("execution_score") if isinstance(order_decision.details, dict) else None
+                            self.signal_analytics.attach_execution_score(enriched_signal, execution_score=execution_score)
                             if not order_decision.accepted:
                                 if str(order_decision.reason).upper() in {
                                     "MAX_EXPOSURE_EXCEEDED",
@@ -814,6 +816,7 @@ class TelegramTradingBot:
                                 datetime.now(timezone.utc).isoformat(),
                                 {"result": "SUCCESS", "state": "OPEN", "reason": "SIMULATION_MODE", "execution_id": simulation_execution_id},
                             )
+                            self.signal_analytics.attach_execution_score(enriched_signal, execution_score=float(enriched_signal.get("execution_score") or enriched_signal.get("score") or 0.0))
                     self.signal_state.append_signal_history(
                         str(enriched_signal.get("symbol") or ""),
                         {

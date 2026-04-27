@@ -19765,3 +19765,424 @@ Request → POST https://api-demo.bybit.com/v5/position/trading-stop: {"category
 2026-04-26 23:31:57,774 - crypto_bot - WARNING - ORDER_RESULT: signal_id=PENGUUSDT_1h_LONG_2026-04-26 18:00:00+00:00 symbol=PENGUUSDT timestamp=2026-04-26T20:31:57.774988+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_2b61b588ed73'}
 2026-04-26 23:31:57,782 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=RAYDIUMUSDT mode=MAIN entry_source=strict score=3.0 conf=0.6 stars=⭐⭐⭐⭐
 2026-04-26 23:31:58,200 - crypto_bot - WARNING - ORDER_RESULT: signal_id=RAYDIUMUSDT_1h_LONG_2026-04-26 18:00:00+00:00 symbol=RAYDIUMUSDT timestamp=2026-04-26T20:31:58.200065+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_8769e48d335d'}
+2026-04-27 01:42:43,296 - crypto_bot - WARNING - TELEGRAM_TOKEN не задан — бот запустится в режиме scanner + GUI без Telegram polling
+2026-04-27 01:42:43,310 - crypto_bot - WARNING - CONFIG_WARNINGS:
+2026-04-27 01:42:43,311 - crypto_bot - WARNING - - BOS ADX blocked band overlaps allowed range; this can suppress otherwise valid BOS entries
+2026-04-27 01:42:44,688 - crypto_bot - WARNING - [RECONCILE] issues=['registry_open_without_active:DOGEUSDT:00577e29762d4c19bf0babb939afb413', 'registry_open_without_active:HYPEUSDT:ce573ef672b84b6b968d2da71de7e282', 'registry_open_without_active:XAUTUSDT:b9de1d5406594539908bd0ca875672f2', 'registry_open_without_active:BTCUSDT:0d0c425f48934fcf9963d0ce3942b3eb', 'registry_closed_missing_snapshot:STOUSDT:5b9848c939f54fe4841b037ee52e5d14', 'registry_open_without_active:XRPUSDT:2da9a39f73cc47cf93398f5d510ea618', 'registry_closed_missing_snapshot:NOMUSDT:4a1f179a161444e99761a11713479df4', 'registry_open_without_active:SOLUSDT:48ad4dc572d54874b859516b524ba5fd', 'registry_open_without_active:XPLUSDT:69bd74d26b2e4984921a0b072a6058d6', 'registry_open_without_active:PIPPINUSDT:a30b3d6e0b7d46619fe30025b6a5b229', 'registry_open_without_active:EDGEUSDT:2f6d6fbc391141ddad8ca2ae73bd0b71', 'registry_open_without_active:ADAUSDT:8cfdea4978314c9690385c8e9edf2e4f', 'registry_open_without_active:1000PEPEUSDT:fefcbb7d73b542ef99a3dcfb3fb10bc0', 'registry_open_without_active:TAOUSDT:a9933b7408924cc8a299407b9966385e', 'registry_open_without_active:ONTUSDT:7f27789f834d4b3ca50ddddec8acb256', 'registry_open_without_active:SIRENUSDT:6f30e4e468f2451d94cab781a1acd3de', 'registry_open_without_active:PUFFERUSDT:18fb2cedb8324f4e9ecb2ca1edcd24a5', 'registry_open_without_active:RIVERUSDT:cae3629d20fa4eda97d54206bd27ba98', 'registry_open_without_active:ALGOUSDT:11470a0db0f64a3bbd5d22cb18a6e78b', 'registry_closed_missing_snapshot:ZECUSDT:a7543cfde51140c69100a23f6f3ab106', 'registry_open_without_active:JCTUSDT:e757104f4199417196abe9e349214691', 'registry_closed_missing_snapshot:FARTCOINUSDT:9960dd0b4f2445ae843112c6443459ef', 'registry_open_without_active:ARIAUSDT:33a6f44070604fa582d044cb5faee669', 'registry_open_without_active:BERAUSDT:be69a869f7404fdda9d3e3d2d40055e7', 'registry_closed_missing_snapshot:NEARUSDT:0b9330556c9e4c2ea5f2ebc01ff8d62b', 'registry_open_without_active:TRUMPUSDT:529512db726f4990822f2ced81f4916d', 'registry_open_without_active:MONUSDT:36074d9c7453412ca6e38dad0a81c0de', 'registry_open_without_active:ETHUSDT:82e4b171dbc14f23b1268a1ca2fa0cfc', 'registry_open_without_active:ENAUSDT:94c35f6ae24e492ba8ac4012972a30dc', 'registry_closed_missing_snapshot:BARDUSDT:8cb7d26ab5734142b52d76de2209d353', 'registry_open_without_active:FARTCOINUSDT:6fb64c642ccb4826b119af97a628257d', 'registry_open_without_active:STOUSDT:dea41bfc72994b6faa1f84bbdb1edd22', 'registry_open_without_active:MMTUSDT:05699846b6014a99a1dce2446735c010', 'registry_open_without_active:NEARUSDT:98c05e902398401b9e9e65ca81ffe816', 'registry_open_without_active:SOLVUSDT:78ccb710e7e54001bc238d095e827ace', 'registry_open_without_active:TREEUSDT:c34f1e5bd3af4d92b57998478774a52d', 'registry_open_without_active:LINKUSDT:cee67131158c4af59543502ce0ba4e07', 'registry_open_without_active:APRUSDT:c94760972c084ae2b3cd8a6a7605de9b', 'registry_open_without_active:ZECUSDT:823108509d6b48af89f19b9ad2796ce8', 'registry_open_without_active:AAVEUSDT:e5850bbc757748f0a78912fa6390a243', 'registry_open_without_active:REDUSDT:02515c4a20f146d6af37147773ffd6c4', 'registry_open_without_active:MUSDT:6b3bbaf3ed6f47fca33d3f3239dd4205', 'registry_open_without_active:GALAUSDT:75c20b1d803d49b0a8bf3ecb259a12d4', 'registry_open_without_active:SUIUSDT:2085f58a1b0444c1a6cfd215e3d04359', 'registry_open_without_active:BARDUSDT:83fef0d2a6c443d3bc1f1b42b80859bf', 'registry_open_without_active:SUPERUSDT:e01806b0d9cc40c39d33935e4bc8b7e1', 'registry_open_without_active:BCHUSDT:21ba042c91aa4594859d1e5950990285', 'registry_open_without_active:CLUSDT:8bffe3f30eb647e5b79fcf0fdd0a312f', 'registry_open_without_active:LTCUSDT:59dbc32a71a54396a9f41bc65018a222', 'registry_open_without_active:VIRTUALUSDT:1eff8576f445433d9b06dc04ba8bdffc', 'registry_open_without_active:RENDERUSDT:9c62d217541246df843de9f2ccab6c96', 'registry_open_without_active:XMRUSDT:92b89042ad6947029135322e69ace8ab', 'registry_open_without_active:HBARUSDT:22ce226076bb462f99a044e9c67f61b7', 'registry_open_without_active:LABUSDT:bef82b59f9bf4efdbdff0616ffa24bac']
+2026-04-27 01:42:52,755 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=AXSUSDT | signal skipped
+2026-04-27 01:42:59,134 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=APEUSDT mode=MAIN entry_source=strict score=3.9 conf=0.78 stars=⭐⭐⭐⭐
+2026-04-27 01:42:59,983 - crypto_bot - INFO - EXECUTION_APPROVED: symbol=APEUSDT side=Buy
+2026-04-27 01:43:00,629 - crypto_bot - WARNING - POSITION_DESYNC_EVENT | {'signal_id': 'APEUSDT_1h_LONG_2026-04-26 20:00:00+00:00', 'execution_id': 'exec_11c3643161cf', 'position_id': 'pos_APEUSDT_exec_11c3643161cf', 'correlation_id': 'APEUSDT_1h_LONG_2026-04-26 20:00:00+00:00', 'timestamp': '2026-04-26T22:43:00.629541+00:00', 'symbol': 'APEUSDT', 'context': {'reason': 'MISSING_SL', 'source': 'POST_TRADE_VALIDATION'}}
+2026-04-27 01:48:03,992 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=AXSUSDT | signal skipped
+2026-04-27 01:48:10,720 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=APEUSDT mode=MAIN entry_source=strict score=3.9 conf=0.78 stars=⭐⭐⭐⭐
+2026-04-27 01:48:10,727 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=AVAXUSDT mode=MAIN entry_source=strict score=3.0 conf=0.6 stars=⭐⭐⭐⭐
+2026-04-27 01:48:11,576 - crypto_bot - INFO - EXECUTION_APPROVED: symbol=AVAXUSDT side=Sell
+2026-04-27 01:48:12,218 - crypto_bot - WARNING - POSITION_DESYNC_EVENT | {'signal_id': 'AVAXUSDT_1h_SHORT_2026-04-26 20:00:00+00:00', 'execution_id': 'exec_d8d63bad2401', 'position_id': 'pos_AVAXUSDT_exec_d8d63bad2401', 'correlation_id': 'AVAXUSDT_1h_SHORT_2026-04-26 20:00:00+00:00', 'timestamp': '2026-04-26T22:48:12.218019+00:00', 'symbol': 'AVAXUSDT', 'context': {'reason': 'MISSING_SL', 'source': 'POST_TRADE_VALIDATION'}}
+2026-04-27 01:53:15,849 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=AXSUSDT | signal skipped
+2026-04-27 01:53:21,466 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=APEUSDT mode=MAIN entry_source=strict score=3.9 conf=0.78 stars=⭐⭐⭐⭐
+2026-04-27 01:58:24,643 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=AXSUSDT | signal skipped
+2026-04-27 01:58:34,304 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=APEUSDT mode=MAIN entry_source=strict score=3.9 conf=0.78 stars=⭐⭐⭐⭐
+2026-04-27 02:03:42,400 - crypto_bot - WARNING - LOW SIGNAL FLOW DETECTED
+2026-04-27 02:08:50,845 - crypto_bot - WARNING - LOW SIGNAL FLOW DETECTED
+2026-04-27 02:13:58,931 - crypto_bot - WARNING - LOW SIGNAL FLOW DETECTED
+2026-04-27 02:19:07,624 - crypto_bot - WARNING - LOW SIGNAL FLOW DETECTED
+2026-04-27 02:24:15,953 - crypto_bot - WARNING - LOW SIGNAL FLOW DETECTED
+2026-04-27 02:29:24,019 - crypto_bot - WARNING - LOW SIGNAL FLOW DETECTED
+2026-04-27 02:34:31,573 - crypto_bot - WARNING - LOW SIGNAL FLOW DETECTED
+2026-04-27 17:29:56,908 - crypto_bot - WARNING - TELEGRAM_TOKEN не задан — бот запустится в режиме scanner + GUI без Telegram polling
+2026-04-27 17:29:56,936 - crypto_bot - WARNING - CONFIG_WARNINGS:
+2026-04-27 17:29:56,937 - crypto_bot - WARNING - - BOS ADX blocked band overlaps allowed range; this can suppress otherwise valid BOS entries
+2026-04-27 17:30:03,676 - crypto_bot - WARNING - [RECONCILE] issues=['registry_open_without_active:DOGEUSDT:00577e29762d4c19bf0babb939afb413', 'registry_open_without_active:HYPEUSDT:ce573ef672b84b6b968d2da71de7e282', 'registry_open_without_active:XAUTUSDT:b9de1d5406594539908bd0ca875672f2', 'registry_open_without_active:BTCUSDT:0d0c425f48934fcf9963d0ce3942b3eb', 'registry_closed_missing_snapshot:STOUSDT:5b9848c939f54fe4841b037ee52e5d14', 'registry_open_without_active:XRPUSDT:2da9a39f73cc47cf93398f5d510ea618', 'registry_closed_missing_snapshot:NOMUSDT:4a1f179a161444e99761a11713479df4', 'registry_open_without_active:SOLUSDT:48ad4dc572d54874b859516b524ba5fd', 'registry_open_without_active:XPLUSDT:69bd74d26b2e4984921a0b072a6058d6', 'registry_open_without_active:PIPPINUSDT:a30b3d6e0b7d46619fe30025b6a5b229', 'registry_open_without_active:EDGEUSDT:2f6d6fbc391141ddad8ca2ae73bd0b71', 'registry_open_without_active:ADAUSDT:8cfdea4978314c9690385c8e9edf2e4f', 'registry_open_without_active:1000PEPEUSDT:fefcbb7d73b542ef99a3dcfb3fb10bc0', 'registry_open_without_active:TAOUSDT:a9933b7408924cc8a299407b9966385e', 'registry_open_without_active:ONTUSDT:7f27789f834d4b3ca50ddddec8acb256', 'registry_open_without_active:SIRENUSDT:6f30e4e468f2451d94cab781a1acd3de', 'registry_open_without_active:PUFFERUSDT:18fb2cedb8324f4e9ecb2ca1edcd24a5', 'registry_open_without_active:RIVERUSDT:cae3629d20fa4eda97d54206bd27ba98', 'registry_open_without_active:ALGOUSDT:11470a0db0f64a3bbd5d22cb18a6e78b', 'registry_closed_missing_snapshot:ZECUSDT:a7543cfde51140c69100a23f6f3ab106', 'registry_open_without_active:JCTUSDT:e757104f4199417196abe9e349214691', 'registry_closed_missing_snapshot:FARTCOINUSDT:9960dd0b4f2445ae843112c6443459ef', 'registry_open_without_active:ARIAUSDT:33a6f44070604fa582d044cb5faee669', 'registry_open_without_active:BERAUSDT:be69a869f7404fdda9d3e3d2d40055e7', 'registry_closed_missing_snapshot:NEARUSDT:0b9330556c9e4c2ea5f2ebc01ff8d62b', 'registry_open_without_active:TRUMPUSDT:529512db726f4990822f2ced81f4916d', 'registry_open_without_active:MONUSDT:36074d9c7453412ca6e38dad0a81c0de', 'registry_open_without_active:ETHUSDT:82e4b171dbc14f23b1268a1ca2fa0cfc', 'registry_open_without_active:ENAUSDT:94c35f6ae24e492ba8ac4012972a30dc', 'registry_closed_missing_snapshot:BARDUSDT:8cb7d26ab5734142b52d76de2209d353', 'registry_open_without_active:FARTCOINUSDT:6fb64c642ccb4826b119af97a628257d', 'registry_open_without_active:STOUSDT:dea41bfc72994b6faa1f84bbdb1edd22', 'registry_open_without_active:MMTUSDT:05699846b6014a99a1dce2446735c010', 'registry_open_without_active:NEARUSDT:98c05e902398401b9e9e65ca81ffe816', 'registry_open_without_active:SOLVUSDT:78ccb710e7e54001bc238d095e827ace', 'registry_open_without_active:TREEUSDT:c34f1e5bd3af4d92b57998478774a52d', 'registry_open_without_active:LINKUSDT:cee67131158c4af59543502ce0ba4e07', 'registry_open_without_active:APRUSDT:c94760972c084ae2b3cd8a6a7605de9b', 'registry_open_without_active:ZECUSDT:823108509d6b48af89f19b9ad2796ce8', 'registry_open_without_active:AAVEUSDT:e5850bbc757748f0a78912fa6390a243', 'registry_open_without_active:REDUSDT:02515c4a20f146d6af37147773ffd6c4', 'registry_open_without_active:MUSDT:6b3bbaf3ed6f47fca33d3f3239dd4205', 'registry_open_without_active:GALAUSDT:75c20b1d803d49b0a8bf3ecb259a12d4', 'registry_open_without_active:SUIUSDT:2085f58a1b0444c1a6cfd215e3d04359', 'registry_open_without_active:BARDUSDT:83fef0d2a6c443d3bc1f1b42b80859bf', 'registry_open_without_active:SUPERUSDT:e01806b0d9cc40c39d33935e4bc8b7e1', 'registry_open_without_active:BCHUSDT:21ba042c91aa4594859d1e5950990285', 'registry_open_without_active:CLUSDT:8bffe3f30eb647e5b79fcf0fdd0a312f', 'registry_open_without_active:LTCUSDT:59dbc32a71a54396a9f41bc65018a222', 'registry_open_without_active:VIRTUALUSDT:1eff8576f445433d9b06dc04ba8bdffc', 'registry_open_without_active:RENDERUSDT:9c62d217541246df843de9f2ccab6c96', 'registry_open_without_active:XMRUSDT:92b89042ad6947029135322e69ace8ab', 'registry_open_without_active:HBARUSDT:22ce226076bb462f99a044e9c67f61b7', 'registry_open_without_active:LABUSDT:bef82b59f9bf4efdbdff0616ffa24bac']
+2026-04-27 17:30:10,616 - crypto_bot - WARNING - [BYBIT RATE LIMIT] 1 errors in last 30s (retCode 10006 / Too many visits). Retries with exponential backoff are active.
+2026-04-27 17:30:20,507 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=PENGUUSDT mode=MAIN entry_source=strict score=2.0 conf=0.4 stars=⭐⭐⭐
+2026-04-27 17:30:20,942 - crypto_bot - WARNING - ORDER_RESULT: signal_id=PENGUUSDT_1h_LONG_2026-04-27 12:00:00+00:00 symbol=PENGUUSDT timestamp=2026-04-27T14:30:20.942853+00:00 context={'result': 'FAILED', 'reason': 'SCORE_BELOW_THRESHOLD', 'execution_id': 'exec_633035486b09'}
+2026-04-27 17:30:20,961 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=AXSUSDT mode=MAIN entry_source=strict score=2.5 conf=0.5 stars=⭐⭐⭐
+2026-04-27 17:30:21,395 - crypto_bot - WARNING - ORDER_RESULT: signal_id=AXSUSDT_1h_LONG_2026-04-27 12:00:00+00:00 symbol=AXSUSDT timestamp=2026-04-27T14:30:21.395063+00:00 context={'result': 'FAILED', 'reason': 'SCORE_BELOW_THRESHOLD', 'execution_id': 'exec_eebe1ab759dc'}
+2026-04-27 17:35:31,843 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=PENGUUSDT mode=MAIN entry_source=strict score=2.0 conf=0.4 stars=⭐⭐⭐
+2026-04-27 17:35:33,527 - crypto_bot - WARNING - ORDER_RESULT: signal_id=PENGUUSDT_1h_LONG_2026-04-27 12:00:00+00:00 symbol=PENGUUSDT timestamp=2026-04-27T14:35:33.527759+00:00 context={'result': 'FAILED', 'reason': 'SCORE_BELOW_THRESHOLD', 'execution_id': 'exec_4238c9510544'}
+2026-04-27 17:35:33,532 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=AXSUSDT mode=MAIN entry_source=strict score=2.5 conf=0.5 stars=⭐⭐⭐
+2026-04-27 17:35:35,075 - crypto_bot - WARNING - ORDER_RESULT: signal_id=AXSUSDT_1h_LONG_2026-04-27 12:00:00+00:00 symbol=AXSUSDT timestamp=2026-04-27T14:35:35.075483+00:00 context={'result': 'FAILED', 'reason': 'SCORE_BELOW_THRESHOLD', 'execution_id': 'exec_99ce1d63e94e'}
+2026-04-27 17:45:54,794 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=PENGUUSDT mode=MAIN entry_source=strict score=2.0 conf=0.4 stars=⭐⭐⭐
+2026-04-27 17:45:55,613 - crypto_bot - WARNING - ORDER_RESULT: signal_id=PENGUUSDT_1h_LONG_2026-04-27 12:00:00+00:00 symbol=PENGUUSDT timestamp=2026-04-27T14:45:55.613994+00:00 context={'result': 'FAILED', 'reason': 'SCORE_BELOW_THRESHOLD', 'execution_id': 'exec_baaab5e0d4a2'}
+2026-04-27 17:45:55,618 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=AXSUSDT mode=MAIN entry_source=strict score=2.5 conf=0.5 stars=⭐⭐⭐
+2026-04-27 17:45:56,048 - crypto_bot - WARNING - ORDER_RESULT: signal_id=AXSUSDT_1h_LONG_2026-04-27 12:00:00+00:00 symbol=AXSUSDT timestamp=2026-04-27T14:45:56.048325+00:00 context={'result': 'FAILED', 'reason': 'SCORE_BELOW_THRESHOLD', 'execution_id': 'exec_74e1bc6097e4'}
+2026-04-27 17:51:05,440 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=PENGUUSDT mode=MAIN entry_source=strict score=2.0 conf=0.4 stars=⭐⭐⭐
+2026-04-27 17:51:06,717 - crypto_bot - WARNING - ORDER_RESULT: signal_id=PENGUUSDT_1h_LONG_2026-04-27 12:00:00+00:00 symbol=PENGUUSDT timestamp=2026-04-27T14:51:06.717592+00:00 context={'result': 'FAILED', 'reason': 'SCORE_BELOW_THRESHOLD', 'execution_id': 'exec_43281598b432'}
+2026-04-27 17:51:06,722 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=AXSUSDT mode=MAIN entry_source=strict score=2.5 conf=0.5 stars=⭐⭐⭐
+2026-04-27 17:51:08,307 - crypto_bot - WARNING - ORDER_RESULT: signal_id=AXSUSDT_1h_LONG_2026-04-27 12:00:00+00:00 symbol=AXSUSDT timestamp=2026-04-27T14:51:08.307426+00:00 context={'result': 'FAILED', 'reason': 'SCORE_BELOW_THRESHOLD', 'execution_id': 'exec_b413b18d05b6'}
+2026-04-27 18:01:19,728 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=XRPUSDT | signal skipped
+2026-04-27 18:01:20,900 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=PRLUSDT | signal skipped
+2026-04-27 18:01:27,765 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=NAORISUSDT mode=MAIN entry_source=strict score=2.9 conf=0.58 stars=⭐⭐⭐
+2026-04-27 18:01:28,576 - crypto_bot - WARNING - ORDER_RESULT: signal_id=NAORISUSDT_1h_LONG_2026-04-27 13:00:00+00:00 symbol=NAORISUSDT timestamp=2026-04-27T15:01:28.576452+00:00 context={'result': 'FAILED', 'reason': 'SCORE_BELOW_THRESHOLD', 'execution_id': 'exec_b2ba4dd0a6a0'}
+2026-04-27 18:06:31,414 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=XRPUSDT | signal skipped
+2026-04-27 18:06:32,600 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=PRLUSDT | signal skipped
+2026-04-27 18:06:39,504 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=NAORISUSDT mode=MAIN entry_source=strict score=2.9 conf=0.58 stars=⭐⭐⭐
+2026-04-27 18:06:40,276 - crypto_bot - WARNING - ORDER_RESULT: signal_id=NAORISUSDT_1h_LONG_2026-04-27 13:00:00+00:00 symbol=NAORISUSDT timestamp=2026-04-27T15:06:40.276649+00:00 context={'result': 'FAILED', 'reason': 'SCORE_BELOW_THRESHOLD', 'execution_id': 'exec_b128fb8b91a9'}
+2026-04-27 18:11:42,669 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=XRPUSDT | signal skipped
+2026-04-27 18:11:43,928 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=PRLUSDT | signal skipped
+2026-04-27 18:16:53,152 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=XRPUSDT | signal skipped
+2026-04-27 18:16:54,342 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=PRLUSDT | signal skipped
+2026-04-27 18:17:02,459 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=NAORISUSDT mode=MAIN entry_source=strict score=2.9 conf=0.58 stars=⭐⭐⭐
+2026-04-27 18:17:03,240 - crypto_bot - WARNING - ORDER_RESULT: signal_id=NAORISUSDT_1h_LONG_2026-04-27 13:00:00+00:00 symbol=NAORISUSDT timestamp=2026-04-27T15:17:03.240257+00:00 context={'result': 'FAILED', 'reason': 'SCORE_BELOW_THRESHOLD', 'execution_id': 'exec_1e571a413ca5'}
+2026-04-27 18:22:05,643 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=XRPUSDT | signal skipped
+2026-04-27 18:22:07,131 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=PRLUSDT | signal skipped
+2026-04-27 18:22:15,288 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=NAORISUSDT mode=MAIN entry_source=strict score=2.9 conf=0.58 stars=⭐⭐⭐
+2026-04-27 18:22:16,187 - crypto_bot - WARNING - ORDER_RESULT: signal_id=NAORISUSDT_1h_LONG_2026-04-27 13:00:00+00:00 symbol=NAORISUSDT timestamp=2026-04-27T15:22:16.187279+00:00 context={'result': 'FAILED', 'reason': 'SCORE_BELOW_THRESHOLD', 'execution_id': 'exec_75283a158489'}
+2026-04-27 18:27:19,598 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=XRPUSDT | signal skipped
+2026-04-27 18:27:21,231 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=PRLUSDT | signal skipped
+2026-04-27 18:32:36,506 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=XRPUSDT | signal skipped
+2026-04-27 18:32:42,631 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=PRLUSDT | signal skipped
+2026-04-27 18:33:09,495 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=NAORISUSDT mode=MAIN entry_source=strict score=2.9 conf=0.58 stars=⭐⭐⭐
+2026-04-27 18:33:10,428 - crypto_bot - WARNING - ORDER_RESULT: signal_id=NAORISUSDT_1h_LONG_2026-04-27 13:00:00+00:00 symbol=NAORISUSDT timestamp=2026-04-27T15:33:10.428975+00:00 context={'result': 'FAILED', 'reason': 'SCORE_BELOW_THRESHOLD', 'execution_id': 'exec_3d397c49fd69'}
+2026-04-27 18:38:12,841 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=XRPUSDT | signal skipped
+2026-04-27 18:38:14,467 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=PRLUSDT | signal skipped
+2026-04-27 18:38:23,074 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=NAORISUSDT mode=MAIN entry_source=strict score=2.9 conf=0.58 stars=⭐⭐⭐
+2026-04-27 18:38:24,011 - crypto_bot - WARNING - ORDER_RESULT: signal_id=NAORISUSDT_1h_LONG_2026-04-27 13:00:00+00:00 symbol=NAORISUSDT timestamp=2026-04-27T15:38:24.011806+00:00 context={'result': 'FAILED', 'reason': 'SCORE_BELOW_THRESHOLD', 'execution_id': 'exec_61e95bd4327b'}
+2026-04-27 18:43:26,489 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=XRPUSDT | signal skipped
+2026-04-27 18:43:27,737 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=PRLUSDT | signal skipped
+2026-04-27 18:48:42,427 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=XRPUSDT | signal skipped
+2026-04-27 18:48:45,857 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=PRLUSDT | signal skipped
+2026-04-27 18:49:11,209 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=NAORISUSDT mode=MAIN entry_source=strict score=2.9 conf=0.58 stars=⭐⭐⭐
+2026-04-27 18:49:12,151 - crypto_bot - WARNING - ORDER_RESULT: signal_id=NAORISUSDT_1h_LONG_2026-04-27 13:00:00+00:00 symbol=NAORISUSDT timestamp=2026-04-27T15:49:12.151670+00:00 context={'result': 'FAILED', 'reason': 'SCORE_BELOW_THRESHOLD', 'execution_id': 'exec_30abf8daddf7'}
+2026-04-27 18:54:14,539 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=XRPUSDT | signal skipped
+2026-04-27 18:54:15,534 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=PRLUSDT | signal skipped
+2026-04-27 18:54:24,927 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=NAORISUSDT mode=MAIN entry_source=strict score=2.9 conf=0.58 stars=⭐⭐⭐
+2026-04-27 18:54:25,815 - crypto_bot - WARNING - ORDER_RESULT: signal_id=NAORISUSDT_1h_LONG_2026-04-27 13:00:00+00:00 symbol=NAORISUSDT timestamp=2026-04-27T15:54:25.815266+00:00 context={'result': 'FAILED', 'reason': 'SCORE_BELOW_THRESHOLD', 'execution_id': 'exec_8cfb6a2c988e'}
+2026-04-27 18:59:28,328 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=XRPUSDT | signal skipped
+2026-04-27 18:59:29,309 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=PRLUSDT | signal skipped
+2026-04-27 19:04:55,332 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=LDOUSDT mode=MAIN entry_source=strict score=3.0 conf=0.6 stars=⭐⭐⭐⭐
+2026-04-27 19:04:58,189 - crypto_bot - INFO - EXECUTION_APPROVED: symbol=LDOUSDT side=Buy
+2026-04-27 19:05:00,044 - crypto_bot - WARNING - POSITION_DESYNC_EVENT | {'signal_id': 'LDOUSDT_1h_LONG_2026-04-27 14:00:00+00:00', 'execution_id': 'exec_65abaa20bcb4', 'position_id': 'pos_LDOUSDT_exec_65abaa20bcb4', 'correlation_id': 'LDOUSDT_1h_LONG_2026-04-27 14:00:00+00:00', 'timestamp': '2026-04-27T16:05:00.044226+00:00', 'symbol': 'LDOUSDT', 'context': {'reason': 'MISSING_SL', 'source': 'POST_TRADE_VALIDATION'}}
+2026-04-27 19:05:01,341 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=ORCAUSDT mode=MAIN entry_source=strict score=3.65 conf=0.73 stars=⭐⭐⭐⭐
+2026-04-27 19:05:03,335 - crypto_bot - INFO - EXECUTION_APPROVED: symbol=ORCAUSDT side=Buy
+2026-04-27 19:05:05,417 - crypto_bot - WARNING - POSITION_DESYNC_EVENT | {'signal_id': 'ORCAUSDT_1h_LONG_2026-04-27 14:00:00+00:00', 'execution_id': 'exec_47fc10099920', 'position_id': 'pos_ORCAUSDT_exec_47fc10099920', 'correlation_id': 'ORCAUSDT_1h_LONG_2026-04-27 14:00:00+00:00', 'timestamp': '2026-04-27T16:05:05.417457+00:00', 'symbol': 'ORCAUSDT', 'context': {'reason': 'MISSING_SL', 'source': 'POST_TRADE_VALIDATION'}}
+2026-04-27 19:05:06,570 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=ZECUSDT mode=MAIN entry_source=strict score=2.5 conf=0.5 stars=⭐⭐⭐
+2026-04-27 19:05:07,925 - crypto_bot - WARNING - ORDER_RESULT: signal_id=ZECUSDT_1h_LONG_2026-04-27 14:00:00+00:00 symbol=ZECUSDT timestamp=2026-04-27T16:05:07.925047+00:00 context={'result': 'FAILED', 'reason': 'SCORE_BELOW_THRESHOLD', 'execution_id': 'exec_d880a2de5ae1'}
+2026-04-27 19:05:07,942 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=HYPERUSDT mode=MAIN entry_source=strict score=4.4 conf=0.8800000000000001 stars=⭐⭐⭐⭐⭐
+2026-04-27 19:05:10,788 - crypto_bot - INFO - EXECUTION_APPROVED: symbol=HYPERUSDT side=Buy
+2026-04-27 19:05:12,493 - crypto_bot - WARNING - POSITION_DESYNC_EVENT | {'signal_id': 'HYPERUSDT_1h_LONG_2026-04-27 14:00:00+00:00', 'execution_id': 'exec_af9f3da8cf6a', 'position_id': 'pos_HYPERUSDT_exec_af9f3da8cf6a', 'correlation_id': 'HYPERUSDT_1h_LONG_2026-04-27 14:00:00+00:00', 'timestamp': '2026-04-27T16:05:12.493076+00:00', 'symbol': 'HYPERUSDT', 'context': {'reason': 'MISSING_SL', 'source': 'POST_TRADE_VALIDATION'}}
+2026-04-27 19:05:12,853 - crypto_bot - INFO - EXECUTION_REJECTED: symbol=HYPERUSDT reason=StopLoss:11644000 set for Buy position should lower than base_price:11575000??LastPrice (ErrCode: 10001) (ErrTime: 16:05:12).
+Request → POST https://api-demo.bybit.com/v5/position/trading-stop: {"category": "linear", "symbol": "HYPERUSDT", "tpslMode": "Full", "stopLoss": "0.11644957142857143", "takeProfit": "0.13072468571428572"}.
+2026-04-27 19:05:12,854 - crypto_bot - INFO - EXECUTION_REJECTED: symbol=HYPERUSDT reason=StopLoss:11644000 set for Buy position should lower than base_price:11575000??LastPrice (ErrCode: 10001) (ErrTime: 16:05:12).
+Request → POST https://api-demo.bybit.com/v5/position/trading-stop: {"category": "linear", "symbol": "HYPERUSDT", "tpslMode": "Full", "stopLoss": "0.11644957142857143", "takeProfit": "0.13072468571428572"}.
+2026-04-27 19:05:12,854 - crypto_bot - WARNING - SLTP_OPERATION_RESULT | {'signal_id': 'HYPERUSDT_1h_LONG_2026-04-27 14:00:00+00:00', 'execution_id': 'exec_af9f3da8cf6a', 'position_id': 'pos_HYPERUSDT_exec_af9f3da8cf6a', 'correlation_id': 'HYPERUSDT_1h_LONG_2026-04-27 14:00:00+00:00', 'timestamp': '2026-04-27T16:05:12.854992+00:00', 'symbol': 'HYPERUSDT', 'context': {'success': False, 'attempts': 2, 'final_error_code': 'StopLoss:11644000 set for Buy position should lower than base_price:11575000??LastPrice (ErrCode: 10001) (ErrTime: 16:05:12).\nRequest → POST https://api-demo.bybit.com/v5/position/trading-stop: {"category": "linear", "symbol": "HYPERUSDT", "tpslMode": "Full", "stopLoss": "0.11644957142857143", "takeProfit": "0.13072468571428572"}.', 'reason': 'POST_TRADE_VALIDATION', 'is_position_valid': False}}
+2026-04-27 19:05:14,279 - crypto_bot - INFO - EXECUTION_APPROVED: symbol=HYPERUSDT side=LONG reduce_only=true
+2026-04-27 19:05:15,036 - crypto_bot - CRITICAL - CRITICAL_POSITION_RISK: symbol=HYPERUSDT reason=POST_TRADE_VALIDATION:StopLoss:11644000 set for Buy position should lower than base_price:11575000??LastPrice (ErrCode: 10001) (ErrTime: 16:05:12).
+Request → POST https://api-demo.bybit.com/v5/position/trading-stop: {"category": "linear", "symbol": "HYPERUSDT", "tpslMode": "Full", "stopLoss": "0.11644957142857143", "takeProfit": "0.13072468571428572"}. action=FORCE_CLOSE
+2026-04-27 19:05:15,037 - crypto_bot - CRITICAL - EMERGENCY_MODE_ACTIVE: reason=HYPERUSDT:POST_TRADE_VALIDATION:StopLoss:11644000 set for Buy position should lower than base_price:11575000??LastPrice (ErrCode: 10001) (ErrTime: 16:05:12).
+Request → POST https://api-demo.bybit.com/v5/position/trading-stop: {"category": "linear", "symbol": "HYPERUSDT", "tpslMode": "Full", "stopLoss": "0.11644957142857143", "takeProfit": "0.13072468571428572"}.
+2026-04-27 19:05:15,057 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=AVNTUSDT mode=MAIN entry_source=strict score=3.0 conf=0.6 stars=⭐⭐⭐⭐
+2026-04-27 19:05:16,798 - crypto_bot - WARNING - ORDER_RESULT: signal_id=AVNTUSDT_1h_LONG_2026-04-27 14:00:00+00:00 symbol=AVNTUSDT timestamp=2026-04-27T16:05:16.798204+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_8adde977435a'}
+2026-04-27 19:10:39,213 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=ORCAUSDT mode=MAIN entry_source=strict score=3.65 conf=0.73 stars=⭐⭐⭐⭐
+2026-04-27 19:10:39,218 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=HYPERUSDT mode=MAIN entry_source=strict score=4.4 conf=0.8800000000000001 stars=⭐⭐⭐⭐⭐
+2026-04-27 19:10:39,223 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=AVNTUSDT mode=MAIN entry_source=strict score=3.0 conf=0.6 stars=⭐⭐⭐⭐
+2026-04-27 19:10:40,759 - crypto_bot - WARNING - ORDER_RESULT: signal_id=AVNTUSDT_1h_LONG_2026-04-27 14:00:00+00:00 symbol=AVNTUSDT timestamp=2026-04-27T16:10:40.759286+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_99b98e3b6e28'}
+2026-04-27 19:15:56,058 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=ORCAUSDT mode=MAIN entry_source=strict score=3.65 conf=0.73 stars=⭐⭐⭐⭐
+2026-04-27 19:15:56,062 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=HYPERUSDT mode=MAIN entry_source=strict score=4.4 conf=0.8800000000000001 stars=⭐⭐⭐⭐⭐
+2026-04-27 19:21:08,764 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=ORCAUSDT mode=MAIN entry_source=strict score=3.65 conf=0.73 stars=⭐⭐⭐⭐
+2026-04-27 19:21:08,769 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=HYPERUSDT mode=MAIN entry_source=strict score=4.4 conf=0.8800000000000001 stars=⭐⭐⭐⭐⭐
+2026-04-27 19:21:08,773 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=AVNTUSDT mode=MAIN entry_source=strict score=3.0 conf=0.6 stars=⭐⭐⭐⭐
+2026-04-27 19:21:10,309 - crypto_bot - WARNING - ORDER_RESULT: signal_id=AVNTUSDT_1h_LONG_2026-04-27 14:00:00+00:00 symbol=AVNTUSDT timestamp=2026-04-27T16:21:10.309160+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_f8bb1fdf3e47'}
+2026-04-27 19:26:23,175 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=ORCAUSDT mode=MAIN entry_source=strict score=3.65 conf=0.73 stars=⭐⭐⭐⭐
+2026-04-27 19:26:23,181 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=ZECUSDT mode=MAIN entry_source=strict score=2.5 conf=0.5 stars=⭐⭐⭐
+2026-04-27 19:26:23,989 - crypto_bot - WARNING - ORDER_RESULT: signal_id=ZECUSDT_1h_LONG_2026-04-27 14:00:00+00:00 symbol=ZECUSDT timestamp=2026-04-27T16:26:23.989872+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_99644f9710d8'}
+2026-04-27 19:26:23,994 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=HYPERUSDT mode=MAIN entry_source=strict score=4.4 conf=0.8800000000000001 stars=⭐⭐⭐⭐⭐
+2026-04-27 19:26:23,998 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=AVNTUSDT mode=MAIN entry_source=strict score=3.0 conf=0.6 stars=⭐⭐⭐⭐
+2026-04-27 19:26:25,499 - crypto_bot - WARNING - ORDER_RESULT: signal_id=AVNTUSDT_1h_LONG_2026-04-27 14:00:00+00:00 symbol=AVNTUSDT timestamp=2026-04-27T16:26:25.499724+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_a41ec75d27d1'}
+2026-04-27 19:31:47,316 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=ORCAUSDT mode=MAIN entry_source=strict score=3.65 conf=0.73 stars=⭐⭐⭐⭐
+2026-04-27 19:31:47,321 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=HYPERUSDT mode=MAIN entry_source=strict score=4.4 conf=0.8800000000000001 stars=⭐⭐⭐⭐⭐
+2026-04-27 19:37:05,057 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=ORCAUSDT mode=MAIN entry_source=strict score=3.65 conf=0.73 stars=⭐⭐⭐⭐
+2026-04-27 19:37:05,062 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=ZECUSDT mode=MAIN entry_source=strict score=2.5 conf=0.5 stars=⭐⭐⭐
+2026-04-27 19:37:06,627 - crypto_bot - WARNING - ORDER_RESULT: signal_id=ZECUSDT_1h_LONG_2026-04-27 14:00:00+00:00 symbol=ZECUSDT timestamp=2026-04-27T16:37:06.627806+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_4f55773ee8c7'}
+2026-04-27 19:37:06,633 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=HYPERUSDT mode=MAIN entry_source=strict score=4.4 conf=0.8800000000000001 stars=⭐⭐⭐⭐⭐
+2026-04-27 19:37:06,638 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=AVNTUSDT mode=MAIN entry_source=strict score=3.0 conf=0.6 stars=⭐⭐⭐⭐
+2026-04-27 19:37:07,782 - crypto_bot - WARNING - ORDER_RESULT: signal_id=AVNTUSDT_1h_LONG_2026-04-27 14:00:00+00:00 symbol=AVNTUSDT timestamp=2026-04-27T16:37:07.782536+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_c7c3e543072e'}
+2026-04-27 19:42:25,336 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=ORCAUSDT mode=MAIN entry_source=strict score=3.65 conf=0.73 stars=⭐⭐⭐⭐
+2026-04-27 19:42:25,341 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=ZECUSDT mode=MAIN entry_source=strict score=2.5 conf=0.5 stars=⭐⭐⭐
+2026-04-27 19:42:26,861 - crypto_bot - WARNING - ORDER_RESULT: signal_id=ZECUSDT_1h_LONG_2026-04-27 14:00:00+00:00 symbol=ZECUSDT timestamp=2026-04-27T16:42:26.861183+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_348f149d610d'}
+2026-04-27 19:42:26,866 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=HYPERUSDT mode=MAIN entry_source=strict score=4.4 conf=0.8800000000000001 stars=⭐⭐⭐⭐⭐
+2026-04-27 19:42:26,870 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=AVNTUSDT mode=MAIN entry_source=strict score=3.0 conf=0.6 stars=⭐⭐⭐⭐
+2026-04-27 19:42:28,450 - crypto_bot - WARNING - ORDER_RESULT: signal_id=AVNTUSDT_1h_LONG_2026-04-27 14:00:00+00:00 symbol=AVNTUSDT timestamp=2026-04-27T16:42:28.450124+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_bb664b651889'}
+2026-04-27 19:47:41,058 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=ORCAUSDT mode=MAIN entry_source=strict score=3.65 conf=0.73 stars=⭐⭐⭐⭐
+2026-04-27 19:47:41,064 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=HYPERUSDT mode=MAIN entry_source=strict score=4.4 conf=0.8800000000000001 stars=⭐⭐⭐⭐⭐
+2026-04-27 19:52:53,228 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=ORCAUSDT mode=MAIN entry_source=strict score=3.65 conf=0.73 stars=⭐⭐⭐⭐
+2026-04-27 19:52:53,235 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=HYPERUSDT mode=MAIN entry_source=strict score=4.4 conf=0.8800000000000001 stars=⭐⭐⭐⭐⭐
+2026-04-27 19:52:53,239 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=AVNTUSDT mode=MAIN entry_source=strict score=3.0 conf=0.6 stars=⭐⭐⭐⭐
+2026-04-27 19:52:54,771 - crypto_bot - WARNING - ORDER_RESULT: signal_id=AVNTUSDT_1h_LONG_2026-04-27 14:00:00+00:00 symbol=AVNTUSDT timestamp=2026-04-27T16:52:54.771265+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_5b56abae5f01'}
+2026-04-27 19:58:06,627 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=ORCAUSDT mode=MAIN entry_source=strict score=3.65 conf=0.73 stars=⭐⭐⭐⭐
+2026-04-27 19:58:06,633 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=HYPERUSDT mode=MAIN entry_source=strict score=4.4 conf=0.8800000000000001 stars=⭐⭐⭐⭐⭐
+2026-04-27 19:58:06,637 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=AVNTUSDT mode=MAIN entry_source=strict score=3.0 conf=0.6 stars=⭐⭐⭐⭐
+2026-04-27 19:58:08,168 - crypto_bot - WARNING - ORDER_RESULT: signal_id=AVNTUSDT_1h_LONG_2026-04-27 14:00:00+00:00 symbol=AVNTUSDT timestamp=2026-04-27T16:58:08.168534+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_da85b441d7ad'}
+2026-04-27 20:03:09,695 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=ETHUSDT | signal skipped
+2026-04-27 20:03:09,943 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=SOLUSDT | signal skipped
+2026-04-27 20:03:10,189 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=XRPUSDT | signal skipped
+2026-04-27 20:03:12,815 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=ADAUSDT | signal skipped
+2026-04-27 20:03:16,481 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=AVAXUSDT | signal skipped
+2026-04-27 20:03:16,967 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=BNBUSDT | signal skipped
+2026-04-27 20:03:17,861 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=NEARUSDT | signal skipped
+2026-04-27 20:03:19,694 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=DOTUSDT | signal skipped
+2026-04-27 20:03:20,895 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=WLDUSDT | signal skipped
+2026-04-27 20:03:21,123 - crypto_bot - WARNING - LOW SIGNAL FLOW DETECTED
+2026-04-27 20:08:23,082 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=ETHUSDT | signal skipped
+2026-04-27 20:08:23,328 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=SOLUSDT | signal skipped
+2026-04-27 20:08:23,567 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=XRPUSDT | signal skipped
+2026-04-27 20:08:29,507 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=ADAUSDT | signal skipped
+2026-04-27 20:08:33,342 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=AVAXUSDT | signal skipped
+2026-04-27 20:08:34,341 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=BNBUSDT | signal skipped
+2026-04-27 20:08:37,147 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=LTCUSDT | signal skipped
+2026-04-27 20:08:38,517 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=NEARUSDT | signal skipped
+2026-04-27 20:08:39,708 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=DOTUSDT | signal skipped
+2026-04-27 20:08:40,899 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=WLDUSDT | signal skipped
+2026-04-27 20:08:41,145 - crypto_bot - WARNING - LOW SIGNAL FLOW DETECTED
+2026-04-27 20:13:43,965 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=ETHUSDT | signal skipped
+2026-04-27 20:13:44,342 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=SOLUSDT | signal skipped
+2026-04-27 20:13:44,608 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=XRPUSDT | signal skipped
+2026-04-27 20:13:53,617 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=ADAUSDT | signal skipped
+2026-04-27 20:13:59,227 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=AVAXUSDT | signal skipped
+2026-04-27 20:13:59,475 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=BNBUSDT | signal skipped
+2026-04-27 20:14:01,484 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=NEARUSDT | signal skipped
+2026-04-27 20:14:02,689 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=DOTUSDT | signal skipped
+2026-04-27 20:14:03,903 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=WLDUSDT | signal skipped
+2026-04-27 20:14:03,904 - crypto_bot - WARNING - LOW SIGNAL FLOW DETECTED
+2026-04-27 20:19:05,975 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=ETHUSDT | signal skipped
+2026-04-27 20:19:06,218 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=SOLUSDT | signal skipped
+2026-04-27 20:19:06,458 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=XRPUSDT | signal skipped
+2026-04-27 20:19:09,565 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=ADAUSDT | signal skipped
+2026-04-27 20:19:11,340 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=AVAXUSDT | signal skipped
+2026-04-27 20:19:11,602 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=BNBUSDT | signal skipped
+2026-04-27 20:19:13,321 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=NEARUSDT | signal skipped
+2026-04-27 20:19:14,295 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=DOTUSDT | signal skipped
+2026-04-27 20:19:16,873 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=WLDUSDT | signal skipped
+2026-04-27 20:19:17,122 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=MONUSDT | signal skipped
+2026-04-27 20:19:17,123 - crypto_bot - WARNING - LOW SIGNAL FLOW DETECTED
+2026-04-27 20:24:19,552 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=ETHUSDT | signal skipped
+2026-04-27 20:24:19,804 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=SOLUSDT | signal skipped
+2026-04-27 20:24:20,058 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=XRPUSDT | signal skipped
+2026-04-27 20:24:24,336 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=ADAUSDT | signal skipped
+2026-04-27 20:24:29,350 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=AVAXUSDT | signal skipped
+2026-04-27 20:24:29,738 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=BNBUSDT | signal skipped
+2026-04-27 20:24:33,465 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=NEARUSDT | signal skipped
+2026-04-27 20:24:36,844 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=DOTUSDT | signal skipped
+2026-04-27 20:24:40,360 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=WLDUSDT | signal skipped
+2026-04-27 20:24:40,361 - crypto_bot - WARNING - LOW SIGNAL FLOW DETECTED
+2026-04-27 20:29:42,218 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=ETHUSDT | signal skipped
+2026-04-27 20:29:43,046 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=SOLUSDT | signal skipped
+2026-04-27 20:29:44,194 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=XRPUSDT | signal skipped
+2026-04-27 20:29:50,551 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=ADAUSDT | signal skipped
+2026-04-27 20:29:55,765 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=AVAXUSDT | signal skipped
+2026-04-27 20:29:56,636 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=BNBUSDT | signal skipped
+2026-04-27 20:29:57,853 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=NEARUSDT | signal skipped
+2026-04-27 20:29:59,097 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=DOTUSDT | signal skipped
+2026-04-27 20:30:00,562 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=WLDUSDT | signal skipped
+2026-04-27 20:30:00,562 - crypto_bot - WARNING - LOW SIGNAL FLOW DETECTED
+2026-04-27 20:35:03,558 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=ETHUSDT | signal skipped
+2026-04-27 20:35:03,816 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=SOLUSDT | signal skipped
+2026-04-27 20:35:04,084 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=XRPUSDT | signal skipped
+2026-04-27 20:35:07,597 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=ADAUSDT | signal skipped
+2026-04-27 20:35:09,342 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=AVAXUSDT | signal skipped
+2026-04-27 20:35:09,602 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=BNBUSDT | signal skipped
+2026-04-27 20:35:10,844 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=NEARUSDT | signal skipped
+2026-04-27 20:35:12,086 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=DOTUSDT | signal skipped
+2026-04-27 20:35:13,562 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=WLDUSDT | signal skipped
+2026-04-27 20:35:13,563 - crypto_bot - WARNING - LOW SIGNAL FLOW DETECTED
+2026-04-27 20:40:15,733 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=ETHUSDT | signal skipped
+2026-04-27 20:40:15,984 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=SOLUSDT | signal skipped
+2026-04-27 20:40:16,240 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=XRPUSDT | signal skipped
+2026-04-27 20:40:18,734 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=ADAUSDT | signal skipped
+2026-04-27 20:40:20,500 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=AVAXUSDT | signal skipped
+2026-04-27 20:40:21,013 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=BNBUSDT | signal skipped
+2026-04-27 20:40:21,907 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=NEARUSDT | signal skipped
+2026-04-27 20:40:22,918 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=DOTUSDT | signal skipped
+2026-04-27 20:40:25,627 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=WLDUSDT | signal skipped
+2026-04-27 20:40:26,585 - crypto_bot - WARNING - LOW SIGNAL FLOW DETECTED
+2026-04-27 20:45:28,141 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=ETHUSDT | signal skipped
+2026-04-27 20:45:28,394 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=SOLUSDT | signal skipped
+2026-04-27 20:45:28,644 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=XRPUSDT | signal skipped
+2026-04-27 20:45:31,132 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=ADAUSDT | signal skipped
+2026-04-27 20:45:32,874 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=AVAXUSDT | signal skipped
+2026-04-27 20:45:33,380 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=BNBUSDT | signal skipped
+2026-04-27 20:45:34,216 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=LTCUSDT | signal skipped
+2026-04-27 20:45:35,272 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=NEARUSDT | signal skipped
+2026-04-27 20:45:37,253 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=DOTUSDT | signal skipped
+2026-04-27 20:45:38,724 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=WLDUSDT | signal skipped
+2026-04-27 20:45:39,216 - crypto_bot - WARNING - LOW SIGNAL FLOW DETECTED
+2026-04-27 20:50:41,077 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=ETHUSDT | signal skipped
+2026-04-27 20:50:41,327 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=SOLUSDT | signal skipped
+2026-04-27 20:50:41,592 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=XRPUSDT | signal skipped
+2026-04-27 20:50:45,690 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=ADAUSDT | signal skipped
+2026-04-27 20:50:47,411 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=AVAXUSDT | signal skipped
+2026-04-27 20:50:47,921 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=BNBUSDT | signal skipped
+2026-04-27 20:50:48,914 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=LTCUSDT | signal skipped
+2026-04-27 20:50:49,418 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=NEARUSDT | signal skipped
+2026-04-27 20:50:50,332 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=DOTUSDT | signal skipped
+2026-04-27 20:50:52,052 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=WLDUSDT | signal skipped
+2026-04-27 20:50:52,530 - crypto_bot - WARNING - LOW SIGNAL FLOW DETECTED
+2026-04-27 20:55:54,444 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=ETHUSDT | signal skipped
+2026-04-27 20:55:54,684 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=SOLUSDT | signal skipped
+2026-04-27 20:55:54,939 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=XRPUSDT | signal skipped
+2026-04-27 20:55:57,338 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=ADAUSDT | signal skipped
+2026-04-27 20:55:59,168 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=AVAXUSDT | signal skipped
+2026-04-27 20:55:59,828 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=BNBUSDT | signal skipped
+2026-04-27 20:56:00,788 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=LTCUSDT | signal skipped
+2026-04-27 20:56:01,267 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=NEARUSDT | signal skipped
+2026-04-27 20:56:01,986 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=DOTUSDT | signal skipped
+2026-04-27 20:56:05,232 - crypto_bot - WARNING - [SIGNAL ERROR] Missing TP/SL | symbol=WLDUSDT | signal skipped
+2026-04-27 20:56:05,719 - crypto_bot - WARNING - LOW SIGNAL FLOW DETECTED
+2026-04-27 21:01:27,751 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=ZBTUSDT mode=MAIN entry_source=strict score=3.0 conf=0.6 stars=⭐⭐⭐⭐
+2026-04-27 21:01:28,886 - crypto_bot - WARNING - ORDER_RESULT: signal_id=ZBTUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=ZBTUSDT timestamp=2026-04-27T18:01:28.886815+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_e8dd5822e952'}
+2026-04-27 21:01:28,905 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=ORCAUSDT mode=MAIN entry_source=strict score=3.65 conf=0.73 stars=⭐⭐⭐⭐
+2026-04-27 21:01:30,645 - crypto_bot - WARNING - ORDER_RESULT: signal_id=ORCAUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=ORCAUSDT timestamp=2026-04-27T18:01:30.645151+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_b80551b1e0e6'}
+2026-04-27 21:01:30,665 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=LDOUSDT mode=MAIN entry_source=strict score=3.0 conf=0.6 stars=⭐⭐⭐⭐
+2026-04-27 21:01:31,795 - crypto_bot - WARNING - ORDER_RESULT: signal_id=LDOUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=LDOUSDT timestamp=2026-04-27T18:01:31.795350+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_e9e47cfcb453'}
+2026-04-27 21:01:31,814 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=APEUSDT mode=MAIN entry_source=strict score=4.15 conf=0.8300000000000001 stars=⭐⭐⭐⭐⭐
+2026-04-27 21:01:33,180 - crypto_bot - WARNING - ORDER_RESULT: signal_id=APEUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=APEUSDT timestamp=2026-04-27T18:01:33.180190+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_0b1685e23b53'}
+2026-04-27 21:01:33,201 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=KATUSDT mode=MAIN entry_source=strict score=4.4 conf=0.8800000000000001 stars=⭐⭐⭐⭐⭐
+2026-04-27 21:01:34,511 - crypto_bot - WARNING - ORDER_RESULT: signal_id=KATUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=KATUSDT timestamp=2026-04-27T18:01:34.511886+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_ea48ce7799da'}
+2026-04-27 21:01:34,530 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=XMRUSDT mode=MAIN entry_source=strict score=2.75 conf=0.55 stars=⭐⭐⭐
+2026-04-27 21:01:35,843 - crypto_bot - WARNING - ORDER_RESULT: signal_id=XMRUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=XMRUSDT timestamp=2026-04-27T18:01:35.843458+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_48e8757ab84c'}
+2026-04-27 21:01:35,863 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=HYPERUSDT mode=MAIN entry_source=strict score=4.4 conf=0.8800000000000001 stars=⭐⭐⭐⭐⭐
+2026-04-27 21:01:37,227 - crypto_bot - WARNING - ORDER_RESULT: signal_id=HYPERUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=HYPERUSDT timestamp=2026-04-27T18:01:37.227872+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_10d61a30b868'}
+2026-04-27 21:01:37,247 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=CLUSDT mode=MAIN entry_source=strict score=4.65 conf=0.93 stars=⭐⭐⭐⭐⭐
+2026-04-27 21:01:38,519 - crypto_bot - WARNING - ORDER_RESULT: signal_id=CLUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=CLUSDT timestamp=2026-04-27T18:01:38.519846+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_89734bfcf309'}
+2026-04-27 21:07:00,957 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=ZBTUSDT mode=MAIN entry_source=strict score=3.0 conf=0.6 stars=⭐⭐⭐⭐
+2026-04-27 21:07:02,494 - crypto_bot - WARNING - ORDER_RESULT: signal_id=ZBTUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=ZBTUSDT timestamp=2026-04-27T18:07:02.494374+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_08fb1a3cce41'}
+2026-04-27 21:07:02,501 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=ORCAUSDT mode=MAIN entry_source=strict score=3.65 conf=0.73 stars=⭐⭐⭐⭐
+2026-04-27 21:07:03,595 - crypto_bot - WARNING - ORDER_RESULT: signal_id=ORCAUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=ORCAUSDT timestamp=2026-04-27T18:07:03.595481+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_0abdfca5e857'}
+2026-04-27 21:07:03,603 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=LDOUSDT mode=MAIN entry_source=strict score=3.0 conf=0.6 stars=⭐⭐⭐⭐
+2026-04-27 21:07:04,716 - crypto_bot - WARNING - ORDER_RESULT: signal_id=LDOUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=LDOUSDT timestamp=2026-04-27T18:07:04.716461+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_05aaf6783420'}
+2026-04-27 21:07:04,724 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=APEUSDT mode=MAIN entry_source=strict score=4.15 conf=0.8300000000000001 stars=⭐⭐⭐⭐⭐
+2026-04-27 21:07:06,081 - crypto_bot - WARNING - ORDER_RESULT: signal_id=APEUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=APEUSDT timestamp=2026-04-27T18:07:06.081889+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_4937b0230020'}
+2026-04-27 21:07:06,089 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=XMRUSDT mode=MAIN entry_source=strict score=2.75 conf=0.55 stars=⭐⭐⭐
+2026-04-27 21:07:06,800 - crypto_bot - WARNING - ORDER_RESULT: signal_id=XMRUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=XMRUSDT timestamp=2026-04-27T18:07:06.800717+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_d432c51cc599'}
+2026-04-27 21:07:06,809 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=KATUSDT mode=MAIN entry_source=strict score=4.4 conf=0.8800000000000001 stars=⭐⭐⭐⭐⭐
+2026-04-27 21:07:08,130 - crypto_bot - WARNING - ORDER_RESULT: signal_id=KATUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=KATUSDT timestamp=2026-04-27T18:07:08.130869+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_040f6a7c33f7'}
+2026-04-27 21:07:08,138 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=HYPERUSDT mode=MAIN entry_source=strict score=4.4 conf=0.8800000000000001 stars=⭐⭐⭐⭐⭐
+2026-04-27 21:07:09,462 - crypto_bot - WARNING - ORDER_RESULT: signal_id=HYPERUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=HYPERUSDT timestamp=2026-04-27T18:07:09.462301+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_5d056617059c'}
+2026-04-27 21:07:09,468 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=CLUSDT mode=MAIN entry_source=strict score=4.65 conf=0.93 stars=⭐⭐⭐⭐⭐
+2026-04-27 21:07:10,815 - crypto_bot - WARNING - ORDER_RESULT: signal_id=CLUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=CLUSDT timestamp=2026-04-27T18:07:10.815029+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_55a50c95fbf2'}
+2026-04-27 21:17:38,331 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=ZBTUSDT mode=MAIN entry_source=strict score=3.0 conf=0.6 stars=⭐⭐⭐⭐
+2026-04-27 21:17:39,483 - crypto_bot - WARNING - ORDER_RESULT: signal_id=ZBTUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=ZBTUSDT timestamp=2026-04-27T18:17:39.483146+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_1f0ddeab4edc'}
+2026-04-27 21:17:39,489 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=ORCAUSDT mode=MAIN entry_source=strict score=3.65 conf=0.73 stars=⭐⭐⭐⭐
+2026-04-27 21:17:41,044 - crypto_bot - WARNING - ORDER_RESULT: signal_id=ORCAUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=ORCAUSDT timestamp=2026-04-27T18:17:41.044390+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_d0d1595841ac'}
+2026-04-27 21:17:41,051 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=LDOUSDT mode=MAIN entry_source=strict score=3.0 conf=0.6 stars=⭐⭐⭐⭐
+2026-04-27 21:17:42,542 - crypto_bot - WARNING - ORDER_RESULT: signal_id=LDOUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=LDOUSDT timestamp=2026-04-27T18:17:42.542401+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_c5c1fcae7582'}
+2026-04-27 21:17:42,550 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=APEUSDT mode=MAIN entry_source=strict score=4.15 conf=0.8300000000000001 stars=⭐⭐⭐⭐⭐
+2026-04-27 21:17:43,677 - crypto_bot - WARNING - ORDER_RESULT: signal_id=APEUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=APEUSDT timestamp=2026-04-27T18:17:43.677261+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_aa079afbd396'}
+2026-04-27 21:17:43,685 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=XMRUSDT mode=MAIN entry_source=strict score=2.75 conf=0.55 stars=⭐⭐⭐
+2026-04-27 21:17:44,398 - crypto_bot - WARNING - ORDER_RESULT: signal_id=XMRUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=XMRUSDT timestamp=2026-04-27T18:17:44.398716+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_b78835bbecce'}
+2026-04-27 21:17:44,405 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=KATUSDT mode=MAIN entry_source=strict score=4.4 conf=0.8800000000000001 stars=⭐⭐⭐⭐⭐
+2026-04-27 21:17:45,547 - crypto_bot - WARNING - ORDER_RESULT: signal_id=KATUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=KATUSDT timestamp=2026-04-27T18:17:45.547669+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_8a8e07b595a0'}
+2026-04-27 21:17:45,556 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=HYPERUSDT mode=MAIN entry_source=strict score=4.4 conf=0.8800000000000001 stars=⭐⭐⭐⭐⭐
+2026-04-27 21:17:47,330 - crypto_bot - WARNING - ORDER_RESULT: signal_id=HYPERUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=HYPERUSDT timestamp=2026-04-27T18:17:47.330517+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_848b053b61fd'}
+2026-04-27 21:17:47,338 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=CLUSDT mode=MAIN entry_source=strict score=4.65 conf=0.93 stars=⭐⭐⭐⭐⭐
+2026-04-27 21:17:48,437 - crypto_bot - WARNING - ORDER_RESULT: signal_id=CLUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=CLUSDT timestamp=2026-04-27T18:17:48.437927+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_60e510b70f81'}
+2026-04-27 21:23:01,540 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=ORCAUSDT mode=MAIN entry_source=strict score=3.65 conf=0.73 stars=⭐⭐⭐⭐
+2026-04-27 21:23:02,682 - crypto_bot - WARNING - ORDER_RESULT: signal_id=ORCAUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=ORCAUSDT timestamp=2026-04-27T18:23:02.682787+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_5261a8065bc0'}
+2026-04-27 21:23:02,690 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=ZBTUSDT mode=MAIN entry_source=strict score=3.0 conf=0.6 stars=⭐⭐⭐⭐
+2026-04-27 21:23:03,789 - crypto_bot - WARNING - ORDER_RESULT: signal_id=ZBTUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=ZBTUSDT timestamp=2026-04-27T18:23:03.789711+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_3f7232b355b4'}
+2026-04-27 21:23:03,798 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=LDOUSDT mode=MAIN entry_source=strict score=3.0 conf=0.6 stars=⭐⭐⭐⭐
+2026-04-27 21:23:05,281 - crypto_bot - WARNING - ORDER_RESULT: signal_id=LDOUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=LDOUSDT timestamp=2026-04-27T18:23:05.281843+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_61dd8be1b643'}
+2026-04-27 21:23:05,289 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=APEUSDT mode=MAIN entry_source=strict score=4.15 conf=0.8300000000000001 stars=⭐⭐⭐⭐⭐
+2026-04-27 21:23:06,859 - crypto_bot - WARNING - ORDER_RESULT: signal_id=APEUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=APEUSDT timestamp=2026-04-27T18:23:06.859766+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_4d2c21f55f8a'}
+2026-04-27 21:23:06,867 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=XMRUSDT mode=MAIN entry_source=strict score=2.75 conf=0.55 stars=⭐⭐⭐
+2026-04-27 21:23:08,006 - crypto_bot - WARNING - ORDER_RESULT: signal_id=XMRUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=XMRUSDT timestamp=2026-04-27T18:23:08.006834+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_f98a88555483'}
+2026-04-27 21:23:08,015 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=KATUSDT mode=MAIN entry_source=strict score=4.4 conf=0.8800000000000001 stars=⭐⭐⭐⭐⭐
+2026-04-27 21:23:09,115 - crypto_bot - WARNING - ORDER_RESULT: signal_id=KATUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=KATUSDT timestamp=2026-04-27T18:23:09.115894+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_42d52129c452'}
+2026-04-27 21:23:09,123 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=HYPERUSDT mode=MAIN entry_source=strict score=4.4 conf=0.8800000000000001 stars=⭐⭐⭐⭐⭐
+2026-04-27 21:23:10,415 - crypto_bot - WARNING - ORDER_RESULT: signal_id=HYPERUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=HYPERUSDT timestamp=2026-04-27T18:23:10.415994+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_bb935beb11ef'}
+2026-04-27 21:23:10,425 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=CLUSDT mode=MAIN entry_source=strict score=4.65 conf=0.93 stars=⭐⭐⭐⭐⭐
+2026-04-27 21:23:11,790 - crypto_bot - WARNING - ORDER_RESULT: signal_id=CLUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=CLUSDT timestamp=2026-04-27T18:23:11.790498+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_f742246f3695'}
+2026-04-27 21:33:36,691 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=ORCAUSDT mode=MAIN entry_source=strict score=3.65 conf=0.73 stars=⭐⭐⭐⭐
+2026-04-27 21:33:38,273 - crypto_bot - WARNING - ORDER_RESULT: signal_id=ORCAUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=ORCAUSDT timestamp=2026-04-27T18:33:38.273137+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_7bf92f42b5a7'}
+2026-04-27 21:33:38,280 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=ZBTUSDT mode=MAIN entry_source=strict score=3.0 conf=0.6 stars=⭐⭐⭐⭐
+2026-04-27 21:33:39,392 - crypto_bot - WARNING - ORDER_RESULT: signal_id=ZBTUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=ZBTUSDT timestamp=2026-04-27T18:33:39.392270+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_672461c7bbb0'}
+2026-04-27 21:33:39,399 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=LDOUSDT mode=MAIN entry_source=strict score=3.0 conf=0.6 stars=⭐⭐⭐⭐
+2026-04-27 21:33:41,118 - crypto_bot - WARNING - ORDER_RESULT: signal_id=LDOUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=LDOUSDT timestamp=2026-04-27T18:33:41.118108+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_bd94c1ed1e7a'}
+2026-04-27 21:33:41,124 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=APEUSDT mode=MAIN entry_source=strict score=4.15 conf=0.8300000000000001 stars=⭐⭐⭐⭐⭐
+2026-04-27 21:33:42,675 - crypto_bot - WARNING - ORDER_RESULT: signal_id=APEUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=APEUSDT timestamp=2026-04-27T18:33:42.675429+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_7407eb315e19'}
+2026-04-27 21:33:42,680 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=XMRUSDT mode=MAIN entry_source=strict score=2.75 conf=0.55 stars=⭐⭐⭐
+2026-04-27 21:33:43,832 - crypto_bot - WARNING - ORDER_RESULT: signal_id=XMRUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=XMRUSDT timestamp=2026-04-27T18:33:43.832413+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_778451c9b975'}
+2026-04-27 21:33:43,838 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=KATUSDT mode=MAIN entry_source=strict score=4.4 conf=0.8800000000000001 stars=⭐⭐⭐⭐⭐
+2026-04-27 21:33:45,588 - crypto_bot - WARNING - ORDER_RESULT: signal_id=KATUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=KATUSDT timestamp=2026-04-27T18:33:45.588287+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_7088fb7c34ed'}
+2026-04-27 21:33:45,595 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=HYPERUSDT mode=MAIN entry_source=strict score=4.4 conf=0.8800000000000001 stars=⭐⭐⭐⭐⭐
+2026-04-27 21:33:46,712 - crypto_bot - WARNING - ORDER_RESULT: signal_id=HYPERUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=HYPERUSDT timestamp=2026-04-27T18:33:46.712635+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_806e7328b037'}
+2026-04-27 21:33:46,717 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=CLUSDT mode=MAIN entry_source=strict score=4.65 conf=0.93 stars=⭐⭐⭐⭐⭐
+2026-04-27 21:33:48,272 - crypto_bot - WARNING - ORDER_RESULT: signal_id=CLUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=CLUSDT timestamp=2026-04-27T18:33:48.272508+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_9640a8516776'}
+2026-04-27 21:39:09,621 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=ORCAUSDT mode=MAIN entry_source=strict score=3.65 conf=0.73 stars=⭐⭐⭐⭐
+2026-04-27 21:39:10,745 - crypto_bot - WARNING - ORDER_RESULT: signal_id=ORCAUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=ORCAUSDT timestamp=2026-04-27T18:39:10.745979+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_be77abfa15b3'}
+2026-04-27 21:39:10,752 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=ZBTUSDT mode=MAIN entry_source=strict score=3.0 conf=0.6 stars=⭐⭐⭐⭐
+2026-04-27 21:39:12,277 - crypto_bot - WARNING - ORDER_RESULT: signal_id=ZBTUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=ZBTUSDT timestamp=2026-04-27T18:39:12.277612+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_16a3e2385325'}
+2026-04-27 21:39:12,284 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=LDOUSDT mode=MAIN entry_source=strict score=3.0 conf=0.6 stars=⭐⭐⭐⭐
+2026-04-27 21:39:13,389 - crypto_bot - WARNING - ORDER_RESULT: signal_id=LDOUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=LDOUSDT timestamp=2026-04-27T18:39:13.388970+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_a03f9052a9de'}
+2026-04-27 21:39:13,394 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=APEUSDT mode=MAIN entry_source=strict score=4.15 conf=0.8300000000000001 stars=⭐⭐⭐⭐⭐
+2026-04-27 21:39:14,712 - crypto_bot - WARNING - ORDER_RESULT: signal_id=APEUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=APEUSDT timestamp=2026-04-27T18:39:14.712559+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_b1d6a5624c1e'}
+2026-04-27 21:39:14,719 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=XMRUSDT mode=MAIN entry_source=strict score=2.75 conf=0.55 stars=⭐⭐⭐
+2026-04-27 21:39:15,861 - crypto_bot - WARNING - ORDER_RESULT: signal_id=XMRUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=XMRUSDT timestamp=2026-04-27T18:39:15.861462+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_e96146d322be'}
+2026-04-27 21:39:15,867 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=KATUSDT mode=MAIN entry_source=strict score=4.4 conf=0.8800000000000001 stars=⭐⭐⭐⭐⭐
+2026-04-27 21:39:17,582 - crypto_bot - WARNING - ORDER_RESULT: signal_id=KATUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=KATUSDT timestamp=2026-04-27T18:39:17.582337+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_0132015dc858'}
+2026-04-27 21:39:17,587 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=HYPERUSDT mode=MAIN entry_source=strict score=4.4 conf=0.8800000000000001 stars=⭐⭐⭐⭐⭐
+2026-04-27 21:39:18,667 - crypto_bot - WARNING - ORDER_RESULT: signal_id=HYPERUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=HYPERUSDT timestamp=2026-04-27T18:39:18.667831+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_1632e51ef53d'}
+2026-04-27 21:39:18,675 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=CLUSDT mode=MAIN entry_source=strict score=4.65 conf=0.93 stars=⭐⭐⭐⭐⭐
+2026-04-27 21:39:19,797 - crypto_bot - WARNING - ORDER_RESULT: signal_id=CLUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=CLUSDT timestamp=2026-04-27T18:39:19.797718+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_39412025c9eb'}
+2026-04-27 21:50:18,474 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=ORCAUSDT mode=MAIN entry_source=strict score=3.65 conf=0.73 stars=⭐⭐⭐⭐
+2026-04-27 21:50:19,619 - crypto_bot - WARNING - ORDER_RESULT: signal_id=ORCAUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=ORCAUSDT timestamp=2026-04-27T18:50:19.619072+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_4d1ce7761a24'}
+2026-04-27 21:50:19,626 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=ZBTUSDT mode=MAIN entry_source=strict score=3.0 conf=0.6 stars=⭐⭐⭐⭐
+2026-04-27 21:50:20,728 - crypto_bot - WARNING - ORDER_RESULT: signal_id=ZBTUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=ZBTUSDT timestamp=2026-04-27T18:50:20.728178+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_23ee7424eabb'}
+2026-04-27 21:50:20,736 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=LDOUSDT mode=MAIN entry_source=strict score=3.0 conf=0.6 stars=⭐⭐⭐⭐
+2026-04-27 21:50:21,858 - crypto_bot - WARNING - ORDER_RESULT: signal_id=LDOUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=LDOUSDT timestamp=2026-04-27T18:50:21.858975+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_da330fea875e'}
+2026-04-27 21:50:21,866 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=APEUSDT mode=MAIN entry_source=strict score=4.15 conf=0.8300000000000001 stars=⭐⭐⭐⭐⭐
+2026-04-27 21:50:23,429 - crypto_bot - WARNING - ORDER_RESULT: signal_id=APEUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=APEUSDT timestamp=2026-04-27T18:50:23.429026+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_60bffa684007'}
+2026-04-27 21:50:23,438 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=XMRUSDT mode=MAIN entry_source=strict score=2.75 conf=0.55 stars=⭐⭐⭐
+2026-04-27 21:50:25,181 - crypto_bot - WARNING - ORDER_RESULT: signal_id=XMRUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=XMRUSDT timestamp=2026-04-27T18:50:25.181224+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_8eb246aed1fe'}
+2026-04-27 21:50:25,189 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=KATUSDT mode=MAIN entry_source=strict score=4.4 conf=0.8800000000000001 stars=⭐⭐⭐⭐⭐
+2026-04-27 21:50:26,288 - crypto_bot - WARNING - ORDER_RESULT: signal_id=KATUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=KATUSDT timestamp=2026-04-27T18:50:26.288084+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_c2ae3b9e4949'}
+2026-04-27 21:50:26,297 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=HYPERUSDT mode=MAIN entry_source=strict score=4.4 conf=0.8800000000000001 stars=⭐⭐⭐⭐⭐
+2026-04-27 21:50:27,014 - crypto_bot - WARNING - ORDER_RESULT: signal_id=HYPERUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=HYPERUSDT timestamp=2026-04-27T18:50:27.014145+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_0c46a685b374'}
+2026-04-27 21:50:27,022 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=CLUSDT mode=MAIN entry_source=strict score=4.65 conf=0.93 stars=⭐⭐⭐⭐⭐
+2026-04-27 21:50:28,555 - crypto_bot - WARNING - ORDER_RESULT: signal_id=CLUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=CLUSDT timestamp=2026-04-27T18:50:28.555585+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_db1948f28ae3'}
+2026-04-27 21:56:03,660 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=ORCAUSDT mode=MAIN entry_source=strict score=3.65 conf=0.73 stars=⭐⭐⭐⭐
+2026-04-27 21:56:05,163 - crypto_bot - WARNING - ORDER_RESULT: signal_id=ORCAUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=ORCAUSDT timestamp=2026-04-27T18:56:05.163490+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_f356463a9ad8'}
+2026-04-27 21:56:05,171 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=ZBTUSDT mode=MAIN entry_source=strict score=3.0 conf=0.6 stars=⭐⭐⭐⭐
+2026-04-27 21:56:06,724 - crypto_bot - WARNING - ORDER_RESULT: signal_id=ZBTUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=ZBTUSDT timestamp=2026-04-27T18:56:06.724765+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_029db65b4a08'}
+2026-04-27 21:56:06,732 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=LDOUSDT mode=MAIN entry_source=strict score=3.0 conf=0.6 stars=⭐⭐⭐⭐
+2026-04-27 21:56:08,286 - crypto_bot - WARNING - ORDER_RESULT: signal_id=LDOUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=LDOUSDT timestamp=2026-04-27T18:56:08.286795+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_1c8adeffcb93'}
+2026-04-27 21:56:08,294 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=APEUSDT mode=MAIN entry_source=strict score=4.15 conf=0.8300000000000001 stars=⭐⭐⭐⭐⭐
+2026-04-27 21:56:08,992 - crypto_bot - WARNING - ORDER_RESULT: signal_id=APEUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=APEUSDT timestamp=2026-04-27T18:56:08.992666+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_c4cc7e76e69b'}
+2026-04-27 21:56:09,000 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=XMRUSDT mode=MAIN entry_source=strict score=2.75 conf=0.55 stars=⭐⭐⭐
+2026-04-27 21:56:10,522 - crypto_bot - WARNING - ORDER_RESULT: signal_id=XMRUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=XMRUSDT timestamp=2026-04-27T18:56:10.522850+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_6df409fe464a'}
+2026-04-27 21:56:10,531 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=KATUSDT mode=MAIN entry_source=strict score=4.4 conf=0.8800000000000001 stars=⭐⭐⭐⭐⭐
+2026-04-27 21:56:11,651 - crypto_bot - WARNING - ORDER_RESULT: signal_id=KATUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=KATUSDT timestamp=2026-04-27T18:56:11.651740+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_01b4b231ee40'}
+2026-04-27 21:56:11,658 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=HYPERUSDT mode=MAIN entry_source=strict score=4.4 conf=0.8800000000000001 stars=⭐⭐⭐⭐⭐
+2026-04-27 21:56:13,211 - crypto_bot - WARNING - ORDER_RESULT: signal_id=HYPERUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=HYPERUSDT timestamp=2026-04-27T18:56:13.210681+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_9f5128678a8c'}
+2026-04-27 21:56:13,219 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=CLUSDT mode=MAIN entry_source=strict score=4.65 conf=0.93 stars=⭐⭐⭐⭐⭐
+2026-04-27 21:56:14,336 - crypto_bot - WARNING - ORDER_RESULT: signal_id=CLUSDT_1h_LONG_2026-04-27 16:00:00+00:00 symbol=CLUSDT timestamp=2026-04-27T18:56:14.336747+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_7b07e78f5751'}
+2026-04-27 22:01:43,862 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=CHIPUSDT mode=MAIN entry_source=strict score=2.5 conf=0.5 stars=⭐⭐⭐
+2026-04-27 22:01:45,019 - crypto_bot - WARNING - ORDER_RESULT: signal_id=CHIPUSDT_1h_LONG_2026-04-27 17:00:00+00:00 symbol=CHIPUSDT timestamp=2026-04-27T19:01:45.019605+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_1a0f2f6cd731'}
+2026-04-27 22:07:06,948 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=CHIPUSDT mode=MAIN entry_source=strict score=2.5 conf=0.5 stars=⭐⭐⭐
+2026-04-27 22:07:08,069 - crypto_bot - WARNING - ORDER_RESULT: signal_id=CHIPUSDT_1h_LONG_2026-04-27 17:00:00+00:00 symbol=CHIPUSDT timestamp=2026-04-27T19:07:08.069334+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_09a2d14122b7'}
+2026-04-27 22:07:08,081 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=ZECUSDT mode=MAIN entry_source=strict score=2.75 conf=0.55 stars=⭐⭐⭐
+2026-04-27 22:07:09,622 - crypto_bot - WARNING - ORDER_RESULT: signal_id=ZECUSDT_1h_LONG_2026-04-27 17:00:00+00:00 symbol=ZECUSDT timestamp=2026-04-27T19:07:09.622968+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_976f10697349'}
+2026-04-27 22:07:09,646 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=TAOUSDT mode=MAIN entry_source=strict score=2.5 conf=0.5 stars=⭐⭐⭐
+2026-04-27 22:07:10,788 - crypto_bot - WARNING - ORDER_RESULT: signal_id=TAOUSDT_1h_LONG_2026-04-27 17:00:00+00:00 symbol=TAOUSDT timestamp=2026-04-27T19:07:10.788164+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_41d6ebdad2df'}
+2026-04-27 22:07:10,809 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=HYPERUSDT mode=MAIN entry_source=strict score=3.9 conf=0.78 stars=⭐⭐⭐⭐
+2026-04-27 22:07:11,934 - crypto_bot - WARNING - ORDER_RESULT: signal_id=HYPERUSDT_1h_LONG_2026-04-27 17:00:00+00:00 symbol=HYPERUSDT timestamp=2026-04-27T19:07:11.934047+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_46e63c0ded6d'}
+2026-04-27 22:12:39,701 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=ZECUSDT mode=MAIN entry_source=strict score=2.75 conf=0.55 stars=⭐⭐⭐
+2026-04-27 22:12:40,839 - crypto_bot - WARNING - ORDER_RESULT: signal_id=ZECUSDT_1h_LONG_2026-04-27 17:00:00+00:00 symbol=ZECUSDT timestamp=2026-04-27T19:12:40.839619+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_3fe1f98a5a18'}
+2026-04-27 22:12:40,848 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=TAOUSDT mode=MAIN entry_source=strict score=2.5 conf=0.5 stars=⭐⭐⭐
+2026-04-27 22:12:42,385 - crypto_bot - WARNING - ORDER_RESULT: signal_id=TAOUSDT_1h_LONG_2026-04-27 17:00:00+00:00 symbol=TAOUSDT timestamp=2026-04-27T19:12:42.385748+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_9489d52cbfc5'}
+2026-04-27 22:17:59,682 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=CHIPUSDT mode=MAIN entry_source=strict score=2.5 conf=0.5 stars=⭐⭐⭐
+2026-04-27 22:18:01,226 - crypto_bot - WARNING - ORDER_RESULT: signal_id=CHIPUSDT_1h_LONG_2026-04-27 17:00:00+00:00 symbol=CHIPUSDT timestamp=2026-04-27T19:18:01.226371+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_d95006f3d564'}
+2026-04-27 22:23:15,371 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=CHIPUSDT mode=MAIN entry_source=strict score=2.5 conf=0.5 stars=⭐⭐⭐
+2026-04-27 22:23:16,974 - crypto_bot - WARNING - ORDER_RESULT: signal_id=CHIPUSDT_1h_LONG_2026-04-27 17:00:00+00:00 symbol=CHIPUSDT timestamp=2026-04-27T19:23:16.974845+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_0472cd76a943'}
+2026-04-27 22:23:16,981 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=ZECUSDT mode=MAIN entry_source=strict score=2.75 conf=0.55 stars=⭐⭐⭐
+2026-04-27 22:23:18,106 - crypto_bot - WARNING - ORDER_RESULT: signal_id=ZECUSDT_1h_LONG_2026-04-27 17:00:00+00:00 symbol=ZECUSDT timestamp=2026-04-27T19:23:18.106293+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_df79471c918f'}
+2026-04-27 22:23:18,113 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=TAOUSDT mode=MAIN entry_source=strict score=2.5 conf=0.5 stars=⭐⭐⭐
+2026-04-27 22:23:19,203 - crypto_bot - WARNING - ORDER_RESULT: signal_id=TAOUSDT_1h_LONG_2026-04-27 17:00:00+00:00 symbol=TAOUSDT timestamp=2026-04-27T19:23:19.203994+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_db9dc292dad3'}
+2026-04-27 22:23:19,210 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=HYPERUSDT mode=MAIN entry_source=strict score=3.9 conf=0.78 stars=⭐⭐⭐⭐
+2026-04-27 22:23:20,524 - crypto_bot - WARNING - ORDER_RESULT: signal_id=HYPERUSDT_1h_LONG_2026-04-27 17:00:00+00:00 symbol=HYPERUSDT timestamp=2026-04-27T19:23:20.524374+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_41503f99b30d'}
+2026-04-27 22:28:34,672 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=ZECUSDT mode=MAIN entry_source=strict score=2.75 conf=0.55 stars=⭐⭐⭐
+2026-04-27 22:28:36,211 - crypto_bot - WARNING - ORDER_RESULT: signal_id=ZECUSDT_1h_LONG_2026-04-27 17:00:00+00:00 symbol=ZECUSDT timestamp=2026-04-27T19:28:36.211007+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_853403a1ac24'}
+2026-04-27 22:28:36,217 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=TAOUSDT mode=MAIN entry_source=strict score=2.5 conf=0.5 stars=⭐⭐⭐
+2026-04-27 22:28:37,787 - crypto_bot - WARNING - ORDER_RESULT: signal_id=TAOUSDT_1h_LONG_2026-04-27 17:00:00+00:00 symbol=TAOUSDT timestamp=2026-04-27T19:28:37.787377+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_a7b3b1d87bec'}
+2026-04-27 22:28:37,792 - crypto_bot - INFO - SIGNAL_ACCEPTED: symbol=HYPERUSDT mode=MAIN entry_source=strict score=3.9 conf=0.78 stars=⭐⭐⭐⭐
+2026-04-27 22:28:39,332 - crypto_bot - WARNING - ORDER_RESULT: signal_id=HYPERUSDT_1h_LONG_2026-04-27 17:00:00+00:00 symbol=HYPERUSDT timestamp=2026-04-27T19:28:39.332214+00:00 context={'result': 'FAILED', 'reason': 'PRE_EXECUTION_HARD_BLOCK', 'execution_id': 'exec_b73cb2a1537d'}

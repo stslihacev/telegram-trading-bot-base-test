@@ -16,6 +16,7 @@ from typing import Any
 from uuid import uuid4
 
 import core.config as config
+from analysis_tools.filter_audit_runtime import collector as filter_audit_collector
 from execution.exit_manager import SmartExitManager
 from services.signal_formatter import get_stars_bucket
 from services.trade_registry import TradeRegistry
@@ -347,6 +348,7 @@ class SignalAnalytics:
         for name in failed_filters:
             self.signal_filter_counter.setdefault(name, Counter())["failed"] += 1
         self._append_signal_journal(signal)
+        filter_audit_collector.capture_signal(signal)
         self._save_analytics_state()
 
     @staticmethod
@@ -854,6 +856,7 @@ class SignalAnalytics:
             if self.trade_registry and trade.get("registry_id"):
                 status = "TP_HIT" if str(result).upper() == "TP" else "SL_HIT" if str(result).upper() == "SL" else str(result).upper()
                 self.trade_registry.update_trade_status(str(trade.get("registry_id")), status)
+            filter_audit_collector.close_trade(closed, pnl=closed.get("pnl_net"), pnl_r=closed.get("r_multiple"))
             self._append_closed_trade_log(closed)
             self._write_closed_trade_snapshots()
             self._save_analytics_state()
@@ -975,6 +978,7 @@ class SignalAnalytics:
             ]
             self.active_trades[symbol] = trade
             self._save_active_trades()
+            filter_audit_collector.capture_signal(trade)
             return
         if action_upper == "REVERSAL":
             if symbol in self.active_trades:
@@ -1039,6 +1043,7 @@ class SignalAnalytics:
                 trade["trade_id"] = str(registry_trade.get("id") or uuid4().hex)
         self.active_trades[symbol] = trade
         self._save_active_trades()
+        filter_audit_collector.capture_signal(trade)
         self._save_analytics_state()
         logger.info(
             "FILTER_TRACE: trade_id=%s filters_passed=%s filters_weighted=%s filters_failed=%s",
@@ -1165,6 +1170,21 @@ class SignalAnalytics:
                     )
                     self.active_trades[symbol_key] = trade
                     self._save_active_trades()
+
+    def attach_execution_score(self, signal: dict[str, Any], execution_score: float | None = None) -> None:
+        symbol = str((signal or {}).get("symbol") or "").strip()
+        if not symbol:
+            return
+        with self._io_lock:
+            trade = self.active_trades.get(symbol)
+            if trade is not None and execution_score is not None:
+                trade["execution_score"] = self._safe_float(execution_score)
+                self.active_trades[symbol] = trade
+                self._save_active_trades()
+        payload = dict(signal or {})
+        if execution_score is not None:
+            payload["execution_score"] = execution_score
+        filter_audit_collector.attach_execution(payload, execution_score=execution_score)
 
     def register_real_trade_event(self, event: str, pnl: float | None = None) -> None:
         event_key = str(event or "").upper()
