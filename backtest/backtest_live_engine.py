@@ -13,6 +13,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime, timezone
 import json
+import logging
 from pathlib import Path
 from typing import Any
 
@@ -22,11 +23,19 @@ import pandas as pd
 import core.config as config
 from execution.order_manager import OrderManager
 from services.strategy_adapter import build_live_strategy
-from utils.logger import logger
+from utils.logger import ensure_named_file_logger
 
 
 DATA_DIR = Path("backtest/data")
 OUTPUT_PATH = Path("data/backtest_live_trades.jsonl")
+BACKTEST_LOG_PATH = Path("logs/backtest_live/main.log")
+logger = ensure_named_file_logger(
+    "backtest_live",
+    BACKTEST_LOG_PATH,
+    level=logging.INFO,
+    fmt="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+)
+logger.propagate = False
 
 
 class SimulatedBybitClient:
@@ -343,7 +352,7 @@ class BacktestLiveEngine:
         return 60
 
     def run(self) -> dict[str, Any]:
-        logger.info("BACKTEST_LIVE_START: mode=%s timeframe=%s", self.runtime["mode"], self.runtime["scan_timeframe"])
+        logger.info("[BACKTEST] BACKTEST_LIVE_START: mode=%s timeframe=%s", self.runtime["mode"], self.runtime["scan_timeframe"])
 
         symbols = self.provider.discover_symbols()
         if self.max_symbols is not None:
@@ -372,7 +381,7 @@ class BacktestLiveEngine:
 
                 if self.total_candles % self.progress_every == 0:
                     logger.info(
-                        "BACKTEST_LIVE_PROGRESS: candles=%s symbols=%s closed=%s open=%s signals=%s",
+                        "[BACKTEST] BACKTEST_LIVE_PROGRESS: candles=%s symbols=%s closed=%s open=%s signals=%s",
                         self.total_candles,
                         len(symbols),
                         len(self.closed_rows),
@@ -400,7 +409,7 @@ class BacktestLiveEngine:
             "output": str(self.output_path),
             "validation": validation,
         }
-        logger.info("BACKTEST_LIVE_SUMMARY: %s", summary)
+        logger.info("[BACKTEST] BACKTEST_LIVE_SUMMARY: %s", summary)
         return summary
 
     def _write_output(self) -> None:
