@@ -353,64 +353,72 @@ class BacktestLiveEngine:
 
     def run(self) -> dict[str, Any]:
         logger.info("[BACKTEST] BACKTEST_LIVE_START: mode=%s timeframe=%s", self.runtime["mode"], self.runtime["scan_timeframe"])
+        root_logger = logging.getLogger()
+        saved_root_handlers = list(root_logger.handlers)
+        for handler in saved_root_handlers:
+            root_logger.removeHandler(handler)
 
-        symbols = self.provider.discover_symbols()
-        if self.max_symbols is not None:
-            symbols = symbols[: self.max_symbols]
+        try:
+            symbols = self.provider.discover_symbols()
+            if self.max_symbols is not None:
+                symbols = symbols[: self.max_symbols]
 
-        for symbol in symbols:
-            history = self.provider.load_symbol_history(symbol)
-            if history is None or len(history) <= self.min_history:
-                continue
+            for symbol in symbols:
+                history = self.provider.load_symbol_history(symbol)
+                if history is None or len(history) <= self.min_history:
+                    continue
 
-            for i in range(self.min_history, len(history)):
-                self.total_candles += 1
-                window = history.iloc[: i + 1].copy()
-                candle = history.iloc[i]
-                ts = pd.to_datetime(candle["timestamp"], utc=True)
+                for i in range(self.min_history, len(history)):
+                    self.total_candles += 1
+                    window = history.iloc[: i + 1].copy()
+                    candle = history.iloc[i]
+                    ts = pd.to_datetime(candle["timestamp"], utc=True)
 
-                self._process_exit_for_candle(symbol, candle)
+                    self._process_exit_for_candle(symbol, candle)
 
-                signal = self.strategy.generate_signal(symbol, window)
-                if signal:
-                    self.total_signals += 1
-                    signal["mode"] = "MAIN"
-                    signal["live_mode"] = "MAIN"
-                    signal.setdefault("timestamp", str(ts))
-                    self._maybe_open_position(symbol, ts, signal)
+                    signal = self.strategy.generate_signal(symbol, window)
+                    if signal:
+                        self.total_signals += 1
+                        signal["mode"] = "MAIN"
+                        signal["live_mode"] = "MAIN"
+                        signal.setdefault("timestamp", str(ts))
+                        self._maybe_open_position(symbol, ts, signal)
 
-                if self.total_candles % self.progress_every == 0:
-                    logger.info(
-                        "[BACKTEST] BACKTEST_LIVE_PROGRESS: candles=%s symbols=%s closed=%s open=%s signals=%s",
-                        self.total_candles,
-                        len(symbols),
-                        len(self.closed_rows),
-                        len(self.open_positions),
-                        self.total_signals,
+                    if self.total_candles % self.progress_every == 0:
+                        logger.info(
+                            "[BACKTEST] BACKTEST_LIVE_PROGRESS: candles=%s symbols=%s closed=%s open=%s signals=%s",
+                            self.total_candles,
+                            len(symbols),
+                            len(self.closed_rows),
+                            len(self.open_positions),
+                            self.total_signals,
+                        )
+
+                if symbol in self.open_positions:
+                    last = history.iloc[-1]
+                    self._close_position(
+                        self.open_positions[symbol],
+                        close_ts=pd.to_datetime(last["timestamp"], utc=True),
+                        close_price=self._safe_float(last.get("close"), 0.0),
+                        outcome="CLOSE",
                     )
 
-            if symbol in self.open_positions:
-                last = history.iloc[-1]
-                self._close_position(
-                    self.open_positions[symbol],
-                    close_ts=pd.to_datetime(last["timestamp"], utc=True),
-                    close_price=self._safe_float(last.get("close"), 0.0),
-                    outcome="CLOSE",
-                )
+            self._write_output()
+            validation = self._validate_output()
 
-        self._write_output()
-        validation = self._validate_output()
-
-        summary = {
-            "candles": self.total_candles,
-            "signals": self.total_signals,
-            "decisions": self.total_decisions,
-            "trades": len(self.closed_rows),
-            "output": str(self.output_path),
-            "validation": validation,
-        }
-        logger.info("[BACKTEST] BACKTEST_LIVE_SUMMARY: %s", summary)
-        return summary
+            summary = {
+                "candles": self.total_candles,
+                "signals": self.total_signals,
+                "decisions": self.total_decisions,
+                "trades": len(self.closed_rows),
+                "output": str(self.output_path),
+                "validation": validation,
+            }
+            logger.info("[BACKTEST] BACKTEST_LIVE_SUMMARY: %s", summary)
+            return summary
+        finally:
+            for handler in saved_root_handlers:
+                root_logger.addHandler(handler)
 
     def _write_output(self) -> None:
         self.output_path.parent.mkdir(parents=True, exist_ok=True)
