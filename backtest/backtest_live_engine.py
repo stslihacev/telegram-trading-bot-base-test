@@ -104,25 +104,68 @@ class HistoricalCandleProvider:
         }
         return aliases.get(tf.lower(), tf.lower())
 
+    def resolve_symbol_file(self, symbol: str) -> Path | None:
+        normalized_tf = self._normalize_timeframe(self.timeframe)
+        symbol_upper = str(symbol).upper()
+        data_dir = self.data_dir
+        variants = [normalized_tf]
+        if normalized_tf != self.timeframe:
+            variants.append(self.timeframe)
+
+        for tf in variants:
+            exact = data_dir / f"{symbol_upper}_{tf}.parquet"
+            if exact.exists():
+                return exact
+
+            matches = sorted(data_dir.glob(f"*{symbol_upper}_{tf}.parquet"))
+            if matches:
+                return matches[0]
+
+            normalized_symbol = symbol_upper.replace("1000", "")
+            matches = sorted(data_dir.glob(f"*{normalized_symbol}_{tf}.parquet"))
+            if matches:
+                return matches[0]
+
+        return None
+
     def load_symbol_history(self, symbol: str, *, days_limit: int | None = None) -> pd.DataFrame | None:
-        normalized = self._normalize_timeframe(self.timeframe)
-        candidates = [
-            self.data_dir / f"{symbol}_{normalized}.parquet",
-            self.data_dir / f"{symbol}_{self.timeframe}.parquet",
-        ]
-        existing = next((p for p in candidates if p.exists()), None)
-        if existing is None:
+        resolved = self.resolve_symbol_file(symbol)
+        if resolved is None:
             return None
 
-        df = pd.read_parquet(existing)
-        required = {"timestamp", "open", "high", "low", "close", "volume"}
-        if not required.issubset(df.columns):
+        try:
+            df = pd.read_parquet(resolved)
+        except Exception as exc:
+            logger.warning("[BACKTEST] DATA_WARNING: symbol=%s file=%s reason=read_error error=%s", symbol, resolved, exc)
             return None
+
+        source_ts_col = "timestamp" if "timestamp" in df.columns else ("time" if "time" in df.columns else None)
+        required = {"open", "high", "low", "close", "volume"}
+        if source_ts_col is None or not required.issubset(df.columns):
+            logger.warning(
+                "[BACKTEST] DATA_WARNING: symbol=%s file=%s reason=missing_columns columns=%s",
+                symbol,
+                resolved,
+                sorted(df.columns.tolist()),
+            )
+            return None
+
+        if source_ts_col != "timestamp":
+            df = df.rename(columns={source_ts_col: "timestamp"})
+
         df = df.sort_values("timestamp").copy()
-        df["timestamp"] = pd.to_datetime(df["timestamp"], utc=True)
+        df["timestamp"] = pd.to_datetime(df["timestamp"], utc=True, errors="coerce")
+        df = df.dropna(subset=["timestamp"]).reset_index(drop=True)
+        if df.empty:
+            return None
+
         if days_limit is not None and days_limit > 0:
             cutoff = pd.Timestamp.now(tz=timezone.utc) - pd.Timedelta(days=int(days_limit))
-            df = df[df["timestamp"] >= cutoff]
+            filtered = df[df["timestamp"] >= cutoff]
+            if filtered.empty:
+                logger.warning("[BACKTEST] WARNING: time filter removed all candles, using full history")
+            else:
+                df = filtered
             if df.empty:
                 return None
         return df.reset_index(drop=True)
@@ -426,12 +469,33 @@ class BacktestLiveEngine:
             if self.max_symbols is not None:
                 symbols = symbols[: self.max_symbols]
             total_symbols = len(symbols)
+            symbols_with_data = 0
+
+            for symbol in symbols:
+                resolved = self.provider.resolve_symbol_file(symbol)
+                if resolved is None:
+                    logger.warning("[BACKTEST] DATA_MISSING: symbol=%s", symbol)
+                    continue
+                history = self.provider.load_symbol_history(symbol, days_limit=self.backtest_days)
+                candle_count = len(history) if history is not None else 0
+                if candle_count > 0:
+                    symbols_with_data += 1
+                logger.info("[BACKTEST] DATA_CHECK: symbol=%s file=%s candles=%s", symbol, resolved, candle_count)
+
+            if symbols_with_data == 0:
+                raise RuntimeError("No historical data found. Check data directory and symbol names.")
 
             for symbol_index, symbol in enumerate(symbols, start=1):
                 history = self.provider.load_symbol_history(symbol, days_limit=self.backtest_days)
                 if history is None or len(history) <= self.min_history:
                     logger.info("[BACKTEST] Progress: %s/%s | trades=%s", symbol_index, total_symbols, len(self.closed_rows))
                     continue
+                logger.info(
+                    "[BACKTEST] DATA_LOADED: symbol=%s candles=%s timeframe=%s",
+                    symbol,
+                    len(history),
+                    self.runtime["scan_timeframe"],
+                )
 
                 for i in range(self.min_history, len(history)):
                     if len(self.closed_rows) >= self.max_trades:
@@ -467,6 +531,9 @@ class BacktestLiveEngine:
                     )
                 if self.stopped_early:
                     break
+
+            if self.total_candles == 0:
+                raise RuntimeError("No candles were processed after loading historical data.")
 
             self._write_output()
             validation = self._validate_output()
