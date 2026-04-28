@@ -358,6 +358,17 @@ class BacktestLiveEngine:
         for handler in saved_root_handlers:
             root_logger.removeHandler(handler)
 
+        disabled_loggers: dict[str, list[logging.Handler]] = {}
+        saved_logger_propagation: dict[str, bool] = {}
+        for logger_name, logger_obj in logging.Logger.manager.loggerDict.items():
+            if logger_name == "backtest_live" or not isinstance(logger_obj, logging.Logger):
+                continue
+            disabled_loggers[logger_name] = list(logger_obj.handlers)
+            saved_logger_propagation[logger_name] = logger_obj.propagate
+            for handler in list(logger_obj.handlers):
+                logger_obj.removeHandler(handler)
+            logger_obj.propagate = False
+
         try:
             symbols = self.provider.discover_symbols()
             if self.max_symbols is not None:
@@ -417,6 +428,14 @@ class BacktestLiveEngine:
             logger.info("[BACKTEST] BACKTEST_LIVE_SUMMARY: %s", summary)
             return summary
         finally:
+            for logger_name, saved_handlers in disabled_loggers.items():
+                logger_obj = logging.Logger.manager.loggerDict.get(logger_name)
+                if not isinstance(logger_obj, logging.Logger):
+                    continue
+                for handler in saved_handlers:
+                    logger_obj.addHandler(handler)
+                logger_obj.propagate = saved_logger_propagation.get(logger_name, logger_obj.propagate)
+                
             for handler in saved_root_handlers:
                 root_logger.addHandler(handler)
 
