@@ -14,6 +14,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 import json
 import logging
+import os
 from pathlib import Path
 from typing import Any
 
@@ -37,15 +38,10 @@ logger = ensure_named_file_logger(
 )
 logger.propagate = False
 
-BACKTEST_SYMBOLS = [
-    "BTCUSDT", "ETHUSDT", "SOLUSDT", "BNBUSDT",
-    "XRPUSDT", "ADAUSDT", "DOGEUSDT",
-    "LINKUSDT", "AVAXUSDT", "MATICUSDT",
-    "INJUSDT", "ARBUSDT", "OPUSDT",
-]
 BACKTEST_DAYS = 60
 MAX_TRADES = 150
 FAST_MODE = True
+MIN_CANDLES_PER_SYMBOL = 200
 
 class SimulatedBybitClient:
     """Minimal exchange facade for OrderManager/DecisionEngine reuse."""
@@ -171,15 +167,17 @@ class HistoricalCandleProvider:
         return df.reset_index(drop=True)
 
     def discover_symbols(self) -> list[str]:
-        normalized = self._normalize_timeframe(self.timeframe)
         symbols: set[str] = set()
-        for path in self.data_dir.glob(f"*_{normalized}.parquet"):
+        for path in self.data_dir.glob("*.parquet"):
             stem = path.stem
-            symbols.add(stem[: -len(f"_{normalized}")])
-        if normalized != self.timeframe:
-            for path in self.data_dir.glob(f"*_{self.timeframe}.parquet"):
-                stem = path.stem
-                symbols.add(stem[: -len(f"_{self.timeframe}")])
+            if "_" not in stem:
+                continue
+            symbol, _, tf = stem.rpartition("_")
+            if not symbol or not tf:
+                continue
+            if self._normalize_timeframe(tf) != self._normalize_timeframe(self.timeframe):
+                continue
+            symbols.add(symbol.upper())
         return sorted(symbols)
 
 
@@ -202,7 +200,7 @@ class BacktestLiveEngine:
         self.progress_every = max(100, int(progress_every))
         self.min_history = int(min_history or runtime.get("scan_candle_limit") or 300)
         self.max_symbols = max_symbols
-        self.backtest_symbols = tuple(str(s).upper() for s in BACKTEST_SYMBOLS if str(s).strip())
+        self.backtest_symbols = self._resolve_symbol_universe()
         self.backtest_days = max(1, int(BACKTEST_DAYS))
         self.max_trades = max(1, int(MAX_TRADES))
         self.fast_mode = bool(FAST_MODE)
@@ -211,8 +209,20 @@ class BacktestLiveEngine:
         self.total_candles = 0
         self.total_signals = 0
         self.total_decisions = 0
+        self.invalid_trades_skipped = 0
         self.stopped_early = False
         self._apply_fast_mode()
+
+    def _resolve_symbol_universe(self) -> tuple[str, ...]:
+        discovered = self.provider.discover_symbols()
+        raw_whitelist = str(os.getenv("BACKTEST_SYMBOLS", "")).strip()
+        if not raw_whitelist:
+            symbols = discovered
+        else:
+            whitelist = {s.strip().upper() for s in raw_whitelist.split(",") if s.strip()}
+            symbols = [s for s in discovered if s in whitelist]
+        logger.info("[BACKTEST] BACKTEST_SYMBOLS_LOADED: total=%s list=%s", len(symbols), symbols)
+        return tuple(symbols)
 
     def _apply_fast_mode(self) -> None:
         if not self.fast_mode:
@@ -367,6 +377,10 @@ class BacktestLiveEngine:
             decision_accepted=decision.accepted,
             timestamp=timestamp,
         )
+        if not self._is_valid_trade_record(row):
+            self.invalid_trades_skipped += 1
+            logger.warning("[BACKTEST] INVALID_TRADE_SKIPPED: symbol=%s timestamp=%s", symbol, timestamp)
+            return
         if not decision.accepted:
             return
 
@@ -385,6 +399,15 @@ class BacktestLiveEngine:
         if opened.entry <= 0 or opened.sl <= 0 or opened.tp <= 0:
             return
         self.open_positions[symbol] = opened
+
+    def _is_valid_trade_record(self, row: dict[str, Any]) -> bool:
+        sq = row.get("signal_quality") if isinstance(row.get("signal_quality"), dict) else {}
+        score = sq.get("score")
+        exec_score = sq.get("execution_score")
+        filters = row.get("filters") if isinstance(row.get("filters"), dict) else {}
+        contributions = filters.get("B_score_contributions") if isinstance(filters.get("B_score_contributions"), dict) else {}
+        structure = str(row.get("context", {}).get("market_regime") or "")
+        return score is not None and exec_score is not None and bool(contributions) and structure.upper() != "UNKNOWN" and bool(structure)
 
     def _close_position(self, pos: OpenPosition, *, close_ts: pd.Timestamp, close_price: float, outcome: str) -> None:
         risk = abs(pos.entry - pos.sl)
@@ -470,6 +493,7 @@ class BacktestLiveEngine:
                 symbols = symbols[: self.max_symbols]
             total_symbols = len(symbols)
             symbols_with_data = 0
+            skipped_symbols = 0
 
             for symbol in symbols:
                 resolved = self.provider.resolve_symbol_file(symbol)
@@ -487,8 +511,20 @@ class BacktestLiveEngine:
 
             for symbol_index, symbol in enumerate(symbols, start=1):
                 history = self.provider.load_symbol_history(symbol, days_limit=self.backtest_days)
-                if history is None or len(history) <= self.min_history:
-                    logger.info("[BACKTEST] Progress: %s/%s | trades=%s", symbol_index, total_symbols, len(self.closed_rows))
+                if history is None:
+                    skipped_symbols += 1
+                    logger.warning("[BACKTEST] DATA_WARNING: symbol=%s reason=missing_history", symbol)
+                    logger.info("[BACKTEST] %s/%s trades=%s", symbol_index, total_symbols, len(self.closed_rows))
+                    continue
+                if len(history) < MIN_CANDLES_PER_SYMBOL:
+                    skipped_symbols += 1
+                    logger.warning("[BACKTEST] DATA_WARNING: symbol=%s reason=insufficient_candles candles=%s min=%s", symbol, len(history), MIN_CANDLES_PER_SYMBOL)
+                    logger.info("[BACKTEST] %s/%s trades=%s", symbol_index, total_symbols, len(self.closed_rows))
+                    continue
+                if len(history) <= self.min_history:
+                    skipped_symbols += 1
+                    logger.warning("[BACKTEST] DATA_WARNING: symbol=%s reason=below_min_history candles=%s min_history=%s", symbol, len(history), self.min_history)
+                    logger.info("[BACKTEST] %s/%s trades=%s", symbol_index, total_symbols, len(self.closed_rows))
                     continue
                 logger.info(
                     "[BACKTEST] DATA_LOADED: symbol=%s candles=%s timeframe=%s",
@@ -515,11 +551,19 @@ class BacktestLiveEngine:
                         signal["live_mode"] = "MAIN"
                         signal.setdefault("timestamp", str(ts))
                         self._maybe_open_position(symbol, ts, signal)
+                        logger.info("[BACKTEST] FILTER_PIPELINE_CHECK: %s", {
+                            "symbol": symbol,
+                            "rsi": self._safe_float(signal.get("rsi"), 0.0),
+                            "adx": self._safe_float(signal.get("adx"), 0.0),
+                            "macd": self._safe_float(signal.get("macd"), 0.0),
+                            "volume": self._safe_float(signal.get("volume"), 0.0),
+                            "structure": signal.get("regime") or signal.get("structure_state"),
+                        })
 
                     if self.total_candles % self.progress_every == 0:
-                        logger.info("[BACKTEST] Progress: %s/%s | trades=%s", symbol_index, total_symbols, len(self.closed_rows))
+                        logger.info("[BACKTEST] %s/%s trades=%s", symbol_index, total_symbols, len(self.closed_rows))
 
-                logger.info("[BACKTEST] Progress: %s/%s | trades=%s", symbol_index, total_symbols, len(self.closed_rows))
+                logger.info("[BACKTEST] %s/%s trades=%s", symbol_index, total_symbols, len(self.closed_rows))
 
                 if symbol in self.open_positions:
                     last = history.iloc[-1]
@@ -539,6 +583,12 @@ class BacktestLiveEngine:
             validation = self._validate_output()
 
             summary = {
+                "symbols_processed": total_symbols - skipped_symbols,
+                "total_trades": len(self.closed_rows),
+                "skipped_symbols": skipped_symbols,
+                "invalid_trades_skipped": self.invalid_trades_skipped,
+                "avg_score": float(np.mean([self._safe_float(r.get("signal_quality", {}).get("score"), 0.0) for r in self.closed_rows])) if self.closed_rows else 0.0,
+                "avg_execution_score": float(np.mean([self._safe_float(r.get("signal_quality", {}).get("execution_score"), 0.0) for r in self.closed_rows])) if self.closed_rows else 0.0,
                 "candles": self.total_candles,
                 "signals": self.total_signals,
                 "decisions": self.total_decisions,
