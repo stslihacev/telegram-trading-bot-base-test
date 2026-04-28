@@ -11,7 +11,7 @@ This module intentionally does NOT modify or replace backtest/backtest_engine.py
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 import json
 import logging
 from pathlib import Path
@@ -37,6 +37,15 @@ logger = ensure_named_file_logger(
 )
 logger.propagate = False
 
+BACKTEST_SYMBOLS = [
+    "BTCUSDT", "ETHUSDT", "SOLUSDT", "BNBUSDT",
+    "XRPUSDT", "ADAUSDT", "DOGEUSDT",
+    "LINKUSDT", "AVAXUSDT", "MATICUSDT",
+    "INJUSDT", "ARBUSDT", "OPUSDT",
+]
+BACKTEST_DAYS = 60
+MAX_TRADES = 150
+FAST_MODE = True
 
 class SimulatedBybitClient:
     """Minimal exchange facade for OrderManager/DecisionEngine reuse."""
@@ -95,7 +104,7 @@ class HistoricalCandleProvider:
         }
         return aliases.get(tf.lower(), tf.lower())
 
-    def load_symbol_history(self, symbol: str) -> pd.DataFrame | None:
+    def load_symbol_history(self, symbol: str, *, days_limit: int | None = None) -> pd.DataFrame | None:
         normalized = self._normalize_timeframe(self.timeframe)
         candidates = [
             self.data_dir / f"{symbol}_{normalized}.parquet",
@@ -111,6 +120,11 @@ class HistoricalCandleProvider:
             return None
         df = df.sort_values("timestamp").copy()
         df["timestamp"] = pd.to_datetime(df["timestamp"], utc=True)
+        if days_limit is not None and days_limit > 0:
+            cutoff = pd.Timestamp.now(tz=timezone.utc) - pd.Timedelta(days=int(days_limit))
+            df = df[df["timestamp"] >= cutoff]
+            if df.empty:
+                return None
         return df.reset_index(drop=True)
 
     def discover_symbols(self) -> list[str]:
@@ -145,11 +159,49 @@ class BacktestLiveEngine:
         self.progress_every = max(100, int(progress_every))
         self.min_history = int(min_history or runtime.get("scan_candle_limit") or 300)
         self.max_symbols = max_symbols
+        self.backtest_symbols = tuple(str(s).upper() for s in BACKTEST_SYMBOLS if str(s).strip())
+        self.backtest_days = max(1, int(BACKTEST_DAYS))
+        self.max_trades = max(1, int(MAX_TRADES))
+        self.fast_mode = bool(FAST_MODE)
         self.open_positions: dict[str, OpenPosition] = {}
         self.closed_rows: list[dict[str, Any]] = []
         self.total_candles = 0
         self.total_signals = 0
         self.total_decisions = 0
+        self.stopped_early = False
+        self._apply_fast_mode()
+
+    def _apply_fast_mode(self) -> None:
+        if not self.fast_mode:
+            return
+
+        class _FastAdaptiveLayer:
+            @staticmethod
+            def adapt(signal: dict[str, Any], market_data: dict[str, Any]) -> Any:
+                _ = signal, market_data
+                regime = type("_RegimeContainer", (), {"regime": type("_Regime", (), {"value": "fast_backtest"})()})()
+                context = type(
+                    "_Context",
+                    (),
+                    {
+                        "stress": type("_Stress", (), {"stress_score": 0.0})(),
+                        "risk_multiplier": 1.0,
+                        "mode": type("_Mode", (), {"value": "FAST"})(),
+                        "execution_confidence": 0.5,
+                    },
+                )()
+                outcome = type("_Outcome", (), {"value": "PASS"})()
+                return type("_Response", (), {"regime": regime, "context": context, "outcome": outcome, "reason": "FAST_MODE"})()
+
+            @staticmethod
+            def record_decision_outcome(rejected: bool) -> None:
+                _ = rejected
+
+            @staticmethod
+            def record_order_outcome(*args: Any, **kwargs: Any) -> None:
+                _ = args, kwargs
+
+        self.order_manager.adaptive_layer = _FastAdaptiveLayer()
 
     @staticmethod
     def _now_iso() -> str:
@@ -370,16 +422,21 @@ class BacktestLiveEngine:
             logger_obj.propagate = False
 
         try:
-            symbols = self.provider.discover_symbols()
+            symbols = [s for s in self.backtest_symbols if s]
             if self.max_symbols is not None:
                 symbols = symbols[: self.max_symbols]
+            total_symbols = len(symbols)
 
-            for symbol in symbols:
-                history = self.provider.load_symbol_history(symbol)
+            for symbol_index, symbol in enumerate(symbols, start=1):
+                history = self.provider.load_symbol_history(symbol, days_limit=self.backtest_days)
                 if history is None or len(history) <= self.min_history:
+                    logger.info("[BACKTEST] Progress: %s/%s | trades=%s", symbol_index, total_symbols, len(self.closed_rows))
                     continue
 
                 for i in range(self.min_history, len(history)):
+                    if len(self.closed_rows) >= self.max_trades:
+                        self.stopped_early = True
+                        break
                     self.total_candles += 1
                     window = history.iloc[: i + 1].copy()
                     candle = history.iloc[i]
@@ -396,14 +453,9 @@ class BacktestLiveEngine:
                         self._maybe_open_position(symbol, ts, signal)
 
                     if self.total_candles % self.progress_every == 0:
-                        logger.info(
-                            "[BACKTEST] BACKTEST_LIVE_PROGRESS: candles=%s symbols=%s closed=%s open=%s signals=%s",
-                            self.total_candles,
-                            len(symbols),
-                            len(self.closed_rows),
-                            len(self.open_positions),
-                            self.total_signals,
-                        )
+                        logger.info("[BACKTEST] Progress: %s/%s | trades=%s", symbol_index, total_symbols, len(self.closed_rows))
+
+                logger.info("[BACKTEST] Progress: %s/%s | trades=%s", symbol_index, total_symbols, len(self.closed_rows))
 
                 if symbol in self.open_positions:
                     last = history.iloc[-1]
@@ -413,6 +465,8 @@ class BacktestLiveEngine:
                         close_price=self._safe_float(last.get("close"), 0.0),
                         outcome="CLOSE",
                     )
+                if self.stopped_early:
+                    break
 
             self._write_output()
             validation = self._validate_output()
@@ -422,6 +476,9 @@ class BacktestLiveEngine:
                 "signals": self.total_signals,
                 "decisions": self.total_decisions,
                 "trades": len(self.closed_rows),
+                "max_trades": self.max_trades,
+                "stopped_early": self.stopped_early,
+                "fast_mode": self.fast_mode,
                 "output": str(self.output_path),
                 "validation": validation,
             }
