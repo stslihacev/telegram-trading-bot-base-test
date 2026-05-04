@@ -567,6 +567,51 @@ class BacktestStrategyAdapter:
         )
         return checks, metrics
 
+    def _validate_filter_integrity(
+        self,
+        *,
+        symbol: str,
+        filter_metrics: dict[str, object],
+        score_breakdown: dict[str, float] | None = None,
+    ) -> bool:
+        rsi = self._safe_float(filter_metrics.get("rsi"), 0.0)
+        adx = self._safe_float(filter_metrics.get("adx"), 0.0)
+        contributions = score_breakdown or {}
+        b_scores = [
+            self._safe_float(contributions.get("rsi_score"), 0.0),
+            self._safe_float(contributions.get("adx_score"), 0.0),
+            self._safe_float(contributions.get("volume_score"), 0.0),
+            self._safe_float(contributions.get("macd_score"), 0.0),
+        ]
+        if rsi <= 0.0 or adx <= 0.0 or all(score <= 0.0 for score in b_scores):
+            logger.error(
+                "FILTERS_NOT_COMPUTED: symbol=%s rsi=%s adx=%s B_scores=%s",
+                symbol,
+                rsi,
+                adx,
+                b_scores,
+            )
+            return False
+        return True
+
+    def _emit_filter_runtime_snapshot(self, *, symbol: str, filter_metrics: dict[str, object], score_breakdown: dict[str, float]) -> None:
+        if not getattr(config, "DEBUG_MODE", False):
+            return
+        used_in_score = any(
+            self._safe_float(score_breakdown.get(k), 0.0) > 0.0 for k in ("rsi_score", "adx_score", "volume_score", "macd_score")
+        )
+        logger.debug(
+            "FILTER_RUNTIME_SNAPSHOT: %s",
+            {
+                "symbol": symbol,
+                "rsi": self._safe_float(filter_metrics.get("rsi"), 0.0),
+                "adx": self._safe_float(filter_metrics.get("adx"), 0.0),
+                "macd": self._safe_float(filter_metrics.get("macd_hist"), 0.0),
+                "volume": self._safe_float(filter_metrics.get("volume"), 0.0),
+                "used_in_score": used_in_score,
+            },
+        )
+
     @staticmethod
     def _compute_weighted_filters(score_breakdown: dict[str, float]) -> list[str]:
         mapping = {
@@ -1081,6 +1126,22 @@ class BacktestStrategyAdapter:
                     runtime,
                     metrics=filter_metrics,
                 )
+                self._emit_filter_runtime_snapshot(symbol=symbol, filter_metrics=filter_metrics, score_breakdown=score_breakdown)
+                if not self._validate_filter_integrity(
+                    symbol=symbol,
+                    filter_metrics=filter_metrics,
+                    score_breakdown=score_breakdown,
+                ):
+                    self.last_signal_diagnostics = {
+                        "mode": runtime["mode"],
+                        "score": 0.0,
+                        "passed_filters": [],
+                        "failed_filters": ["FILTERS_NOT_COMPUTED"],
+                        "rejection_reason": "FILTERS_NOT_COMPUTED",
+                        "potential_signal": False,
+                        "strict_signal": False,
+                    }
+                    return None
                 total_score = float(score_breakdown.get("total_score", 0.0))
                 weighted_filters = self._compute_weighted_filters(score_breakdown)
                 if hard_failed or soft_failed:

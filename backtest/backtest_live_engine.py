@@ -39,7 +39,7 @@ logger = ensure_named_file_logger(
 logger.propagate = False
 
 BACKTEST_DAYS = 60
-MAX_TRADES = 150
+MAX_TRADES = 10
 FAST_MODE = True
 MIN_CANDLES_PER_SYMBOL = 200
 
@@ -293,6 +293,13 @@ class BacktestLiveEngine:
     ) -> dict[str, Any]:
         signal_quality = signal.get("signal_quality") if isinstance(signal.get("signal_quality"), dict) else {}
         soft_b = signal_quality.get("soft_b_contributions") if isinstance(signal_quality.get("soft_b_contributions"), dict) else {}
+        if not soft_b:
+            soft_b = {
+                "RSI": self._safe_float(signal.get("rsi_score"), 0.0),
+                "MACD": self._safe_float(signal.get("macd_score"), 0.0),
+                "ADX": self._safe_float(signal.get("adx_score"), 0.0),
+                "VOLUME": self._safe_float(signal.get("volume_score"), 0.0),
+            }
         failed_a = list(signal_quality.get("failed_a_filters") or signal.get("failed_a_filters") or [])
         score_breakdown = {
             "RSI": self._safe_float(soft_b.get("RSI"), 0.0),
@@ -407,7 +414,14 @@ class BacktestLiveEngine:
         filters = row.get("filters") if isinstance(row.get("filters"), dict) else {}
         contributions = filters.get("B_score_contributions") if isinstance(filters.get("B_score_contributions"), dict) else {}
         structure = str(row.get("context", {}).get("market_regime") or "")
-        return score is not None and exec_score is not None and bool(contributions) and structure.upper() != "UNKNOWN" and bool(structure)
+        if not (score is not None and exec_score is not None and bool(contributions) and structure.upper() != "UNKNOWN" and bool(structure)):
+            return False
+        rsi = self._safe_float(contributions.get("RSI"), 0.0)
+        adx = self._safe_float(contributions.get("ADX"), 0.0)
+        if rsi <= 0.0 or adx <= 0.0 or all(self._safe_float(v, 0.0) <= 0.0 for v in contributions.values()):
+            logger.error("FILTERS_NOT_COMPUTED: contributions=%s", contributions)
+            return False
+        return True
 
     def _close_position(self, pos: OpenPosition, *, close_ts: pd.Timestamp, close_price: float, outcome: str) -> None:
         risk = abs(pos.entry - pos.sl)
