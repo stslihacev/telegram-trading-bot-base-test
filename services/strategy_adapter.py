@@ -106,6 +106,15 @@ class BacktestStrategyAdapter:
         df["timestamp"] = pd.to_datetime(df["timestamp"], utc=True)
         df = df.sort_values("timestamp").set_index("timestamp")
         df = add_indicators(df)
+        close_series = df["close"].astype(float)
+        ema_fast = close_series.ewm(span=12, adjust=False).mean()
+        ema_slow = close_series.ewm(span=26, adjust=False).mean()
+        macd = ema_fast - ema_slow
+        macd_signal = macd.ewm(span=9, adjust=False).mean()
+        df["macd"] = macd
+        df["macd_signal"] = macd_signal
+        df["macd_hist"] = macd - macd_signal
+        df["volume_ma"] = df["volume"].astype(float).rolling(20, min_periods=1).mean()
         if runtime.get("is_scalping"):
             df = backtest_engine.calculate_swings(
                 df,
@@ -498,13 +507,8 @@ class BacktestStrategyAdapter:
         adx = self._safe_float(row.get("adx"), 0.0)
         rsi = self._safe_float(row.get("rsi"), 50.0)
         volume_now = self._safe_float(row.get("volume"), 0.0)
-        volume_ma = self._safe_float(df["volume"].astype(float).rolling(20, min_periods=1).mean().iloc[-2], 0.0)
-
-        ema_fast = df["close"].astype(float).ewm(span=12, adjust=False).mean()
-        ema_slow = df["close"].astype(float).ewm(span=26, adjust=False).mean()
-        macd = ema_fast - ema_slow
-        macd_signal = macd.ewm(span=9, adjust=False).mean()
-        macd_hist = self._safe_float((macd - macd_signal).iloc[-2], 0.0)
+        volume_ma = self._safe_float(row.get("volume_ma"), 0.0)
+        macd_hist = self._safe_float(row.get("macd_hist", row.get("macd")), 0.0)
 
         trend_tolerance = 0.003
         direction = "LONG" if ema50 >= ema200 else "SHORT"

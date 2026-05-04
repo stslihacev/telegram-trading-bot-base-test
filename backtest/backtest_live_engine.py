@@ -23,7 +23,7 @@ import pandas as pd
 
 import core.config as config
 from execution.order_manager import OrderManager
-from services.strategy_adapter import build_live_strategy
+from services.strategy_adapter import BacktestStrategyAdapter, build_live_strategy
 from utils.logger import ensure_named_file_logger
 
 
@@ -211,7 +211,10 @@ class BacktestLiveEngine:
         self.total_decisions = 0
         self.invalid_trades_skipped = 0
         self.stopped_early = False
+        self.indicator_rows_checked = 0
+        self.indicator_invalid_rows = 0
         self._apply_fast_mode()
+        
 
     def _resolve_symbol_universe(self) -> tuple[str, ...]:
         discovered = self.provider.discover_symbols()
@@ -269,6 +272,26 @@ class BacktestLiveEngine:
             return casted
         except (TypeError, ValueError):
             return fallback
+
+    def _validate_indicators(self, *, symbol: str, row: pd.Series) -> None:
+        rsi = self._safe_float(row.get("rsi"), 0.0)
+        adx = self._safe_float(row.get("adx"), 0.0)
+        volume_now = self._safe_float(row.get("volume"), 0.0)
+        volume_ma = self._safe_float(row.get("volume_ma"), 0.0)
+        macd_hist = self._safe_float(row.get("macd_hist", row.get("macd")), 0.0)
+        self.indicator_rows_checked += 1
+        invalid = (
+            rsi <= 0.0
+            or adx <= 0.0
+            or volume_now <= 0.0
+            or volume_ma <= 0.0
+            or macd_hist == 0.0
+        )
+        if invalid:
+            self.indicator_invalid_rows += 1
+            raise RuntimeError(
+                f"INDICATORS_NOT_COMPUTED: symbol={symbol} rsi={rsi} adx={adx} macd={macd_hist} volume={volume_now} volume_ma={volume_ma}"
+            )
 
     def _active_trades_snapshot(self) -> dict[str, dict[str, float]]:
         snapshot: dict[str, dict[str, float]] = {}
@@ -558,6 +581,18 @@ class BacktestLiveEngine:
 
                     self._process_exit_for_candle(symbol, candle)
 
+                    prepared_window = BacktestStrategyAdapter._prepare_frame(window, self.runtime)
+                    indicator_row = prepared_window.iloc[-2]
+                    self._validate_indicators(symbol=symbol, row=indicator_row)
+                    if getattr(config, "DEBUG_MODE", False):
+                        logger.debug("FILTER_RUNTIME_SNAPSHOT: %s", {
+                            "symbol": symbol,
+                            "rsi": self._safe_float(indicator_row.get("rsi"), 0.0),
+                            "adx": self._safe_float(indicator_row.get("adx"), 0.0),
+                            "macd": self._safe_float(indicator_row.get("macd_hist", indicator_row.get("macd")), 0.0),
+                            "volume_ma": self._safe_float(indicator_row.get("volume_ma"), 0.0),
+                        })
+
                     signal = self.strategy.generate_signal(symbol, window)
                     if signal:
                         self.total_signals += 1
@@ -596,6 +631,17 @@ class BacktestLiveEngine:
             self._write_output()
             validation = self._validate_output()
 
+            indicator_validation = {
+                "total_rows_checked": self.indicator_rows_checked,
+                "invalid_rows": self.indicator_invalid_rows,
+                "percent_invalid": (
+                    (self.indicator_invalid_rows / self.indicator_rows_checked) * 100.0
+                    if self.indicator_rows_checked > 0
+                    else 0.0
+                ),
+            }
+            logger.info("[BACKTEST] INDICATOR_VALIDATION_SUMMARY: %s", indicator_validation)
+
             summary = {
                 "symbols_processed": total_symbols - skipped_symbols,
                 "total_trades": len(self.closed_rows),
@@ -612,6 +658,7 @@ class BacktestLiveEngine:
                 "fast_mode": self.fast_mode,
                 "output": str(self.output_path),
                 "validation": validation,
+                "indicator_validation": indicator_validation,
             }
             logger.info("[BACKTEST] BACKTEST_LIVE_SUMMARY: %s", summary)
             return summary
